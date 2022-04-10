@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="NOC.Views.NotificationsPage" x:Name="notificationpage">
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="NOC.Views.NotificationsPage" x:Name="notificationpage" BackgroundColor="LightGray">
     <ContentPage.Content>
         <Grid RowDefinitions="1*,8*,1*">
             <Frame Grid.Row="0" Padding="0">
-                <Grid ColumnDefinitions="2*, 8*">
+                <Grid ColumnDefinitions="1*, 9*">
                     <Image Grid.Column="0" Source="LeftArrow" HorizontalOptions="Start">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding GoBackCommand}" />
                         </Image.GestureRecognizers>
                     </Image>
-                    <Label  Grid.Column="1" Text="Notifications" FontSize="18" TextColor="IndianRed" VerticalOptions="Center" HorizontalOptions="Center" />
+                    <Label  Grid.Column="1" Text="Notifications" Margin="-40,0,0,0" FontSize="18" TextColor="IndianRed" VerticalOptions="Center" HorizontalOptions="Center" />
 
                 </Grid>
             </Frame>
@@ -18,8 +18,8 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Frame  BackgroundColor="LightGray" Padding="20">
-                                <Grid ColumnDefinitions="2*,6*,2*" >
+                            <Frame  Padding="0" BackgroundColor="LightGray">
+                                <Grid ColumnDefinitions="1*,6*,3*" Margin="10,10,10,10" >
                                     <Image Grid.Column="0" Source="home" HeightRequest="20" WidthRequest="20" VerticalOptions="Center" HorizontalOptions="Start"></Image>
                                     <Label Grid.Column="1" Text="{Binding Message}" TextColor="Gray" FontSize="16" />
                                     <Label Grid.Column="2" Text="{Binding CreationDate,StringFormat='{0:dd-MM-yyyy}'}" TextColor="IndianRed" FontSize="16" />

@@ -5,6 +5,8 @@ using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace NOC.ViewModels
 {
@@ -42,6 +44,25 @@ namespace NOC.ViewModels
         public virtual void Destroy()
         {
 
+        }
+        private ICommand goBackCommand;
+
+        public ICommand GoBackCommand
+        {
+            get
+            {
+                if (goBackCommand == null)
+                {
+                    goBackCommand = new Command(GoBackExecute);
+                }
+
+                return goBackCommand;
+            }
+        }
+
+        private async void GoBackExecute(object obj)
+        {
+           await NavigationService.GoBackAsync();
         }
 
         private bool _isBusy = false;

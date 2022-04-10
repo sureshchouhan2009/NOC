@@ -5,15 +5,16 @@
     <ContentPage.Content>
         <Grid RowDefinitions="1*,8*,1*">
             <Frame Grid.Row="0" Padding="0">
-                <Grid ColumnDefinitions="5*, 5*">
-                    <Image Grid.Column="0" Source="LeftArrow" HorizontalOptions="Start">
+                <Label Grid.Column="1" Text="Menu" FontSize="18" TextColor="IndianRed" VerticalOptions="Center" HorizontalOptions="Center" />
+                <!--<Grid ColumnDefinitions="5*, 5*">
+                    --><!--<Image Grid.Column="0" Source="LeftArrow" HorizontalOptions="Start">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding GoBackCommand}" />
                         </Image.GestureRecognizers>
-                    </Image>
+                    </Image>--><!--
                     <Label Grid.Column="1" Text="Menu" FontSize="18" TextColor="IndianRed" VerticalOptions="Center" HorizontalOptions="Start"/>
 
-                </Grid>
+                </Grid>-->
             </Frame>
             <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" >
                 <Frame Grid.Row="0" Padding="10" BackgroundColor="LightGray">
