@@ -22,9 +22,9 @@ namespace NOC.Behaviors
         {
             bool IsValid = false;
             IsValid = (Regex.IsMatch(e.NewTextValue, passwordRegex));
-            ((CustomEntry)sender).TextColor = IsValid ? Color.Black : Color.Red;
+            ((CustomEntry)sender).TextColor = IsValid ? Color.White : Color.Red;
             if (string.IsNullOrEmpty(e.NewTextValue))
-                ((CustomEntry)sender).TextColor = Color.Black;
+                ((CustomEntry)sender).TextColor = Color.White;
 
         }
 
