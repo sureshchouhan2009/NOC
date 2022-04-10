@@ -7,5 +7,10 @@
 
     <!-- Application resource dictionary -->
 
-  </Application.Resources>
+
+        <!--<ControlTemplate x:Key="MasterTemplate">
+            
+        </ControlTemplate>-->
+
+    </Application.Resources>
 </prism:PrismApplication>

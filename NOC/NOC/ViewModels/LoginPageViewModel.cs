@@ -42,9 +42,14 @@ namespace NOC.ViewModels
 
         private async void PerformLoginComand(object obj)
         {
+            IsBusy = true;
             //perform api calling 
            var token= await TokenClass.GetToken();
             var t = token;
+
+           await NavigationService.NavigateAsync("HomePage");
+
+            IsBusy = false;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using NOC.Helpers;
+using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
 using System;
@@ -41,6 +42,24 @@ namespace NOC.ViewModels
         public virtual void Destroy()
         {
 
+        }
+
+        private bool _isBusy = false;
+        public virtual bool IsBusy
+        {
+            get { return _isBusy; }
+            set
+            {
+                if (value)
+                {
+                    Loading.Instance.ShowLoadingDialog();
+                }
+                else
+                {
+                    Loading.Instance.HideLoadingDialog();
+                }
+                SetProperty(ref _isBusy, value);
+            }
         }
     }
 }
