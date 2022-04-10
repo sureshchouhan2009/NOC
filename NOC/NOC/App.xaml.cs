@@ -19,7 +19,7 @@ namespace NOC
         {
             InitializeComponent();
 
-            await NavigationService.NavigateAsync("/LoginPage");
+            await NavigationService.NavigateAsync("/HomePage");
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -30,6 +30,7 @@ namespace NOC
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
             containerRegistry.RegisterForNavigation<LoginPage, LoginPageViewModel>();
             containerRegistry.RegisterForNavigation<HomePage, HomePageViewModel>();
+            containerRegistry.RegisterForNavigation<NotificationsPage, NotificationsPageViewModel>();
         }
     }
 }

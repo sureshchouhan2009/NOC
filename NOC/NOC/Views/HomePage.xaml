@@ -4,10 +4,72 @@
              x:Class="NOC.Views.HomePage">
     <ContentPage.Content>
         <Grid RowDefinitions="1*,8*,1*">
-            <Frame Grid.Row="0" BackgroundColor="Green">
-                
+            <Frame Grid.Row="0" Padding="0">
+                <Grid ColumnDefinitions="5*, 5*">
+                    <Image Grid.Column="0" Source="LeftArrow" HorizontalOptions="Start">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoBackCommand}" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Label Grid.Column="1" Text="Menu" FontSize="18" TextColor="IndianRed" VerticalOptions="Center" HorizontalOptions="Start"/>
+
+                </Grid>
             </Frame>
-            
+            <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" >
+                <Frame Grid.Row="0" Padding="10" BackgroundColor="LightGray">
+                    <Grid  ColumnDefinitions="2*,8*,2*" Margin="10" >
+                        <Image Grid.Column="0" Source="home" HeightRequest="20" WidthRequest="20" VerticalOptions="Center" HorizontalOptions="Start"></Image>
+                        <Label Grid.Column="1" Text="My NOC Applications" TextColor="Gray" FontSize="16" />
+                        <Image Grid.Column="2" BackgroundColor="Black" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" />
+                    </Grid>
+                </Frame>
+
+                <Frame Grid.Row="1" Padding="10" BackgroundColor="LightGray">
+                    <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
+                        <Image Grid.Column="0" Source="home" HeightRequest="20" WidthRequest="20" VerticalOptions="Center" HorizontalOptions="Start"></Image>
+                        <Label Grid.Column="1" Text="Commented NOCs" TextColor="Gray" FontSize="16" />
+                        <Image Grid.Column="2" BackgroundColor="Black" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" />
+                    </Grid>
+                </Frame>
+                <Frame Grid.Row="2" Padding="10" BackgroundColor="LightGray">
+                    <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
+                        <Image Grid.Column="0" Source="home" HeightRequest="20" WidthRequest="20" VerticalOptions="Center" HorizontalOptions="Start"></Image>
+                        <Label Grid.Column="1" Text="Nocs for Revalidation in 10 Days" TextColor="Gray" FontSize="16" />
+                        <Image Grid.Column="2" BackgroundColor="Black" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" />
+                    </Grid>
+                </Frame>
+                <Frame Grid.Row="3" Padding="10" BackgroundColor="LightGray">
+                    <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
+                        <Image Grid.Column="0" Source="home" HeightRequest="20" WidthRequest="20" VerticalOptions="Center" HorizontalOptions="Start"></Image>
+                        <Label Grid.Column="1" Text="Notifications" TextColor="Gray" FontSize="16" />
+                        <Image Grid.Column="2" BackgroundColor="Black" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" />
+                    </Grid>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateToNotificationPageCommand}" NumberOfTapsRequired="1" />
+                    </Frame.GestureRecognizers>
+                </Frame>
+                <Frame Grid.Row="4" Padding="10" BackgroundColor="LightGray">
+                    <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
+                        <Image Grid.Column="0" Source="home" HeightRequest="20" WidthRequest="20" VerticalOptions="Center" HorizontalOptions="Start"></Image>
+                        <Label Grid.Column="1" Text="Log Out" TextColor="Gray" FontSize="16" />
+                        <Image Grid.Column="2" BackgroundColor="Black" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" />
+                    </Grid>
+                </Frame>
+            </Grid>
+            <Frame Grid.Row="2"  >
+                <Grid ColumnDefinitions="5*, 5*">
+                    <Image Grid.Column="0" Source="home" HorizontalOptions="Start">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoBackCommand}" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Image Grid.Column="1" Source="er_user" HorizontalOptions="End">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoBackCommand}" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                </Grid>
+            </Frame>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
