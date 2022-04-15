@@ -2,62 +2,94 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NOC.Views.HomePage">
+    <ContentPage.Resources>
+        <Style x:Key="circleFram" TargetType="Frame">
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="HorizontalOptions" Value="Center" />
+            <Setter Property="BackgroundColor" Value="White" />
+            <Setter Property="CornerRadius" Value="30" />
+            <Setter Property="Padding" Value="0" />
+            
+
+        </Style>
+        <Style x:Key="menuLabel" TargetType="Label">
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="HorizontalOptions" Value="Start" />
+            <Setter Property="TextColor" Value="Gray" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+        
+        <Style x:Key="rightArrow" TargetType="Image">
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="HorizontalOptions" Value="End" />
+            <Setter Property="HeightRequest" Value="20" />
+            <Setter Property="WidthRequest" Value="20" />
+        </Style>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <Grid RowDefinitions="1*,8*,1*">
             <Frame Grid.Row="0" Padding="0">
-                <Label Grid.Column="1" Text="Menu" FontSize="18" TextColor="IndianRed" VerticalOptions="Center" HorizontalOptions="Center" />
-                <!--<Grid ColumnDefinitions="5*, 5*">
-                    --><!--<Image Grid.Column="0" Source="LeftArrow" HorizontalOptions="Start">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding GoBackCommand}" />
-                        </Image.GestureRecognizers>
-                    </Image>--><!--
-                    <Label Grid.Column="1" Text="Menu" FontSize="18" TextColor="IndianRed" VerticalOptions="Center" HorizontalOptions="Start"/>
-
-                </Grid>-->
+                <Label Grid.Column="1" Text="Menu" FontSize="18" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center" />
             </Frame>
-            <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" >
-                <Frame Grid.Row="0" Padding="10" BackgroundColor="LightGray">
+            <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="3"  >
+                <Frame Grid.Row="0" Padding="0" BackgroundColor="LightGray" Margin="0" HeightRequest="60">
                     <Grid  ColumnDefinitions="2*,8*,2*" Margin="10" >
-                        <Image Grid.Column="0" Source="home" HeightRequest="20" WidthRequest="20" VerticalOptions="Center" HorizontalOptions="Start"></Image>
-                        <Label Grid.Column="1" Text="My NOC Applications" TextColor="Gray" FontSize="16" />
-                        <Image Grid.Column="2" BackgroundColor="Black" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" />
+                        <Frame Grid.Column="0" Style="{StaticResource circleFram}">
+                            <Image  Source="doc_icon" Aspect="AspectFit" HeightRequest="40" ></Image>
+                        </Frame>
+                        <Label Grid.Column="1" Style="{StaticResource menuLabel}" Text="My NOC Applications"  />
+                        <Image Grid.Column="2" Style="{StaticResource rightArrow}"  Source="rightArrowWhite" />
                     </Grid>
                 </Frame>
 
-                <Frame Grid.Row="1" Padding="10" BackgroundColor="LightGray">
+                <Frame Grid.Row="1" Padding="0" BackgroundColor="LightGray" Margin="0" HeightRequest="60">
                     <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
-                        <Image Grid.Column="0" Source="home" HeightRequest="20" WidthRequest="20" VerticalOptions="Center" HorizontalOptions="Start"></Image>
-                        <Label Grid.Column="1" Text="Commented NOCs" TextColor="Gray" FontSize="16" />
-                        <Image Grid.Column="2" BackgroundColor="Black" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" />
+                        <Frame Grid.Column="0" Style="{StaticResource circleFram}">
+                            <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="40"></Image>
+                        </Frame>
+                        <Label Grid.Column="1" Style="{StaticResource menuLabel}" Text="Commented NOCs" />
+                        <Image Grid.Column="2" Style="{StaticResource rightArrow}" Source="rightArrowWhite" />
                     </Grid>
                 </Frame>
-                <Frame Grid.Row="2" Padding="10" BackgroundColor="LightGray">
+                <Frame Grid.Row="2" Padding="0" BackgroundColor="LightGray" Margin="0" HeightRequest="60">
                     <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
-                        <Image Grid.Column="0" Source="home" HeightRequest="20" WidthRequest="20" VerticalOptions="Center" HorizontalOptions="Start"></Image>
-                        <Label Grid.Column="1" Text="Nocs for Revalidation in 10 Days" TextColor="Gray" FontSize="16" />
-                        <Image Grid.Column="2" BackgroundColor="Black" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" />
+                        <Frame Grid.Column="0" Style="{StaticResource circleFram}">
+                            <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="40"></Image>
+                        </Frame>
+                        <Label Grid.Column="1" Style="{StaticResource menuLabel}" Text="Nocs for Revalidation in 10 Days" />
+                        <Image Grid.Column="2" Style="{StaticResource rightArrow}" Source="rightArrowWhite" />
                     </Grid>
                 </Frame>
-                <Frame Grid.Row="3" Padding="10" BackgroundColor="LightGray">
+                
+               
+                <Frame Grid.Row="3" Padding="0" BackgroundColor="LightGray" Margin="0" HeightRequest="60">
                     <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
-                        <Image Grid.Column="0" Source="home" HeightRequest="20" WidthRequest="20" VerticalOptions="Center" HorizontalOptions="Start"></Image>
-                        <Label Grid.Column="1" Text="Notifications" TextColor="Gray" FontSize="16" />
-                        <Image Grid.Column="2" BackgroundColor="Black" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" />
+                        <Frame Grid.Column="0" Style="{StaticResource circleFram}">
+                            <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="40"></Image>
+                        </Frame>
+                        <Label Grid.Column="1" Style="{StaticResource menuLabel}" Text="Notifications" />
+                        <Image Grid.Column="2" Style="{StaticResource rightArrow}" Source="rightArrowWhite" />
                     </Grid>
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding NavigateToNotificationPageCommand}" NumberOfTapsRequired="1" />
                     </Frame.GestureRecognizers>
                 </Frame>
-                <Frame Grid.Row="4" Padding="10" BackgroundColor="LightGray">
+
+                <Frame Grid.Row="4" Padding="0" BackgroundColor="LightGray" Margin="0" HeightRequest="60">
                     <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
-                        <Image Grid.Column="0" Source="home" HeightRequest="20" WidthRequest="20" VerticalOptions="Center" HorizontalOptions="Start"></Image>
-                        <Label Grid.Column="1" Text="Log Out" TextColor="Gray" FontSize="16" />
-                        <Image Grid.Column="2" BackgroundColor="Black" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" />
+                        <Frame Grid.Column="0" Style="{StaticResource circleFram}">
+                            <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="40"></Image>
+                        </Frame>
+                        <Label Grid.Column="1" Style="{StaticResource menuLabel}" Text="Log Out" />
+                        <Image Grid.Column="2" Style="{StaticResource rightArrow}" Source="rightArrowWhite" />
                     </Grid>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateToNotificationPageCommand}" NumberOfTapsRequired="1" />
+                    </Frame.GestureRecognizers>
                 </Frame>
+               
             </Grid>
-            <Frame Grid.Row="2"  >
+            <Frame Grid.Row="2"   Padding="10">
                 <Grid ColumnDefinitions="5*, 5*">
                     <Image Grid.Column="0" Source="home" HorizontalOptions="Start">
                         <Image.GestureRecognizers>

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
-
+using Xamarin.CommunityToolkit.Extensions;
 namespace NOC.ViewModels
 {
     class LoginPageViewModel : ViewModelBase
@@ -50,6 +50,11 @@ namespace NOC.ViewModels
            await NavigationService.NavigateAsync("HomePage");
 
             IsBusy = false;
+
+            if (0 != 2)
+            {
+               await Application.Current.MainPage.DisplayToastAsync("My First Toast", 10000);
+            }
         }
     }
 }
