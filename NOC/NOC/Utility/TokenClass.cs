@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NOC.Models;
+using NOC.Service;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -10,7 +11,7 @@ namespace NOC.Utility
 {
     public class TokenClass
     {
-        public static async Task<string> GetToken()
+        public static async Task<string> GetToken(string UserName, String Password)
         {
             string token = null;
             try
@@ -19,10 +20,15 @@ namespace NOC.Utility
                 client.BaseAddress = new Uri("https://portal.gpceast.com/er/noc/");
                                                                                        
                 var nvc = new List<KeyValuePair<string, string>>();
+                //nvc.Add(new KeyValuePair<string, string>("grant_type", "password"));
+                //nvc.Add(new KeyValuePair<string, string>("password", "user123"));
+                //nvc.Add(new KeyValuePair<string, string>("username", "applicant_test"));
+
+
                 nvc.Add(new KeyValuePair<string, string>("grant_type", "password"));
-                nvc.Add(new KeyValuePair<string, string>("password", "user123"));
-                nvc.Add(new KeyValuePair<string, string>("username", "applicant_test"));
-                var req = new HttpRequestMessage(HttpMethod.Post, "https://portal.gpceast.com/er/noc/Token") 
+                nvc.Add(new KeyValuePair<string, string>("password", Password));
+                nvc.Add(new KeyValuePair<string, string>("username", UserName));
+                var req = new HttpRequestMessage(HttpMethod.Post, Urls.TokenURL) 
                 { Content = new FormUrlEncodedContent(nvc) };
 
                 var res = await client.SendAsync(req);

@@ -10,9 +10,14 @@ namespace NOC.Service
 
 
         public const string TokenURL = BaseUrl + "Token";
+        public const string CheckApplicant = BaseUrl + "api/Users/CheckApplicant";
+        public const string CheckReviewer = BaseUrl + "api/Users/CheckReviewer";
+        public const string CheckStakeholder = BaseUrl + "api/Users/ERStakeholder";
+        public const string CheckOfficer = BaseUrl + "api/Users/CheckOfficer";
 
         public const string GetSearchCount = BaseUrl + "api/Search/GetSearchCount/applicant";
         public const string GetNotifications = BaseUrl + "api/Search/GetNotification";
+        public const string applicantGetTransactionList = BaseUrl + "api/Search/GetTransactionList/applicant/";//in last we need to pass filter id
 
     }
 }

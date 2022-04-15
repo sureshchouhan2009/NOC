@@ -6,6 +6,11 @@ using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.CommunityToolkit.Extensions;
+using NOC.Models;
+using NOC.Service;
+using System.Threading.Tasks;
+using Xamarin.Essentials;
+
 namespace NOC.ViewModels
 {
     class LoginPageViewModel : ViewModelBase
@@ -42,19 +47,89 @@ namespace NOC.ViewModels
 
         private async void PerformLoginComand(object obj)
         {
-            IsBusy = true;
-            //perform api calling 
-           var token= await TokenClass.GetToken();
-            var t = token;
+            EmailText = "applicant_test";
+            PasswordText = "user123";
+               IsBusy = true;
+            try
+            {
+                if(String.IsNullOrEmpty( EmailText)|| String.IsNullOrEmpty(PasswordText))
+                {
+                    await Application.Current.MainPage.DisplayToastAsync("Please enter the valid Username and Password", 10000);
+                }
+                else
+                {
+                    var token = await TokenClass.GetToken(EmailText, passwordText);
+                    UserType userType = await RecogniseTokenAndReturnTheUserType(token);
+                    if (userType == UserType.Applicant)
+                    {
+                        Session.Instance.Token = token;
+                        Preferences.Set("UserType", userType.ToString());
+                        Preferences.Set("Token", token);
+                        Preferences.Set("UserName", EmailText);
+                        Preferences.Set("Password", PasswordText);
+                        Preferences.Set("IsLoggedIN", true);
 
-           await NavigationService.NavigateAsync("HomePage");
+                        await NavigationService.NavigateAsync("HomePage");
+                    }
+                    else
+                    {
+                        await Application.Current.MainPage.DisplayToastAsync("Currently supporting only applicant flow", 10000);
+                    }
+
+                }
+            }
+            catch (Exception ex) 
+            {
+
+            }
+         
+           
+
+          
 
             IsBusy = false;
 
             if (0 != 2)
             {
-               await Application.Current.MainPage.DisplayToastAsync("My First Toast", 10000);
+              
             }
+        }
+
+        private async Task< UserType> RecogniseTokenAndReturnTheUserType(string token)
+        {
+            UserType userType = new UserType();
+
+            try
+            {
+                if (await ApiService.Instance.ValidateUserTypeFromToken(token, Urls.CheckApplicant))
+                {
+                    userType = UserType.Applicant;
+                }
+                else if (await ApiService.Instance.ValidateUserTypeFromToken(token, Urls.CheckReviewer))
+                {
+                    userType = UserType.Reviewer;
+                }
+                else if (await ApiService.Instance.ValidateUserTypeFromToken(token, Urls.CheckOfficer))
+                {
+                    userType = UserType.Officer;
+                }
+                else if (await ApiService.Instance.ValidateUserTypeFromToken(token, Urls.CheckStakeholder))
+                {
+                    userType = UserType.Stackholder;
+                }
+                else
+                {
+                    userType = UserType.Applicant;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                userType = UserType.Applicant;
+
+            }
+
+            return userType;
         }
     }
 }

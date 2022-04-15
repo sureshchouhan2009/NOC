@@ -1,7 +1,9 @@
+using NOC.Utility;
 using NOC.ViewModels;
 using NOC.Views;
 using Prism;
 using Prism.Ioc;
+using Xamarin.Essentials;
 using Xamarin.Essentials.Implementation;
 using Xamarin.Essentials.Interfaces;
 using Xamarin.Forms;
@@ -14,12 +16,38 @@ namespace NOC
             : base(initializer)
         {
         }
-
+        private bool CheckIfLoggedIn()
+        {
+            // this one check if needed this data
+            #region Get looged in person details
+            Preferences.Get("UserName", "");
+            Preferences.Get("Password", "");
+            #endregion
+            return Preferences.Get("IsLoggedIN", false);
+        }
         protected override async void OnInitialized()
         {
             InitializeComponent();
+            if (CheckIfLoggedIn())
+            {
+                Session.Instance.Token = Preferences.Get("Token", "");
+                // also need to check for User Type and accordingly navigate
 
-            await NavigationService.NavigateAsync("/HomePage");
+                if (Session.Instance.Token != "")
+                {
+                    await NavigationService.NavigateAsync("/HomePage");
+                }
+                else
+                {
+                    await NavigationService.NavigateAsync("/LoginPage");
+                }
+               
+            }
+            else
+            {
+                await NavigationService.NavigateAsync("/LoginPage");
+            }
+            
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)

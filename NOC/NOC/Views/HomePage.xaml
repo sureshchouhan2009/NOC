@@ -8,13 +8,23 @@
             <Setter Property="HorizontalOptions" Value="Center" />
             <Setter Property="BackgroundColor" Value="White" />
             <Setter Property="CornerRadius" Value="30" />
-            <Setter Property="Padding" Value="0" />
+            <Setter Property="Padding" Value="3" />
         </Style>
         <Style x:Key="menuLabel" TargetType="Label">
             <Setter Property="VerticalOptions" Value="Center" />
             <Setter Property="HorizontalOptions" Value="Start" />
             <Setter Property="TextColor" Value="Gray" />
             <Setter Property="FontSize" Value="16" />
+        </Style>
+
+        <Style x:Key="countLabel" TargetType="Label">
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="HorizontalOptions" Value="Center" />
+            <Setter Property="HorizontalTextAlignment" Value="Center" />
+            <Setter Property="TextColor" Value="Black" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="HeightRequest" Value="20" />
+            <Setter Property="WidthRequest" Value="20" />
         </Style>
         
         <Style x:Key="rightArrow" TargetType="Image">
@@ -35,7 +45,13 @@
                         <Frame Grid.Column="0" Style="{StaticResource circleFram}">
                             <Image  Source="doc_icon" Aspect="AspectFit" HeightRequest="40" ></Image>
                         </Frame>
-                        <Label Grid.Column="1" Style="{StaticResource menuLabel}" Text="My NOC Applications"  />
+                        <StackLayout Grid.Column="1" Orientation="Horizontal" Padding="0" Margin="0">
+                            <Label Style="{StaticResource menuLabel}" Text="My NOC Applications"  />
+                            <Frame Style="{StaticResource circleFram}" >
+                                <Label Text="56" Style="{StaticResource countLabel}"  ></Label>
+                            </Frame>
+                        </StackLayout>
+                        
                         <Image Grid.Column="2" Style="{StaticResource rightArrow}"  Source="rightArrowWhite" />
                     </Grid>
                 </Frame>

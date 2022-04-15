@@ -21,7 +21,7 @@ namespace NOC.Utility
         public Session() { }
         #endregion
 
-
+        public String Token;
         public List<NotificationsModel> NotificationsModelList = new List<NotificationsModel>();
         
     }
