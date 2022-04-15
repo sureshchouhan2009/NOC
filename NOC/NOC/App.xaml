@@ -7,10 +7,11 @@
 
     <!-- Application resource dictionary -->
 
-
-        <!--<ControlTemplate x:Key="MasterTemplate">
-            
-        </ControlTemplate>-->
-
+        <Style x:Key="TitleLabelStyle" TargetType="Label">
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="HorizontalOptions" Value="Center" />
+            <Setter Property="TextColor" Value="Black" />
+            <Setter Property="FontSize" Value="18" />
+        </Style>
     </Application.Resources>
 </prism:PrismApplication>

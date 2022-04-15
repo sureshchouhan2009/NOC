@@ -9,8 +9,6 @@
             <Setter Property="BackgroundColor" Value="White" />
             <Setter Property="CornerRadius" Value="30" />
             <Setter Property="Padding" Value="0" />
-            
-
         </Style>
         <Style x:Key="menuLabel" TargetType="Label">
             <Setter Property="VerticalOptions" Value="Center" />
@@ -29,7 +27,7 @@
     <ContentPage.Content>
         <Grid RowDefinitions="1*,8*,1*">
             <Frame Grid.Row="0" Padding="0">
-                <Label Grid.Column="1" Text="Menu" FontSize="18" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center" />
+                <Label Grid.Column="1" Text="Menu" Style="{StaticResource TitleLabelStyle}"  />
             </Frame>
             <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="3"  >
                 <Frame Grid.Row="0" Padding="0" BackgroundColor="LightGray" Margin="0" HeightRequest="60">

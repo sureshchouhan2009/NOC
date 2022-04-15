@@ -1,28 +1,56 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="NOC.Views.NotificationsPage" x:Name="notificationpage" BackgroundColor="LightGray">
+    <ContentPage.Resources>
+        <Style x:Key="circleFram" TargetType="Frame">
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="HorizontalOptions" Value="Center" />
+            <Setter Property="BackgroundColor" Value="White" />
+            <Setter Property="CornerRadius" Value="30" />
+            <Setter Property="Padding" Value="0" />
+        </Style>
+        <Style x:Key="menuLabel" TargetType="Label">
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="HorizontalOptions" Value="Start" />
+            <Setter Property="TextColor" Value="Gray" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <Grid RowDefinitions="1*,8*,1*">
             <Frame Grid.Row="0" Padding="0">
-                <Grid ColumnDefinitions="1*, 9*">
-                    <Image Grid.Column="0" Source="LeftArrow" HorizontalOptions="Start">
+                <Grid >
+                    <Image  Source="BackArrowRed" HeightRequest="30" WidthRequest="30" HorizontalOptions="Start" VerticalOptions="Center">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding GoBackCommand}" />
                         </Image.GestureRecognizers>
                     </Image>
-                    <Label  Grid.Column="1" Text="Notifications" Margin="-40,0,0,0" FontSize="18" TextColor="IndianRed" VerticalOptions="Center" HorizontalOptions="Center" />
+                    <Label Text="Notifications" Style="{StaticResource TitleLabelStyle}"  />
 
                 </Grid>
+
+                <!--<Grid ColumnDefinitions="1*, 9*">
+                    <Image Grid.Column="0" Source="BackArrowRed" HeightRequest="30" WidthRequest="30" HorizontalOptions="Start" VerticalOptions="Center">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoBackCommand}" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Label Grid.Column="1" Text="Notifications" Margin="-40,0,0,0" FontSize="18" TextColor="IndianRed" VerticalOptions="Center" HorizontalOptions="Center" />
+
+                </Grid>-->
             </Frame>
             <ListView Grid.Row="1" ItemsSource="{Binding Notifications}"  HasUnevenRows="True" SeparatorVisibility="Default">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Frame  Padding="0" BackgroundColor="LightGray">
-                                <Grid ColumnDefinitions="1*,6*,3*" Margin="10,10,10,10" >
-                                    <Image Grid.Column="0" Source="home" HeightRequest="20" WidthRequest="20" VerticalOptions="Center" HorizontalOptions="Start"></Image>
-                                    <Label Grid.Column="1" Text="{Binding Message}" TextColor="Gray" FontSize="16" />
-                                    <Label Grid.Column="2" Text="{Binding CreationDate,StringFormat='{0:dd-MM-yyyy}'}" TextColor="IndianRed" FontSize="16" />
+                            <Frame  Padding="0" BackgroundColor="LightGray" Margin="5,0,5,0">
+                                <Grid ColumnDefinitions="1.5*,6*,2.5*" Margin="10,10,10,10" >
+                                    <Frame Grid.Column="0" Style="{StaticResource circleFram}">
+                                        <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="35"></Image>
+                                    </Frame>
+                                   
+                                    <Label Grid.Column="1" Style="{StaticResource menuLabel}" Text="{Binding Message}" />
+                                    <Label Grid.Column="2" Text="{Binding CreationDate,StringFormat='{0:dd-MM-yyyy}'}" TextColor="IndianRed" FontSize="16" HorizontalOptions="End" VerticalOptions="Center" />
 
                                 </Grid>
                             </Frame>
