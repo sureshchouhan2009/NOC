@@ -29,15 +29,7 @@
 
                 </Grid>
 
-                <!--<Grid ColumnDefinitions="1*, 9*">
-                    <Image Grid.Column="0" Source="BackArrowRed" HeightRequest="30" WidthRequest="30" HorizontalOptions="Start" VerticalOptions="Center">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding GoBackCommand}" />
-                        </Image.GestureRecognizers>
-                    </Image>
-                    <Label Grid.Column="1" Text="Notifications" Margin="-40,0,0,0" FontSize="18" TextColor="IndianRed" VerticalOptions="Center" HorizontalOptions="Center" />
-
-                </Grid>-->
+                
             </Frame>
             <ListView Grid.Row="1" ItemsSource="{Binding Notifications}"  HasUnevenRows="True" SeparatorVisibility="Default">
                 <ListView.ItemTemplate>

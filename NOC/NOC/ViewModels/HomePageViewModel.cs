@@ -82,14 +82,52 @@ namespace NOC.ViewModels
                 return navigateToNotificationPageCommand;
             }
         }
+        private ICommand navigateToMyNocApplications;
+
+        public ICommand NavigateToMyNocApplications
+        {
+            get
+            {
+                if (navigateToMyNocApplications == null)
+                {
+                    navigateToMyNocApplications = new Command(NavigatoApplicationsListPage);
+                }
+
+                return navigateToMyNocApplications;
+            }
+        }
+
+        private async void  NavigatoApplicationsListPage(object obj)
+        {
+            IsBusy = true;
+            try
+            {
+                Session.Instance.ApplicationsOrTransactionsList.Clear();
+                Session.Instance.ApplicationsOrTransactionsList= await ApiService.Instance.ApplicantGetTransactionList(2);// send two for first option
+                await NavigationService.NavigateAsync("ApplicationsListPage");
+            }
+            catch (Exception ex)
+            {
+                
+            }
+            IsBusy = false;
+        }
 
         private async void ShowNotificationsExecute(object obj)
         {
-            IsBusy = true;
-            Session.Instance.NotificationsModelList.Clear();
-            Session.Instance.NotificationsModelList =  await ApiService.Instance.GetNotificationsList();
-           await NavigationService.NavigateAsync("NotificationsPage");
-            IsBusy = false;
+            try
+            {
+                IsBusy = true;
+                Session.Instance.NotificationsModelList.Clear();
+                Session.Instance.NotificationsModelList = await ApiService.Instance.GetNotificationsList();
+                await NavigationService.NavigateAsync("NotificationsPage");
+                IsBusy = false;
+            }
+            catch (Exception ex)
+            {
+
+                
+            }
 
 
         }

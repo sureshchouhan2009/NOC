@@ -55,6 +55,10 @@
                         
                         <Image Grid.Column="2" Style="{StaticResource rightArrow}"  Source="rightArrowWhite" />
                     </Grid>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateToMyNocApplications}" NumberOfTapsRequired="1" />
+                    </Frame.GestureRecognizers> 
+                    
                 </Frame>
 
                 <Frame Grid.Row="1" Padding="0" BackgroundColor="LightGray" Margin="0" HeightRequest="60">
