@@ -23,6 +23,8 @@ namespace NOC.Utility
 
         public String Token;
         public List<NotificationsModel> NotificationsModelList = new List<NotificationsModel>();
+       
+        public MenuItemsCountModel MenuItemsCountModelData { get; set; }
         
     }
 }

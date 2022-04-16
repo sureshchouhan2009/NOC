@@ -1,8 +1,10 @@
+using NOC.Service;
 using NOC.Utility;
 using NOC.ViewModels;
 using NOC.Views;
 using Prism;
 using Prism.Ioc;
+using System;
 using Xamarin.Essentials;
 using Xamarin.Essentials.Implementation;
 using Xamarin.Essentials.Interfaces;
@@ -27,25 +29,36 @@ namespace NOC
         }
         protected override async void OnInitialized()
         {
-            InitializeComponent();
-            if (CheckIfLoggedIn())
+            try
             {
-                Session.Instance.Token = Preferences.Get("Token", "");
-                // also need to check for User Type and accordingly navigate
 
-                if (Session.Instance.Token != "")
+                InitializeComponent();
+                if (CheckIfLoggedIn())
                 {
-                    await NavigationService.NavigateAsync("/HomePage");
+                    Session.Instance.Token = Preferences.Get("Token", "");
+                    // also need to check for User Type and accordingly navigate
+
+                    if (Session.Instance.Token != "")
+                    {
+                       
+                        await NavigationService.NavigateAsync("/HomePage");
+                       
+                    }
+                    else
+                    {
+                        await NavigationService.NavigateAsync("/LoginPage");
+                    }
+
                 }
                 else
                 {
                     await NavigationService.NavigateAsync("/LoginPage");
                 }
-               
             }
-            else
+            catch (Exception ex)
             {
-                await NavigationService.NavigateAsync("/LoginPage");
+
+               
             }
             
         }

@@ -21,8 +21,9 @@
             <Setter Property="VerticalOptions" Value="Center" />
             <Setter Property="HorizontalOptions" Value="Center" />
             <Setter Property="HorizontalTextAlignment" Value="Center" />
+            <Setter Property="VerticalTextAlignment" Value="Center" />
             <Setter Property="TextColor" Value="Black" />
-            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontSize" Value="12" />
             <Setter Property="HeightRequest" Value="20" />
             <Setter Property="WidthRequest" Value="20" />
         </Style>
@@ -48,7 +49,7 @@
                         <StackLayout Grid.Column="1" Orientation="Horizontal" Padding="0" Margin="0">
                             <Label Style="{StaticResource menuLabel}" Text="My NOC Applications"  />
                             <Frame Style="{StaticResource circleFram}" >
-                                <Label Text="56" Style="{StaticResource countLabel}"  ></Label>
+                                <Label Text="{Binding MyNocApplicationCount}" Style="{StaticResource countLabel}"  ></Label>
                             </Frame>
                         </StackLayout>
                         
@@ -61,7 +62,13 @@
                         <Frame Grid.Column="0" Style="{StaticResource circleFram}">
                             <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="40"></Image>
                         </Frame>
-                        <Label Grid.Column="1" Style="{StaticResource menuLabel}" Text="Commented NOCs" />
+                       
+                        <StackLayout Grid.Column="1" Orientation="Horizontal" Padding="0" Margin="0">
+                            <Label  Style="{StaticResource menuLabel}" Text="Commented NOCs" />
+                            <Frame Style="{StaticResource circleFram}">
+                                <Label Text="{Binding CommentedApplicationCount}" Style="{StaticResource countLabel}"></Label>
+                            </Frame>
+                        </StackLayout>
                         <Image Grid.Column="2" Style="{StaticResource rightArrow}" Source="rightArrowWhite" />
                     </Grid>
                 </Frame>
@@ -70,7 +77,13 @@
                         <Frame Grid.Column="0" Style="{StaticResource circleFram}">
                             <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="40"></Image>
                         </Frame>
-                        <Label Grid.Column="1" Style="{StaticResource menuLabel}" Text="Nocs for Revalidation in 10 Days" />
+                       
+                        <StackLayout Grid.Column="1" Orientation="Horizontal" Padding="0" Margin="0">
+                            <Label  Style="{StaticResource menuLabel}" Text="Nocs for Revalidation in 10 Days" />
+                            <Frame Style="{StaticResource circleFram}">
+                                <Label Text="{Binding NocApplicationforRevalidationInTenDaysCount}" Style="{StaticResource countLabel}"></Label>
+                            </Frame>
+                        </StackLayout>
                         <Image Grid.Column="2" Style="{StaticResource rightArrow}" Source="rightArrowWhite" />
                     </Grid>
                 </Frame>
@@ -81,7 +94,13 @@
                         <Frame Grid.Column="0" Style="{StaticResource circleFram}">
                             <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="40"></Image>
                         </Frame>
-                        <Label Grid.Column="1" Style="{StaticResource menuLabel}" Text="Notifications" />
+                      
+                        <StackLayout Grid.Column="1" Orientation="Horizontal" Padding="0" Margin="0">
+                            <Label Style="{StaticResource menuLabel}" Text="Notifications" />
+                            <Frame Style="{StaticResource circleFram}">
+                                <Label Text="{Binding NotificationCount}" Style="{StaticResource countLabel}"></Label>
+                            </Frame>
+                        </StackLayout>
                         <Image Grid.Column="2" Style="{StaticResource rightArrow}" Source="rightArrowWhite" />
                     </Grid>
                     <Frame.GestureRecognizers>

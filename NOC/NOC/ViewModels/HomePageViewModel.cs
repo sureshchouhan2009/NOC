@@ -12,20 +12,60 @@ namespace NOC.ViewModels
 {
     public class HomePageViewModel : ViewModelBase
     {
-        private MenuItemsCountModel _menuItemsCountModelData;
-        public MenuItemsCountModel MenuItemsCountModelData
+        private string _notificationCount;
+        public string NotificationCount
         {
             get
             {
-                return _menuItemsCountModelData;
+                return _notificationCount;
             }
             set
             {
-                SetProperty(ref _menuItemsCountModelData, value);
+                SetProperty(ref _notificationCount, value);
             }
         }
+        private string _myNocApplicationCount;
+        public string MyNocApplicationCount
+        {
+            get
+            {
+                return _myNocApplicationCount;
+            }
+            set
+            {
+                SetProperty(ref _myNocApplicationCount, value);
+            }
+        }
+
+        private string _nocApplicationforRevalidationInTenDaysCount;
+        public string NocApplicationforRevalidationInTenDaysCount
+        {
+            get
+            {
+                return _nocApplicationforRevalidationInTenDaysCount;
+            }
+            set
+            {
+                SetProperty(ref _nocApplicationforRevalidationInTenDaysCount, value);
+            }
+        }
+
+        private string _commentedApplicationCount;
+        public string CommentedApplicationCount
+        {
+            get
+            {
+                return _commentedApplicationCount;
+            }
+            set
+            {
+                SetProperty(ref _commentedApplicationCount, value);
+            }
+        }
+       
         public HomePageViewModel(INavigationService navigationService) : base(navigationService)
         {
+          
         }
 
         private ICommand navigateToNotificationPageCommand;
@@ -56,11 +96,22 @@ namespace NOC.ViewModels
 
         public override async void OnNavigatedTo(INavigationParameters parameters)
         {
-            IsBusy = true;
-
-            MenuItemsCountModel model= await ApiService.Instance.GetSearchCountApiCall();
             base.OnNavigatedTo(parameters);
+            IsBusy = true;
+            try
+            {
+                Session.Instance.MenuItemsCountModelData = await ApiService.Instance.GetSearchCountApiCall();
+                NotificationCount = Session.Instance.MenuItemsCountModelData.NotificationCount;
+                MyNocApplicationCount = Session.Instance.MenuItemsCountModelData.MyNOCApplicationsCount;
+                CommentedApplicationCount = Session.Instance.MenuItemsCountModelData.CommentedApplicationsCount;
+                NocApplicationforRevalidationInTenDaysCount = string.IsNullOrWhiteSpace(Session.Instance.MenuItemsCountModelData.OwnedApplicationsPendingTenDayCount) ?
+                    "00" : Session.Instance.MenuItemsCountModelData.OwnedApplicationsPendingTenDayCount;
+            }
+            catch (Exception ex)
+            {
 
+                
+            }
             IsBusy = false;
         }
 

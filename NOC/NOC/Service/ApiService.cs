@@ -40,6 +40,7 @@ namespace NOC.Service
                 {
                     string result = await response.Content.ReadAsStringAsync();
                     responsedata = JsonConvert.DeserializeObject<MenuItemsCountModel>(result);
+                    
                 }
             }
             catch (Exception ex)
