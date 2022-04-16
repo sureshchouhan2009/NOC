@@ -10,6 +10,13 @@ namespace NOC.Utility
 {
     public class ServiceUtility
     {
+        public static JsonSerializerSettings GetJsonSerializationSettings()
+        {
+            return new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            };
+        }
 
         public static bool HaveNetworkConnectivity()
         {

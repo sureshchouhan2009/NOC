@@ -5,6 +5,7 @@ using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -97,18 +98,22 @@ namespace NOC.ViewModels
             }
         }
 
-        private async void  NavigatoApplicationsListPage(object obj)
+
+
+        private async void NavigatoApplicationsListPage(object obj)
         {
+            
             IsBusy = true;
             try
             {
+                int inputValue = int.Parse(obj.ToString());
                 Session.Instance.ApplicationsOrTransactionsList.Clear();
-                Session.Instance.ApplicationsOrTransactionsList= await ApiService.Instance.ApplicantGetTransactionList(2);// send two for first option
+                Session.Instance.ApplicationsOrTransactionsList = await ApiService.Instance.ApplicantGetTransactionList(inputValue);// send two for first option
                 await NavigationService.NavigateAsync("ApplicationsListPage");
             }
             catch (Exception ex)
             {
-                
+
             }
             IsBusy = false;
         }

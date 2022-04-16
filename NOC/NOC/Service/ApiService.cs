@@ -22,11 +22,15 @@ namespace NOC.Service
                 return _instance;
             }
         }
-        /// <summary>
-        /// To Get the No of application/Transaction count available in menu options
-        /// </summary>
-        /// <returns></returns>
-        public async Task<MenuItemsCountModel> GetSearchCountApiCall()
+
+       
+
+
+    /// <summary>
+    /// To Get the No of application/Transaction count available in menu options
+    /// </summary>
+    /// <returns></returns>
+    public async Task<MenuItemsCountModel> GetSearchCountApiCall()
         {
              MenuItemsCountModel responsedata = new MenuItemsCountModel();
             try
@@ -39,7 +43,7 @@ namespace NOC.Service
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
-                    responsedata = JsonConvert.DeserializeObject<MenuItemsCountModel>(result);
+                    responsedata = JsonConvert.DeserializeObject<MenuItemsCountModel>(result, ServiceUtility.GetJsonSerializationSettings());
                     
                 }
             }
@@ -67,7 +71,7 @@ namespace NOC.Service
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
-                    responsedata = JsonConvert.DeserializeObject<List<NotificationsModel>>(result);
+                    responsedata = JsonConvert.DeserializeObject<List<NotificationsModel>>(result,  ServiceUtility.GetJsonSerializationSettings());
                 }
             }
             catch (Exception ex)
@@ -99,7 +103,7 @@ namespace NOC.Service
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
-                    responsedata = JsonConvert.DeserializeObject<List<TransactionModel>>(result);
+                    responsedata = JsonConvert.DeserializeObject<List<TransactionModel>>(result,  ServiceUtility.GetJsonSerializationSettings());
                 }
             }
             catch (Exception ex)
