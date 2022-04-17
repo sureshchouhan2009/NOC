@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NOC.Views.TransactionInfoPage">
+    <ContentPage.Resources>
+        <Style x:Key="circleFram" TargetType="Frame">
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="HorizontalOptions" Value="Center" />
+            <Setter Property="BackgroundColor" Value="White" />
+            <Setter Property="CornerRadius" Value="30" />
+            <Setter Property="Padding" Value="0" />
+        </Style>
+        <Style x:Key="menuLabel" TargetType="Label">
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="HorizontalOptions" Value="Start" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid RowDefinitions="1*,8*,1*" RowSpacing="0">
+            <Frame Grid.Row="0" Padding="0">
+                <Grid>
+                    <Image Source="BackArrowRed" HeightRequest="30" WidthRequest="30" HorizontalOptions="Start" VerticalOptions="Center">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoBackCommand}" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Label Text="{Binding Title}" Style="{StaticResource TitleLabelStyle}" />
+                </Grid>
+            </Frame>
+            <ScrollView Grid.Row="1">
+                <Grid  RowDefinitions="Auto,Auto,Auto,Auto, Auto">
+                    <Frame Grid.Row="0" Padding="5" BackgroundColor="Red" HeightRequest="50" >
+                        <Grid ColumnDefinitions="2*,8*" >
+                            <Frame Grid.Column="0" Style="{StaticResource circleFram}">
+                                <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="35"></Image>
+                            </Frame>
+                        <Label Grid.Column="1" Style="{StaticResource menuLabel}" Text="{Binding TransactonDetail.Transaction.TransactionNumber}" />
+                    </Grid>
+                    </Frame>
+                    <Label Grid.Row="2" Text="Project Information" TextColor="Red" FontSize="18" HorizontalTextAlignment="Start" />
+                </Grid>
+               
+            </ScrollView>
+            
+            <Frame Grid.Row="2">
+                <Grid ColumnDefinitions="5*, 5*">
+                    <Image Grid.Column="0" Source="home" HorizontalOptions="Start">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoBackCommand}" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Image Grid.Column="1" Source="er_user" HorizontalOptions="End">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoBackCommand}" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                </Grid>
+            </Frame>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

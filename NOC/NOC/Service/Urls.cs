@@ -18,6 +18,7 @@ namespace NOC.Service
         public const string GetSearchCount = BaseUrl + "api/Search/GetSearchCount/applicant";
         public const string GetNotifications = BaseUrl + "api/Search/GetNotification";
         public const string applicantGetTransactionList = BaseUrl + "api/Search/GetTransactionList/applicant/";//in last we need to pass filter id
+        public const string GetTransactionDetails = BaseUrl + "api/Transaction/gettrandata/";//in last we need to pass transaction Application Number
 
     }
 }

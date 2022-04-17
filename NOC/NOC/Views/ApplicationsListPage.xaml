@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="NOC.Views.ApplicationsListPage">
+             x:Class="NOC.Views.ApplicationsListPage" x:Name="transactionsListPage">
     <ContentPage.Resources>
         <Style x:Key="circleFram" TargetType="Frame">
             <Setter Property="VerticalOptions" Value="Center" />
@@ -60,8 +60,10 @@
                                             
                                         </StackLayout>
                                         <Label Grid.Column="2" Text="{Binding ApplicationDate,StringFormat='{0:dd-MM-yyyy}'}" TextColor="IndianRed" FontSize="16" HorizontalOptions="End" VerticalOptions="Center" />
-
-                                    </Grid>
+                                    <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={x:Reference transactionsListPage},Path=BindingContext.NavigateToTrasactionDetailsCommand}" CommandParameter="{Binding .}" NumberOfTapsRequired="1" />
+                                    </Grid.GestureRecognizers>
+                                </Grid>
                                 <!--</Frame>-->
                             </ViewCell>
                         </DataTemplate>

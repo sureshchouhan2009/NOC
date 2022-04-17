@@ -54,6 +54,35 @@ namespace NOC.Service
             return responsedata;
         }
         /// <summary>
+        /// To get the detailed information of particular transaction 
+        /// </summary>
+        /// <param name="applicationNumber"></param>
+        /// <returns></returns>
+        public async Task<TransactionDetailsModel> GetTransactionDetails(string applicationNumber)
+        {
+            TransactionDetailsModel responsedata = new TransactionDetailsModel();
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.GetTransactionDetails + applicationNumber;
+                var response = await client.GetAsync(RequestUrl);
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    responsedata = JsonConvert.DeserializeObject<TransactionDetailsModel>(result, ServiceUtility.GetJsonSerializationSettings());
+                }
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+            return responsedata;
+        }
+
+        /// <summary>
         /// to get list of Notifications after clicking on menu page Items
         /// </summary>
         /// <param name="filterID"></param>

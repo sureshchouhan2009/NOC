@@ -24,6 +24,7 @@ namespace NOC.Utility
         public String Token;
         public List<NotificationsModel> NotificationsModelList = new List<NotificationsModel>();
         public List<TransactionModel> ApplicationsOrTransactionsList = new List<TransactionModel>();
+        public TransactionDetailsModel CurrentTransaction = new TransactionDetailsModel();
        
         public MenuItemsCountModel MenuItemsCountModelData { get; set; }
         
