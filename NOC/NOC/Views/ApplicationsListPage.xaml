@@ -37,12 +37,14 @@
                 <Frame Grid.Row="0" Padding="0" Margin="10" BackgroundColor="White" HasShadow="False" BorderColor="IndianRed" CornerRadius="30" HeightRequest="45">
                     <SearchBar BackgroundColor="Transparent"    Placeholder="Search"/>
                 </Frame>
-               
-                <ListView Grid.Row="1" ItemsSource="{Binding TransactionsList}" HasUnevenRows="True" SeparatorVisibility="Default" SeparatorColor="Black">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <Frame Padding="0" BackgroundColor="LightGray" Margin="5,0,5,0">
+
+                <ListView Grid.Row="1" BackgroundColor="LightGray"  ItemsSource="{Binding TransactionsList}" HasUnevenRows="True"  SeparatorVisibility="Default" SeparatorColor="Black">
+                    <ListView.ItemTemplate >
+                        <DataTemplate >
+                            <ViewCell >
+                                <!--to Change the selcted Item color Ios need to implement-->
+                                <!--https://stackoverflow.com/questions/25885238/xamarin-forms-listview-set-the-highlight-color-of-a-tapped-item-->
+                                <!--<Frame Padding="0"  Margin="5,0,5,0">-->
                                     <Grid ColumnDefinitions="1.5*,6*,2.5*" Margin="10,10,10,10">
                                         <Frame Grid.Column="0" Style="{StaticResource circleFram}">
                                             <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="35"></Image>
@@ -60,7 +62,7 @@
                                         <Label Grid.Column="2" Text="{Binding ApplicationDate,StringFormat='{0:dd-MM-yyyy}'}" TextColor="IndianRed" FontSize="16" HorizontalOptions="End" VerticalOptions="Center" />
 
                                     </Grid>
-                                </Frame>
+                                <!--</Frame>-->
                             </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
