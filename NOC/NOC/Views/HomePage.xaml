@@ -36,13 +36,14 @@
         </Style>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid RowDefinitions="1*,8*,1*">
-            <Frame Grid.Row="0" Padding="0">
-                <Label Grid.Column="1" Text="Menu" Style="{StaticResource TitleLabelStyle}"  />
+        <Grid RowDefinitions=".8*,8.4*,.8*"  RowSpacing="0">
+           
+            <Frame Grid.Row="0" >
+                <Label Grid.Column="1" Text="Menu" Style="{StaticResource TitleLabelStyle}" Padding="0" Margin="0" />
             </Frame>
             <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="3"  >
-                <Frame Grid.Row="0" Padding="0" BackgroundColor="LightGray" Margin="0" HeightRequest="60">
-                    <Grid  ColumnDefinitions="2*,8*,2*" Margin="10" >
+                <Frame Grid.Row="0" Padding="0" Margin="0" BackgroundColor="LightGray" HeightRequest="60">
+                    <Grid  ColumnDefinitions="2*,8*,2*" Margin="10"  >
                         <Frame Grid.Column="0" Style="{StaticResource circleFram}">
                             <Image  Source="doc_icon" Aspect="AspectFit" HeightRequest="40" ></Image>
                         </Frame>
@@ -127,7 +128,7 @@
                         <Image Grid.Column="2" Style="{StaticResource rightArrow}" Source="rightArrowWhite" />
                     </Grid>
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding NavigateToNotificationPageCommand}" NumberOfTapsRequired="1" />
+                        <TapGestureRecognizer Command="{Binding PerformLogOutCommand}" NumberOfTapsRequired="1" />
                     </Frame.GestureRecognizers>
                 </Frame>
                
@@ -136,13 +137,13 @@
                 <Grid ColumnDefinitions="5*, 5*">
                     <Image Grid.Column="0" Source="home" HorizontalOptions="Start">
                         <Image.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding GoBackCommand}" />
+                            <TapGestureRecognizer Command="{Binding GoHomeCommand}" />
                         </Image.GestureRecognizers>
                     </Image>
                     <Image Grid.Column="1" Source="er_user" HorizontalOptions="End">
-                        <Image.GestureRecognizers>
+                        <!--<Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding GoBackCommand}" />
-                        </Image.GestureRecognizers>
+                        </Image.GestureRecognizers>-->
                     </Image>
                 </Grid>
             </Frame>

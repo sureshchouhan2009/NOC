@@ -5,6 +5,7 @@ using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -15,7 +16,7 @@ namespace NOC.ViewModels
     {
         public ApplicationsListPageViewModel(INavigationService navigationService) : base(navigationService)
         {
-            TransactionsList = new ObservableCollection<TransactionModel>( Session.Instance.ApplicationsOrTransactionsList);
+            TransactionsList = new ObservableCollection<TransactionModel>(Session.Instance.ApplicationsOrTransactionsList);
         }
         private ObservableCollection<TransactionModel> transactionsList = new ObservableCollection<TransactionModel>();
         public ObservableCollection<TransactionModel> TransactionsList
@@ -23,8 +24,20 @@ namespace NOC.ViewModels
             get { return transactionsList; }
             set { SetProperty(ref transactionsList, value); }
         }
-        
-             private ICommand navigateToTrasactionDetailsCommand;
+        private String _searchText;
+        public String SearchText
+        {
+            get
+            {
+
+
+                return _searchText;
+
+            }
+            set { SetProperty(ref _searchText, value); }
+        }
+
+        private ICommand navigateToTrasactionDetailsCommand;
 
         public ICommand NavigateToTrasactionDetailsCommand
         {
@@ -38,9 +51,43 @@ namespace NOC.ViewModels
                 return navigateToTrasactionDetailsCommand;
             }
         }
+        private ICommand _searchTextChangedCommand;
+        public ICommand SearchTextChangedCommand
+        {
+            get
+            {
+                if (_searchTextChangedCommand == null)
+                {
+                    _searchTextChangedCommand = new Command<object>(searchTextChangedCommandExecute);
+                }
+
+                return _searchTextChangedCommand;
+            }
+        }
+        private void searchTextChangedCommandExecute(object obj)
+        {
+            try
+            {
+                if (!String.IsNullOrEmpty(SearchText))
+                {
+                    var fList = Session.Instance.ApplicationsOrTransactionsList.Where(e =>
+                    e.ApplicationNumber.ToLower().Contains(SearchText.ToLower()) ||
+
+                    e.STATUS.ToLower().Contains(SearchText.ToLower())).ToList();
+                    TransactionsList =
+                    new ObservableCollection<TransactionModel>(fList);
+                }
+                else
+                {
+                    TransactionsList = new ObservableCollection<TransactionModel>(Session.Instance.ApplicationsOrTransactionsList);
+                }
+            }
+            catch (Exception ex)
+            {
 
 
-
+            }
+        }
         private async void NavigatoTransctionDetailsPage(object obj)
         {
 

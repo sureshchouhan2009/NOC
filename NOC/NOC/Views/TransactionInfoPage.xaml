@@ -16,9 +16,26 @@
             <Setter Property="TextColor" Value="White" />
             <Setter Property="FontSize" Value="16" />
         </Style>
+        <Style x:Key="HeaderRedLabel" TargetType="Label">
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="HorizontalOptions" Value="Start" />
+            <Setter Property="HorizontalTextAlignment" Value="Start" />
+            <Setter Property="TextColor" Value="red" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="FontAttributes" Value="Bold" />
+        </Style>
+
+        <Style x:Key="basicInfoLabel" TargetType="Label">
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="HorizontalOptions" Value="Start" />
+            <Setter Property="HorizontalTextAlignment" Value="Start" />
+            <Setter Property="TextColor" Value="Gray" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontAttributes" Value="Bold" />
+        </Style>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid RowDefinitions="1*,8*,1*" RowSpacing="0">
+        <Grid RowDefinitions=".8*,8.4*,.8*" RowSpacing="0">
             <Frame Grid.Row="0" Padding="0">
                 <Grid>
                     <Image Source="BackArrowRed" HeightRequest="30" WidthRequest="30" HorizontalOptions="Start" VerticalOptions="Center">
@@ -30,7 +47,7 @@
                 </Grid>
             </Frame>
             <ScrollView Grid.Row="1">
-                <Grid  RowDefinitions="Auto,Auto,Auto,Auto, Auto">
+                <Grid  RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" >
                     <Frame Grid.Row="0" Padding="5" BackgroundColor="Red" HeightRequest="50" >
                         <Grid ColumnDefinitions="2*,8*" >
                             <Frame Grid.Column="0" Style="{StaticResource circleFram}">
@@ -39,22 +56,44 @@
                         <Label Grid.Column="1" Style="{StaticResource menuLabel}" Text="{Binding TransactonDetail.Transaction.TransactionNumber}" />
                     </Grid>
                     </Frame>
-                    <Label Grid.Row="2" Text="Project Information" TextColor="Red" FontSize="18" HorizontalTextAlignment="Start" />
+                    <Grid Grid.Row="2" RowDefinitions="Auto,Auto,Auto,Auto, Auto, Auto, Auto" Margin="10,0,10,0" >
+                        <Label Grid.Row="0" Text="Project Information" Style="{StaticResource HeaderRedLabel}" />
+                        <Label Grid.Row="1" Text="{Binding TransactonDetail.Transaction.TransactionNumber,StringFormat='Project Name: {0}'}" Style="{StaticResource basicInfoLabel}" />
+                        <Label Grid.Row="2" Text="{Binding TransactonDetail.Transaction.TransactionNumber,StringFormat='Project Description: {0}'}" Style="{StaticResource basicInfoLabel}" />
+                        <Label Grid.Row="3" Text="{Binding TransactonDetail.Transaction.TransactionNumber,StringFormat='Project State: {0}'}" Style="{StaticResource basicInfoLabel}" />
+                        <Label Grid.Row="4" Text="{Binding TransactonDetail.Transaction.TransactionNumber,StringFormat='Project Category: {0}'}" Style="{StaticResource basicInfoLabel}" />
+                        <Label Grid.Row="5" Text="{Binding TransactonDetail.Transaction.TransactionNumber,StringFormat='Project Owner: {0}'}" Style="{StaticResource basicInfoLabel}" />
+                        <Label Grid.Row="6" Text="{Binding TransactonDetail.Transaction.TransactionNumber,StringFormat='Company Name: {0}'}" Style="{StaticResource basicInfoLabel}" />
+                    </Grid>
+                    <BoxView Grid.Row="3" HeightRequest="1" Color="Gray" HorizontalOptions="FillAndExpand" />
+                    <Grid Grid.Row="4" HeightRequest="80" Margin="10,0,10,0">
+                        <Label Grid.Row="0" Text="List Of Attachments" Style="{StaticResource HeaderRedLabel}" />
+                    </Grid>
+                    <BoxView Grid.Row="5" HeightRequest="1" Color="Gray" HorizontalOptions="FillAndExpand" />
+                    <Grid Grid.Row="6" HeightRequest="80" Margin="10,0,10,0">
+                        <Label Grid.Row="0" Text="Project Location" Style="{StaticResource HeaderRedLabel}" />
+                    </Grid>
+
+                    <BoxView Grid.Row="7" HeightRequest="1" Color="Gray" HorizontalOptions="FillAndExpand" />
+                    <Grid Grid.Row="8" HeightRequest="80" Margin="10,0,10,0">
+                        <Label Grid.Row="0" Text="Comments" Style="{StaticResource HeaderRedLabel}" />
+                    </Grid>
+                    <BoxView Grid.Row="9" HeightRequest="1" Color="Gray" HorizontalOptions="FillAndExpand" />
                 </Grid>
                
             </ScrollView>
             
-            <Frame Grid.Row="2">
+            <Frame Grid.Row="2" Padding="10">
                 <Grid ColumnDefinitions="5*, 5*">
                     <Image Grid.Column="0" Source="home" HorizontalOptions="Start">
                         <Image.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding GoBackCommand}" />
+                            <TapGestureRecognizer Command="{Binding GoHomeCommand}" />
                         </Image.GestureRecognizers>
                     </Image>
                     <Image Grid.Column="1" Source="er_user" HorizontalOptions="End">
-                        <Image.GestureRecognizers>
+                        <!--<Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding GoBackCommand}" />
-                        </Image.GestureRecognizers>
+                        </Image.GestureRecognizers>-->
                     </Image>
                 </Grid>
             </Frame>

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace NOC.ViewModels
@@ -83,6 +84,30 @@ namespace NOC.ViewModels
                 return navigateToNotificationPageCommand;
             }
         }
+        
+        private ICommand performLogOutCommand;
+
+        public ICommand PerformLogOutCommand
+        {
+            get
+            {
+                if (performLogOutCommand == null)
+                {
+                    performLogOutCommand = new Command(PerformLogOutExecute);
+                }
+
+                return performLogOutCommand;
+            }
+        }
+
+        private async void PerformLogOutExecute(object obj)
+        {
+            IsBusy = true;
+            Preferences.Clear();
+            await NavigationService.NavigateAsync("/LoginPage");
+            IsBusy = false;
+        }
+
         private ICommand navigateToMyNocApplications;
 
         public ICommand NavigateToMyNocApplications

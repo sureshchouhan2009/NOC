@@ -34,7 +34,7 @@ namespace NOC.ViewModels
             }
         }
 
-       
+
 
         private string emailText;
 
@@ -47,55 +47,56 @@ namespace NOC.ViewModels
 
         private async void PerformLoginComand(object obj)
         {
-            EmailText = "applicant_test";
-            PasswordText = "user123";
-               IsBusy = true;
+            //EmailText = "applicant_test";
+            //PasswordText = "user123";
+            IsBusy = true;
             try
             {
-                if(String.IsNullOrEmpty( EmailText)|| String.IsNullOrEmpty(PasswordText))
+                if (String.IsNullOrEmpty(EmailText) || String.IsNullOrEmpty(PasswordText))
                 {
                     await Application.Current.MainPage.DisplayToastAsync("Please enter the valid Username and Password", 10000);
                 }
                 else
                 {
                     var token = await TokenClass.GetToken(EmailText, passwordText);
-                    UserType userType = await RecogniseTokenAndReturnTheUserType(token);
-                    if (userType == UserType.Applicant)
-                    {
-                        Session.Instance.Token = token;
-                        Preferences.Set("UserType", userType.ToString());
-                        Preferences.Set("Token", token);
-                        Preferences.Set("UserName", EmailText);
-                        Preferences.Set("Password", PasswordText);
-                        Preferences.Set("IsLoggedIN", true);
 
-                        await NavigationService.NavigateAsync("HomePage");
+                    if (!string.IsNullOrEmpty(token))
+                    {
+                        UserType userType = await RecogniseTokenAndReturnTheUserType(token);
+                        if (userType == UserType.Applicant)
+                        {
+                            Session.Instance.Token = token;
+                            Preferences.Set("UserType", userType.ToString());
+                            Preferences.Set("Token", token);
+                            Preferences.Set("UserName", EmailText);
+                            Preferences.Set("Password", PasswordText);
+                            Preferences.Set("IsLoggedIN", true);
+
+                            await NavigationService.NavigateAsync("HomePage");
+                        }
+                        else
+                        {
+                            await Application.Current.MainPage.DisplayToastAsync("Currently supporting only applicant flow");
+                        }
                     }
                     else
                     {
-                        await Application.Current.MainPage.DisplayToastAsync("Currently supporting only applicant flow", 10000);
+                        await Application.Current.MainPage.DisplayToastAsync("Please enter the valid Username and Password");
+
                     }
+
+
 
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
 
             }
-         
-           
-
-          
-
             IsBusy = false;
-
-            if (0 != 2)
-            {
-              
-            }
         }
 
-        private async Task< UserType> RecogniseTokenAndReturnTheUserType(string token)
+        private async Task<UserType> RecogniseTokenAndReturnTheUserType(string token)
         {
             UserType userType = new UserType();
 

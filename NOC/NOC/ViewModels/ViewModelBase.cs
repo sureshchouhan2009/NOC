@@ -60,6 +60,27 @@ namespace NOC.ViewModels
             }
         }
 
+
+        private ICommand goHomeCommand;
+
+        public ICommand GoHomeCommand
+        {
+            get
+            {
+                if (goHomeCommand == null)
+                {
+                    goHomeCommand = new Command(GoHomeExecute);
+                }
+
+                return goHomeCommand;
+            }
+        }
+
+        private async void GoHomeExecute(object obj)
+        {
+            await NavigationService.NavigateAsync("/HomePage");
+        }
+
         private async void GoBackExecute(object obj)
         {
            await NavigationService.GoBackAsync();

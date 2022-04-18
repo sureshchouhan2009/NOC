@@ -31,25 +31,25 @@
 
                 <Frame Grid.Row="2" CornerRadius="40" Margin="20,120,20,10" >
                     <components:CustomEntry x:Name="EmailEntry"  Text="{Binding EmailText}"  Placeholder="ER User Name">
-                        <components:CustomEntry.Behaviors>
+                        <!--<components:CustomEntry.Behaviors>
                         <local:EmailValidatorBehavior />
-                    </components:CustomEntry.Behaviors>
+                    </components:CustomEntry.Behaviors>-->
                     </components:CustomEntry>
 
                 </Frame>
 
                 <Frame Grid.Row="4" CornerRadius="40" Margin="20,0,20,40" >
                     <components:CustomEntry x:Name="PasswordEntry"  IsPassword="True" Text="{Binding PasswordText}" Placeholder="Password">
-                        <components:CustomEntry.Behaviors>
+                        <!--<components:CustomEntry.Behaviors>
                         <local:PasswordValidationBehavior />
-                    </components:CustomEntry.Behaviors>
+                    </components:CustomEntry.Behaviors>-->
                     </components:CustomEntry>
                 </Frame>
                 <!--<Grid Grid.Row="5" RowDefinitions="*" ColumnDefinitions="3*,6*" VerticalOptions="Center">
                     <components:CustomLabel Grid.Column="0" Text="Remember me" TextColor="Gray" FontSize="18" />
                     <Switch Grid.Row="0" IsToggled="{Binding RememberMe}" HorizontalOptions="Start" VerticalOptions="Start" HeightRequest="30" WidthRequest="50" Grid.Column="1" ThumbColor="White" OnColor="#66cc33" />
                 </Grid>-->
-                <Button Grid.Row="6" Command="{Binding LoginComand }" VerticalOptions="Start" 
+                <Button Grid.Row="6" Command="{Binding LoginComand }" VerticalOptions="Start"  Margin="20"
                         HorizontalOptions="FillAndExpand" CornerRadius="40" HeightRequest="50"
                         TextColor="IndianRed" Background="white" Text="Sign in" FontAttributes="Bold"></Button>
             </Grid>
