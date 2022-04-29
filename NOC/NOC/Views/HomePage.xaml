@@ -36,7 +36,7 @@
         </Style>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid RowDefinitions=".8*,8.4*,.8*"  RowSpacing="0">
+        <Grid RowDefinitions=".8*,8.4*,.8*"  RowSpacing="0" >
            
             <Frame Grid.Row="0" >
                 <Label Grid.Column="1" Text="Menu" Style="{StaticResource TitleLabelStyle}" Padding="0" Margin="0" />

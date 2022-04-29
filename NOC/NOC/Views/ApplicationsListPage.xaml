@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:behaviors="http://prismlibrary.com" x:Class="NOC.Views.ApplicationsListPage" x:Name="transactionsListPage">
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  xmlns:behaviors="http://prismlibrary.com" x:Class="NOC.Views.ApplicationsListPage" x:Name="transactionsListPage">
     <ContentPage.Resources>
         <Style x:Key="circleFram" TargetType="Frame">
             <Setter Property="VerticalOptions" Value="Center" />
@@ -17,7 +17,7 @@
         </Style>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid RowDefinitions=".8*,8.4*,.8*" RowSpacing="0">
+        <Grid RowDefinitions=".8*,8.4*,.8*" RowSpacing="0" >
             <Frame Grid.Row="0" Padding="0">
                 <Grid>
                     <Image Source="BackArrowRed" HeightRequest="30" WidthRequest="30" HorizontalOptions="Start" VerticalOptions="Center">

@@ -70,6 +70,7 @@
     <CodesignKey>iPhone Developer</CodesignKey>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchEnableSGenConc>true</MtouchEnableSGenConc>
+    <MtouchLink>SdkOnly</MtouchLink>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Ad-Hoc|iPhone' ">
     <DebugType>none</DebugType>
@@ -84,6 +85,7 @@
     <CodesignKey>iPhone Distribution</CodesignKey>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchEnableSGenConc>true</MtouchEnableSGenConc>
+    <MtouchLink>SdkOnly</MtouchLink>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
     <DebugType>none</DebugType>
@@ -97,6 +99,7 @@
     <CodesignKey>iPhone Distribution</CodesignKey>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchEnableSGenConc>true</MtouchEnableSGenConc>
+    <MtouchLink>SdkOnly</MtouchLink>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -105,6 +108,7 @@
     <None Include="Info.plist" />
     <LinkDescription Include="LinkerSettings.xml" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Renderers\CustomEntryRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\Contents.json">
@@ -190,6 +194,27 @@
     <BundleResource Include="Resources\Default.png" />
     <BundleResource Include="Resources\Default@2x.png" />
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
+    <BundleResource Include="Resources\BackArrowRed.png" />
+    <BundleResource Include="Resources\backgroundImage.jpg" />
+    <BundleResource Include="Resources\comment_icon.png" />
+    <BundleResource Include="Resources\doc_icon.png" />
+    <BundleResource Include="Resources\ER_Img.png" />
+    <BundleResource Include="Resources\er_user.png" />
+    <BundleResource Include="Resources\favicon.png" />
+    <BundleResource Include="Resources\home.png" />
+    <BundleResource Include="Resources\LeftArrow.png" />
+    <BundleResource Include="Resources\Logo_Horizontal_old.png" />
+    <BundleResource Include="Resources\Logo_Horizontal_white.png" />
+    <BundleResource Include="Resources\Logo_Horizontal.png" />
+    <BundleResource Include="Resources\Logo_Vertical_white.png" />
+    <BundleResource Include="Resources\Logo_Vertical.png" />
+    <BundleResource Include="Resources\project_location_map.png" />
+    <BundleResource Include="Resources\record_filter_icon.png" />
+    <BundleResource Include="Resources\rightArrowRed.png" />
+    <BundleResource Include="Resources\rightArrowWhite.png" />
+    <BundleResource Include="Resources\search.png" />
+    <BundleResource Include="Resources\singlePage_mapComponent.png" />
+    <BundleResource Include="Resources\splash_screen.xml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -210,9 +235,12 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NOC\NOC.csproj">
-      <Project>{A682884C-CB44-4A89-B752-27BB634E0ABE}</Project>
+      <Project>{838C0DA2-7CD1-4142-A0B0-D8669DA83708}</Project>
       <Name>NOC</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Renderers\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

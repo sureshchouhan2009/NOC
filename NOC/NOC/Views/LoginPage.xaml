@@ -1,5 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:components="clr-namespace:NOC.Components" xmlns:local="clr-namespace:NOC.Behaviors" xmlns:viewmodels="clr-namespace:NOC.ViewModels" x:DataType="viewmodels:LoginPageViewModel" x:Class="NOC.Views.LoginPage" BackgroundImageSource="backgroundImage">
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:components="clr-namespace:NOC.Components"
+             xmlns:local="clr-namespace:NOC.Behaviors"
+             xmlns:viewmodels="clr-namespace:NOC.ViewModels"
+             x:DataType="viewmodels:LoginPageViewModel"
+             x:Class="NOC.Views.LoginPage" BackgroundImageSource="backgroundImage.jpg">
     <ContentPage.Resources>
         <Style TargetType="components:CustomEntry">
             <Setter Property="TextColor" Value="White" />
@@ -21,7 +27,7 @@
     <ContentPage.Content>
         <ScrollView>
             <Grid RowDefinitions="Auto,Auto,Auto,Auto, Auto, Auto,Auto" Margin="15,10,15,10">
-                <Image Source="Logo_Horizontal" HeightRequest="30"  Margin="0,150,0,0"  Grid.Row="0" VerticalOptions="End" HorizontalOptions="Center"  />
+                <Image Source="Logo_Horizontal.png" HeightRequest="30"  Margin="0,150,0,0"  Grid.Row="0" VerticalOptions="End" HorizontalOptions="Center"  />
 
 
                 <components:CustomLabel Grid.Row="1" 
@@ -29,8 +35,8 @@
                                         FontAttributes="Bold" TextColor="Black" FontSize="16"
                                         HorizontalOptions="CenterAndExpand" />
 
-                <Frame Grid.Row="2" CornerRadius="40" Margin="20,120,20,10" >
-                    <components:CustomEntry x:Name="EmailEntry"  Text="{Binding EmailText}"  Placeholder="ER User Name">
+                <Frame Grid.Row="2" CornerRadius="28" Margin="20,120,20,10" >
+                    <components:CustomEntry x:Name="EmailEntry"  Text="{Binding EmailText}"  Placeholder="ER User Name" BackgroundColor="Transparent">
                         <!--<components:CustomEntry.Behaviors>
                         <local:EmailValidatorBehavior />
                     </components:CustomEntry.Behaviors>-->
@@ -38,8 +44,8 @@
 
                 </Frame>
 
-                <Frame Grid.Row="4" CornerRadius="40" Margin="20,0,20,40" >
-                    <components:CustomEntry x:Name="PasswordEntry"  IsPassword="True" Text="{Binding PasswordText}" Placeholder="Password">
+                <Frame Grid.Row="4" CornerRadius="28" Margin="20,0,20,40" >
+                    <components:CustomEntry x:Name="PasswordEntry"  IsPassword="True" Text="{Binding PasswordText}" Placeholder="Password" BackgroundColor="Transparent">
                         <!--<components:CustomEntry.Behaviors>
                         <local:PasswordValidationBehavior />
                     </components:CustomEntry.Behaviors>-->

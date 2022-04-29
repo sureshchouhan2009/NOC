@@ -189,6 +189,7 @@ Global
 		{0C3C42C0-B635-49AE-BFDB-280C608E1E06}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 		{0C3C42C0-B635-49AE-BFDB-280C608E1E06}.Release|x64.ActiveCfg = Release|iPhoneSimulator
 		{0C3C42C0-B635-49AE-BFDB-280C608E1E06}.Release|x86.ActiveCfg = Release|iPhoneSimulator
+		{0C3C42C0-B635-49AE-BFDB-280C608E1E06}.Debug|Any CPU.Build.0 = Debug|iPhoneSimulator
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

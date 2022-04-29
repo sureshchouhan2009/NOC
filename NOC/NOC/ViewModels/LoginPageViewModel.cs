@@ -47,8 +47,8 @@ namespace NOC.ViewModels
 
         private async void PerformLoginComand(object obj)
         {
-            //EmailText = "applicant_test";
-            //PasswordText = "user123";
+            EmailText = "applicant_test";
+            PasswordText = "user123";
             IsBusy = true;
             try
             {
@@ -72,7 +72,7 @@ namespace NOC.ViewModels
                             Preferences.Set("Password", PasswordText);
                             Preferences.Set("IsLoggedIN", true);
 
-                            await NavigationService.NavigateAsync("HomePage");
+                            await NavigationService.NavigateAsync("NavigationPage/HomePage");
                         }
                         else
                         {

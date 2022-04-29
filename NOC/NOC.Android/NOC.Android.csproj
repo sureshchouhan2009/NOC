@@ -115,7 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NOC\NOC.csproj">
-      <Project>{A682884C-CB44-4A89-B752-27BB634E0ABE}</Project>
+      <Project>{838C0DA2-7CD1-4142-A0B0-D8669DA83708}</Project>
       <Name>NOC</Name>
     </ProjectReference>
   </ItemGroup>
