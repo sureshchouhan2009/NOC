@@ -37,20 +37,20 @@ namespace NOC.ViewModels
             set { SetProperty(ref _searchText, value); }
         }
 
-        private ICommand navigateToTrasactionDetailsCommand;
+            private ICommand navigateToTrasactionDetailsCommand;
 
-        public ICommand NavigateToTrasactionDetailsCommand
-        {
-            get
+            public ICommand NavigateToTrasactionDetailsCommand
             {
-                if (navigateToTrasactionDetailsCommand == null)
+                get
                 {
-                    navigateToTrasactionDetailsCommand = new Command(NavigatoTransctionDetailsPage);
-                }
+                    if (navigateToTrasactionDetailsCommand == null)
+                    {
+                        navigateToTrasactionDetailsCommand = new Command(NavigatoTransctionDetailsPage);
+                    }
 
-                return navigateToTrasactionDetailsCommand;
+                    return navigateToTrasactionDetailsCommand;
+                }
             }
-        }
         private ICommand _searchTextChangedCommand;
         public ICommand SearchTextChangedCommand
         {

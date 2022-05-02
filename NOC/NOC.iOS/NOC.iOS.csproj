@@ -214,7 +214,6 @@
     <BundleResource Include="Resources\rightArrowWhite.png" />
     <BundleResource Include="Resources\search.png" />
     <BundleResource Include="Resources\singlePage_mapComponent.png" />
-    <BundleResource Include="Resources\splash_screen.xml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

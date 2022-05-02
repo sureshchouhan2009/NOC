@@ -74,6 +74,7 @@ namespace NOC
             containerRegistry.RegisterForNavigation<NotificationsPage, NotificationsPageViewModel>();
             containerRegistry.RegisterForNavigation<ApplicationsListPage, ApplicationsListPageViewModel>();
             containerRegistry.RegisterForNavigation<TransactionInfoPage, TransactionInfoPageViewModel>();
+            containerRegistry.RegisterForNavigation<MapPage, MapPageViewModel>();
         }
     }
 }

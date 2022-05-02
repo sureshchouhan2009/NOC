@@ -83,6 +83,64 @@ namespace NOC.Service
         }
 
         /// <summary>
+        /// To get list of attachments of Trasaction
+        /// </summary>
+        /// <param name="transactionID"></param>
+        /// <returns></returns>
+        public async Task<TransactionDetailsModel> GetTransactionAttachment(string transactionID)
+        {
+            TransactionDetailsModel responsedata = new TransactionDetailsModel();
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.GetTransactionAttachment + transactionID;
+                var response = await client.GetAsync(RequestUrl);
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    responsedata = JsonConvert.DeserializeObject<TransactionDetailsModel>(result, ServiceUtility.GetJsonSerializationSettings());
+                }
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+            return responsedata;
+        }
+
+        /// <summary>
+        /// To get list of comments for the transaction
+        /// </summary>
+        /// <param name="applicationNumber"></param>
+        /// <returns></returns>
+        public async Task<TransactionDetailsModel> GetTransactionComents(string applicationNumber)
+        {
+            TransactionDetailsModel responsedata = new TransactionDetailsModel();
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.GetTransactionComents + applicationNumber;
+                var response = await client.GetAsync(RequestUrl);
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    responsedata = JsonConvert.DeserializeObject<TransactionDetailsModel>(result, ServiceUtility.GetJsonSerializationSettings());
+                }
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+            return responsedata;
+        }
+
+        /// <summary>
         /// to get list of Notifications after clicking on menu page Items
         /// </summary>
         /// <param name="filterID"></param>

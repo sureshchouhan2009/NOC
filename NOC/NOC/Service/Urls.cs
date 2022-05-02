@@ -19,6 +19,9 @@ namespace NOC.Service
         public const string GetNotifications = BaseUrl + "api/Search/GetNotification";
         public const string applicantGetTransactionList = BaseUrl + "api/Search/GetTransactionList/applicant/";//in last we need to pass filter id
         public const string GetTransactionDetails = BaseUrl + "api/Transaction/gettrandata/";//in last we need to pass transaction Application Number
+        public const string GetTransactionAttachment = BaseUrl + "api/Attachments/GetAttachments/?transactionid=";//{173}in last we need to pass transaction ID
+        public const string GetTransactionComents = BaseUrl + "api/comment/getcommentdatalist/";//{RKT-20220329-1003}in last we need to pass Application Number
+
 
     }
 }

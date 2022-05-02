@@ -1,10 +1,8 @@
 ﻿using System;
 namespace NOC.Interfaces
 {
-    public class IBaseUrl
+    public interface IBaseUrl
     {
-        public IBaseUrl()
-        {
-        }
+        string Get();
     }
 }

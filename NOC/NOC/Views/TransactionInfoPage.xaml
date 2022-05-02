@@ -56,7 +56,7 @@
                         <Label Grid.Column="1" Style="{StaticResource menuLabel}" Text="{Binding TransactonDetail.Transaction.TransactionNumber}" />
                     </Grid>
                     </Frame>
-                    <Grid Grid.Row="2" RowDefinitions="Auto,Auto,Auto,Auto, Auto, Auto, Auto" Margin="10,0,10,0" >
+                    <Grid Grid.Row="2" RowDefinitions="Auto,Auto,Auto,Auto, Auto, Auto, Auto, Auto" Margin="10,0,10,0" >
                         <Label Grid.Row="0" Text="Project Information" Style="{StaticResource HeaderRedLabel}" />
                         <Label Grid.Row="1" Text="{Binding TransactonDetail.Transaction.TransactionNumber,StringFormat='Project Name: {0}'}" Style="{StaticResource basicInfoLabel}" />
                         <Label Grid.Row="2" Text="{Binding TransactonDetail.Transaction.TransactionNumber,StringFormat='Project Description: {0}'}" Style="{StaticResource basicInfoLabel}" />
@@ -72,6 +72,9 @@
                     <BoxView Grid.Row="5" HeightRequest="1" Color="Gray" HorizontalOptions="FillAndExpand" />
                     <Grid Grid.Row="6" HeightRequest="80" Margin="10,0,10,0">
                         <Label Grid.Row="0" Text="Project Location" Style="{StaticResource HeaderRedLabel}" />
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding NavigateToMapCommand}"/>
+                        </Grid.GestureRecognizers>
                     </Grid>
 
                     <BoxView Grid.Row="7" HeightRequest="1" Color="Gray" HorizontalOptions="FillAndExpand" />
@@ -79,6 +82,8 @@
                         <Label Grid.Row="0" Text="Comments" Style="{StaticResource HeaderRedLabel}" />
                     </Grid>
                     <BoxView Grid.Row="9" HeightRequest="1" Color="Gray" HorizontalOptions="FillAndExpand" />
+
+                   
                 </Grid>
                
             </ScrollView>
