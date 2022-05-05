@@ -14,6 +14,8 @@ namespace NOC.Views
         {
             InitializeComponent();
 
+            //webView.EvaluateJavaScriptAsync()
+
             //          var htmlSource = new HtmlWebViewSource();
             //          htmlSource.Html = @"<html><body>
             //<h1>Xamarin.Forms</h1>
@@ -24,16 +26,16 @@ namespace NOC.Views
             //try
             //{
 
-                //    Task.Run(async () => {
-                //        var fileName = "index.html";
-                //        using (var stream = await FileSystem.OpenAppPackageFileAsync(fileName))
-                //        {
-                //            using (var reader = new StreamReader(stream))
-                //            {
-                //                var fileContents = await reader.ReadToEndAsync();
-                //            }
-                //        }
-                //    });
+            //    Task.Run(async () => {
+            //        var fileName = "index.html";
+            //        using (var stream = await FileSystem.OpenAppPackageFileAsync(fileName))
+            //        {
+            //            using (var reader = new StreamReader(stream))
+            //            {
+            //                var fileContents = await reader.ReadToEndAsync();
+            //            }
+            //        }
+            //    });
 
             //    // Use DI function to get the BaseUrl for the platform
             //    var baseUrl = DependencyService.Get<IBaseUrl>().Get();
@@ -65,7 +67,7 @@ namespace NOC.Views
             //            }
             //        }
             //    });
-                
+
             //}
 
 

@@ -87,9 +87,9 @@ namespace NOC.Service
         /// </summary>
         /// <param name="transactionID"></param>
         /// <returns></returns>
-        public async Task<TransactionDetailsModel> GetTransactionAttachment(string transactionID)
+        public async Task<List<AttachmentModel>> GetTransactionAttachment(string transactionID)
         {
-            TransactionDetailsModel responsedata = new TransactionDetailsModel();
+            List<AttachmentModel> responsedata = new List<AttachmentModel>();
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
@@ -100,7 +100,7 @@ namespace NOC.Service
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
-                    responsedata = JsonConvert.DeserializeObject<TransactionDetailsModel>(result, ServiceUtility.GetJsonSerializationSettings());
+                    responsedata = JsonConvert.DeserializeObject<List<AttachmentModel>>(result, ServiceUtility.GetJsonSerializationSettings());
                 }
             }
             catch (Exception ex)
@@ -116,9 +116,9 @@ namespace NOC.Service
         /// </summary>
         /// <param name="applicationNumber"></param>
         /// <returns></returns>
-        public async Task<TransactionDetailsModel> GetTransactionComents(string applicationNumber)
+        public async Task<List<CommentsModel>> GetTransactionComents(string applicationNumber)
         {
-            TransactionDetailsModel responsedata = new TransactionDetailsModel();
+            List<CommentsModel> responsedata = new List<CommentsModel>();
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
@@ -129,7 +129,7 @@ namespace NOC.Service
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
-                    responsedata = JsonConvert.DeserializeObject<TransactionDetailsModel>(result, ServiceUtility.GetJsonSerializationSettings());
+                    responsedata = JsonConvert.DeserializeObject<List<CommentsModel>>(result, ServiceUtility.GetJsonSerializationSettings());
                 }
             }
             catch (Exception ex)

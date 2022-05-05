@@ -1,5 +1,6 @@
 ﻿using NOC.Interfaces;
 using NOC.Models;
+using NOC.Service;
 using NOC.Utility;
 using Prism.Navigation;
 using System;
@@ -15,6 +16,20 @@ namespace NOC.ViewModels
         public TransactionInfoPageViewModel(INavigationService navigationService) : base(navigationService)
         {
             Title = "Transaction Info";
+        }
+
+        private List<AttachmentModel> _attachmentList;
+        public List<AttachmentModel> AttachmentList
+        {
+            get
+            {
+               
+                return _attachmentList;
+            }
+            set
+            {
+                SetProperty(ref _attachmentList, value);
+            }
         }
 
         private TransactionDetailsModel _transactonDetail;
@@ -45,6 +60,25 @@ namespace NOC.ViewModels
                 return navigateToMapCommand;
             }
         }
+        private ICommand navigateToComments;
+
+        public ICommand NavigateToComments
+        {
+            get
+            {
+                if (navigateToComments == null)
+                {
+                    navigateToComments = new Command(NavigateToCommentsPage);
+                }
+
+                return navigateToComments;
+            }
+        }
+
+        private async void NavigateToCommentsPage(object obj)
+        {
+            await NavigationService.NavigateAsync("CommentsPage");
+        }
 
         private async void NavigateToMapView(object obj)
         {
@@ -56,10 +90,16 @@ namespace NOC.ViewModels
             //var browser = new WebView
             //{
             //   // Source = "https://dotnet.microsoft.com/apps/xamarin"
-
-
             //    Source = source
             //};
+        }
+
+        public override async void OnNavigatedTo(INavigationParameters parameters)
+        {
+            base.OnNavigatedTo(parameters);
+            IsBusy = true;
+            AttachmentList =await ApiService.Instance.GetTransactionAttachment(Session.Instance.CurrentTransaction.Transaction.TransactionID.ToString());
+            IsBusy = false;
         }
 
     }

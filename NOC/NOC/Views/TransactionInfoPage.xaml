@@ -66,8 +66,18 @@
                         <Label Grid.Row="6" Text="{Binding TransactonDetail.Transaction.TransactionNumber,StringFormat='Company Name: {0}'}" Style="{StaticResource basicInfoLabel}" />
                     </Grid>
                     <BoxView Grid.Row="3" HeightRequest="1" Color="Gray" HorizontalOptions="FillAndExpand" />
-                    <Grid Grid.Row="4" HeightRequest="80" Margin="10,0,10,0">
+                    <Grid Grid.Row="4" RowDefinitions="Auto,Auto"  Margin="10,0,10,0">
                         <Label Grid.Row="0" Text="List Of Attachments" Style="{StaticResource HeaderRedLabel}" />
+                        <ListView  Grid.Row="1" ItemsSource="{Binding AttachmentList}" HasUnevenRows="True" HeightRequest="120">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <Label Text="{Binding FileName}"/>
+
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
                     </Grid>
                     <BoxView Grid.Row="5" HeightRequest="1" Color="Gray" HorizontalOptions="FillAndExpand" />
                     <Grid Grid.Row="6" HeightRequest="80" Margin="10,0,10,0">
@@ -80,6 +90,9 @@
                     <BoxView Grid.Row="7" HeightRequest="1" Color="Gray" HorizontalOptions="FillAndExpand" />
                     <Grid Grid.Row="8" HeightRequest="80" Margin="10,0,10,0">
                         <Label Grid.Row="0" Text="Comments" Style="{StaticResource HeaderRedLabel}" />
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding NavigateToComments}"/>
+                        </Grid.GestureRecognizers>
                     </Grid>
                     <BoxView Grid.Row="9" HeightRequest="1" Color="Gray" HorizontalOptions="FillAndExpand" />
 

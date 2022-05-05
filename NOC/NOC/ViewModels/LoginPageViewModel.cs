@@ -62,8 +62,8 @@ namespace NOC.ViewModels
 
                     if (!string.IsNullOrEmpty(token))
                     {
-                        UserType userType = await RecogniseTokenAndReturnTheUserType(token);
-                        if (userType == UserType.Applicant)
+                        UserTypes userType = await RecogniseTokenAndReturnTheUserType(token);
+                        if (userType == UserTypes.Applicant)
                         {
                             Session.Instance.Token = token;
                             Preferences.Set("UserType", userType.ToString());
@@ -96,37 +96,37 @@ namespace NOC.ViewModels
             IsBusy = false;
         }
 
-        private async Task<UserType> RecogniseTokenAndReturnTheUserType(string token)
+        private async Task<UserTypes> RecogniseTokenAndReturnTheUserType(string token)
         {
-            UserType userType = new UserType();
+            UserTypes userType = new UserTypes();
 
             try
             {
                 if (await ApiService.Instance.ValidateUserTypeFromToken(token, Urls.CheckApplicant))
                 {
-                    userType = UserType.Applicant;
+                    userType = UserTypes.Applicant;
                 }
                 else if (await ApiService.Instance.ValidateUserTypeFromToken(token, Urls.CheckReviewer))
                 {
-                    userType = UserType.Reviewer;
+                    userType = UserTypes.Reviewer;
                 }
                 else if (await ApiService.Instance.ValidateUserTypeFromToken(token, Urls.CheckOfficer))
                 {
-                    userType = UserType.Officer;
+                    userType = UserTypes.Officer;
                 }
                 else if (await ApiService.Instance.ValidateUserTypeFromToken(token, Urls.CheckStakeholder))
                 {
-                    userType = UserType.Stackholder;
+                    userType = UserTypes.Stackholder;
                 }
                 else
                 {
-                    userType = UserType.Applicant;
+                    userType = UserTypes.Applicant;
                 }
 
             }
             catch (Exception ex)
             {
-                userType = UserType.Applicant;
+                userType = UserTypes.Applicant;
 
             }
 

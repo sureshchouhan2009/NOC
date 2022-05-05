@@ -61,6 +61,7 @@ namespace NOC.ViewModels
                 using (var reader = new StreamReader(stream))
                 {
                     HtmlWebViewSource.Html = await reader.ReadToEndAsync();
+                    
                 }
             }
         }

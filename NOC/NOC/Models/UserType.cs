@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NOC.Models
 {
-    public enum  UserType
+    public enum  UserTypes
     {
         Applicant=0,
         Reviewer = 1,
