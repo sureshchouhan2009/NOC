@@ -34,8 +34,10 @@
 
   <ItemGroup>
     <None Remove="Interfaces\" />
+    <None Remove="Converters\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interfaces\" />
+    <Folder Include="Converters\" />
   </ItemGroup>
 </Project>

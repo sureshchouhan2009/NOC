@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace NOC.ViewModels
@@ -60,6 +61,37 @@ namespace NOC.ViewModels
                 return navigateToMapCommand;
             }
         }
+
+        private ICommand downloadCommand;
+
+        public ICommand DownloadCommand
+        {
+            get
+            {
+                if (downloadCommand == null)
+                {
+                    downloadCommand = new Command(DownloadCommandExecute);
+                }
+
+                return downloadCommand;
+            }
+        }
+
+        private async void DownloadCommandExecute(object obj)
+        {
+            try
+            {
+
+                var currentAttachment = obj as AttachmentModel;
+                await Launcher.OpenAsync(currentAttachment.UrlPath);
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
         private ICommand navigateToComments;
 
         public ICommand NavigateToComments
@@ -96,8 +128,9 @@ namespace NOC.ViewModels
 
         public override async void OnNavigatedTo(INavigationParameters parameters)
         {
-            base.OnNavigatedTo(parameters);
             IsBusy = true;
+            base.OnNavigatedTo(parameters);
+           
             AttachmentList =await ApiService.Instance.GetTransactionAttachment(Session.Instance.CurrentTransaction.Transaction.TransactionID.ToString());
             IsBusy = false;
         }
