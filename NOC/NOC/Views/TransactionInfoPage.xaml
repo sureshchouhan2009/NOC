@@ -66,10 +66,10 @@
                         <Label Grid.Row="0" Text="Project Information" Style="{StaticResource HeaderRedLabel}" />
                         <Label Grid.Row="1" Text="{Binding TransactonDetail.Transaction.TransactionNumber,StringFormat='Project Name: {0}'}" Style="{StaticResource basicInfoLabel}" />
                         <Label Grid.Row="2" Text="{Binding TransactonDetail.ProjectDetails,StringFormat='Project Description: {0}'}" Style="{StaticResource basicInfoLabel}" />
-                        <Label Grid.Row="3" Text="{Binding TransactonDetail.Transaction.TransactionNumber,StringFormat='Project State: {0}'}" Style="{StaticResource basicInfoLabel}" />
-                        <Label Grid.Row="4" Text="{Binding TransactonDetail.Transaction.TransactionNumber,StringFormat='Project Category: {0}'}" Style="{StaticResource basicInfoLabel}" />
-                        <Label Grid.Row="5" Text="{Binding TransactonDetail.Transaction.TransactionNumber,StringFormat='Project Owner: {0}'}" Style="{StaticResource basicInfoLabel}" />
-                        <Label Grid.Row="6" Text="{Binding TransactonDetail.Transaction.TransactionNumber,StringFormat='Company Name: {0}'}" Style="{StaticResource basicInfoLabel}" />
+                        <Label Grid.Row="3" Text="{Binding TransactonDetail.ProjectDetails,StringFormat='Project State: {0}'}" Style="{StaticResource basicInfoLabel}" />
+                        <Label Grid.Row="4" Text="{Binding TransactonDetail.ProjectDetails,StringFormat='Project Category: {0}'}" Style="{StaticResource basicInfoLabel}" />
+                        <Label Grid.Row="5" Text="{Binding TransactonDetail.ProjectDetails,StringFormat='Project Owner: {0}'}" Style="{StaticResource basicInfoLabel}" />
+                        <Label Grid.Row="6" Text="{Binding TransactonDetail.ProjectDetails,StringFormat='Company Name: {0}'}" Style="{StaticResource basicInfoLabel}" />
                     </Grid>
                     <BoxView Grid.Row="3" HeightRequest="1" Color="Gray" HorizontalOptions="FillAndExpand" />
                     <Grid Grid.Row="4" RowDefinitions="Auto,Auto"  Margin="10,0,10,0">

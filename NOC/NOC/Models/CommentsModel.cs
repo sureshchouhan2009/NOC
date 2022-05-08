@@ -108,6 +108,8 @@ namespace NOC.Models
         public object Stakeholder_Comments { get; set; }
         public object Decision { get; set; }
         public SolutionRoleswithUserID SolutionRoleswithUserID { get; set; }
+
+        public bool IsReplyViewVisible { get; set; } 
     }
 
 

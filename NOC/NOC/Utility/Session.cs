@@ -27,6 +27,7 @@ namespace NOC.Utility
         public TransactionDetailsModel CurrentTransaction = new TransactionDetailsModel();
        
         public MenuItemsCountModel MenuItemsCountModelData { get; set; }
-        
+        public List<CommentsModel> CurerentTransactionCommentsList = new List<CommentsModel>();
+
     }
 }

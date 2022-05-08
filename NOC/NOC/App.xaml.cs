@@ -41,7 +41,7 @@ namespace NOC
                     if (Session.Instance.Token != "")
                     {
                        
-                        await NavigationService.NavigateAsync("/HomePage");
+                        await NavigationService.NavigateAsync("/CommentsPage");
                        
                     }
                     else

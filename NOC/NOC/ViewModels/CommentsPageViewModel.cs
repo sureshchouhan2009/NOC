@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 using NOC.Models;
 using NOC.Service;
 using NOC.Utility;
 using Prism.Navigation;
+using Xamarin.Forms;
 
 namespace NOC.ViewModels
 {
     public class CommentsPageViewModel : ViewModelBase
     {
-
+        
 
         public CommentsPageViewModel(INavigationService navigationService) : base(navigationService)
         {
@@ -19,6 +22,63 @@ namespace NOC.ViewModels
 
             };
         }
+
+        private ICommand accendingTappedCommand;
+
+        public ICommand AccendingTappedCommand
+        {
+            get
+            {
+                if (accendingTappedCommand == null)
+                {
+                    accendingTappedCommand = new Command(AccendingTappedCommandExecute);
+                }
+
+                return accendingTappedCommand;
+            }
+        }
+
+        private void AccendingTappedCommandExecute(object obj)
+        {
+
+
+
+
+        }
+
+        private ICommand addReplyCommand;
+
+        public ICommand AddReplyCommand
+        {
+            get
+            {
+                if (addReplyCommand == null)
+                {
+                    addReplyCommand = new Command(AddReplyCommandExecute);
+                }
+
+                return addReplyCommand;
+            }
+        }
+
+        private void AddReplyCommandExecute(object obj)
+        {
+            try
+            {
+                var currentComment = obj as CommentsModel;
+               int index = CommentsList.IndexOf(currentComment);
+
+                var tempList = Session.Instance.CurerentTransactionCommentsList;
+                tempList[index].IsReplyViewVisible = !currentComment.IsReplyViewVisible;
+                CommentsList.Clear();
+                CommentsList = new ObservableCollection<CommentsModel>(tempList);
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
         private TransactionDetailsModel _transactonDetail;
         public TransactionDetailsModel TransactonDetail
         {
@@ -47,12 +107,12 @@ namespace NOC.ViewModels
             }
         }
 
-        private List<CommentsModel> commentsList = new List<CommentsModel>();
-        public List<CommentsModel> CommentsList
+        private ObservableCollection<CommentsModel> commentsList = new ObservableCollection<CommentsModel>();
+        public ObservableCollection<CommentsModel> CommentsList
         {
             get
             {
-
+                
                 return commentsList;
             }
             set
@@ -67,12 +127,9 @@ namespace NOC.ViewModels
             IsBusy = true;
             base.OnNavigatedTo(parameters);
             var transactionDetails = Session.Instance.CurrentTransaction;
-
-           
-           // CommentsList = await ApiService.Instance.GetTransactionComents(transactionDetails.Transaction.TransactionNumber);
-
-            CommentsList = await ApiService.Instance.GetTransactionComents("RKT-20220330-1004");
-
+            //CommentsList = new ObservableCollection<CommentsModel>( await ApiService.Instance.GetTransactionComents(transactionDetails.Transaction.TransactionNumber));
+            Session.Instance.CurerentTransactionCommentsList =  await ApiService.Instance.GetTransactionComents("RKT-20220330-1004");
+            CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList);
             IsBusy = false;
         }
 
