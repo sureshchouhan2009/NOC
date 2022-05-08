@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:components="clr-namespace:NOC.Components" x:Name="commentsPageRef"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:components="clr-namespace:NOC.Components" xmlns:xct="http://xamarin.com/schemas/2020/toolkit" x:Name="commentsPageRef"
     x:Class="NOC.Views.CommentsPage">
 
      <ContentPage.Resources>
@@ -58,12 +58,16 @@
                  <StackLayout Grid.Row="0" Orientation="Horizontal" HeightRequest="20" Spacing="5" Margin="10">
                       <Label Text="Filter by:" FontAttributes="Bold" FontSize="14"  VerticalOptions="Center"/>
                      <Picker WidthRequest="70"  ItemsSource="{Binding PickerSource}" />
-                     <RadioButton BorderColor="Black" Content="Accending"  HeightRequest="20" FontSize="14" BackgroundColor="Transparent" >
-                         <RadioButton.GestureRecognizers>
-                             <TapGestureRecognizer Command="{Binding AccendingTappedCommand}" CommandParameter="{Binding IsChecked}"/>
-                         </RadioButton.GestureRecognizers>
+                     <RadioButton BorderColor="Black" Content="Accending" HeightRequest="20" FontSize="14" BackgroundColor="Transparent" >
+                         <RadioButton.Behaviors>
+                              <xct:EventToCommandBehavior EventName="CheckedChanged" Command="{Binding AccendingTappedCommand}" CommandParameter="{Binding IsChecked}"/>
+                         </RadioButton.Behaviors>
                      </RadioButton>
-                     <RadioButton BorderColor="Black" Content="Decending"  FontSize="14" BackgroundColor="Transparent" />
+                     <RadioButton BorderColor="Black" Content="Decending"  FontSize="14" BackgroundColor="Transparent" >
+                          <RadioButton.Behaviors>
+                              <xct:EventToCommandBehavior EventName="CheckedChanged" Command="{Binding DecendingTappedCommand}" CommandParameter="{Binding IsChecked}"/>
+                         </RadioButton.Behaviors>
+                     </RadioButton>
                  </StackLayout>
                  <ListView Grid.Row="1"  ItemsSource="{Binding CommentsList}" HasUnevenRows="True" SeparatorColor="Black" SelectionMode="None">
                      <ListView.ItemTemplate>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using NOC.Models;
 using NOC.Service;
@@ -41,8 +42,53 @@ namespace NOC.ViewModels
         private void AccendingTappedCommandExecute(object obj)
         {
 
+            try
+            {
 
+                var tempList = Session.Instance.CurerentTransactionCommentsList.OrderBy(x => x.Comments.CommentsDate).ToList();
 
+                CommentsList.Clear();
+                CommentsList = new ObservableCollection<CommentsModel>(tempList);
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+        }
+
+        private ICommand decendingTappedCommand;
+
+        public ICommand DecendingTappedCommand
+        {
+            get
+            {
+                if (decendingTappedCommand == null)
+                {
+                    decendingTappedCommand = new Command(DecendingTappedCommandExecute);
+                }
+
+                return decendingTappedCommand;
+            }
+        }
+
+        private void DecendingTappedCommandExecute(object obj)
+        {
+
+            try
+            {
+
+                var tempList = Session.Instance.CurerentTransactionCommentsList.OrderByDescending(x => x.Comments.CommentsDate).ToList();
+
+                CommentsList.Clear();
+                CommentsList = new ObservableCollection<CommentsModel>(tempList);
+
+            }
+            catch (Exception ex)
+            {
+
+            }
 
         }
 
