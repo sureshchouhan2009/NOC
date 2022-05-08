@@ -110,6 +110,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Renderers\CustomEntryRenderer.cs" />
     <Compile Include="Renderers\CustomEditorRenderer.cs" />
+    <Compile Include="Renderers\CustomPickerRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\Contents.json">
@@ -217,6 +218,7 @@
     <BundleResource Include="Resources\singlePage_mapComponent.png" />
     <BundleResource Include="Resources\message.png" />
     <BundleResource Include="Resources\message1.png" />
+    <BundleResource Include="Resources\dropdownicon.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

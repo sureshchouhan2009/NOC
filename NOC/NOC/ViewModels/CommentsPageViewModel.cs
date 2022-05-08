@@ -19,9 +19,41 @@ namespace NOC.ViewModels
         {
             PickerSource = new List<string>
             {
-                "Test1","Test2","test3"
+                "Replied","Not Replied"
 
             };
+        }
+
+        private string selectedFilter;
+        public string SelectedFilter
+        {
+            get
+            {
+                return selectedFilter;
+            }
+            set
+            {
+                SetProperty(ref selectedFilter, value);
+            }
+        }
+        private ICommand pickerIndexChangedCommand;
+
+        public ICommand PickerIndexChangedCommand
+        {
+            get
+            {
+                if (pickerIndexChangedCommand == null)
+                {
+                    pickerIndexChangedCommand = new Command(PickerIndexChangedCommandExecute);
+                }
+
+                return pickerIndexChangedCommand;
+            }
+        }
+
+        private void PickerIndexChangedCommandExecute(object obj)
+        {
+           
         }
 
         private ICommand accendingTappedCommand;

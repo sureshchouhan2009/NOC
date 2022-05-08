@@ -55,20 +55,25 @@
                  </Grid>
              </Grid>
              <Grid Grid.Row="2" RowDefinitions="Auto,Auto" >
-                 <StackLayout Grid.Row="0" Orientation="Horizontal" HeightRequest="20" Spacing="5" Margin="10">
-                      <Label Text="Filter by:" FontAttributes="Bold" FontSize="14"  VerticalOptions="Center"/>
-                     <Picker WidthRequest="70"  ItemsSource="{Binding PickerSource}" />
-                     <RadioButton BorderColor="Black" Content="Accending" HeightRequest="20" FontSize="14" BackgroundColor="Transparent" >
+                 <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,Auto"  ColumnSpacing="1" VerticalOptions="Center" HorizontalOptions="Center">
+                      <Label Grid.Column="0" Text="Filter by:" FontAttributes="Bold" FontSize="12" VerticalOptions="Center" HorizontalOptions="Center" />
+                      <components:CustomPicker Grid.Column="1" Image="dropdownicon" Title="Select"  WidthRequest="90" TitleColor="Black" HeightRequest="50" SelectedItem="{Binding SelectedFilter}" ItemsSource="{Binding PickerSource}" Margin="0,5,0,5" FontSize="12" SelectedIndex="0" VerticalOptions="Center" HorizontalOptions="Center">
+                           <components:CustomPicker.Behaviors>
+                               <xct:EventToCommandBehavior EventName="SelectedIndexChanged" Command="{Binding PickerIndexChangedCommand}" CommandParameter="{ Binding SelectedItem}"/>
+                           </components:CustomPicker.Behaviors>
+                      </components:CustomPicker>
+                      <RadioButton Grid.Column="2"  Content="Accending"  FontSize="14" BackgroundColor="Transparent" Margin="0" VerticalOptions="Center" HorizontalOptions="Center">
                          <RadioButton.Behaviors>
                               <xct:EventToCommandBehavior EventName="CheckedChanged" Command="{Binding AccendingTappedCommand}" CommandParameter="{Binding IsChecked}"/>
                          </RadioButton.Behaviors>
                      </RadioButton>
-                     <RadioButton BorderColor="Black" Content="Decending"  FontSize="14" BackgroundColor="Transparent" >
+                     <RadioButton Grid.Column="3"   Content="Decending"   FontSize="14" BackgroundColor="Transparent" Margin="0" VerticalOptions="Center" HorizontalOptions="Center" >
                           <RadioButton.Behaviors>
                               <xct:EventToCommandBehavior EventName="CheckedChanged" Command="{Binding DecendingTappedCommand}" CommandParameter="{Binding IsChecked}"/>
                          </RadioButton.Behaviors>
                      </RadioButton>
-                 </StackLayout>
+                 </Grid>
+
                  <ListView Grid.Row="1"  ItemsSource="{Binding CommentsList}" HasUnevenRows="True" SeparatorColor="Black" SelectionMode="None">
                      <ListView.ItemTemplate>
                          <DataTemplate>

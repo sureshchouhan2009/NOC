@@ -80,6 +80,7 @@
     <LinkDescription Include="LinkerSettings.xml" />
     <Compile Include="Implementation\MapBaseUrl_Android.cs" />
     <Compile Include="Renderers\CustomEditorRenderer.cs" />
+    <Compile Include="Renderers\CustomPickerRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -108,6 +109,10 @@
       <Generator></Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable\message1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\dropdownicon.png">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
