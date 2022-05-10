@@ -21,6 +21,12 @@ namespace NOC.Service
         public const string GetTransactionDetails = BaseUrl + "api/Transaction/gettrandata/";//in last we need to pass transaction Application Number
         public const string GetTransactionAttachment = BaseUrl + "api/Attachments/GetAttachments/?transactionid=";//{173}in last we need to pass transaction ID
         public const string GetTransactionComents = BaseUrl + "api/comment/getcommentdatalist/";//{RKT-20220329-1003}in last we need to pass Application Number
+        public const string CommentSaveing = BaseUrl + "api/search/commentsaveing";//add the new or reply comment.
+        public const string EditsaveEditSave = BaseUrl + "api/search/Editsave";//update the existing comment. 
+        public const string SaveCommentAttachment = BaseUrl + "api/Attachments/SaveCommentAttachment";//api/Attachments/SaveCommentAttachment. 
+
+
+
 
 
     }

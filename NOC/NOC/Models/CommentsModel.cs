@@ -109,7 +109,9 @@ namespace NOC.Models
         public object Decision { get; set; }
         public SolutionRoleswithUserID SolutionRoleswithUserID { get; set; }
 
-        public bool IsReplyViewVisible { get; set; } 
+        public bool IsReplyViewVisible { get; set; }
+
+        public string ReplyMessageText { get; set; }
     }
 
 

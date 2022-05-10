@@ -1,6 +1,7 @@
 using System;
 using Android.App;
 using Android.Runtime;
+using Android.Webkit;
 
 namespace NOC.Droid
 {
@@ -18,6 +19,7 @@ namespace NOC.Droid
         {
             base.OnCreate();
             Xamarin.Essentials.Platform.Init(this);
+           
         }
     }
 }

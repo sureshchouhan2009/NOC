@@ -61,7 +61,9 @@ namespace NOC.Droid.Renderers
     public class CustomPickerRenderer : PickerRenderer
     {
         CustomPicker element;
-
+        public CustomPickerRenderer(Context context) : base(context)
+        {
+        }
         protected override void OnElementChanged(ElementChangedEventArgs<Picker> e)
         {
             base.OnElementChanged(e);

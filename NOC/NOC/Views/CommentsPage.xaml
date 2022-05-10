@@ -103,11 +103,20 @@
                                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Comments.CommentsDate,StringFormat='{0:dd/MM/yyyy}'}" HorizontalOptions="Center" VerticalOptions="Center"/>
                                            <BoxView Grid.Row="1" Grid.ColumnSpan="2" Color="LightGray" HeightRequest="1"/>
                                             <Frame Grid.Row="2" HeightRequest="120" Grid.ColumnSpan="2" VerticalOptions="FillAndExpand" BorderColor="DarkGray" HasShadow="True" Padding="0">
-                                                <components:CustomEditor Text="{Binding ObservationSummaryText}" FontSize="16"  BackgroundColor="Transparent"/>
+                                                <components:CustomEditor Text="{Binding ReplyMessageText}" FontSize="16"  BackgroundColor="Transparent"/>
                                             </Frame>
-                                            <StackLayout Grid.Row="3" Grid.ColumnSpan="2" Margin="10" HeightRequest="20"  HorizontalOptions="End" Orientation="Horizontal">
+
+                                         <Label Grid.Row="3" Grid.Column="0"  Text="Attachment: pdf,doc,xls">
+                                            <Label.GestureRecognizers>
+                                             <TapGestureRecognizer Command="{Binding Source={x:Reference commentsPageRef},Path=BindingContext.AddAttachmentForReplyCommentCommand}" CommandParameter="{Binding .}"/>
+                                            </Label.GestureRecognizers>
+                                         </Label>
+                                            <StackLayout Grid.Row="3" Grid.Column="1"  Margin="10" HeightRequest="20"  HorizontalOptions="End" Orientation="Horizontal">
                                           <Image Source="message1.png"  />
                                           <Label Text=" Reply" FontSize="14" TextColor="Black"/>
+                                               <StackLayout.GestureRecognizers>
+                                             <TapGestureRecognizer Command="{Binding Source={x:Reference commentsPageRef},Path=BindingContext.SendReplyToExistingCommand}" CommandParameter="{Binding .}"/>
+                                         </StackLayout.GestureRecognizers>
                                       </StackLayout>
 
                                      </Grid>

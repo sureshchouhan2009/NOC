@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using NOC.Models;
 using NOC.Service;
 using NOC.Utility;
 using Prism.Navigation;
+using Xamarin.CommunityToolkit.Extensions;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace NOC.ViewModels
@@ -23,6 +26,20 @@ namespace NOC.ViewModels
 
             };
         }
+
+        private List<Attchtypeandfilepath> attachmentList= new List<Attchtypeandfilepath>();
+        public List<Attchtypeandfilepath> AttachmentList
+        {
+            get
+            {
+                return attachmentList;
+            }
+            set
+            {
+                SetProperty(ref attachmentList, value);
+            }
+        }
+
 
         private string selectedFilter;
         public string SelectedFilter
@@ -53,7 +70,14 @@ namespace NOC.ViewModels
 
         private void PickerIndexChangedCommandExecute(object obj)
         {
-           
+           if(selectedFilter== "Replied")
+            {
+
+            }
+            else
+            {
+
+            }
         }
 
         private ICommand accendingTappedCommand;
@@ -198,18 +222,167 @@ namespace NOC.ViewModels
                 SetProperty(ref commentsList, value);
             }
         }
+        
+             private ICommand sendReplyToExistingCommand;
 
+        public ICommand SendReplyToExistingCommand
+        {
+            get
+            {
+                if (sendReplyToExistingCommand == null)
+                {
+                    sendReplyToExistingCommand = new Command(SendReplyToExistingCommandExecute);
+                }
+
+                return sendReplyToExistingCommand;
+            }
+        }
+        private string messageText;
+        public string MessageText
+        {
+            get
+            {
+                return messageText;
+            }
+            set
+            {
+                SetProperty(ref messageText, value);
+            }
+        }
+        private async void SendReplyToExistingCommandExecute(object obj)
+        {
+            try
+            {
+
+                var currentComment = obj as CommentsModel;
+                var trasactionID= Session.Instance.CurrentTransaction.Transaction.TransactionID;
+                CommentReplyModel model = new CommentReplyModel();
+                if (!String.IsNullOrEmpty(currentComment.ReplyMessageText))
+                {
+                    model.Comment = currentComment.ReplyMessageText;
+                    model.CommentsDate = DateTime.Now;
+                    model.CommentType = 1;
+                    model.ParentCommentID = currentComment.Comments.ParentCommentID ?? 1;
+                    model.TransactionID = trasactionID;
+                    model.UserID = currentComment.Comments.UserID;
+                  var response=  await ApiService.Instance.PostReplyComment(model);
+                    if (response && AttachmentList.Count>0)
+                    {
+                        MediaAttachmentModel AttModel = new MediaAttachmentModel();
+                        AttModel.attchtypeandfilepath = AttachmentList;
+                        AttModel.attachments = new Attachments
+                        {
+                            TransactionID = trasactionID,
+                            UserID = currentComment.Comments.UserID
+                        };
+
+                        AttModel.RandomID = "7569924447";
+                        AttModel.TransactionNumber = Session.Instance.CurrentTransaction.Transaction.TransactionNumber;
+
+
+                       var attacmentSaveResponse= await ApiService.Instance.SaveCommentAttachment(AttModel);
+
+                        await Application.Current.MainPage.DisplayToastAsync(attacmentSaveResponse);
+                    }
+                    if (response)
+                    {
+
+                       // currentComment.ReplyMessageText = "";
+                        getLatestComments();
+                         await Application.Current.MainPage.DisplayToastAsync("Reply Added successfully");
+                    }
+                    else
+                    {
+                        await Application.Current.MainPage.DisplayToastAsync("Failed please try again later");
+                    }
+                   
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayToastAsync("Enter Message");
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+           
+        }
+       
+        private ICommand addAttachmentForReplyCommentCommand;
+
+        public ICommand AddAttachmentForReplyCommentCommand
+        {
+            get
+            {
+                if (addAttachmentForReplyCommentCommand == null)
+                {
+                    addAttachmentForReplyCommentCommand = new Command(AddAttachmentForReplyCommentCommandExecute);
+                }
+
+                return addAttachmentForReplyCommentCommand;
+            }
+        }
+
+      
+
+        private async void AddAttachmentForReplyCommentCommandExecute(object obj)
+        {
+            try
+            {
+                var currentComment = obj as CommentsModel;
+                var options = new PickOptions
+                {
+                    PickerTitle = "Please select a comic file",
+                   // FileTypes = customFileType,
+                };
+
+                var result = await FilePicker.PickAsync();
+               
+                if (result != null)
+                {
+                    
+
+                   AttachmentList.Add(new Attchtypeandfilepath
+                    {
+                        filepath = result.FullPath,
+                        commentID = currentComment.Comments.CommentsID,
+                        Attachmenttype = 3
+                    });
+
+                  
+                     var Text = $"File Name: {result.FileName}";
+                    if (result.FileName.EndsWith("jpg", StringComparison.OrdinalIgnoreCase) ||
+                        result.FileName.EndsWith("png", StringComparison.OrdinalIgnoreCase))
+                    {
+                        var stream = await result.OpenReadAsync();
+                       var Image = ImageSource.FromStream(() => stream);
+                    }
+                }
+
+                var res= result;
+            }
+            catch (Exception ex)
+            {
+                // The user canceled or something went wrong
+            }
+
+            //return null;
+        }
 
         public override async void OnNavigatedTo(INavigationParameters parameters)
         {
             IsBusy = true;
             base.OnNavigatedTo(parameters);
-            var transactionDetails = Session.Instance.CurrentTransaction;
-            //CommentsList = new ObservableCollection<CommentsModel>( await ApiService.Instance.GetTransactionComents(transactionDetails.Transaction.TransactionNumber));
-            Session.Instance.CurerentTransactionCommentsList =  await ApiService.Instance.GetTransactionComents("RKT-20220330-1004");
-            CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList);
+            getLatestComments();
             IsBusy = false;
         }
 
+        private async void getLatestComments()
+        {
+            var transactionDetails = Session.Instance.CurrentTransaction;
+            Session.Instance.CurerentTransactionCommentsList = await ApiService.Instance.GetTransactionComents(transactionDetails.Transaction.TransactionNumber);
+            CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList);
+        }
     }
 }

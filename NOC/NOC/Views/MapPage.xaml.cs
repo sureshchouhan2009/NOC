@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using NOC.Interfaces;
+using NOC.Utility;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -12,7 +13,22 @@ namespace NOC.Views
     {
         public MapPage()
         {
-            InitializeComponent();
+            try
+            {
+
+                InitializeComponent();
+
+
+                //Task.Run(async () => await BackgroundMethodAsync());
+
+
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            #region Tried Code
 
             //webView.EvaluateJavaScriptAsync()
 
@@ -53,7 +69,8 @@ namespace NOC.Views
             //    //localHtmlViewSource.Html = System.IO.File.ReadAllText(initialHtmlPath);
 
             //    // Set the webview to use the local source
-            //    webView.Source = localHtmlViewSource;
+            //webView.Source = localHtmlViewSource;
+            // webView.EvaluateJavaScriptAsync("");
             //}
             //catch (Exception ex)
             //{
@@ -69,11 +86,55 @@ namespace NOC.Views
             //    });
 
             //}
+            #endregion
 
 
 
         }
 
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
 
+            await BackgroundMethodAsync();
+
+
+        }
+
+        private async Task<bool> BackgroundMethodAsync()
+        {
+            try
+            {
+                
+
+                var fileName = "index.html";
+                HtmlWebViewSource htmlWebViewSource = new HtmlWebViewSource();
+                var token = Session.Instance.Token;
+                var TransactionID = Session.Instance.CurrentTransaction.Transaction.TransactionID;
+                string roleID = "1";
+                using (var stream = await FileSystem.OpenAppPackageFileAsync(fileName))
+                {
+                    using (var reader = new StreamReader(stream))
+                    {
+                       // htmlWebViewSource.Html = await reader.ReadToEndAsync();
+
+                        webView.Source = new HtmlWebViewSource { Html = await reader.ReadToEndAsync() };
+
+                        //webView.Eval($"loadMap()");
+                       
+
+                    var res= await    webView.EvaluateJavaScriptAsync("loadMap()"); 
+
+
+
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }

@@ -55,15 +55,18 @@ namespace NOC.ViewModels
         {
             base.OnNavigatedTo(parameters);
 
-            var fileName = "index.html";
-            using (var stream = await FileSystem.OpenAppPackageFileAsync(fileName))
-            {
-                using (var reader = new StreamReader(stream))
-                {
-                    HtmlWebViewSource.Html = await reader.ReadToEndAsync();
-                    
-                }
-            }
+            //var fileName = "index.html";
+            //using (var stream = await FileSystem.OpenAppPackageFileAsync(fileName))
+            //{
+            //    using (var reader = new StreamReader(stream))
+            //    {
+            //        HtmlWebViewSource.Html = await reader.ReadToEndAsync();
+
+                   
+
+
+            //    }
+            //}
         }
     }
 }
