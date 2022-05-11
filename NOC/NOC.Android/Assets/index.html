@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8" />
     <link rel="icon" href="./favicon.ico" />
@@ -24,12 +23,11 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
 
     <div id="mapCont" style="position:relative"></div>
-    <script>function loadMap() {
-            alert("hello");
-            for (var TransactionID = 146,
-                roleID = 1,
-                GISToken = "1Kd1ZiTIkgmcx1GLRLm9M8lhqXmVkBNxZtNhsYR0edVz6PleErfdioU9ZJ6TLgtqqCqCVdXD-6GeVzpFYdvfVyZA1pV1BsPTQa-fCf6u6YggMNn6LKMNRcL9oe7qyAC6sWCqQ3jKTMuX-vkswzy_jvy_-YP-44DSm89elAqzThNQ04Q7IbGoPFFtOu7w9MrsXrNmQtjW69M2gtleA3sn5A6Pr9M3Tz7vDmkowl670NfjJokDBx08TaUEkriVcZ3leOF_u1mDBnjReBTIgl3utKb2Z_G4bsxSU_tg8L8tc-kvUnt2DItNvwM8dqa-HypDD251isoD-Xk9prf7ON9R0_OLqGxuNrWuXxNuRy8eNs5dWHB49VyK7s8LHyTqvWwO0jWASypAwxynuzQ-puGX_RAJVPc3FNprQ03_SFgOoUj5uP0yHgmoMvzdZSqvMlsevNbM9HU0Rs2JYfMZ4H2isvv21SOTZFrmXQFa-vo5RWJx4MFHDyYjq7jefeCD9vSlPb8ErPcBjrQxPSoCNLFvEw",
-                uri = location.href,
+    <script>function loadMap(TransactionID, roleID, GISToken) {
+            
+            for (var TransactionID = TransactionID,
+                roleID = roleID,
+                GISToken = GISToken, uri = location.href,
                 queryObject = {},
                 query = uri.substring(uri.indexOf("?") + 1, uri.length).split("&"),
                 i = 0; i < query.length; i++)queryObject[query[i].split("=")[0]] = query[i].split("=")[1];
@@ -44,14 +42,12 @@
                 }), 100)
             } "ar" == lang && (configJson = config_en),
                 getConfig(configJson);
-
-    return true;
         }
 
 
 
         //window._this_Map_Controllers.ETRApp.topic.publish("changeProject", TransactionID)</script>
-    <!--<script type="text/javascript">loadMap(146, 1, "1Kd1ZiTIkgmcx1GLRLm9M8lhqXmVkBNxZtNhsYR0edVz6PleErfdioU9ZJ6TLgtqqCqCVdXD-6GeVzpFYdvfVyZA1pV1BsPTQa-fCf6u6YggMNn6LKMNRcL9oe7qyAC6sWCqQ3jKTMuX-vkswzy_jvy_-YP-44DSm89elAqzThNQ04Q7IbGoPFFtOu7w9MrsXrNmQtjW69M2gtleA3sn5A6Pr9M3Tz7vDmkowl670NfjJokDBx08TaUEkriVcZ3leOF_u1mDBnjReBTIgl3utKb2Z_G4bsxSU_tg8L8tc-kvUnt2DItNvwM8dqa-HypDD251isoD-Xk9prf7ON9R0_OLqGxuNrWuXxNuRy8eNs5dWHB49VyK7s8LHyTqvWwO0jWASypAwxynuzQ-puGX_RAJVPc3FNprQ03_SFgOoUj5uP0yHgmoMvzdZSqvMlsevNbM9HU0Rs2JYfMZ4H2isvv21SOTZFrmXQFa-vo5RWJx4MFHDyYjq7jefeCD9vSlPb8ErPcBjrQxPSoCNLFvEw");</script>-->
+    <script type="text/javascript">loadMap(dynamicTransactionID, dynamicRoleID, "dynamicTokenID");</script>
 
 </body>
 

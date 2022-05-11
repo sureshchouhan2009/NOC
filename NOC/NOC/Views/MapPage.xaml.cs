@@ -87,46 +87,33 @@ namespace NOC.Views
 
             //}
             #endregion
-
-
-
         }
 
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-
             await BackgroundMethodAsync();
-
-
         }
 
         private async Task<bool> BackgroundMethodAsync()
         {
             try
             {
-                
-
                 var fileName = "index.html";
                 HtmlWebViewSource htmlWebViewSource = new HtmlWebViewSource();
                 var token = Session.Instance.Token;
                 var TransactionID = Session.Instance.CurrentTransaction.Transaction.TransactionID;
-                string roleID = "1";
+               
+                int roleID = 1;
                 using (var stream = await FileSystem.OpenAppPackageFileAsync(fileName))
                 {
                     using (var reader = new StreamReader(stream))
                     {
-                       // htmlWebViewSource.Html = await reader.ReadToEndAsync();
-
-                        webView.Source = new HtmlWebViewSource { Html = await reader.ReadToEndAsync() };
-
-                        //webView.Eval($"loadMap()");
-                       
-
-                    var res= await    webView.EvaluateJavaScriptAsync("loadMap()"); 
-
-
-
+                        string htmlString = await reader.ReadToEndAsync();
+                        string replace1 = htmlString.Replace("dynamicTransactionID", TransactionID.ToString());
+                        string replace2 = replace1.Replace("dynamicRoleID", roleID.ToString());
+                        string replace3 = replace2.Replace("dynamicTokenID", Session.Instance.Token);
+                        webView.Source = new HtmlWebViewSource { Html = replace3 };
                     }
                 }
                 return true;
