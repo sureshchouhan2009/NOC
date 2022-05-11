@@ -5,6 +5,7 @@
              xmlns:local="clr-namespace:NOC.Behaviors"
              xmlns:viewmodels="clr-namespace:NOC.ViewModels"
              x:DataType="viewmodels:LoginPageViewModel"
+              NavigationPage.HasNavigationBar="False"
              x:Class="NOC.Views.LoginPage" BackgroundImageSource="backgroundImage.jpg">
     <ContentPage.Resources>
         <Style TargetType="components:CustomEntry">

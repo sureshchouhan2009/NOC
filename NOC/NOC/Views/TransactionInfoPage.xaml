@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:Converter="clr-namespace:NOC.Converters"
+              NavigationPage.HasNavigationBar="False"
              x:Class="NOC.Views.TransactionInfoPage" x:Name="TransactionDetails">
     <ContentPage.Resources>
 
