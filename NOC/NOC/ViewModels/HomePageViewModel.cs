@@ -14,6 +14,19 @@ namespace NOC.ViewModels
 {
     public class HomePageViewModel : ViewModelBase
     {
+        private bool _isProcessorFlow;
+        public bool IsProcessorFlow
+        {
+            get
+            {
+                return _isProcessorFlow ;
+            }
+            set
+            {
+                SetProperty(ref _isProcessorFlow, value);
+            }
+        }
+
         private string _notificationCount;
         public string NotificationCount
         {
@@ -38,7 +51,31 @@ namespace NOC.ViewModels
                 SetProperty(ref _myNocApplicationCount, value);
             }
         }
+        private string _newNocApplicationCount;
+        public string NewNocApplicationCount
+        {
+            get
+            {
+                return _newNocApplicationCount;
+            }
+            set
+            {
+                SetProperty(ref _newNocApplicationCount, value);
+            }
+        }
 
+        private string _repliedNOCsCount;
+        public string RepliedNOCsCount
+        {
+            get
+            {
+                return _repliedNOCsCount;
+            }
+            set
+            {
+                SetProperty(ref _repliedNOCsCount, value);
+            }
+        }
         private string _nocApplicationforRevalidationInTenDaysCount;
         public string NocApplicationforRevalidationInTenDaysCount
         {
@@ -67,7 +104,7 @@ namespace NOC.ViewModels
        
         public HomePageViewModel(INavigationService navigationService) : base(navigationService)
         {
-          
+          IsProcessorFlow= Session.Instance.CurrentUserType == UserTypes.Officer;
         }
 
         private ICommand navigateToNotificationPageCommand;
@@ -171,6 +208,8 @@ namespace NOC.ViewModels
                 Session.Instance.MenuItemsCountModelData = await ApiService.Instance.GetSearchCountApiCall();
                 NotificationCount = Session.Instance.MenuItemsCountModelData.NotificationCount;
                 MyNocApplicationCount = Session.Instance.MenuItemsCountModelData.MyNOCApplicationsCount;
+                NewNocApplicationCount= Session.Instance.MenuItemsCountModelData.NewNOCApplicationsCount??"00";
+                RepliedNOCsCount= Session.Instance.MenuItemsCountModelData.CommentReplyCount ?? "00";
                 CommentedApplicationCount = Session.Instance.MenuItemsCountModelData.CommentedApplicationsCount;
                 NocApplicationforRevalidationInTenDaysCount = string.IsNullOrWhiteSpace(Session.Instance.MenuItemsCountModelData.OwnedApplicationsPendingTenDayCount) ?
                     "00" : Session.Instance.MenuItemsCountModelData.OwnedApplicationsPendingTenDayCount;

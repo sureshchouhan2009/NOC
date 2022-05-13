@@ -1,3 +1,4 @@
+using NOC.Models;
 using NOC.Service;
 using NOC.Utility;
 using NOC.ViewModels;
@@ -24,6 +25,15 @@ namespace NOC
             #region Get looged in person details
             Preferences.Get("UserName", "");
             Preferences.Get("Password", "");
+            if(Preferences.Get("UserType", "")== "Officer")
+            {
+                Session.Instance.CurrentUserType = UserTypes.Officer;
+            }
+            else
+            {
+                Session.Instance.CurrentUserType = UserTypes.Applicant;
+            }
+           
             #endregion
             return Preferences.Get("IsLoggedIN", false);
         }

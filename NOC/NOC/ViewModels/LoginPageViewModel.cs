@@ -47,8 +47,12 @@ namespace NOC.ViewModels
 
         private async void PerformLoginComand(object obj)
         {
-            EmailText = "applicant_test";
-            PasswordText = "user123";
+            //EmailText = "applicant_test";
+            //PasswordText = "user123";
+
+            //for Processor
+            //EmailText = "officer_test";
+            //PasswordText = "user123";
             IsBusy = true;
             try
             {
@@ -65,6 +69,7 @@ namespace NOC.ViewModels
                         UserTypes userType = await RecogniseTokenAndReturnTheUserType(token);
                         if (userType == UserTypes.Applicant)
                         {
+                            Session.Instance.CurrentUserType = userType;
                             Session.Instance.Token = token;
                             Preferences.Set("UserType", userType.ToString());
                             Preferences.Set("Token", token);
@@ -72,6 +77,16 @@ namespace NOC.ViewModels
                             Preferences.Set("Password", PasswordText);
                             Preferences.Set("IsLoggedIN", true);
 
+                            await NavigationService.NavigateAsync("NavigationPage/HomePage");
+                        }else if (userType == UserTypes.Officer)
+                        {
+                            Session.Instance.CurrentUserType = userType;
+                            Session.Instance.Token = token;
+                            Preferences.Set("UserType", userType.ToString());
+                            Preferences.Set("Token", token);
+                            Preferences.Set("UserName", EmailText);
+                            Preferences.Set("Password", PasswordText);
+                            Preferences.Set("IsLoggedIN", true);
                             await NavigationService.NavigateAsync("NavigationPage/HomePage");
                         }
                         else

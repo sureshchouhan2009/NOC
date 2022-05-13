@@ -22,6 +22,7 @@ namespace NOC.Utility
         #endregion
 
         public String Token;
+        public UserTypes CurrentUserType { get; set; }
         public List<NotificationsModel> NotificationsModelList = new List<NotificationsModel>();
         public List<TransactionModel> ApplicationsOrTransactionsList = new List<TransactionModel>();
         public TransactionDetailsModel CurrentTransaction = new TransactionDetailsModel();

@@ -1,9 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              x:Class="NOC.Views.HomePage"
              NavigationPage.HasNavigationBar="False">
     <ContentPage.Resources>
+         <ResourceDictionary>
+            <xct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
         <Style x:Key="circleFram" TargetType="Frame">
             <Setter Property="VerticalOptions" Value="Center" />
             <Setter Property="HorizontalOptions" Value="Center" />
@@ -43,7 +46,8 @@
                 <Label Grid.Column="1" Text="Menu" Style="{StaticResource TitleLabelStyle}" Padding="0" Margin="0" />
             </Frame>
             <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="3"  >
-                <Frame Grid.Row="0" Padding="0" Margin="0" BackgroundColor="LightGray" HeightRequest="60">
+               <!--My Noc/New Noc-->
+                <Frame Grid.Row="0" Padding="0" Margin="0" BackgroundColor="LightGray" HeightRequest="60" IsVisible="{Binding IsProcessorFlow, Converter={StaticResource InvertedBoolConverter}}">
                     <Grid  ColumnDefinitions="2*,8*,2*" Margin="10"  >
                         <Frame Grid.Column="0" Style="{StaticResource circleFram}">
                             <Image  Source="doc_icon" Aspect="AspectFit" HeightRequest="40" ></Image>
@@ -62,7 +66,28 @@
                     </Frame.GestureRecognizers> 
                     
                 </Frame>
+                <Frame Grid.Row="0" Padding="0" Margin="0" BackgroundColor="LightGray" HeightRequest="60" IsVisible="{Binding IsProcessorFlow}">
+                    <Grid  ColumnDefinitions="2*,8*,2*" Margin="10"  >
+                        <Frame Grid.Column="0" Style="{StaticResource circleFram}">
+                            <Image  Source="doc_icon" Aspect="AspectFit" HeightRequest="40" ></Image>
+                        </Frame>
+                        <StackLayout Grid.Column="1" Orientation="Horizontal" Padding="0" Margin="0">
+                            <Label Style="{StaticResource menuLabel}" Text="New NOC Applications"  />
+                            <Frame Style="{StaticResource circleFram}" >
+                                <Label Text="{Binding NewNocApplicationCount}" Style="{StaticResource countLabel}"  ></Label>
+                            </Frame>
+                        </StackLayout>
+                        
+                        <Image Grid.Column="2" Style="{StaticResource rightArrow}"  Source="rightArrowWhite" />
+                    </Grid>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateToMyNocApplications}" CommandParameter="10" NumberOfTapsRequired="1" />
+                    </Frame.GestureRecognizers> 
+                    
+                </Frame>
 
+
+                 <!--Commented Noc-->
                 <Frame Grid.Row="1" Padding="0" BackgroundColor="LightGray" Margin="0" HeightRequest="60">
                     <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
                         <Frame Grid.Column="0" Style="{StaticResource circleFram}">
@@ -81,7 +106,12 @@
                         <TapGestureRecognizer Command="{Binding NavigateToMyNocApplications}" CommandParameter="1" NumberOfTapsRequired="1" />
                     </Frame.GestureRecognizers>
                 </Frame>
-                <Frame Grid.Row="2" Padding="0" BackgroundColor="LightGray" Margin="0" HeightRequest="60">
+
+
+
+
+                <!--Revalidation in 10 Days Noc Or Replied Noc for Processor flow-->
+                <Frame Grid.Row="2" Padding="0" BackgroundColor="LightGray" Margin="0" HeightRequest="60" IsVisible="{Binding IsProcessorFlow, Converter={StaticResource InvertedBoolConverter}}">
                     <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
                         <Frame Grid.Column="0" Style="{StaticResource circleFram}">
                             <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="40"></Image>
@@ -96,10 +126,32 @@
                         <Image Grid.Column="2" Style="{StaticResource rightArrow}" Source="rightArrowWhite" />
                     </Grid>
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding NavigateToMyNocApplications}" CommandParameter="4" NumberOfTapsRequired="1" />
+                        <TapGestureRecognizer Command="{Binding NavigateToMyNocApplications}" CommandParameter="6" NumberOfTapsRequired="1" />
+                    </Frame.GestureRecognizers>
+                </Frame>
+
+                 <Frame Grid.Row="2" Padding="0" BackgroundColor="LightGray" Margin="0" HeightRequest="60" IsVisible="{Binding IsProcessorFlow}">
+                    <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
+                        <Frame Grid.Column="0" Style="{StaticResource circleFram}">
+                            <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="40"></Image>
+                        </Frame>
+                       
+                        <StackLayout Grid.Column="1" Orientation="Horizontal" Padding="0" Margin="0">
+                            <Label  Style="{StaticResource menuLabel}" Text="Replied NOCs" />
+                            <Frame Style="{StaticResource circleFram}">
+                                <Label Text="{Binding RepliedNOCsCount}" Style="{StaticResource countLabel}"></Label>
+                            </Frame>
+                        </StackLayout>
+                        <Image Grid.Column="2" Style="{StaticResource rightArrow}" Source="rightArrowWhite" />
+                    </Grid>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateToMyNocApplications}" CommandParameter="9" NumberOfTapsRequired="1" />
                     </Frame.GestureRecognizers>
                 </Frame>
                 
+
+
+
                
                 <Frame Grid.Row="3" Padding="0" BackgroundColor="LightGray" Margin="0" HeightRequest="60">
                     <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
