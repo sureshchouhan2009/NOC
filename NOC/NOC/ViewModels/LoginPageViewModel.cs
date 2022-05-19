@@ -10,6 +10,7 @@ using NOC.Models;
 using NOC.Service;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
+using NOC.Enums;
 
 namespace NOC.ViewModels
 {
@@ -53,6 +54,11 @@ namespace NOC.ViewModels
             //for Processor
             //EmailText = "officer_test";
             //PasswordText = "user123";
+
+            //for Reviewer
+            //EmailText = "reviwer_test";
+            //PasswordText = "user123";
+
             IsBusy = true;
             try
             {
@@ -78,7 +84,7 @@ namespace NOC.ViewModels
                             Preferences.Set("IsLoggedIN", true);
 
                             await NavigationService.NavigateAsync("NavigationPage/HomePage");
-                        }else if (userType == UserTypes.Officer)
+                        }else //if (userType == UserTypes.Officer)
                         {
                             Session.Instance.CurrentUserType = userType;
                             Session.Instance.Token = token;
@@ -89,10 +95,10 @@ namespace NOC.ViewModels
                             Preferences.Set("IsLoggedIN", true);
                             await NavigationService.NavigateAsync("NavigationPage/HomePage");
                         }
-                        else
-                        {
-                            await Application.Current.MainPage.DisplayToastAsync("Currently supporting only applicant flow");
-                        }
+                        //else
+                        //{
+                        //    await Application.Current.MainPage.DisplayToastAsync("Currently supporting only applicant flow");
+                        //}
                     }
                     else
                     {

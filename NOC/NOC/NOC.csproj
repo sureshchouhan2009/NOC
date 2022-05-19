@@ -38,9 +38,11 @@
     <None Remove="Converters\" />
     <None Remove="Mono.Android" />
     <None Remove="Xamarin.Essentials" />
+    <None Remove="Enums\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interfaces\" />
     <Folder Include="Converters\" />
+    <Folder Include="Enums\" />
   </ItemGroup>
 </Project>

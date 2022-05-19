@@ -1,4 +1,5 @@
-﻿using NOC.Models;
+﻿using NOC.Enums;
+using NOC.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,12 +24,13 @@ namespace NOC.Utility
 
         public String Token;
         public UserTypes CurrentUserType { get; set; }
+
         public List<NotificationsModel> NotificationsModelList = new List<NotificationsModel>();
         public List<TransactionModel> ApplicationsOrTransactionsList = new List<TransactionModel>();
         public TransactionDetailsModel CurrentTransaction = new TransactionDetailsModel();
        
         public MenuItemsCountModel MenuItemsCountModelData { get; set; }
         public List<CommentsModel> CurerentTransactionCommentsList = new List<CommentsModel>();
-
+        public bool IsNewNocApplicationFlow { get; set; }
     }
 }

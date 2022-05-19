@@ -726,6 +726,7 @@
     <BundleResource Include="Resources\img\edit.png" />
     <BundleResource Include="Resources\img\zoom-out.png" />
     <BundleResource Include="Resources\img\zoom-in.png" />
+    <BundleResource Include="Resources\ForwardArrow.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

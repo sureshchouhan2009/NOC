@@ -1,3 +1,4 @@
+using NOC.Enums;
 using NOC.Models;
 using NOC.Service;
 using NOC.Utility;
@@ -28,6 +29,14 @@ namespace NOC
             if(Preferences.Get("UserType", "")== "Officer")
             {
                 Session.Instance.CurrentUserType = UserTypes.Officer;
+            }
+            else if(Preferences.Get("UserType", "") == "Reviewer")
+            {
+                Session.Instance.CurrentUserType = UserTypes.Reviewer;
+            }
+            else if (Preferences.Get("UserType", "") == "Stackholder")
+            {
+                Session.Instance.CurrentUserType = UserTypes.Stackholder;
             }
             else
             {
@@ -86,6 +95,8 @@ namespace NOC
             containerRegistry.RegisterForNavigation<TransactionInfoPage, TransactionInfoPageViewModel>();
             containerRegistry.RegisterForNavigation<MapPage, MapPageViewModel>();
             containerRegistry.RegisterForNavigation<CommentsPage, CommentsPageViewModel>();
+            containerRegistry.RegisterForNavigation<TrasactionAacceptancePage, TrasactionAacceptancePageViewModel>();
+            
         }
     }
 }

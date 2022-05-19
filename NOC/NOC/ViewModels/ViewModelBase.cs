@@ -1,4 +1,6 @@
 ﻿using NOC.Helpers;
+using NOC.Models;
+using NOC.Utility;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
@@ -20,7 +22,19 @@ namespace NOC.ViewModels
             get { return _title; }
             set { SetProperty(ref _title, value); }
         }
-
+        private TransactionDetailsModel _transactonDetail;
+        public TransactionDetailsModel TransactonDetail
+        {
+            get
+            {
+                _transactonDetail = Session.Instance.CurrentTransaction;
+                return _transactonDetail;
+            }
+            set
+            {
+                SetProperty(ref _transactonDetail, value);
+            }
+        }
         public ViewModelBase(INavigationService navigationService)
         {
             NavigationService = navigationService;

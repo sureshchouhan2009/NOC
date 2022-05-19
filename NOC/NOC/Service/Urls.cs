@@ -15,9 +15,25 @@ namespace NOC.Service
         public const string CheckStakeholder = BaseUrl + "api/Users/ERStakeholder";
         public const string CheckOfficer = BaseUrl + "api/Users/CheckOfficer";
 
-        public const string GetSearchCount = BaseUrl + "api/Search/GetSearchCount/applicant";
+
+
+        #region UserSpecific SearchCount 
+        public const string GetSearchCountApplicant = BaseUrl + "api/Search/GetSearchCount/applicant";
+        public const string GetSearchCountOfficer = BaseUrl + "api/Search/GetSearchCount/processor";
+        public const string GetSearchCountStackHolder = BaseUrl + "api/Search/GetSearchCount/stakeholder";
+        public const string GetSearchCountReviewer = BaseUrl + "api/Search/GetSearchCount/reviewer";
+        #endregion
+
+        #region UserSpecific ApplicationLists 
+        public const string applicantGetTransactionList = BaseUrl + "api/Search/GetTransactionList/applicant/";
+        public const string OfficerGetTransactionList = BaseUrl + "api/Search/GetTransactionList/processor/";
+        public const string stakeholderTransactionList = BaseUrl + "api/Search/GetTransactionList/stakeholder/";
+        public const string reviewerGetTransactionList = BaseUrl + "api/Search/GetTransactionList/reviewer/";
+        #endregion
+
+        //  public const string applicantGetTransactionList = BaseUrl + "api/Search/GetTransactionList/applicant/";//in last we need to pass filter id
+
         public const string GetNotifications = BaseUrl + "api/Search/GetNotification";
-        public const string applicantGetTransactionList = BaseUrl + "api/Search/GetTransactionList/applicant/";//in last we need to pass filter id
         public const string GetTransactionDetails = BaseUrl + "api/Transaction/gettrandata/";//in last we need to pass transaction Application Number
         public const string GetTransactionAttachment = BaseUrl + "api/Attachments/GetAttachments/?transactionid=";//{173}in last we need to pass transaction ID
         public const string GetTransactionComents = BaseUrl + "api/comment/getcommentdatalist/";//{RKT-20220329-1003}in last we need to pass Application Number
@@ -27,7 +43,17 @@ namespace NOC.Service
 
 
 
+        #region Reviewer Specific Urls
+        public const string PostObjectionRaised = BaseUrl + "api/ERReviewer/ObjectionRaised";
+        public const string PostNoObjection = BaseUrl + "api/ERReviewer/NoObjection";
 
+        #endregion
+        #region Processor Specific Urls
+        
+        public const string PostOwnNocs = BaseUrl + "api/SearchOfficer/OwnProcessor";
+        public const string TransferOwnership = BaseUrl + "api/TransactionService/TransferOwnership";
+
+        #endregion
 
     }
 }

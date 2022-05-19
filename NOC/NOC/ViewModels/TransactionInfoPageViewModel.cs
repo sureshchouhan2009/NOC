@@ -1,4 +1,5 @@
-﻿using NOC.Interfaces;
+﻿using NOC.Enums;
+using NOC.Interfaces;
 using NOC.Models;
 using NOC.Service;
 using NOC.Utility;
@@ -6,7 +7,9 @@ using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.CommunityToolkit.Extensions;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -17,6 +20,8 @@ namespace NOC.ViewModels
         public TransactionInfoPageViewModel(INavigationService navigationService) : base(navigationService)
         {
             Title = "Transaction Info";
+            IsReviewer = Session.Instance.CurrentUserType == UserTypes.Reviewer;
+            IsNewApplication = Session.Instance.IsNewNocApplicationFlow;
         }
 
         private List<AttachmentModel> _attachmentList;
@@ -33,17 +38,34 @@ namespace NOC.ViewModels
             }
         }
 
-        private TransactionDetailsModel _transactonDetail;
-        public TransactionDetailsModel TransactonDetail
+       
+
+
+        private bool _isNewApplication;
+        public bool IsNewApplication
         {
             get
             {
-                _transactonDetail = Session.Instance.CurrentTransaction;
-                return _transactonDetail;
+                
+                return _isNewApplication;
             }
             set
             {
-                SetProperty(ref _transactonDetail, value);
+                SetProperty(ref _isNewApplication, value);
+            }
+        }
+
+        private bool _isReviewer;
+        public bool IsReviewer
+        {
+            get
+            {
+
+                return _isReviewer;
+            }
+            set
+            {
+                SetProperty(ref _isReviewer, value);
             }
         }
 
@@ -60,6 +82,27 @@ namespace NOC.ViewModels
 
                 return navigateToMapCommand;
             }
+        }
+
+
+        private ICommand _reviewerAcceptancePageNavigateCommand;
+
+        public ICommand ReviewerAcceptancePageNavigateCommand
+        {
+            get
+            {
+                if (_reviewerAcceptancePageNavigateCommand == null)
+                {
+                    _reviewerAcceptancePageNavigateCommand = new Command(ReviewerAcceptancePageNavigateCommandExecute);
+                }
+
+                return _reviewerAcceptancePageNavigateCommand;
+            }
+        }
+
+        private async void ReviewerAcceptancePageNavigateCommandExecute(object obj)
+        {
+            await NavigationService.NavigateAsync("TrasactionAacceptancePage");
         }
 
         private ICommand downloadCommand;
@@ -104,6 +147,71 @@ namespace NOC.ViewModels
                 }
 
                 return navigateToComments;
+            }
+        }
+        private ICommand ownNocCommand;
+
+        public ICommand OwnNocCommand
+        {
+            get
+            {
+                if (ownNocCommand == null)
+                {
+                    ownNocCommand = new Command(OwnNocCommandExecuteAsync);
+                }
+
+                return ownNocCommand;
+            }
+        }
+
+        private async void OwnNocCommandExecuteAsync(object obj)
+        {
+            try
+            {
+
+                ObjectionOptionPostModel objectionOptionPostModel = new ObjectionOptionPostModel();
+                objectionOptionPostModel.transactionid = TransactonDetail.Transaction.TransactionNumber;
+                objectionOptionPostModel.userID = TransactonDetail.Transaction.UserID;
+                var result = await ApiService.Instance.PostOwnNoc(objectionOptionPostModel);
+                await Application.Current.MainPage.DisplayToastAsync(result);
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+        }
+        private ICommand transferNocCommand;
+
+        public ICommand TransferNocCommand
+        {
+            get
+            {
+                if (transferNocCommand == null)
+                {
+                    transferNocCommand = new Command(TransferNocCommandExecute);
+                }
+
+                return transferNocCommand;
+            }
+        }
+
+        private async void TransferNocCommandExecute(object obj)
+        {
+            try
+            {
+
+                ObjectionOptionPostModel transferNocModel = new ObjectionOptionPostModel();
+                transferNocModel.transactionid = TransactonDetail.Transaction.TransactionNumber;
+                transferNocModel.userID = TransactonDetail.Transaction.UserID;
+                var result = await ApiService.Instance.GetTransferNocApiCall(transferNocModel);
+                await Application.Current.MainPage.DisplayToastAsync(result);
+
+            }
+            catch (Exception ex)
+            {
+
             }
         }
 

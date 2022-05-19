@@ -1,13 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:Converter="clr-namespace:NOC.Converters"
+             xmlns:Converter="clr-namespace:NOC.Converters" xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
               NavigationPage.HasNavigationBar="False"
              x:Class="NOC.Views.TransactionInfoPage" x:Name="TransactionDetails">
     <ContentPage.Resources>
 
           <ResourceDictionary>
             <Converter:IntToBoolConverter x:Key="intToBoolConverter" />
+             
+            <xct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+       
         </ResourceDictionary>
         <Style x:Key="circleFram" TargetType="Frame">
             <Setter Property="VerticalOptions" Value="Center" />
@@ -42,8 +45,8 @@
         </Style>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid RowDefinitions=".8*,8.4*,.8*" RowSpacing="0">
-            <Frame Grid.Row="0" Padding="0">
+        <Grid RowDefinitions="Auto,*,Auto" RowSpacing="0">
+            <Frame Grid.Row="0" Padding="0" HeightRequest="40">
                 <Grid>
                     <Image Source="BackArrowRed" HeightRequest="30" WidthRequest="30" HorizontalOptions="Start" VerticalOptions="Center">
                         <Image.GestureRecognizers>
@@ -54,7 +57,7 @@
                 </Grid>
             </Frame>
             <ScrollView Grid.Row="1">
-                <Grid  RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" >
+                <Grid  RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" >
                     <Frame Grid.Row="0" Padding="5" BackgroundColor="Red" HeightRequest="50" >
                         <Grid ColumnDefinitions="2*,8*" >
                             <Frame Grid.Column="0" Style="{StaticResource circleFram}">
@@ -63,7 +66,7 @@
                         <Label Grid.Column="1" Style="{StaticResource menuLabel}" Text="{Binding TransactonDetail.Transaction.TransactionNumber}" />
                     </Grid>
                     </Frame>
-                    <Grid Grid.Row="2" RowDefinitions="Auto,Auto,Auto,Auto, Auto, Auto, Auto, Auto" Margin="10,0,10,0" >
+                    <Grid Grid.Row="2" RowDefinitions="Auto,Auto,Auto,Auto, Auto, Auto, Auto, Auto, Auto" Margin="10,0,10,0" >
                         <Label Grid.Row="0" Text="Project Information" Style="{StaticResource HeaderRedLabel}" />
                         <Label Grid.Row="1" Text="{Binding TransactonDetail.Transaction.TransactionNumber,StringFormat='Project Name: {0}'}" Style="{StaticResource basicInfoLabel}" />
                         <Label Grid.Row="2" Text="{Binding TransactonDetail.ProjectDetails,StringFormat='Project Description: {0}'}" Style="{StaticResource basicInfoLabel}" />
@@ -112,22 +115,40 @@
                     </Grid>
                     <BoxView Grid.Row="9" HeightRequest="1" Color="Gray" HorizontalOptions="FillAndExpand" />
 
-                   
+                    <Grid Grid.Row="10" ColumnDefinitions="5*,5*" Margin="10,0,10,0" HeightRequest="40" IsVisible="{Binding IsNewApplication }">
+                      <Frame Grid.Column="0"  Padding="0" BackgroundColor="Red" Margin="0">
+                         <Label Text="Own NOC"   FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5"/>
+                          <Frame.GestureRecognizers>
+                              <TapGestureRecognizer Command="{Binding OwnNocCommand}"/>
+                          </Frame.GestureRecognizers>
+                      </Frame>
+                      <Frame Grid.Column="1"  Padding="0" BackgroundColor="Gray" Margin="0">
+                           <Label Text="Transfer Ownership" FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5" />
+                           <Frame.GestureRecognizers>
+                              <TapGestureRecognizer Command="{Binding TransferNocCommand}"/>
+                          </Frame.GestureRecognizers>
+                      </Frame>
+                 </Grid>
                 </Grid>
                
             </ScrollView>
             
-            <Frame Grid.Row="2" Padding="10">
+            <Frame Grid.Row="2" Padding="10" HeightRequest="40">
                 <Grid ColumnDefinitions="5*, 5*">
                     <Image Grid.Column="0" Source="home" HorizontalOptions="Start">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding GoHomeCommand}" />
                         </Image.GestureRecognizers>
                     </Image>
-                    <Image Grid.Column="1" Source="er_user" HorizontalOptions="End">
+                    <Image Grid.Column="1" Source="er_user" HorizontalOptions="End" IsVisible="{Binding IsReviewer, Converter={StaticResource InvertedBoolConverter}}">
                         <!--<Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding GoBackCommand}" />
                         </Image.GestureRecognizers>-->
+                    </Image>
+                     <Image Grid.Column="1" Source="ForwardArrow.png" HorizontalOptions="End" IsVisible="{Binding IsReviewer}" HeightRequest="30" WidthRequest="30">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ReviewerAcceptancePageNavigateCommand}" />
+                        </Image.GestureRecognizers>
                     </Image>
                 </Grid>
             </Frame>

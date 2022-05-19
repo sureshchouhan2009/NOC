@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:Converter="clr-namespace:NOC.Converters" xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+    x:Class="NOC.Views.TrasactionAacceptancePage" NavigationPage.HasNavigationBar="False">
+     <ContentPage.Resources>
+
+          <ResourceDictionary>
+            <Converter:IntToBoolConverter x:Key="intToBoolConverter" />
+             
+            <xct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+       
+        </ResourceDictionary>
+        <Style x:Key="circleFram" TargetType="Frame">
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="HorizontalOptions" Value="Center" />
+            <Setter Property="BackgroundColor" Value="White" />
+            <Setter Property="CornerRadius" Value="30" />
+            <Setter Property="Padding" Value="0" />
+        </Style>
+        <Style x:Key="menuLabel" TargetType="Label">
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="HorizontalOptions" Value="Start" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+        <Style x:Key="HeaderRedLabel" TargetType="Label">
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="HorizontalOptions" Value="Start" />
+            <Setter Property="HorizontalTextAlignment" Value="Start" />
+            <Setter Property="TextColor" Value="red" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontAttributes" Value="Bold" />
+           
+        </Style>
+
+        <Style x:Key="basicInfoLabel" TargetType="Label">
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="HorizontalOptions" Value="Start" />
+            <Setter Property="HorizontalTextAlignment" Value="Start" />
+            <Setter Property="TextColor" Value="Gray" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontAttributes" Value="Bold" />
+        </Style>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid RowDefinitions="Auto,*,Auto" RowSpacing="0">
+            <Frame Grid.Row="0" Padding="0" HeightRequest="40">
+                <Grid>
+                    <Image Source="BackArrowRed" HeightRequest="30" WidthRequest="30" HorizontalOptions="Start" VerticalOptions="Center">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoBackCommand}" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Label Text="{Binding Title}" Style="{StaticResource TitleLabelStyle}" />
+                </Grid>
+            </Frame>
+            <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" >
+                <Grid Grid.Row="0" ColumnDefinitions="1.5*,8.5*" Padding="10,10,10,10" BackgroundColor="IndianRed">
+                       <Frame Grid.Column="0" Style="{StaticResource circleFram}">
+                             <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="35"></Image>
+                       </Frame>
+                    <Label Grid.Column="1" VerticalOptions="Center"  Style="{StaticResource menuLabel}" Text="{Binding TransactonDetail.Transaction.TransactionNumber}" />       
+             </Grid> 
+                <Label Grid.Row="1" VerticalOptions="Center"  Style="{StaticResource menuLabel}" Text="Approve/Reject" TextColor="IndianRed"/>
+                 <BoxView Grid.Row="2" HeightRequest="1" HorizontalOptions="FillAndExpand" Color="Gray"/>
+
+                 <StackLayout Grid.Row="3" Orientation="Horizontal" Margin="20,5,20,5">
+                     <Frame   Padding="0" BackgroundColor="Red" Margin="0">
+                         <Label Text="Review Decision"   FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5"/>
+                     </Frame>
+                      <Frame Padding="0" BackgroundColor="Gray" Margin="0">
+                           <Label Text="Condition" FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5" />
+                      </Frame>
+                </StackLayout>
+                <Grid Grid.Row="4" HeightRequest="300" BackgroundColor="Aqua" Margin="20,5,20,5">
+
+                </Grid>
+                <StackLayout Grid.Row="5" Orientation="Horizontal" Margin="20,5,20,5">
+                     <Frame   Padding="0" BackgroundColor="Red" Margin="0">
+                         <Label Text="No Objection"   FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5"/>
+                          <Frame.GestureRecognizers>
+                              <TapGestureRecognizer Command="{Binding NoObjectionCommand}"/>
+                          </Frame.GestureRecognizers>
+                     </Frame>
+                      <Frame   Padding="0" BackgroundColor="Gray" Margin="0">
+                           <Label Text="Objection" FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5" />
+                          <Frame.GestureRecognizers>
+                              <TapGestureRecognizer Command="{Binding RaiseObjectionCommand}"/>
+                          </Frame.GestureRecognizers>
+                      </Frame>
+                </StackLayout>
+
+            </Grid>
+            
+            <Frame Grid.Row="2" Padding="10" HeightRequest="40">
+                <Grid ColumnDefinitions="5*, 5*">
+                    <Image Grid.Column="0" Source="home" HorizontalOptions="Start">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoHomeCommand}" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Image Grid.Column="1" Source="er_user" HorizontalOptions="End" IsVisible="{Binding IsReviewer, Converter={StaticResource InvertedBoolConverter}}">
+                        <!--<Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoBackCommand}" />
+                        </Image.GestureRecognizers>-->
+                    </Image>
+                     
+                </Grid>
+            </Frame>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

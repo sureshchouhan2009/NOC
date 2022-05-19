@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using NOC.Enums;
 using NOC.Models;
 using NOC.Utility;
 using System;
@@ -88,7 +89,7 @@ namespace NOC.Service
                 var client = ServiceUtility.CreateNewHttpClient();
                 var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
                 client.DefaultRequestHeaders.Authorization = authHeader;
-                String RequestUrl = Urls.GetSearchCount;
+                String RequestUrl = CheckAndReturnUserSpecificUrlForSearchCount(true);
                 var response = await client.GetAsync(RequestUrl);
                 if (response.IsSuccessStatusCode)
                 {
@@ -103,6 +104,52 @@ namespace NOC.Service
             }
             return responsedata;
         }
+
+        private string CheckAndReturnUserSpecificUrlForSearchCount(bool IsSearchCountFlow)
+        {
+            if (IsSearchCountFlow)
+            {
+                if (Session.Instance.CurrentUserType == UserTypes.Officer)
+                {
+                    return Urls.GetSearchCountOfficer;
+                }
+                else if (Session.Instance.CurrentUserType == UserTypes.Reviewer)
+                {
+                    return Urls.GetSearchCountReviewer;
+                }
+                else if (Session.Instance.CurrentUserType == UserTypes.Stackholder)
+                {
+                    return Urls.GetSearchCountStackHolder;
+                }
+                else
+                {
+                    return Urls.GetSearchCountApplicant;
+                }
+            }
+            else
+            {
+                if (Session.Instance.CurrentUserType == UserTypes.Officer)
+                {
+                    return Urls.OfficerGetTransactionList;
+                }
+                else if (Session.Instance.CurrentUserType == UserTypes.Reviewer)
+                {
+                    return Urls.reviewerGetTransactionList;
+                }
+                else if (Session.Instance.CurrentUserType == UserTypes.Stackholder)
+                {
+                    return Urls.stakeholderTransactionList;
+                }
+                else
+                {
+                    return Urls.applicantGetTransactionList;
+                }
+            }
+
+
+            
+        }
+
         /// <summary>
         /// To get the detailed information of particular transaction 
         /// </summary>
@@ -235,7 +282,7 @@ namespace NOC.Service
                 var client = ServiceUtility.CreateNewHttpClient();
                 var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
                 client.DefaultRequestHeaders.Authorization = authHeader;
-                String RequestUrl = Urls.applicantGetTransactionList+filterID.ToString();
+                String RequestUrl = CheckAndReturnUserSpecificUrlForSearchCount(false)+filterID.ToString();
                 var response = await client.GetAsync(RequestUrl);
                 if (response.IsSuccessStatusCode)
                 {
@@ -277,5 +324,118 @@ namespace NOC.Service
             }
             return responseData;
         }
+
+
+
+        ///
+
+        public async Task<String> PostNoObjection(ObjectionOptionPostModel NoObjectionRequestModel)
+        {
+            String SuccessResult = "";
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.PostNoObjection;
+                var payload = ServiceUtility.BuildRequest(NoObjectionRequestModel);
+                var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
+                var response = await client.SendAsync(req);
+                //if (response?.IsSuccessStatusCode ?? false)
+                //{
+                    string result = await response.Content.ReadAsStringAsync();
+                    SuccessResult = JsonConvert.DeserializeObject<String>(result);
+               // }
+            }
+            catch (Exception ex)
+            {
+                SuccessResult = ex.ToString();
+
+
+            }
+            return SuccessResult;
+        }
+
+        public async Task<String> PostObjection(ObjectionOptionPostModel RaiseObjectionRequestModel)
+        {
+            String SuccessResult = "";
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.PostNoObjection;
+                var payload = ServiceUtility.BuildRequest(RaiseObjectionRequestModel);
+                var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
+                var response = await client.SendAsync(req);
+                //if (response?.IsSuccessStatusCode ?? false)
+                //{
+                    string result = await response.Content.ReadAsStringAsync();
+                    SuccessResult = JsonConvert.DeserializeObject<String>(result);
+                //}
+            }
+            catch (Exception ex)
+            {
+                SuccessResult = ex.ToString();
+
+            }
+            return SuccessResult;
+        }
+
+
+        public async Task<String> PostOwnNoc(ObjectionOptionPostModel requestModel)
+        {
+            String SuccessResult = "";
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.PostOwnNocs;
+                var payload = ServiceUtility.BuildRequest(requestModel);
+                var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
+                var response = await client.SendAsync(req);
+                //if (response?.IsSuccessStatusCode ?? false)
+                //{
+                string result = await response.Content.ReadAsStringAsync();
+                SuccessResult = JsonConvert.DeserializeObject<String>(result);
+                //}
+            }
+            catch (Exception ex)
+            {
+                SuccessResult = ex.ToString();
+
+            }
+            return SuccessResult;
+        }
+
+        public async Task<String> GetTransferNocApiCall(ObjectionOptionPostModel requestModel)
+        {
+            string responsedata = "";
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.TransferOwnership + "?" + "transNumber=" + requestModel.transactionid + "&" + "transferUserId=" + requestModel.userID;
+
+                var response = await client.GetAsync(RequestUrl);
+                //if (response.IsSuccessStatusCode)
+                //{
+                    string result = await response.Content.ReadAsStringAsync();
+                    responsedata = JsonConvert.DeserializeObject<string>(result, ServiceUtility.GetJsonSerializationSettings());
+                //}
+            }
+            catch (Exception ex)
+            {
+
+                responsedata = ex.ToString();
+            }
+            return responsedata;
+        }
+
+
+
+       
     }
 }
