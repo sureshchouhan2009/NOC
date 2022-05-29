@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using NOC.Models;
 using NOC.Service;
@@ -81,6 +83,31 @@ namespace NOC.ViewModels
             {
 
             }
+
+        }
+
+
+      
+        private ObservableCollection<StackholderModel> _stackHolderList = new ObservableCollection<StackholderModel>();
+        public ObservableCollection<StackholderModel> StackHolderList
+        {
+            get
+            {
+
+                return _stackHolderList;
+            }
+            set
+            {
+                SetProperty(ref _stackHolderList, value);
+            }
+        }
+
+        public override async void OnNavigatedTo(INavigationParameters parameters)
+        {
+            base.OnNavigatedTo(parameters);
+
+            var transactionID = TransactonDetail.Transaction.TransactionID.ToString();//correct
+            StackHolderList = new ObservableCollection<StackholderModel>( await ApiService.Instance.GetStackHolderList("319"));
         }
     }
 }

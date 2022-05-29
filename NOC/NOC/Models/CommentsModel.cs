@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace NOC.Models
 {
    
@@ -112,6 +114,7 @@ namespace NOC.Models
         public bool IsReplyViewVisible { get; set; }
 
         public string ReplyMessageText { get; set; }
+        public List<string> list { get; set; } = new List<string> ();
     }
 
 

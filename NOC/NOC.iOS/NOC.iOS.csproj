@@ -727,6 +727,9 @@
     <BundleResource Include="Resources\img\zoom-out.png" />
     <BundleResource Include="Resources\img\zoom-in.png" />
     <BundleResource Include="Resources\ForwardArrow.png" />
+    <BundleResource Include="Resources\Camera.png" />
+    <BundleResource Include="Resources\download.png" />
+    <BundleResource Include="Resources\upload.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

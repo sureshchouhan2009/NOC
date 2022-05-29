@@ -37,7 +37,7 @@
             </Frame>
 
             <Grid Grid.Row="1" RowDefinitions="Auto,Auto">
-                <Frame Grid.Row="0" Padding="0" Margin="10" BackgroundColor="White" HasShadow="False" BorderColor="IndianRed" CornerRadius="30" HeightRequest="45">
+                <Frame Grid.Row="0" Padding="0" Margin="10" BackgroundColor="White" HasShadow="False" BorderColor="{DynamicResource BrandPrimary}" CornerRadius="30" HeightRequest="45">
                     <SearchBar BackgroundColor="Transparent"  Text="{Binding SearchText}" SearchCommandParameter="{Binding NavigateToTrasactionDetailsCommand}" Placeholder="Search">
 
                         <SearchBar.Behaviors>
@@ -61,13 +61,13 @@
                                         <StackLayout Grid.Column="1" Orientation="Vertical">
                                             <Label Style="{StaticResource menuLabel}" Text="{Binding ApplicationNumber}" />
                                             <StackLayout Orientation="Horizontal" Spacing="2">
-                                                <Label Style="{StaticResource menuLabel}" Text="{Binding NOCType}" TextColor="IndianRed" FontSize="10"  />
-                                                <Label Style="{StaticResource menuLabel}" Text="{Binding STATUS,StringFormat=',{0}'}" TextColor="IndianRed" FontSize="12"/>
+                                                <Label Style="{StaticResource menuLabel}" Text="{Binding NOCType}" TextColor="{DynamicResource BrandPrimary}" FontSize="10"  />
+                                                <Label Style="{StaticResource menuLabel}" Text="{Binding STATUS,StringFormat=',{0}'}" TextColor="{DynamicResource BrandPrimary}" FontSize="12"/>
                                                
                                             </StackLayout>
                                             
                                         </StackLayout>
-                                        <Label Grid.Column="2" Text="{Binding ApplicationDate,StringFormat='{0:dd-MM-yyyy}'}" TextColor="IndianRed" FontSize="12" HorizontalOptions="End" VerticalOptions="Center" />
+                                        <Label Grid.Column="2" Text="{Binding ApplicationDate,StringFormat='{0:dd-MM-yyyy}'}" TextColor="{DynamicResource BrandPrimary}" FontSize="12" HorizontalOptions="End" VerticalOptions="Center" />
                                     <Grid.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding Source={x:Reference transactionsListPage},Path=BindingContext.NavigateToTrasactionDetailsCommand}" CommandParameter="{Binding .}" NumberOfTapsRequired="1" />
                                     </Grid.GestureRecognizers>

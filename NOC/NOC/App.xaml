@@ -13,5 +13,16 @@
             <Setter Property="TextColor" Value="Black" />
             <Setter Property="FontSize" Value="18" />
         </Style>
+
+       <!-- Application resource Colors -->
+            <Color x:Key="BrandPrimary">#aa182c</Color>
+            <Color x:Key="BrandSecondary">#595959</Color>
+            <Color x:Key="BrandTertiary">#F5D563</Color>
+            <Color x:Key="PageBackground">#F0F5F8</Color>
+            <Color x:Key="SectionBackground">#FFFFFF</Color>
+
+
+
+       
     </Application.Resources>
 </prism:PrismApplication>

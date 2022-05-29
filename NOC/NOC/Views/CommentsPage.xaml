@@ -3,12 +3,15 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:components="clr-namespace:NOC.Components"
-    xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+    xmlns:xct="http://xamarin.com/schemas/2020/toolkit" xmlns:Converter="clr-namespace:NOC.Converters"
     x:Name="commentsPageRef"
     NavigationPage.HasNavigationBar="False"
     x:Class="NOC.Views.CommentsPage">
 
      <ContentPage.Resources>
+          <ResourceDictionary>
+            <Converter:InverseIntToBoolConverter x:Key="intToBoolConverter" />
+        </ResourceDictionary>
         <Style x:Key="circleFram" TargetType="Frame">
             <Setter Property="VerticalOptions" Value="Center" />
             <Setter Property="HorizontalOptions" Value="Center" />
@@ -39,23 +42,28 @@
                
             </Frame>
              <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto" Padding="0">
-                 <Grid Grid.Row="0" ColumnDefinitions="1.5*,8.5*" Padding="10,10,10,10" BackgroundColor="IndianRed">
-                       <Frame Grid.Column="0" Style="{StaticResource circleFram}">
-                             <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="35"></Image>
-                       </Frame>
-                     <!--<Label Grid.Column="1" VerticalOptions="Center"  Style="{StaticResource menuLabel}" Text="wertyuiopoiuytrer" />-->
-                     <Label Grid.Column="1" VerticalOptions="Center"  Style="{StaticResource menuLabel}" Text="{Binding TransactonDetail.Transaction.TransactionNumber}" />       
-             </Grid>
+                  <Frame Grid.Row="0" Padding="4" BackgroundColor="{DynamicResource BrandPrimary}" HeightRequest="50" VerticalOptions="Center" >
+                        <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="2*,8*" RowSpacing="0" VerticalOptions="Center">
+                            <Frame Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Style="{StaticResource circleFram}" >
+                                <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="35"></Image>
+                            </Frame>
+                        <Label Grid.Row="0" Grid.Column="1" Style="{StaticResource menuLabel}" Text="{Binding TransactonDetail.Transaction.TransactionNumber}" />
+                        <Label Grid.Row="1" Grid.Column="1" Style="{StaticResource menuLabel}" Text="{Binding TransactonDetail.ProjectStage.ProjectStageCode}" FontSize="12" />
+                            
+                    </Grid>
+                    </Frame>
+
+
                  <Frame Grid.Row="1" HeightRequest="30" Padding="10,5,0,5" Margin="0">
-                     <Label Text="Comments" TextColor="IndianRed"  FontAttributes="Bold" FontSize="16" />
+                     <Label Text="Comments" TextColor="{DynamicResource BrandPrimary}"  FontAttributes="Bold" FontSize="16" />
                  </Frame>
                  <Grid Grid.Row="2" ColumnDefinitions="5*,5*" Margin="10,0,10,0" >
-                      <Frame Grid.Column="0"  Padding="0" BackgroundColor="Red" Margin="0">
+                      <Frame Grid.Column="0"  Grid.ColumnSpan="2" Padding="0" BackgroundColor="{DynamicResource BrandPrimary}" Margin="0">
                          <Label Text="From Processor"  TextColor="White" FontSize="14" VerticalOptions="Center" Padding="5"/>
                      </Frame>
-                      <Frame Grid.Column="1"  Padding="0" BackgroundColor="Gray" Margin="0">
+                      <!--<Frame Grid.Column="1"  Padding="0" BackgroundColor="Gray" Margin="0">
                            <Label Text="Notes" FontSize="14" VerticalOptions="Center" TextColor="White" Padding="5" />
-                      </Frame>
+                      </Frame>-->
                  </Grid>
              </Grid>
              <Grid Grid.Row="2" RowDefinitions="Auto,Auto" >
@@ -82,7 +90,7 @@
                      <ListView.ItemTemplate>
                          <DataTemplate>
                              <ViewCell>
-                                  <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" Padding="20,0,20,0">
+                                  <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto" Padding="20,0,20,0">
                                      <Grid Grid.Row="0" RowDefinitions="Auto,Auto" ColumnDefinitions="5*,5*" >
                                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding Users.UserType.UserTypeValue }" HorizontalOptions="Start" VerticalOptions="Center"/>
                                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Comments.CommentsDate,StringFormat='{0:dd/MM/yyyy}'}" HorizontalOptions="Center" VerticalOptions="Center"/>
@@ -102,10 +110,26 @@
                                          </StackLayout.GestureRecognizers>
                                       </StackLayout>
                                      <BoxView Grid.Row="4"  Color="LightGray" HeightRequest="1" Margin="0,10,0,10"/>
-                                     <Grid  IsVisible="{Binding IsReplyViewVisible}" Grid.Row="5" RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="5*,5*" >
+                                       <ListView ItemsSource="{Binding list }" Grid.Row="5" IsVisible="{Binding  list.Count ,Converter={StaticResource intToBoolConverter}}"  HasUnevenRows="True" HeightRequest="150">
+                                             <ListView.ItemTemplate>
+                                                 <DataTemplate>
+                                                     <ViewCell>
+                                                         <Label Text="{Binding .,StringFormat='Replied: {0}'}" TextColor="Black" FontSize="12" Margin="0,10,0,10"/>
+                                                     </ViewCell>
+                                                 </DataTemplate>
+                                             </ListView.ItemTemplate>
+
+                                         </ListView>
+
+
+                                      <Grid  IsVisible="{Binding IsReplyViewVisible}" Grid.Row="6" RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="5*,5*" >
                                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding Users.UserType.UserTypeValue }" HorizontalOptions="Start" VerticalOptions="Center"/>
                                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Comments.CommentsDate,StringFormat='{0:dd/MM/yyyy}'}" HorizontalOptions="Center" VerticalOptions="Center"/>
-                                           <BoxView Grid.Row="1" Grid.ColumnSpan="2" Color="LightGray" HeightRequest="1"/>
+
+                                        
+
+
+                                         <BoxView Grid.Row="1" Grid.ColumnSpan="2" Color="LightGray" HeightRequest="1"/>
                                             <Frame Grid.Row="2" HeightRequest="120" Grid.ColumnSpan="2" VerticalOptions="FillAndExpand" BorderColor="DarkGray" HasShadow="True" Padding="0">
                                                 <components:CustomEditor Text="{Binding ReplyMessageText}" FontSize="16"  BackgroundColor="Transparent"/>
                                             </Frame>

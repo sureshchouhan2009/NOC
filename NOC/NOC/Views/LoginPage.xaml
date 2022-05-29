@@ -58,7 +58,7 @@
                 </Grid>-->
                 <Button Grid.Row="6" Command="{Binding LoginComand }" VerticalOptions="Start"  Margin="20"
                         HorizontalOptions="FillAndExpand" CornerRadius="40" HeightRequest="50"
-                        TextColor="IndianRed" Background="white" Text="Sign in" FontAttributes="Bold"></Button>
+                        TextColor="{DynamicResource BrandPrimary}" Background="white" Text="Sign in" FontAttributes="Bold"></Button>
             </Grid>
         </ScrollView>
     </ContentPage.Content>

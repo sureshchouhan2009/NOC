@@ -29,7 +29,7 @@
             <Setter Property="VerticalOptions" Value="Center" />
             <Setter Property="HorizontalOptions" Value="Start" />
             <Setter Property="HorizontalTextAlignment" Value="Start" />
-            <Setter Property="TextColor" Value="red" />
+            <Setter Property="TextColor" Value="{DynamicResource BrandPrimary}" />
             <Setter Property="FontSize" Value="16" />
             <Setter Property="FontAttributes" Value="Bold" />
            
@@ -58,27 +58,38 @@
             </Frame>
             <ScrollView Grid.Row="1">
                 <Grid  RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" >
-                    <Frame Grid.Row="0" Padding="5" BackgroundColor="Red" HeightRequest="50" >
-                        <Grid ColumnDefinitions="2*,8*" >
-                            <Frame Grid.Column="0" Style="{StaticResource circleFram}">
+                    <Frame Grid.Row="0" Padding="4" BackgroundColor="{DynamicResource BrandPrimary}" HeightRequest="50" VerticalOptions="Center" >
+                        <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="2*,8*" RowSpacing="0" VerticalOptions="Center">
+                            <Frame Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Style="{StaticResource circleFram}" >
                                 <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="35"></Image>
                             </Frame>
-                        <Label Grid.Column="1" Style="{StaticResource menuLabel}" Text="{Binding TransactonDetail.Transaction.TransactionNumber}" />
+                        <Label Grid.Row="0" Grid.Column="1" Style="{StaticResource menuLabel}" Text="{Binding TransactonDetail.Transaction.TransactionNumber}" />
+                        <Label Grid.Row="1" Grid.Column="1" Style="{StaticResource menuLabel}" Text="{Binding TransactonDetail.ProjectStage.ProjectStageCode}" FontSize="12" />
+                            
                     </Grid>
                     </Frame>
                     <Grid Grid.Row="2" RowDefinitions="Auto,Auto,Auto,Auto, Auto, Auto, Auto, Auto, Auto" Margin="10,0,10,0" >
                         <Label Grid.Row="0" Text="Project Information" Style="{StaticResource HeaderRedLabel}" />
-                        <Label Grid.Row="1" Text="{Binding TransactonDetail.Transaction.TransactionNumber,StringFormat='Project Name: {0}'}" Style="{StaticResource basicInfoLabel}" />
-                        <Label Grid.Row="2" Text="{Binding TransactonDetail.ProjectDetails,StringFormat='Project Description: {0}'}" Style="{StaticResource basicInfoLabel}" />
-                        <Label Grid.Row="3" Text="{Binding TransactonDetail.ProjectDetails,StringFormat='Project State: {0}'}" Style="{StaticResource basicInfoLabel}" />
-                        <Label Grid.Row="4" Text="{Binding TransactonDetail.ProjectDetails,StringFormat='Project Category: {0}'}" Style="{StaticResource basicInfoLabel}" />
-                        <Label Grid.Row="5" Text="{Binding TransactonDetail.ProjectDetails,StringFormat='Project Owner: {0}'}" Style="{StaticResource basicInfoLabel}" />
-                        <Label Grid.Row="6" Text="{Binding TransactonDetail.ProjectDetails,StringFormat='Company Name: {0}'}" Style="{StaticResource basicInfoLabel}" />
+                        <Label Grid.Row="1" Text="{Binding TransactonDetail.ProjectDetails.ProjectName,StringFormat='Project Name: {0}'}" Style="{StaticResource basicInfoLabel}" />
+                        <Label Grid.Row="2" Text="{Binding TransactonDetail.ProjectDetails.Description,StringFormat='Project Description: {0}'}" Style="{StaticResource basicInfoLabel}" />
+                        <Label Grid.Row="3" Text="{Binding TransactonDetail.ProjectDetails.ProjectNumber,StringFormat='Project Number: {0}'}" Style="{StaticResource basicInfoLabel}" />
+                        <Label Grid.Row="4" Text="{Binding TransactonDetail.ProjectActivityType.ProjectActivityTypeCode,StringFormat='Project Activity Type: {0}'}" Style="{StaticResource basicInfoLabel}" />
+                        <Label Grid.Row="5" Text="{Binding TransactonDetail.ProjectDetails.Owner.OwnerName,StringFormat='Project Owner: {0}'}" Style="{StaticResource basicInfoLabel}" />
+                        <Label Grid.Row="6" Text="{Binding TransactonDetail.Organization.OrganizationName,StringFormat='Company Name: {0}'}" Style="{StaticResource basicInfoLabel}" />
                     </Grid>
                     <BoxView Grid.Row="3" HeightRequest="1" Color="Gray" HorizontalOptions="FillAndExpand" />
                     <Grid Grid.Row="4" RowDefinitions="Auto,Auto"  Margin="10,0,10,0">
-                        <Label Grid.Row="0" Text="List Of Attachments" Style="{StaticResource HeaderRedLabel}" />
+                        <Grid Grid.Row="0"  ColumnDefinitions="8*, 2*">
+                           
+                            <Label Grid.Column="0" Text="List Of Attachments" Style="{StaticResource HeaderRedLabel}" HorizontalOptions="Start" />
+                            <Image Grid.Column="1" Source="Camera.png" IsVisible="{Binding IsReviewer, Converter={StaticResource InvertedBoolConverter}}" HeightRequest="20" WidthRequest="20" HorizontalOptions="End">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding AddAttachmentCommand}"/>
+                                </Image.GestureRecognizers>
+                            </Image>
 
+                        </Grid>
+                        
                          <Label Grid.Row="1" IsVisible="{Binding  AttachmentList.Count ,Converter={StaticResource intToBoolConverter}}" Text="No attachment availabe"  FontSize="16" VerticalOptions="Center" HorizontalOptions="Center" />
            
                         <ListView  Grid.Row="1" ItemsSource="{Binding AttachmentList}" HasUnevenRows="True" HeightRequest="120" SeparatorVisibility="None">
@@ -116,7 +127,7 @@
                     <BoxView Grid.Row="9" HeightRequest="1" Color="Gray" HorizontalOptions="FillAndExpand" />
 
                     <Grid Grid.Row="10" ColumnDefinitions="5*,5*" Margin="10,0,10,0" HeightRequest="40" IsVisible="{Binding IsNewApplication }">
-                      <Frame Grid.Column="0"  Padding="0" BackgroundColor="Red" Margin="0">
+                      <Frame Grid.Column="0"  Padding="0" BackgroundColor="{DynamicResource BrandPrimary}" Margin="0">
                          <Label Text="Own NOC"   FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5"/>
                           <Frame.GestureRecognizers>
                               <TapGestureRecognizer Command="{Binding OwnNocCommand}"/>

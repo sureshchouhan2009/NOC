@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Linq;
 namespace NOC.Service
 {
    public class ApiService
@@ -50,7 +50,10 @@ namespace NOC.Service
             }
             return isSuccess;
         }
-        public async Task<String> SaveCommentAttachment(MediaAttachmentModel attachmentRequestModel)
+
+
+        //for mobile this method saves actual file to the server folder structure and returns the file path
+        public async Task<String> SaveCommentAttachment(NewAttachmentModel attachmentRequestModel)
         {
             string  SuccessMessage = "";
             try
@@ -58,7 +61,7 @@ namespace NOC.Service
                 var client = ServiceUtility.CreateNewHttpClient();
                 var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
                 client.DefaultRequestHeaders.Authorization = authHeader;
-                String RequestUrl = Urls.SaveCommentAttachment;
+                String RequestUrl = Urls.UploadAttachmentToServer;
                 var payload = ServiceUtility.BuildRequest(attachmentRequestModel);
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
                 var response = await client.SendAsync(req);
@@ -76,6 +79,32 @@ namespace NOC.Service
             return SuccessMessage;
         }
 
+        // this method actually saves the file path to the DB
+        public async Task<String> SaveCommentAttachmentToDB(MediaAttachmentModel RequestModel)
+        {
+            string SuccessMessage = "";
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.SaveAttachmentToDatabase;
+                var payload = ServiceUtility.BuildRequest(RequestModel);
+                var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
+                var response = await client.SendAsync(req);
+                if (response?.IsSuccessStatusCode ?? false)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    SuccessMessage = JsonConvert.DeserializeObject<string>(result);
+                }
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+            return SuccessMessage;
+        }
 
         /// <summary>
         /// To Get the No of application/Transaction count available in menu options
@@ -163,7 +192,7 @@ namespace NOC.Service
                 var client = ServiceUtility.CreateNewHttpClient();
                 var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
                 client.DefaultRequestHeaders.Authorization = authHeader;
-                String RequestUrl = Urls.GetTransactionDetails + applicationNumber;
+                String RequestUrl = Urls.GetTransactionDetailsNew + applicationNumber;
                 var response = await client.GetAsync(RequestUrl);
                 if (response.IsSuccessStatusCode)
                 {
@@ -226,7 +255,12 @@ namespace NOC.Service
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
-                    responsedata = JsonConvert.DeserializeObject<List<CommentsModel>>(result, ServiceUtility.GetJsonSerializationSettings());
+                    var commentList= JsonConvert.DeserializeObject<List<CommentsModel>>(result, ServiceUtility.GetJsonSerializationSettings());
+
+                    responsedata = ModifyCommentListAndReturnAsCommentAndRepliedCommentsList(commentList);
+
+
+                    //responsedata = JsonConvert.DeserializeObject<List<CommentsModel>>(result, ServiceUtility.GetJsonSerializationSettings());
                 }
             }
             catch (Exception ex)
@@ -235,6 +269,30 @@ namespace NOC.Service
 
             }
             return responsedata;
+        }
+
+        private List<CommentsModel> ModifyCommentListAndReturnAsCommentAndRepliedCommentsList(List<CommentsModel> commentList)
+        {
+            // List<CommentsModel> modifiedList = new List<CommentsModel>();
+            foreach (var com in commentList)
+            {
+                if (com.Comments.ParentCommentID == null)
+                {
+                    foreach (var sub in commentList)
+                    {
+                        if (com.Comments.CommentsID == sub.Comments.ParentCommentID)
+                        {
+                            com.list.Add(com.Comments.Comment);
+                        }
+                    }
+                }
+                
+
+
+
+            }
+            var list= commentList.Where(x => x.Comments.ParentCommentID == null).ToList();
+            return list;
         }
 
         /// <summary>
@@ -419,6 +477,11 @@ namespace NOC.Service
                 client.DefaultRequestHeaders.Authorization = authHeader;
                 String RequestUrl = Urls.TransferOwnership + "?" + "transNumber=" + requestModel.transactionid + "&" + "transferUserId=" + requestModel.userID;
 
+                //
+
+
+                //
+
                 var response = await client.GetAsync(RequestUrl);
                 //if (response.IsSuccessStatusCode)
                 //{
@@ -436,6 +499,33 @@ namespace NOC.Service
 
 
 
-       
+
+        public async Task<List<StackholderModel>> GetStackHolderList(string transactionID)
+        {
+            List<StackholderModel> responsedata = new List<StackholderModel>();
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.GetStackholderList + transactionID;
+                var response = await client.GetAsync(RequestUrl);
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    responsedata = JsonConvert.DeserializeObject<List<StackholderModel>>(result, ServiceUtility.GetJsonSerializationSettings());
+                    responsedata.Add(responsedata.LastOrDefault());
+                    responsedata.Add(responsedata.FirstOrDefault());
+                }
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+            return responsedata;
+        }
+
+
     }
 }

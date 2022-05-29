@@ -14,375 +14,376 @@ using Xamarin.Forms;
 
 namespace NOC.ViewModels
 {
-    public class CommentsPageViewModel : ViewModelBase
-    {
+public class CommentsPageViewModel : ViewModelBase
+{
         
 
-        public CommentsPageViewModel(INavigationService navigationService) : base(navigationService)
+    public CommentsPageViewModel(INavigationService navigationService) : base(navigationService)
+    {
+        PickerSource = new List<string>
         {
-            PickerSource = new List<string>
-            {
-                "Replied","Not Replied"
+            "Replied","Not Replied"
 
-            };
+        };
+    }
+
+    private List<Attchtypeandfilepath> attachmentList= new List<Attchtypeandfilepath>();
+    public List<Attchtypeandfilepath> AttachmentList
+    {
+        get
+        {
+            return attachmentList;
+        }
+        set
+        {
+            SetProperty(ref attachmentList, value);
+        }
+    }
+
+
+    private string selectedFilter;
+    public string SelectedFilter
+    {
+        get
+        {
+            return selectedFilter;
+        }
+        set
+        {
+            SetProperty(ref selectedFilter, value);
+        }
+    }
+    private ICommand pickerIndexChangedCommand;
+
+    public ICommand PickerIndexChangedCommand
+    {
+        get
+        {
+            if (pickerIndexChangedCommand == null)
+            {
+                pickerIndexChangedCommand = new Command(PickerIndexChangedCommandExecute);
+            }
+
+            return pickerIndexChangedCommand;
+        }
+    }
+
+    private void PickerIndexChangedCommandExecute(object obj)
+    {
+        if(selectedFilter== "Replied")
+        {
+
+        }
+        else
+        {
+
+        }
+    }
+
+    private ICommand accendingTappedCommand;
+
+    public ICommand AccendingTappedCommand
+    {
+        get
+        {
+            if (accendingTappedCommand == null)
+            {
+                accendingTappedCommand = new Command(AccendingTappedCommandExecute);
+            }
+
+            return accendingTappedCommand;
+        }
+    }
+
+    private void AccendingTappedCommandExecute(object obj)
+    {
+
+        try
+        {
+
+            var tempList = Session.Instance.CurerentTransactionCommentsList.OrderBy(x => x.Comments.CommentsDate).ToList();
+
+            CommentsList.Clear();
+            CommentsList = new ObservableCollection<CommentsModel>(tempList);
+
+        }
+        catch (Exception ex)
+        {
+
         }
 
-        private List<Attchtypeandfilepath> attachmentList= new List<Attchtypeandfilepath>();
-        public List<Attchtypeandfilepath> AttachmentList
+    }
+
+    private ICommand decendingTappedCommand;
+
+    public ICommand DecendingTappedCommand
+    {
+        get
         {
-            get
+            if (decendingTappedCommand == null)
             {
-                return attachmentList;
+                decendingTappedCommand = new Command(DecendingTappedCommandExecute);
             }
-            set
-            {
-                SetProperty(ref attachmentList, value);
-            }
+
+            return decendingTappedCommand;
+        }
+    }
+
+    private void DecendingTappedCommandExecute(object obj)
+    {
+
+        try
+        {
+
+            var tempList = Session.Instance.CurerentTransactionCommentsList.OrderByDescending(x => x.Comments.CommentsDate).ToList();
+
+            CommentsList.Clear();
+            CommentsList = new ObservableCollection<CommentsModel>(tempList);
+
+        }
+        catch (Exception ex)
+        {
+
         }
 
+    }
 
-        private string selectedFilter;
-        public string SelectedFilter
+    private ICommand addReplyCommand;
+
+    public ICommand AddReplyCommand
+    {
+        get
         {
-            get
+            if (addReplyCommand == null)
             {
-                return selectedFilter;
+                addReplyCommand = new Command(AddReplyCommandExecute);
             }
-            set
-            {
-                SetProperty(ref selectedFilter, value);
-            }
+
+            return addReplyCommand;
         }
-        private ICommand pickerIndexChangedCommand;
+    }
 
-        public ICommand PickerIndexChangedCommand
+    private void AddReplyCommandExecute(object obj)
+    {
+        try
         {
-            get
+            var currentComment = obj as CommentsModel;
+            int index = CommentsList.IndexOf(currentComment);
+
+            var tempList = Session.Instance.CurerentTransactionCommentsList;
+            tempList[index].IsReplyViewVisible = !currentComment.IsReplyViewVisible;
+            CommentsList.Clear();
+            CommentsList = new ObservableCollection<CommentsModel>(tempList);
+        }
+        catch (Exception ex)
+        {
+
+        }
+    }
+
+    private TransactionDetailsModel _transactonDetail;
+    public TransactionDetailsModel TransactonDetail
+    {
+        get
+        {
+            _transactonDetail = Session.Instance.CurrentTransaction;
+            return _transactonDetail;
+        }
+        set
+        {
+            SetProperty(ref _transactonDetail, value);
+        }
+    }
+
+    private List<String> pickerSource = new List<string>();
+    public List<String> PickerSource
+    {
+        get
+        {
+               
+            return pickerSource;
+        }
+        set
+        {
+            SetProperty(ref pickerSource, value);
+        }
+    }
+
+    private ObservableCollection<CommentsModel> commentsList = new ObservableCollection<CommentsModel>();
+    public ObservableCollection<CommentsModel> CommentsList
+    {
+        get
+        {
+                
+            return commentsList;
+        }
+        set
+        {
+            SetProperty(ref commentsList, value);
+        }
+    }
+        
+            private ICommand sendReplyToExistingCommand;
+
+    public ICommand SendReplyToExistingCommand
+    {
+        get
+        {
+            if (sendReplyToExistingCommand == null)
             {
-                if (pickerIndexChangedCommand == null)
+                sendReplyToExistingCommand = new Command(SendReplyToExistingCommandExecute);
+            }
+
+            return sendReplyToExistingCommand;
+        }
+    }
+    private string messageText;
+    public string MessageText
+    {
+        get
+        {
+            return messageText;
+        }
+        set
+        {
+            SetProperty(ref messageText, value);
+        }
+    }
+    private async void SendReplyToExistingCommandExecute(object obj)
+    {
+        try
+        {
+
+            var currentComment = obj as CommentsModel;
+            var trasactionID= Session.Instance.CurrentTransaction.Transaction.TransactionID;
+            CommentReplyModel model = new CommentReplyModel();
+            if (!String.IsNullOrEmpty(currentComment.ReplyMessageText))
+            {
+                model.Comment = currentComment.ReplyMessageText;
+                model.CommentsDate = DateTime.Now;
+                model.CommentType = 1;
+                model.ParentCommentID = currentComment.Comments.ParentCommentID ?? 1;
+                model.TransactionID = trasactionID;
+                model.UserID = currentComment.Comments.UserID;
+                var response=  await ApiService.Instance.PostReplyComment(model);
+                if (response && AttachmentList.Count>0)
                 {
-                    pickerIndexChangedCommand = new Command(PickerIndexChangedCommandExecute);
+                    MediaAttachmentModel AttModel = new MediaAttachmentModel();
+                    AttModel.attchtypeandfilepath = AttachmentList;
+                    AttModel.attachments = new Attachments
+                    {
+                        TransactionID = trasactionID,
+                        UserID = currentComment.Comments.UserID
+                    };
+
+                    AttModel.RandomID = "7569924447";
+                    AttModel.TransactionNumber = Session.Instance.CurrentTransaction.Transaction.TransactionNumber;
+
+
+                    var attacmentSaveResponse= await ApiService.Instance.SaveCommentAttachmentToDB(AttModel);
+
+                    await Application.Current.MainPage.DisplayToastAsync(attacmentSaveResponse);
                 }
+                if (response)
+                {
 
-                return pickerIndexChangedCommand;
-            }
-        }
-
-        private void PickerIndexChangedCommandExecute(object obj)
-        {
-           if(selectedFilter== "Replied")
-            {
-
+                    // currentComment.ReplyMessageText = "";
+                    getLatestComments();
+                        await Application.Current.MainPage.DisplayToastAsync("Reply Added successfully");
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayToastAsync("Failed please try again later");
+                }
+                   
             }
             else
             {
-
+                await Application.Current.MainPage.DisplayToastAsync("Enter Message");
             }
         }
-
-        private ICommand accendingTappedCommand;
-
-        public ICommand AccendingTappedCommand
+        catch (Exception ex)
         {
-            get
+
+        }
+           
+    }
+       
+    private ICommand addAttachmentForReplyCommentCommand;
+
+    public ICommand AddAttachmentForReplyCommentCommand
+    {
+        get
+        {
+            if (addAttachmentForReplyCommentCommand == null)
             {
-                if (accendingTappedCommand == null)
+                addAttachmentForReplyCommentCommand = new Command(AddAttachmentForReplyCommentCommandExecute);
+            }
+
+            return addAttachmentForReplyCommentCommand;
+        }
+    }
+
+      
+
+    private async void AddAttachmentForReplyCommentCommandExecute(object obj)
+    {
+        try
+        {
+            var currentComment = obj as CommentsModel;
+            var options = new PickOptions
+            {
+                PickerTitle = "Please select a comic file",
+            };
+            var result = await FilePicker.PickAsync();
+            if (result != null)
+            {
+                var byteArray = await GeneralUtility.getByteArrayFromFile(result);
+                string base64String = Convert.ToBase64String(byteArray);
+                IsBusy = true;
+                string serverFilePath = await ApiService.Instance.SaveCommentAttachment(new NewAttachmentModel
                 {
-                    accendingTappedCommand = new Command(AccendingTappedCommandExecute);
-                }
-
-                return accendingTappedCommand;
-            }
-        }
-
-        private void AccendingTappedCommandExecute(object obj)
-        {
-
-            try
-            {
-
-                var tempList = Session.Instance.CurerentTransactionCommentsList.OrderBy(x => x.Comments.CommentsDate).ToList();
-
-                CommentsList.Clear();
-                CommentsList = new ObservableCollection<CommentsModel>(tempList);
-
-            }
-            catch (Exception ex)
-            {
-
-            }
-
-        }
-
-        private ICommand decendingTappedCommand;
-
-        public ICommand DecendingTappedCommand
-        {
-            get
-            {
-                if (decendingTappedCommand == null)
+                    strFile=base64String,
+                    strFilename=result.FileName,
+                    transactionid=TransactonDetail.Transaction.TransactionID
+                });
+                IsBusy = false;
+                if (!string.IsNullOrEmpty(serverFilePath))
                 {
-                    decendingTappedCommand = new Command(DecendingTappedCommandExecute);
-                }
-
-                return decendingTappedCommand;
-            }
-        }
-
-        private void DecendingTappedCommandExecute(object obj)
-        {
-
-            try
-            {
-
-                var tempList = Session.Instance.CurerentTransactionCommentsList.OrderByDescending(x => x.Comments.CommentsDate).ToList();
-
-                CommentsList.Clear();
-                CommentsList = new ObservableCollection<CommentsModel>(tempList);
-
-            }
-            catch (Exception ex)
-            {
-
-            }
-
-        }
-
-        private ICommand addReplyCommand;
-
-        public ICommand AddReplyCommand
-        {
-            get
-            {
-                if (addReplyCommand == null)
-                {
-                    addReplyCommand = new Command(AddReplyCommandExecute);
-                }
-
-                return addReplyCommand;
-            }
-        }
-
-        private void AddReplyCommandExecute(object obj)
-        {
-            try
-            {
-                var currentComment = obj as CommentsModel;
-               int index = CommentsList.IndexOf(currentComment);
-
-                var tempList = Session.Instance.CurerentTransactionCommentsList;
-                tempList[index].IsReplyViewVisible = !currentComment.IsReplyViewVisible;
-                CommentsList.Clear();
-                CommentsList = new ObservableCollection<CommentsModel>(tempList);
-            }
-            catch (Exception ex)
-            {
-
-            }
-        }
-
-        private TransactionDetailsModel _transactonDetail;
-        public TransactionDetailsModel TransactonDetail
-        {
-            get
-            {
-                _transactonDetail = Session.Instance.CurrentTransaction;
-                return _transactonDetail;
-            }
-            set
-            {
-                SetProperty(ref _transactonDetail, value);
-            }
-        }
-
-        private List<String> pickerSource = new List<string>();
-        public List<String> PickerSource
-        {
-            get
-            {
-               
-                return pickerSource;
-            }
-            set
-            {
-                SetProperty(ref pickerSource, value);
-            }
-        }
-
-        private ObservableCollection<CommentsModel> commentsList = new ObservableCollection<CommentsModel>();
-        public ObservableCollection<CommentsModel> CommentsList
-        {
-            get
-            {
-                
-                return commentsList;
-            }
-            set
-            {
-                SetProperty(ref commentsList, value);
-            }
-        }
-        
-             private ICommand sendReplyToExistingCommand;
-
-        public ICommand SendReplyToExistingCommand
-        {
-            get
-            {
-                if (sendReplyToExistingCommand == null)
-                {
-                    sendReplyToExistingCommand = new Command(SendReplyToExistingCommandExecute);
-                }
-
-                return sendReplyToExistingCommand;
-            }
-        }
-        private string messageText;
-        public string MessageText
-        {
-            get
-            {
-                return messageText;
-            }
-            set
-            {
-                SetProperty(ref messageText, value);
-            }
-        }
-        private async void SendReplyToExistingCommandExecute(object obj)
-        {
-            try
-            {
-
-                var currentComment = obj as CommentsModel;
-                var trasactionID= Session.Instance.CurrentTransaction.Transaction.TransactionID;
-                CommentReplyModel model = new CommentReplyModel();
-                if (!String.IsNullOrEmpty(currentComment.ReplyMessageText))
-                {
-                    model.Comment = currentComment.ReplyMessageText;
-                    model.CommentsDate = DateTime.Now;
-                    model.CommentType = 1;
-                    model.ParentCommentID = currentComment.Comments.ParentCommentID ?? 1;
-                    model.TransactionID = trasactionID;
-                    model.UserID = currentComment.Comments.UserID;
-                  var response=  await ApiService.Instance.PostReplyComment(model);
-                    if (response && AttachmentList.Count>0)
+                    AttachmentList.Add(new Attchtypeandfilepath
                     {
-                        MediaAttachmentModel AttModel = new MediaAttachmentModel();
-                        AttModel.attchtypeandfilepath = AttachmentList;
-                        AttModel.attachments = new Attachments
-                        {
-                            TransactionID = trasactionID,
-                            UserID = currentComment.Comments.UserID
-                        };
-
-                        AttModel.RandomID = "7569924447";
-                        AttModel.TransactionNumber = Session.Instance.CurrentTransaction.Transaction.TransactionNumber;
-
-
-                       var attacmentSaveResponse= await ApiService.Instance.SaveCommentAttachment(AttModel);
-
-                        await Application.Current.MainPage.DisplayToastAsync(attacmentSaveResponse);
-                    }
-                    if (response)
-                    {
-
-                       // currentComment.ReplyMessageText = "";
-                        getLatestComments();
-                         await Application.Current.MainPage.DisplayToastAsync("Reply Added successfully");
+                        filepath = serverFilePath,
+                        commentID = currentComment.Comments.CommentsID,
+                        Attachmenttype = 3
+                    });
                     }
                     else
                     {
                         await Application.Current.MainPage.DisplayToastAsync("Failed please try again later");
                     }
-                   
-                }
-                else
-                {
-                    await Application.Current.MainPage.DisplayToastAsync("Enter Message");
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
-           
-        }
-       
-        private ICommand addAttachmentForReplyCommentCommand;
-
-        public ICommand AddAttachmentForReplyCommentCommand
-        {
-            get
-            {
-                if (addAttachmentForReplyCommentCommand == null)
-                {
-                    addAttachmentForReplyCommentCommand = new Command(AddAttachmentForReplyCommentCommandExecute);
-                }
-
-                return addAttachmentForReplyCommentCommand;
             }
         }
-
-      
-
-        private async void AddAttachmentForReplyCommentCommandExecute(object obj)
+        catch (Exception ex)
         {
-            try
-            {
-                var currentComment = obj as CommentsModel;
-                var options = new PickOptions
-                {
-                    PickerTitle = "Please select a comic file",
-                   // FileTypes = customFileType,
-                };
-
-                var result = await FilePicker.PickAsync();
-               
-                if (result != null)
-                {
-                    
-
-                   AttachmentList.Add(new Attchtypeandfilepath
-                    {
-                        filepath = result.FullPath,
-                        commentID = currentComment.Comments.CommentsID,
-                        Attachmenttype = 3
-                    });
-
-                  
-                     var Text = $"File Name: {result.FileName}";
-                    if (result.FileName.EndsWith("jpg", StringComparison.OrdinalIgnoreCase) ||
-                        result.FileName.EndsWith("png", StringComparison.OrdinalIgnoreCase))
-                    {
-                        var stream = await result.OpenReadAsync();
-                       var Image = ImageSource.FromStream(() => stream);
-                    }
-                }
-
-                var res= result;
-            }
-            catch (Exception ex)
-            {
-                // The user canceled or something went wrong
-            }
-
-            //return null;
-        }
-
-        public override async void OnNavigatedTo(INavigationParameters parameters)
-        {
-            IsBusy = true;
-            base.OnNavigatedTo(parameters);
-            getLatestComments();
-            IsBusy = false;
-        }
-
-        private async void getLatestComments()
-        {
-            var transactionDetails = Session.Instance.CurrentTransaction;
-            Session.Instance.CurerentTransactionCommentsList = await ApiService.Instance.GetTransactionComents(transactionDetails.Transaction.TransactionNumber);
-            CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList);
+            // The user canceled or something went wrong
         }
     }
+
+    public override async void OnNavigatedTo(INavigationParameters parameters)
+    {
+        IsBusy = true;
+        base.OnNavigatedTo(parameters);
+        getLatestComments();
+        IsBusy = false;
+    }
+
+        
+
+    private async void getLatestComments()
+    {
+        var transactionDetails = Session.Instance.CurrentTransaction;
+        Session.Instance.CurerentTransactionCommentsList = await ApiService.Instance.GetTransactionComents(transactionDetails.Transaction.TransactionNumber);
+        CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList);
+    }
+}
 }

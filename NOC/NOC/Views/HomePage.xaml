@@ -97,13 +97,13 @@
                         <StackLayout Grid.Column="1" Orientation="Horizontal" Padding="0" Margin="0">
                             <Label  Style="{StaticResource menuLabel}" Text="Owned NOCs" />
                             <Frame Style="{StaticResource circleFram}">
-                                <Label Text="{Binding CommentedApplicationCount}" Style="{StaticResource countLabel}"></Label>
+                                <Label Text="{Binding OwnedApplicationCount}" Style="{StaticResource countLabel}"></Label>
                             </Frame>
                         </StackLayout>
                         <Image Grid.Column="2" Style="{StaticResource rightArrow}" Source="rightArrowWhite" />
                     </Grid>
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding NavigateToMyNocApplications}" CommandParameter="1" NumberOfTapsRequired="1" />
+                        <TapGestureRecognizer Command="{Binding NavigateToMyNocApplications}" CommandParameter="5" NumberOfTapsRequired="1" />
                     </Frame.GestureRecognizers>
                 </Frame>
 

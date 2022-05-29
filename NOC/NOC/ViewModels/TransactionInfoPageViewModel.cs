@@ -1,4 +1,5 @@
-﻿using NOC.Enums;
+﻿using Newtonsoft.Json;
+using NOC.Enums;
 using NOC.Interfaces;
 using NOC.Models;
 using NOC.Service;
@@ -172,6 +173,8 @@ namespace NOC.ViewModels
                 ObjectionOptionPostModel objectionOptionPostModel = new ObjectionOptionPostModel();
                 objectionOptionPostModel.transactionid = TransactonDetail.Transaction.TransactionNumber;
                 objectionOptionPostModel.userID = TransactonDetail.Transaction.UserID;
+
+                var str = JsonConvert.SerializeObject(objectionOptionPostModel);
                 var result = await ApiService.Instance.PostOwnNoc(objectionOptionPostModel);
                 await Application.Current.MainPage.DisplayToastAsync(result);
 
@@ -234,12 +237,115 @@ namespace NOC.ViewModels
             //};
         }
 
-        public override async void OnNavigatedTo(INavigationParameters parameters)
+
+
+        private ICommand addAttachmentCommand;
+
+        public ICommand AddAttachmentCommand
+        {
+            get
+            {
+                if (addAttachmentCommand == null)
+                {
+                    addAttachmentCommand = new Command(AddAttachmentCommandExecute);
+                }
+
+                return addAttachmentCommand;
+            }
+        }
+
+
+
+        private async void AddAttachmentCommandExecute(object obj)
         {
             IsBusy = true;
+            try
+            {
+                NewAttachmentModel requestModel = new NewAttachmentModel();
+                var options = new PickOptions
+                {
+                    PickerTitle = "Please select a comic file",
+                    // FileTypes = customFileType,
+                };
+                var result = await FilePicker.PickAsync();
+                if (result != null)
+                {
+                    var byteArray = await GeneralUtility.getByteArrayFromFile(result);
+
+                        requestModel = new NewAttachmentModel
+                        {
+                            strFile = Convert.ToBase64String(byteArray),
+                            strFilename = result.FileName,
+                            transactionid = TransactonDetail.Transaction.TransactionID
+                        };
+
+                    string attacmentSaveResponse = await ApiService.Instance.SaveCommentAttachment(requestModel);
+
+                    if (!string.IsNullOrEmpty(attacmentSaveResponse))
+                    {
+                        MediaAttachmentModel ActualAttachmentRequest = new MediaAttachmentModel();
+
+                        List<Attchtypeandfilepath> filePathList = new List<Attchtypeandfilepath>();
+                        filePathList.Add(new Attchtypeandfilepath
+                        {
+                            Attachmenttype = 5,
+                            commentID = 0,
+                            filepath = attacmentSaveResponse
+                        });
+
+                        ActualAttachmentRequest.attchtypeandfilepath = filePathList;
+                        ActualAttachmentRequest.attachments = new Attachments
+                        {
+                            TransactionID = TransactonDetail.Transaction.TransactionID,
+                            UserID = TransactonDetail.Transaction.UserID
+                        };
+
+                        ActualAttachmentRequest.RandomID = "7569924447";
+                        ActualAttachmentRequest.TransactionNumber = Session.Instance.CurrentTransaction.Transaction.TransactionNumber;
+
+                        string FinalResponse = await ApiService.Instance.SaveCommentAttachmentToDB(ActualAttachmentRequest);
+                        getLatestAttachments();
+                        await Application.Current.MainPage.DisplayToastAsync(FinalResponse);
+                    }
+                    else
+                    {
+                        await Application.Current.MainPage.DisplayToastAsync("Something went wrong Please try again.");
+                    }
+
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayToastAsync("No selection");
+                }
+               
+               
+
+               
+
+
+                
+            }
+            catch (Exception ex)
+            {
+                // The user canceled or something went wrong
+            }
+            IsBusy = false;
+        }
+
+        public override async void OnNavigatedTo(INavigationParameters parameters)
+        {
+           // IsBusy = true;
             base.OnNavigatedTo(parameters);
-           
-            AttachmentList =await ApiService.Instance.GetTransactionAttachment(Session.Instance.CurrentTransaction.Transaction.TransactionID.ToString());
+            getLatestAttachments();
+             //AttachmentList =await ApiService.Instance.GetTransactionAttachment(Session.Instance.CurrentTransaction.Transaction.TransactionID.ToString());
+            // IsBusy = false;
+        }
+
+
+        public async void getLatestAttachments()
+        {
+            IsBusy = true;
+            AttachmentList = await ApiService.Instance.GetTransactionAttachment(Session.Instance.CurrentTransaction.Transaction.TransactionID.ToString());
             IsBusy = false;
         }
 
