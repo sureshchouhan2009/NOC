@@ -2,7 +2,9 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:Converter="clr-namespace:NOC.Converters" xmlns:xct="http://xamarin.com/schemas/2020/toolkit" xmlns:components="clr-namespace:NOC.Components"
-    x:Class="NOC.Views.TrasactionAacceptancePage" NavigationPage.HasNavigationBar="False">
+    x:Class="NOC.Views.TrasactionAacceptancePage"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             ios:Page.UseSafeArea="true" NavigationPage.HasNavigationBar="False">
      <ContentPage.Resources>
 
           <ResourceDictionary>
@@ -45,7 +47,7 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <Grid RowDefinitions="Auto,*,Auto" RowSpacing="0">
-            <Frame Grid.Row="0" Padding="0" HeightRequest="40">
+            <Frame Grid.Row="0" Padding="0" HeightRequest="40" HasShadow="False">
                 <Grid>
                     <Image Source="BackArrowRed" HeightRequest="30" WidthRequest="30" HorizontalOptions="Start" VerticalOptions="Center">
                         <Image.GestureRecognizers>
@@ -56,29 +58,44 @@
                 </Grid>
             </Frame>
             <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" >
-                <Grid Grid.Row="0" ColumnDefinitions="1.5*,8.5*" Padding="10,10,10,10" BackgroundColor="{DynamicResource BrandPrimary}">
+                <!--<Grid Grid.Row="0" ColumnDefinitions="1.5*,8.5*" Padding="10,10,10,10" BackgroundColor="{DynamicResource BrandPrimary}">
                        <Frame Grid.Column="0" Style="{StaticResource circleFram}">
                              <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="35"></Image>
                        </Frame>
                     <Label Grid.Column="1" VerticalOptions="Center"  Style="{StaticResource menuLabel}" Text="{Binding TransactonDetail.Transaction.TransactionNumber}" />       
-             </Grid> 
+             </Grid>--> 
+
+                 <Frame Grid.Row="0" Padding="4" BackgroundColor="{DynamicResource BrandPrimary}" HeightRequest="50" VerticalOptions="Center" HasShadow="False">
+                        <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="2*,8*" RowSpacing="0" VerticalOptions="Center">
+                            <Frame Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Style="{StaticResource circleFram}" HasShadow="False" >
+                                <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="35"></Image>
+                            </Frame>
+                        <Label Grid.Row="0" Grid.Column="1" Style="{StaticResource menuLabel}" Text="{Binding TransactonDetail.Transaction.TransactionNumber}" />
+                        <Label Grid.Row="1" Grid.Column="1" Style="{StaticResource menuLabel}" Text="{Binding TransactonDetail.ProjectStage.ProjectStageCode}" FontSize="12" />
+                            
+                    </Grid>
+                    </Frame>
+
                 <Label Grid.Row="1" VerticalOptions="Center"  Style="{StaticResource menuLabel}" Text="Approve/Reject" TextColor="{DynamicResource BrandPrimary}"/>
                  <BoxView Grid.Row="2" HeightRequest="1" HorizontalOptions="FillAndExpand" Color="Gray"/>
 
                  <StackLayout Grid.Row="3" Orientation="Horizontal" Margin="10,5,10,5">
-                     <Frame   Padding="0" BackgroundColor="{DynamicResource BrandPrimary}" Margin="0">
+                     <Frame   Padding="0" BackgroundColor="{DynamicResource BrandPrimary}" Margin="0" HasShadow="False">
                          <Label Text="Review Decision"   FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5"/>
                      </Frame>
-                      <Frame Padding="0" BackgroundColor="Gray" Margin="0">
+                      <Frame Padding="0" BackgroundColor="Gray" Margin="0" HasShadow="False">
                            <Label Text="Condition" FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5" />
                       </Frame>
                 </StackLayout>
                
-                <Grid Grid.Row="4" BackgroundColor="White"  HeightRequest="400" RowDefinitions="Auto,Auto" ColumnDefinitions="2.5*,7.5*" Padding="0"  Margin="10,5,10,5">
+                <Grid Grid.Row="4" BackgroundColor="LightGray"  HeightRequest="300" RowDefinitions="Auto,Auto" ColumnDefinitions="2.5*,7.5*" Padding="0"  Margin="10,5,10,5">
 
                     <Grid Grid.Row="0" RowDefinitions="Auto,Auto">
-                        <Label Grid.Row="0" Text="Stackholders" FontSize="14" FontAttributes="Bold" TextColor="Black"/>
-                        <ListView Grid.Row="1" Grid.Column="0" ItemsSource="{Binding StackHolderList}" HeightRequest="180"  >
+                        <Label Grid.Row="0" Text="Stackholders" FontSize="14"  TextColor="Black"/>
+
+                        <Label Grid.Row="1" IsVisible="{Binding  StackHolderList.Count ,Converter={StaticResource intToBoolConverter}}" Text="No stackholder availabe"  FontSize="16" VerticalOptions="Center" HorizontalOptions="Center" />
+                 
+                        <ListView Grid.Row="1" Grid.Column="0" ItemsSource="{Binding StackHolderList}" HeightRequest="80" BackgroundColor="White" >
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
@@ -88,12 +105,12 @@
                         </ListView.ItemTemplate>
                     </ListView>
                     </Grid>
-                   <Frame Grid.Row="0" Grid.Column="1" HeightRequest="180" BorderColor="Gray" Padding="0" Margin="0" >
+                   <Frame Grid.Row="0" Grid.Column="1" HeightRequest="180" BorderColor="Gray" BackgroundColor="LightGray" Padding="0" Margin="0" HasShadow="False" >
                     <Grid  RowDefinitions="Auto,Auto,Auto" RowSpacing="0" >
-                    <Grid Grid.Row="0" ColumnDefinitions="4*,6*" HeightRequest="40">
+                    <Grid Grid.Row="0" ColumnDefinitions="4*,6*" HeightRequest="40" BackgroundColor="LightGray">
                         <Label Text="Attachments" Grid.Column="0" FontSize="12" HorizontalOptions="Center" VerticalOptions="Center"/>
                         <BoxView Grid.Column="0" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
-                        <Frame Grid.Column="1" BackgroundColor="DarkBlue" CornerRadius="20" Padding="5" Margin="0" HorizontalOptions="Center" VerticalOptions="Center">
+                        <Frame Grid.Column="1" BackgroundColor="MediumBlue" HasShadow="False"  CornerRadius="20" Padding="5" Margin="0" HorizontalOptions="Center" VerticalOptions="Center">
                             <StackLayout  Orientation="Horizontal" Spacing="2"  HorizontalOptions="Center" VerticalOptions="Center" >
                                 <Image Source="upload.png" HeightRequest="14" WidthRequest="14" />
                                 <Label Text="Upload Attachment"  FontSize="12" TextColor="White" />
@@ -102,7 +119,7 @@
                        
 
                     </Grid>
-                    <Frame Grid.Row="1" HeightRequest="40" BorderColor="Gray" Padding="0" Margin="0" >
+                    <Frame Grid.Row="1" HeightRequest="40" BorderColor="LightGray" HasShadow="False"  Padding="0" Margin="0" BackgroundColor="LightGray" >
                         <Grid  ColumnDefinitions="2.5*,2.5*,2.5*,2.5*" HeightRequest="40" >
                         <Label Text="File Name" Grid.Column="0"  FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
                         <BoxView Grid.Column="0" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
@@ -113,11 +130,11 @@
                         <Label Text="Download" Grid.Column="3" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
                         </Grid>
                         </Frame>
-                    <ListView Grid.Row="2" ItemsSource="{Binding StackHolderList}" HeightRequest="120" Margin="0" HasUnevenRows="True" SeparatorColor="DarkGray"  >
+                    <ListView Grid.Row="2" ItemsSource="{Binding AttachmentList}" HeightRequest="80" Margin="0" HasUnevenRows="True" BackgroundColor="LightGray" SeparatorColor="DarkGray"  >
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
-                                    <Grid  ColumnDefinitions="2.5*,2.5*,2.5*,2.5*" HeightRequest="40" Margin="0" Padding="0" >
+                                    <Grid  ColumnDefinitions="2.5*,2.5*,2.5*,2.5*" HeightRequest="35" Margin="0" Padding="0" >
                                          <Label Text="File Name" Grid.Column="0"  FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
                                          <BoxView Grid.Column="0" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
                                          <Label Text="Attachment Type" Grid.Column="1" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
@@ -134,7 +151,8 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                            
+                    <Label Grid.Row="2" IsVisible="{Binding  AttachmentList.Count ,Converter={StaticResource intToBoolConverter}}" Text="No attachment availabe"  FontSize="16" VerticalOptions="Center" HorizontalOptions="Center" />
+                 
                         
 
 
@@ -142,29 +160,29 @@
                    </Frame>
                    
                     <Grid Grid.Row="1" Grid.Column="1" RowDefinitions="Auto,Auto,Auto" >
-                         <Label Grid.Row="0" Grid.Column="0" Text="Specific Comment" FontSize="12" HorizontalOptions="Start" FontAttributes="Bold" TextColor="Black"/>
-                        <Frame Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HeightRequest="120" VerticalOptions="FillAndExpand" BorderColor="DarkGray" HasShadow="True" Padding="0">
-                        <components:CustomEditor Text="{Binding ReplyMessageText}" FontSize="16"  BackgroundColor="Transparent"/>
+                         <Label Grid.Row="0" Grid.Column="0" Text="Specific Comments" FontSize="12" HorizontalOptions="Start" FontAttributes="Bold" TextColor="Black"/>
+                        <Frame Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HeightRequest="100"  VerticalOptions="FillAndExpand" BorderColor="DarkGray" HasShadow="True" Padding="0">
+                        <components:CustomEditor Text="{Binding SpecificMessageText}" FontSize="16"  BackgroundColor="Transparent"/>
                      </Frame>
-                        <StackLayout Grid.Row="2" Grid.Column="1"  Margin="10"  HorizontalOptions="End" Orientation="Horizontal">
+                        <!--<StackLayout Grid.Row="2" Grid.Column="1"  Margin="10"  HorizontalOptions="End" Orientation="Horizontal">
                                           <Image Source="message1.png"  />
-                                          <Label Text="AddComment" FontSize="14" TextColor="Blue"/>
-                                               <!--<StackLayout.GestureRecognizers>
+                                          <Label Text="AddComment" FontSize="12" TextColor="Blue"/>
+                                               <StackLayout.GestureRecognizers>
                                              <TapGestureRecognizer Command="{Binding Source={x:Reference commentsPageRef},Path=BindingContext.SendReplyToExistingCommand}" CommandParameter="{Binding .}"/>
-                                         </StackLayout.GestureRecognizers>-->
-                                      </StackLayout>
+                                         </StackLayout.GestureRecognizers>
+                                      </StackLayout>-->
                     </Grid>
                      
 
                 </Grid>
                 <StackLayout Grid.Row="5" Orientation="Horizontal" Margin="10,5,10,5">
-                     <Frame   Padding="0" BackgroundColor="{DynamicResource BrandPrimary}" Margin="0">
+                     <Frame   Padding="0" BackgroundColor="{DynamicResource BrandPrimary}" HasShadow="False" Margin="0">
                          <Label Text="No Objection"   FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5"/>
                           <Frame.GestureRecognizers>
                               <TapGestureRecognizer Command="{Binding NoObjectionCommand}"/>
                           </Frame.GestureRecognizers>
                      </Frame>
-                      <Frame   Padding="0" BackgroundColor="Gray" Margin="0">
+                      <Frame   Padding="0" BackgroundColor="Gray" HasShadow="False" Margin="0">
                            <Label Text="Objection" FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5" />
                           <Frame.GestureRecognizers>
                               <TapGestureRecognizer Command="{Binding RaiseObjectionCommand}"/>
@@ -174,7 +192,7 @@
 
             </Grid>
             
-            <Frame Grid.Row="2" Padding="10" HeightRequest="40">
+            <Frame Grid.Row="2" Padding="10" HeightRequest="40" HasShadow="False">
                 <Grid ColumnDefinitions="5*, 5*">
                     <Image Grid.Column="0" Source="home" HorizontalOptions="Start">
                         <Image.GestureRecognizers>

@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             ios:Page.UseSafeArea="true"
              xmlns:Converter="clr-namespace:NOC.Converters" xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
               NavigationPage.HasNavigationBar="False"
              x:Class="NOC.Views.TransactionInfoPage" x:Name="TransactionDetails">
@@ -16,7 +18,9 @@
             <Setter Property="VerticalOptions" Value="Center" />
             <Setter Property="HorizontalOptions" Value="Center" />
             <Setter Property="BackgroundColor" Value="White" />
-            <Setter Property="CornerRadius" Value="30" />
+            <Setter Property="HasShadow" Value="False"/>
+           <Setter Property="CornerRadius" 
+      Value="{OnPlatform iOS=18, Android=30}" />  
             <Setter Property="Padding" Value="0" />
         </Style>
         <Style x:Key="menuLabel" TargetType="Label">
@@ -46,7 +50,7 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <Grid RowDefinitions="Auto,*,Auto" RowSpacing="0">
-            <Frame Grid.Row="0" Padding="0" HeightRequest="40">
+            <Frame Grid.Row="0" Padding="0" HeightRequest="40" HasShadow="False">
                 <Grid>
                     <Image Source="BackArrowRed" HeightRequest="30" WidthRequest="30" HorizontalOptions="Start" VerticalOptions="Center">
                         <Image.GestureRecognizers>
@@ -58,7 +62,7 @@
             </Frame>
             <ScrollView Grid.Row="1">
                 <Grid  RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" >
-                    <Frame Grid.Row="0" Padding="4" BackgroundColor="{DynamicResource BrandPrimary}" HeightRequest="50" VerticalOptions="Center" >
+                    <Frame Grid.Row="0" Padding="4" BackgroundColor="{DynamicResource BrandPrimary}" HeightRequest="50" VerticalOptions="Center" HasShadow="False">
                         <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="2*,8*" RowSpacing="0" VerticalOptions="Center">
                             <Frame Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Style="{StaticResource circleFram}" >
                                 <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="35"></Image>
@@ -127,13 +131,13 @@
                     <BoxView Grid.Row="9" HeightRequest="1" Color="Gray" HorizontalOptions="FillAndExpand" />
 
                     <Grid Grid.Row="10" ColumnDefinitions="5*,5*" Margin="10,0,10,0" HeightRequest="40" IsVisible="{Binding IsNewApplication }">
-                      <Frame Grid.Column="0"  Padding="0" BackgroundColor="{DynamicResource BrandPrimary}" Margin="0">
+                      <Frame Grid.Column="0"  Padding="0" BackgroundColor="{DynamicResource BrandPrimary}" Margin="0" HasShadow="False">
                          <Label Text="Own NOC"   FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5"/>
                           <Frame.GestureRecognizers>
                               <TapGestureRecognizer Command="{Binding OwnNocCommand}"/>
                           </Frame.GestureRecognizers>
                       </Frame>
-                      <Frame Grid.Column="1"  Padding="0" BackgroundColor="Gray" Margin="0">
+                      <Frame Grid.Column="1"  Padding="0" BackgroundColor="Gray" Margin="0" HasShadow="False">
                            <Label Text="Transfer Ownership" FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5" />
                            <Frame.GestureRecognizers>
                               <TapGestureRecognizer Command="{Binding TransferNocCommand}"/>
@@ -144,7 +148,7 @@
                
             </ScrollView>
             
-            <Frame Grid.Row="2" Padding="10" HeightRequest="40">
+            <Frame Grid.Row="2" Padding="10" HeightRequest="40" HasShadow="False">
                 <Grid ColumnDefinitions="5*, 5*">
                     <Image Grid.Column="0" Source="home" HorizontalOptions="Start">
                         <Image.GestureRecognizers>

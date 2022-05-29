@@ -86,8 +86,20 @@ namespace NOC.ViewModels
 
         }
 
+        private string _specificMessageText;
 
-      
+        public string SpecificMessageText
+        {
+            get
+            {
+                return _specificMessageText;
+            }
+            set
+            {
+                SetProperty(ref _specificMessageText, value);
+            }
+        }
+
         private ObservableCollection<StackholderModel> _stackHolderList = new ObservableCollection<StackholderModel>();
         public ObservableCollection<StackholderModel> StackHolderList
         {
@@ -102,12 +114,37 @@ namespace NOC.ViewModels
             }
         }
 
+        private ObservableCollection<AttachmentModel> _attachmentList;
+        public ObservableCollection<AttachmentModel> AttachmentList
+        {
+            get
+            {
+
+                return _attachmentList;
+            }
+            set
+            {
+                SetProperty(ref _attachmentList, value);
+            }
+        }
+
+
         public override async void OnNavigatedTo(INavigationParameters parameters)
         {
+            IsBusy = true;
             base.OnNavigatedTo(parameters);
-
             var transactionID = TransactonDetail.Transaction.TransactionID.ToString();//correct
-            StackHolderList = new ObservableCollection<StackholderModel>( await ApiService.Instance.GetStackHolderList("319"));
+            StackHolderList = new ObservableCollection<StackholderModel>( await ApiService.Instance.GetStackHolderList("319"));//319
+            getLatestAttachments();
+            IsBusy = false;
+        }
+
+
+        public async void getLatestAttachments()
+        {
+            IsBusy = true;
+            AttachmentList = new ObservableCollection<AttachmentModel>( await ApiService.Instance.GetTransactionAttachment(Session.Instance.CurrentTransaction.Transaction.TransactionID.ToString()));
+            IsBusy = false;
         }
     }
 }

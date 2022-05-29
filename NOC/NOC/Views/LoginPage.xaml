@@ -56,9 +56,11 @@
                     <components:CustomLabel Grid.Column="0" Text="Remember me" TextColor="Gray" FontSize="18" />
                     <Switch Grid.Row="0" IsToggled="{Binding RememberMe}" HorizontalOptions="Start" VerticalOptions="Start" HeightRequest="30" WidthRequest="50" Grid.Column="1" ThumbColor="White" OnColor="#66cc33" />
                 </Grid>-->
-                <Button Grid.Row="6" Command="{Binding LoginComand }" VerticalOptions="Start"  Margin="20"
+                <Button x:Name="loginButton" Grid.Row="6" Command="{Binding LoginComand }" VerticalOptions="Start"  Margin="20"
                         HorizontalOptions="FillAndExpand" CornerRadius="40" HeightRequest="50"
-                        TextColor="{DynamicResource BrandPrimary}" Background="white" Text="Sign in" FontAttributes="Bold"></Button>
+                        TextColor="{DynamicResource BrandPrimary}" Background="white" Text="SIGN IN" FontAttributes="Bold">
+
+                </Button>
             </Grid>
         </ScrollView>
     </ContentPage.Content>

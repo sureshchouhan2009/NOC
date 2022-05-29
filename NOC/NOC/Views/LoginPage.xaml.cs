@@ -15,6 +15,21 @@ namespace NOC.Views
         public LoginPage()
         {
             InitializeComponent();
+
+
+            switch (Device.RuntimePlatform)
+            {
+                case Device.iOS:
+                    loginButton.CornerRadius = 30;
+                    break;
+                case Device.Android:
+                    loginButton.CornerRadius = 40;
+                    break;
+                default:
+
+                    loginButton.CornerRadius = 40;
+                    break;
+            }
         }
     }
 }

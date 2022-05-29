@@ -514,8 +514,8 @@ namespace NOC.Service
                 {
                     string result = await response.Content.ReadAsStringAsync();
                     responsedata = JsonConvert.DeserializeObject<List<StackholderModel>>(result, ServiceUtility.GetJsonSerializationSettings());
-                    responsedata.Add(responsedata.LastOrDefault());
-                    responsedata.Add(responsedata.FirstOrDefault());
+                    //responsedata.Add(responsedata.LastOrDefault());
+                    //responsedata.Add(responsedata.FirstOrDefault());
                 }
             }
             catch (Exception ex)

@@ -2,6 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:behaviors="http://prismlibrary.com"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             ios:Page.UseSafeArea="true"
              x:Class="NOC.Views.ApplicationsListPage"
              x:Name="transactionsListPage"
              NavigationPage.HasNavigationBar="False">
@@ -10,7 +12,9 @@
             <Setter Property="VerticalOptions" Value="Center" />
             <Setter Property="HorizontalOptions" Value="Center" />
             <Setter Property="BackgroundColor" Value="White" />
-            <Setter Property="CornerRadius" Value="30" />
+            <Setter Property="HasShadow" Value="False"/>
+             <Setter Property="CornerRadius" 
+      Value="{OnPlatform iOS=18, Android=30}" />  
             <Setter Property="Padding" Value="0" />
         </Style>
         <Style x:Key="menuLabel" TargetType="Label">
@@ -22,7 +26,7 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <Grid RowDefinitions="Auto,*,Auto" RowSpacing="0" >
-            <Frame Grid.Row="0" Padding="10" HeightRequest="40">
+            <Frame Grid.Row="0" Padding="10" HeightRequest="40" HasShadow="False">
                 <Grid>
                     <Image Source="BackArrowRed" HeightRequest="30" WidthRequest="30" HorizontalOptions="Start" VerticalOptions="Center">
                         <Image.GestureRecognizers>
@@ -37,13 +41,21 @@
             </Frame>
 
             <Grid Grid.Row="1" RowDefinitions="Auto,Auto">
-                <Frame Grid.Row="0" Padding="0" Margin="10" BackgroundColor="White" HasShadow="False" BorderColor="{DynamicResource BrandPrimary}" CornerRadius="30" HeightRequest="45">
+                <Frame Grid.Row="0" Padding="0" Margin="10" BackgroundColor="White" HasShadow="False" BorderColor="{DynamicResource BrandPrimary}"  HeightRequest="45">
+                    <Frame.CornerRadius>
+        <OnPlatform x:TypeArguments="x:Single">
+            <On Platform="iOS" Value="20"/>
+            <On Platform="Android" Value="30"/>
+        </OnPlatform>
+    </Frame.CornerRadius>
+                    <Frame.Content>
                     <SearchBar BackgroundColor="Transparent"  Text="{Binding SearchText}" SearchCommandParameter="{Binding NavigateToTrasactionDetailsCommand}" Placeholder="Search">
 
                         <SearchBar.Behaviors>
                             <behaviors:EventToCommandBehavior EventName="TextChanged" Command="{Binding SearchTextChangedCommand}" CommandParameter="{Binding .}" />
                         </SearchBar.Behaviors>
                     </SearchBar>
+                        </Frame.Content>
                 </Frame>
 
                 <ListView Grid.Row="1" BackgroundColor="LightGray"  ItemsSource="{Binding TransactionsList}" HasUnevenRows="True"  SeparatorVisibility="Default" SeparatorColor="Black">
@@ -80,7 +92,7 @@
                 </ListView>
 
             </Grid>
-            <Frame Grid.Row="2" Padding="10" HeightRequest="40">
+            <Frame Grid.Row="2" Padding="10" HeightRequest="40" HasShadow="False">
                 <Grid ColumnDefinitions="5*, 5*">
                     <Image Grid.Column="0" Source="home" HorizontalOptions="Start">
                         <Image.GestureRecognizers>
