@@ -65,7 +65,7 @@
             <Frame Grid.Row="0" Padding="10" HeightRequest="40" HasShadow="False">
                 <Label Grid.Column="1" Text="Menu" Style="{StaticResource TitleLabelStyle}" Padding="0" Margin="0" />
             </Frame>
-            <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="3"  >
+            <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="3"  >
                <!--My Noc/New Noc-->
                 <Frame Grid.Row="0" Padding="0" Margin="0" BackgroundColor="LightGray" HasShadow="False" HeightRequest="60" IsVisible="{Binding IsProcessorFlow, Converter={StaticResource InvertedBoolConverter}}">
                     <Grid  ColumnDefinitions="2*,8*,2*" Margin="10"  >
@@ -170,6 +170,7 @@
                     </Frame.GestureRecognizers>
                 </Frame>
 
+                 <!--Replied NOCs flow-->
                  <Frame Grid.Row="3" Padding="0" BackgroundColor="LightGray" HasShadow="False" Margin="0" HeightRequest="60" IsVisible="{Binding IsProcessorFlow}">
                     <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
                         <Frame Grid.Column="0" Style="{StaticResource circleFram}">
@@ -190,10 +191,29 @@
                 </Frame>
                 
 
+                 <!--Completed Nocs-->
+                <Frame Grid.Row="4" Padding="0" BackgroundColor="LightGray" HasShadow="False" Margin="0" HeightRequest="60" IsVisible="{Binding IsProcessorFlow}">
+                    <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
+                        <Frame Grid.Column="0" Style="{StaticResource circleFram}">
+                            <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="40"></Image>
+                        </Frame>
+                       
+                        <StackLayout Grid.Column="1" Orientation="Horizontal" Padding="0" Margin="0">
+                            <Label  Style="{StaticResource menuLabel}" Text="Completed NOCs" />
+                            <Frame Style="{StaticResource counterCircleFram}">
+                                <Label Text="{Binding CompletedNOCsCount}" Style="{StaticResource countLabel}"></Label>
+                            </Frame>
+                        </StackLayout>
+                        <Image Grid.Column="2" Style="{StaticResource rightArrow}" Source="rightArrowWhite" />
+                    </Grid>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateToMyNocApplications}" CommandParameter="11" NumberOfTapsRequired="1" />
+                    </Frame.GestureRecognizers>
+                </Frame>
+                
 
-
-               
-                <Frame Grid.Row="4" Padding="0" BackgroundColor="LightGray" HasShadow="False" Margin="0" HeightRequest="60">
+               <!--Notifications-->
+                <Frame Grid.Row="5" Padding="0" BackgroundColor="LightGray" HasShadow="False" Margin="0" HeightRequest="60">
                     <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
                         <Frame Grid.Column="0" Style="{StaticResource circleFram}">
                             <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="40"></Image>
@@ -211,8 +231,8 @@
                         <TapGestureRecognizer Command="{Binding NavigateToNotificationPageCommand}" NumberOfTapsRequired="1" />
                     </Frame.GestureRecognizers>
                 </Frame>
-
-                <Frame Grid.Row="5" Padding="0" BackgroundColor="LightGray" HasShadow="False" Margin="0" HeightRequest="60">
+                 <!--Logout-->
+                <Frame Grid.Row="6" Padding="0" BackgroundColor="LightGray" HasShadow="False" Margin="0" HeightRequest="60">
                     <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
                         <Frame Grid.Column="0" Style="{StaticResource circleFram}">
                             <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="40"></Image>

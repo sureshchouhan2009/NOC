@@ -54,10 +54,10 @@ namespace NOC.Service
         #region Reviewer Specific Urls
         public const string PostObjectionRaised = BaseUrl + "api/ERReviewer/ObjectionRaised";
         public const string PostNoObjection = BaseUrl + "api/ERReviewer/NoObjection";
-
+        public const string GetCommentsRelatedAttachment = BaseUrl + "api/search/GetCommentsRelatedAttachment/";
         #endregion
         #region Processor Specific Urls
-        
+
         public const string PostOwnNocs = BaseUrl + "api/SearchOfficer/OwnProcessor";
         public const string TransferOwnership = BaseUrl + "api/TransactionService/TransferOwnership";
 

@@ -238,6 +238,35 @@ namespace NOC.Service
         }
 
         /// <summary>
+        /// GetCommentsRelatedAttachment for reviewer Page
+        /// </summary>
+        /// <param name="transactionID"></param>
+        /// <returns></returns>
+        public async Task<List<CommentsRelatedAttachmentModel>> GetCommentsRelatedAttachment(string transactionID)
+        {
+            List<CommentsRelatedAttachmentModel> responsedata = new List<CommentsRelatedAttachmentModel>();
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.GetCommentsRelatedAttachment + transactionID;
+                var response = await client.GetAsync(RequestUrl);
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    responsedata = JsonConvert.DeserializeObject<List<CommentsRelatedAttachmentModel>>(result, ServiceUtility.GetJsonSerializationSettings());
+                }
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+            return responsedata;
+        }
+
+        /// <summary>
         /// To get list of comments for the transaction
         /// </summary>
         /// <param name="applicationNumber"></param>

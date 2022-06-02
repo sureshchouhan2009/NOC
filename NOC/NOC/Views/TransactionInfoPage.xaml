@@ -130,15 +130,22 @@
                     </Grid>
                     <BoxView Grid.Row="9" HeightRequest="1" Color="Gray" HorizontalOptions="FillAndExpand" />
 
-                    <Grid Grid.Row="10" ColumnDefinitions="5*,5*" Margin="10,0,10,0" HeightRequest="40" IsVisible="{Binding IsNewApplication }">
-                      <Frame Grid.Column="0"  Padding="0" BackgroundColor="{DynamicResource BrandPrimary}" Margin="0" HasShadow="False">
+                    <Grid Grid.Row="10" RowDefinitions="Auto,Auto" ColumnDefinitions="5*,5*" Margin="10,0,10,0"  IsVisible="{Binding IsNewApplication }">
+                      <Frame Grid.Row="0" Grid.Column="0"  Padding="0" BackgroundColor="{DynamicResource BrandPrimary}" Margin="0" HeightRequest="40" HasShadow="False">
                          <Label Text="Own NOC"   FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5"/>
                           <Frame.GestureRecognizers>
                               <TapGestureRecognizer Command="{Binding OwnNocCommand}"/>
                           </Frame.GestureRecognizers>
                       </Frame>
-                      <Frame Grid.Column="1"  Padding="0" BackgroundColor="Gray" Margin="0" HasShadow="False">
+                      <Frame Grid.Row="0" Grid.Column="1"  Padding="0" BackgroundColor="Gray" Margin="0" HasShadow="False" HeightRequest="40">
                            <Label Text="Transfer Ownership" FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5" />
+                           <Frame.GestureRecognizers>
+                              <TapGestureRecognizer Command="{Binding TransferNocCommand}"/>
+                          </Frame.GestureRecognizers>
+                      </Frame>
+
+                        <Frame Grid.Row="1" Grid.ColumnSpan="2"  Padding="0" BackgroundColor="Green" Margin="0" HasShadow="False" HeightRequest="40">
+                           <Label Text="Complete Noc" FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5" />
                            <Frame.GestureRecognizers>
                               <TapGestureRecognizer Command="{Binding TransferNocCommand}"/>
                           </Frame.GestureRecognizers>

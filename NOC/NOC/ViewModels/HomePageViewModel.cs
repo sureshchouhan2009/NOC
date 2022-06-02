@@ -40,6 +40,19 @@ namespace NOC.ViewModels
                 SetProperty(ref _notificationCount, value);
             }
         }
+        private string _ncompletedNOCsCount;
+        public string CompletedNOCsCount
+        {
+            get
+            {
+                return _ncompletedNOCsCount;
+            }
+            set
+            {
+                SetProperty(ref _ncompletedNOCsCount, value);
+            }
+        }
+        
         private string _myNocApplicationCount;
         public string MyNocApplicationCount
         {
@@ -234,6 +247,7 @@ namespace NOC.ViewModels
                 RepliedNOCsCount= Session.Instance.MenuItemsCountModelData.CommentReplyCount ?? "00";
                 CommentedApplicationCount = Session.Instance.MenuItemsCountModelData.CommentedApplicationsCount??"00";
                 OwnedApplicationCount = Session.Instance.MenuItemsCountModelData.OwnedApplicationsCount ?? "00";
+                CompletedNOCsCount = Session.Instance.MenuItemsCountModelData.CompletedApplication ?? "00";
                 NocApplicationforRevalidationInTenDaysCount = string.IsNullOrWhiteSpace(Session.Instance.MenuItemsCountModelData.OwnedApplicationsPendingTenDayCount) ?
                     "00" : Session.Instance.MenuItemsCountModelData.OwnedApplicationsPendingTenDayCount;
             }

@@ -51,6 +51,26 @@ namespace NOC.ViewModels
             }
 
         }
+        
+        private ICommand _downloadCommentsAttachmentsCommand;
+
+        public ICommand DownloadCommentsAttachmentsCommand
+        {
+            get
+            {
+                if (_downloadCommentsAttachmentsCommand == null)
+                {
+                    _downloadCommentsAttachmentsCommand = new Command(DownloadCommentsAttachmentsCommandExecute);
+                }
+
+                return _downloadCommentsAttachmentsCommand;
+            }
+        }
+
+        private void DownloadCommentsAttachmentsCommandExecute(object obj)
+        {
+            
+        }
 
         private ICommand raiseObjectionCommand;
 
@@ -114,8 +134,8 @@ namespace NOC.ViewModels
             }
         }
 
-        private ObservableCollection<AttachmentModel> _attachmentList;
-        public ObservableCollection<AttachmentModel> AttachmentList
+        private ObservableCollection<CommentsRelatedAttachmentModel> _attachmentList;
+        public ObservableCollection<CommentsRelatedAttachmentModel> AttachmentList
         {
             get
             {
@@ -143,7 +163,9 @@ namespace NOC.ViewModels
         public async void getLatestAttachments()
         {
             IsBusy = true;
-            AttachmentList = new ObservableCollection<AttachmentModel>( await ApiService.Instance.GetTransactionAttachment(Session.Instance.CurrentTransaction.Transaction.TransactionID.ToString()));
+           // AttachmentList = new ObservableCollection<AttachmentModel>( await ApiService.Instance.GetCommentsRelatedAttachment(Session.Instance.CurrentTransaction.Transaction.TransactionID.ToString()));
+            AttachmentList = new ObservableCollection<CommentsRelatedAttachmentModel>(await ApiService.Instance.GetCommentsRelatedAttachment("376"));
+
             IsBusy = false;
         }
     }

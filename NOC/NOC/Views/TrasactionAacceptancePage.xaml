@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:Converter="clr-namespace:NOC.Converters" xmlns:xct="http://xamarin.com/schemas/2020/toolkit" xmlns:components="clr-namespace:NOC.Components"
     x:Class="NOC.Views.TrasactionAacceptancePage"
     xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
-             ios:Page.UseSafeArea="true" NavigationPage.HasNavigationBar="False">
+             ios:Page.UseSafeArea="true" NavigationPage.HasNavigationBar="False" x:Name="ReviewerPage">
      <ContentPage.Resources>
 
           <ResourceDictionary>
@@ -135,16 +135,20 @@
                             <DataTemplate>
                                 <ViewCell>
                                     <Grid  ColumnDefinitions="2.5*,2.5*,2.5*,2.5*" HeightRequest="35" Margin="0" Padding="0" >
-                                         <Label Text="File Name" Grid.Column="0"  FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                         <Label Text="{Binding uploadfilename}" Grid.Column="0"  FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
                                          <BoxView Grid.Column="0" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
-                                         <Label Text="Attachment Type" Grid.Column="1" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                         <Label Text="{Binding AttachmentTypeCode}" Grid.Column="1" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
                                          <BoxView Grid.Column="1" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
-                                         <Label Text="Upload Date" Grid.Column="2" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                         <Label Text="{Binding FormatedUplodedDate}" Grid.Column="2" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
                                          <BoxView Grid.Column="2" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
                                         <StackLayout Grid.Column="3" Orientation="Horizontal" Spacing="0" HorizontalOptions="Center" VerticalOptions="Center" >
-                                <Image Source="download.png" HeightRequest="10" WidthRequest="10" />
-                                <Label Text="Download"  FontSize="10" />
-                            </StackLayout>
+                                            <Image Source="download.png" HeightRequest="10" WidthRequest="10" />
+                                            <Label Text="Download"  FontSize="10" />
+                                            <StackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={x:Reference ReviewerPage}, Path=BindingContext.DownloadCommentsAttachmentsCommand}" CommandParameter="{Binding .}"/>
+                                            </StackLayout.GestureRecognizers>
+                                         </StackLayout>
+
                                      </Grid>
                                      
                                 </ViewCell>

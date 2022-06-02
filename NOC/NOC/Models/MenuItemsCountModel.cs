@@ -19,5 +19,6 @@ namespace NOC.Models
         public string DraftCount { get; set; }
         public string NewNOCApplicationsCount { get; set; }
         public string NotificationCount { get; set; }
+        public string CompletedApplication { get; set; }
     }
 }
