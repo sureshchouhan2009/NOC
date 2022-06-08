@@ -84,6 +84,7 @@
     <Compile Include="Implementation\MapBaseUrl_Android.cs" />
     <Compile Include="Renderers\CustomEditorRenderer.cs" />
     <Compile Include="Renderers\CustomPickerRenderer.cs" />
+    <Compile Include="Implementation\AndroidDownloader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

@@ -9,6 +9,8 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
+using NOC.Models.ReviwerSpecific;
+
 namespace NOC.Service
 {
    public class ApiService
@@ -300,6 +302,61 @@ namespace NOC.Service
             return responsedata;
         }
 
+        public async Task<string> SaveNewCommentFromReviewer(PostCommentModel saveCommentModel)
+        {
+            String SuccessResult = "";
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.PostDecisionCommentsave;
+                var payload = ServiceUtility.BuildRequest(saveCommentModel);
+                var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
+                var response = await client.SendAsync(req);
+                if (response?.IsSuccessStatusCode ?? false)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    SuccessResult = JsonConvert.DeserializeObject<String>(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                SuccessResult = ex.ToString();
+            }
+            return SuccessResult;
+        }
+
+
+        public async Task<string> UpdateExisitingCommentFromReviewer(UpdateExisitingCommentModel updateCommentModel)
+        {
+            String SuccessResult = "";
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.PostDecisionCommentUpdate;
+                var payload = ServiceUtility.BuildRequest(updateCommentModel);
+                var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
+                var response = await client.SendAsync(req);
+                if (response?.IsSuccessStatusCode ?? false)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    SuccessResult = JsonConvert.DeserializeObject<String>(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                SuccessResult = ex.ToString();
+            }
+            return SuccessResult;
+        }
+
+
+
+
+
         private List<CommentsModel> ModifyCommentListAndReturnAsCommentAndRepliedCommentsList(List<CommentsModel> commentList)
         {
             // List<CommentsModel> modifiedList = new List<CommentsModel>();
@@ -322,6 +379,31 @@ namespace NOC.Service
             }
             var list= commentList.Where(x => x.Comments.ParentCommentID == null).ToList();
             return list;
+        }
+
+        public async Task<bool> UploadFileAgainstReviewerComment(ReviewerAttachmentUploadModel uploadModel)
+        {
+            bool SuccessResult = false;
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.SaveStakeholderResponseAttachment;
+                var payload = ServiceUtility.BuildRequest(uploadModel);
+                var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
+                var response = await client.SendAsync(req);
+                if (response?.IsSuccessStatusCode ?? false)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    SuccessResult = JsonConvert.DeserializeObject<bool>(result);
+                }
+            }
+            catch (Exception ex)
+            {
+               
+            }
+            return SuccessResult;
         }
 
         /// <summary>
@@ -556,5 +638,87 @@ namespace NOC.Service
         }
 
 
+        public async Task<List<AllStackholderResponse>> GetAllStackHolderResponseData(string transactionID)
+        {
+            List<AllStackholderResponse> responsedata = new List<AllStackholderResponse>();
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.GetAllStackholderResponsedata + transactionID;
+                var response = await client.GetAsync(RequestUrl);
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    responsedata = JsonConvert.DeserializeObject<List<AllStackholderResponse>>(result, ServiceUtility.GetJsonSerializationSettings());
+                }
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+            return responsedata;
+        }
+        /// <summary>
+        /// GetStackholderRelatedAttachment for reviewer Page
+        /// </summary>
+        /// <param name="transactionID"></param>
+        /// <returns></returns>
+        public async Task<List<StackholderAttachmentsModel>> GetStackholderRelatedAttachment(string transactionID)
+        {
+            List<StackholderAttachmentsModel> responsedata = new List<StackholderAttachmentsModel>();
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.GetStackholderRelatedAttachment + transactionID;
+                var response = await client.GetAsync(RequestUrl);
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    responsedata = JsonConvert.DeserializeObject<List<StackholderAttachmentsModel>>(result, ServiceUtility.GetJsonSerializationSettings());
+                }
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+            return responsedata;
+        }
+
+
+
+        /// <summary>
+        /// specific comment which reviewer given already
+        /// </summary>
+        /// <param name="transactionID"></param>
+        /// <returns></returns>
+        public async Task<ReviewerSpecificCommentModel> GetReviewerSpecificComment(string transactionID)
+        {
+            ReviewerSpecificCommentModel responsedata = new ReviewerSpecificCommentModel();
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.GetStackholderRelatedAttachment + transactionID;
+                var response = await client.GetAsync(RequestUrl);
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    responsedata = JsonConvert.DeserializeObject<ReviewerSpecificCommentModel>(result, ServiceUtility.GetJsonSerializationSettings());
+                }
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+            return responsedata;
+        }
     }
 }

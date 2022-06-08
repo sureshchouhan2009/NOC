@@ -1,10 +1,12 @@
 ﻿using System;
 namespace NOC.Models
 {
-    public class DownloadEventArgs
+    public class DownloadEventArgs : EventArgs
     {
-        public DownloadEventArgs()
+        public bool FileSaved = false;
+        public DownloadEventArgs(bool fileSaved)
         {
+            FileSaved = fileSaved;
         }
     }
 }

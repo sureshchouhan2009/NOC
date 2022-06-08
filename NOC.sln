@@ -9,6 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NOC.Android", "NOC\NOC.Andr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NOC.iOS", "NOC\NOC.iOS\NOC.iOS.csproj", "{0C3C42C0-B635-49AE-BFDB-280C608E1E06}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B8C1B7FC-830B-47AA-ACCC-CE2CDBC18971}"
+	ProjectSection(SolutionItems) = preProject
+		TrasactionAacceptancePageViewModel.cs = TrasactionAacceptancePageViewModel.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Ad-Hoc|Any CPU = Ad-Hoc|Any CPU

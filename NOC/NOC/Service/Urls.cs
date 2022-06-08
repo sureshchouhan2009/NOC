@@ -55,6 +55,7 @@ namespace NOC.Service
         public const string PostObjectionRaised = BaseUrl + "api/ERReviewer/ObjectionRaised";
         public const string PostNoObjection = BaseUrl + "api/ERReviewer/NoObjection";
         public const string GetCommentsRelatedAttachment = BaseUrl + "api/search/GetCommentsRelatedAttachment/";
+        public const string SaveStakeholderResponseAttachment = BaseUrl + "api/Attachments/SaveStakeholderResponseAttachment";
         #endregion
         #region Processor Specific Urls
 
@@ -66,6 +67,10 @@ namespace NOC.Service
 
 
         public const string GetStackholderList = BaseUrl + "api/search/GetAssociatedStakeholder/";//319
-
+        public const string GetAllStackholderResponsedata = BaseUrl + "api/search/togetcountpageloadcomntsforReview/";//319
+        public const string GetStackholderRelatedAttachment = BaseUrl + "api/search/GetCommentsRelatedAttachment/";//157
+        public const string GetReviewerSpecificComment = BaseUrl + "api/search/GetReviewerSpecificComment/";//319
+        public const string PostDecisionCommentsave = BaseUrl + "api/search/DecisionCommentsave";//ToSaveNewComment in reviewerPage
+        public const string PostDecisionCommentUpdate = BaseUrl + "api/search/Responcesaveingupdate";//ToUpdateComment in reviewerPage
     }
 }

@@ -114,6 +114,7 @@
     <Compile Include="Renderers\CustomEntryRenderer.cs" />
     <Compile Include="Renderers\CustomEditorRenderer.cs" />
     <Compile Include="Renderers\CustomPickerRenderer.cs" />
+    <Compile Include="Implementation\IosDownloader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\Contents.json">
@@ -762,6 +763,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Renderers\" />
+    <Folder Include="Implementation\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\static\css\main.828ccd5e.css" />

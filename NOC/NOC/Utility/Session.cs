@@ -32,5 +32,6 @@ namespace NOC.Utility
         public MenuItemsCountModel MenuItemsCountModelData { get; set; }
         public List<CommentsModel> CurerentTransactionCommentsList = new List<CommentsModel>();
         public bool IsNewNocApplicationFlow { get; set; }
+       public string SavedFilePathForReviewerPage { get; set; }
     }
 }

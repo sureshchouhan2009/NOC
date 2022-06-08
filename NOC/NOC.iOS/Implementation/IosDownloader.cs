@@ -2,31 +2,29 @@
 using System.ComponentModel;
 using System.IO;
 using System.Net;
-using NOC.Droid.Implementation;
 using NOC.Interfaces;
+using NOC.iOS.Implementation;
 using NOC.Models;
 using Xamarin.Forms;
 
-[assembly: Dependency(typeof(AndroidDownloader))]
-namespace NOC.Droid.Implementation
+[assembly: Dependency(typeof(IosDownloader))]
+namespace NOC.iOS.Implementation
 {
-    public class AndroidDownloader : IDownloader
+    public class IosDownloader : IDownloader
     {
         public event EventHandler<DownloadEventArgs> OnFileDownloaded;
 
         public void DownloadFile(string url, string folder)
         {
-            string path = Android.App.Application.Context.GetExternalFilesDir("").AbsolutePath;
-            // var finalPath = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads);
-            //string pathToNewFolder = Path.Combine(path, folder);
-            string path1 = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath, Android.OS.Environment.DirectoryDownloads);
-            Directory.CreateDirectory(path1);
+            //  string pathToNewFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), folder);
+            string pathToNewFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            Directory.CreateDirectory(pathToNewFolder);
 
             try
             {
                 WebClient webClient = new WebClient();
                 webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(Completed);
-                string pathToNewFile = Path.Combine(path1, Path.GetFileName(url));
+                string pathToNewFile = Path.Combine(pathToNewFolder, Path.GetFileName(url));
                 webClient.DownloadFileAsync(new Uri(url), pathToNewFile);
             }
             catch (Exception ex)
