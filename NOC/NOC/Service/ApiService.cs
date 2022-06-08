@@ -381,9 +381,9 @@ namespace NOC.Service
             return list;
         }
 
-        public async Task<bool> UploadFileAgainstReviewerComment(ReviewerAttachmentUploadModel uploadModel)
+        public async Task<string> UploadFileAgainstReviewerComment(ReviewerAttachmentUploadModel uploadModel)
         {
-            bool SuccessResult = false;
+            string SuccessResult = "";
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
@@ -396,7 +396,7 @@ namespace NOC.Service
                 if (response?.IsSuccessStatusCode ?? false)
                 {
                     string result = await response.Content.ReadAsStringAsync();
-                    SuccessResult = JsonConvert.DeserializeObject<bool>(result);
+                    SuccessResult = JsonConvert.DeserializeObject<string>(result);
                 }
             }
             catch (Exception ex)
@@ -705,7 +705,7 @@ namespace NOC.Service
                 var client = ServiceUtility.CreateNewHttpClient();
                 var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
                 client.DefaultRequestHeaders.Authorization = authHeader;
-                String RequestUrl = Urls.GetStackholderRelatedAttachment + transactionID;
+                String RequestUrl = Urls.GetReviewerSpecificComment + transactionID;
                 var response = await client.GetAsync(RequestUrl);
                 if (response.IsSuccessStatusCode)
                 {

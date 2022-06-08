@@ -22,7 +22,7 @@
             <Setter Property="VerticalOptions" Value="Center" />
             <Setter Property="HorizontalOptions" Value="Center" />
             <Setter Property="BackgroundColor" Value="White" />
-            <Setter Property="CornerRadius" Value="30" />
+            <Setter Property="CornerRadius" Value="{OnPlatform iOS=18, Android=30}" />
             <Setter Property="Padding" Value="0" />
         </Style>
         <Style x:Key="menuLabel" TargetType="Label">
@@ -101,20 +101,25 @@
                     
                    <Frame Grid.Row="0"  HeightRequest="180" BorderColor="Gray" BackgroundColor="LightGray" Padding="0" Margin="0" HasShadow="False" >
                     <Grid  RowDefinitions="Auto,Auto,Auto" RowSpacing="0" >
-                    <Grid Grid.Row="0" ColumnDefinitions="4*,6*" HeightRequest="40" BackgroundColor="LightGray">
+                    <Grid Grid.Row="0" ColumnDefinitions="3*,7*" HeightRequest="40" BackgroundColor="LightGray">
                         <Label Text="Attachments" Grid.Column="0" FontSize="12" HorizontalOptions="Center" VerticalOptions="Center"/>
                         <BoxView Grid.Column="0" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
-                        <Frame Grid.Column="1" BackgroundColor="MediumBlue" HasShadow="False"  CornerRadius="{OnPlatform iOS=12, Android=20}" Padding="5" Margin="0" HorizontalOptions="Center" VerticalOptions="Center">
-                            <StackLayout  Orientation="Horizontal" Spacing="2"  HorizontalOptions="Center" VerticalOptions="Center" >
-                                <Image Source="upload.png" HeightRequest="14" WidthRequest="14" />
-                                <Label Text="Upload Attachment"  FontSize="12" TextColor="White" />
-                                <StackLayout.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding UploadAttachmentCommand}"/>
-                                </StackLayout.GestureRecognizers>
-                            </StackLayout>
-                        </Frame>
-                       
 
+                         <StackLayout Grid.Column="1"  Orientation="Horizontal" Spacing="5" HeightRequest="30"  HorizontalOptions="Center" VerticalOptions="Center" >
+                             <Frame  Padding="5,0,5,0" BackgroundColor="White" HasShadow="False"  >
+                                <components:CustomPicker ItemsSource="{Binding DoccumentTypes}"  Image="upload" Title="Attachment Type" Margin="0" SelectedItem="{Binding DoccumentTypeSelectedItem, Mode=TwoWay}"   />
+                             </Frame>
+
+
+
+                            <Frame  BackgroundColor="MediumBlue" HasShadow="False"  CornerRadius="{OnPlatform iOS=12, Android=20}" Padding="5" Margin="0" HorizontalOptions="Center" VerticalOptions="Center">
+                                <Image Source="upload.png" HeightRequest="30" WidthRequest="30" />
+                                <!--<Label Text="Upload Attachment"  FontSize="12" TextColor="White" />-->
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding UploadAttachmentCommand}"/>
+                                </Frame.GestureRecognizers>
+                            </Frame>
+                          </StackLayout>
                     </Grid>
                     <Frame Grid.Row="1" HeightRequest="40" BorderColor="LightGray" HasShadow="False"  Padding="0" Margin="0" BackgroundColor="LightGray" >
                         <Grid  ColumnDefinitions="2.5*,2.5*,2.5*,2.5*" HeightRequest="40" >
@@ -182,32 +187,36 @@
 
 
 
+                          <!--CornerRadius="{OnPlatform iOS=18, Android=28}"-->
+<Grid Grid.Row="5" RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,Auto" Margin="10,5,10,5" >
+     <Label Grid.Row="0" Grid.ColumnSpan="2" HorizontalOptions="Start" VerticalOptions="Center" Text="Validity Period" FontSize="14"  TextColor="Black"/>
+     <Frame Grid.Row="1" Grid.Column="0"  Margin="0" BorderColor="Gray" Padding="0" HasShadow="False">
+                    <components:CustomEntry  Text="{Binding DurationValuetext}" Keyboard="Numeric"  Placeholder="Validity Duration" BackgroundColor="Transparent">
+                      <components:CustomEntry.Behaviors>
+                          <xct:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidityCountChangedEventCommand}" CommandParameter="{Binding DurationValuetext}"/>
+                      </components:CustomEntry.Behaviors>
+                    </components:CustomEntry>
+
+        
+                </Frame>
+     <Frame Grid.Row="1"  Grid.Column="1" Padding="5,0,5,0" BackgroundColor="White"  HasShadow="False">
+                        <components:CustomPicker ItemsSource="{Binding DDSourceList}" SelectedItem="{Binding ValidityPickerSelectedItem, Mode=TwoWay}"  Image="upload" >
+                           
+                        </components:CustomPicker>
+                    </Frame>
+     
+    <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" >
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="Valid till - " FontSize="14" FontAttributes="Bold" TextColor="Black" />
+                                                <Span Text="{Binding CalculatedValidTillDate}" FontSize="14" FontAttributes="Bold" TextColor="{DynamicResource BrandPrimary}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+</Grid>
 
 
-
-                          <StackLayout Grid.Row="5" Orientation="Horizontal" Margin="10,5,10,5">
-                     <Frame   Padding="0" BackgroundColor="{DynamicResource BrandPrimary}" HasShadow="False" Margin="0">
-                         <Label Text="No Objection"   FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5"/>
-                          <Frame.GestureRecognizers>
-                              <TapGestureRecognizer Command="{Binding NoObjectionCommand}"/>
-                          </Frame.GestureRecognizers>
-                     </Frame>
-                      <Frame   Padding="0" BackgroundColor="Gray" HasShadow="False" Margin="0">
-                           <Label Text="Objection" FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5" />
-                          <Frame.GestureRecognizers>
-                              <TapGestureRecognizer Command="{Binding RaiseObjectionCommand}"/>
-                          </Frame.GestureRecognizers>
-                      </Frame>
-
-                               <Frame   Padding="0" BackgroundColor="Gray" HasShadow="False" Margin="0">
-                           <Label Text="Save" FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5" />
-                          <Frame.GestureRecognizers>
-                              <TapGestureRecognizer Command="{Binding SaveCommentAndAttachmentCommand}"/>
-                          </Frame.GestureRecognizers>
-                      </Frame>
-                </StackLayout>
-
-<Grid Grid.Row="6" RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="3*,7*" HeightRequest="200" BackgroundColor="Gray" > 
+<Grid Grid.Row="6" RowDefinitions="Auto,Auto,Auto" Margin="10,5,10,5"  ColumnDefinitions="3*,7*" ColumnSpacing="0" BackgroundColor="Gray" RowSpacing="0"  > 
     <Grid Grid.Row="0" Grid.Column="0" RowDefinitions="Auto,Auto">
                         <Label Grid.Row="0" Text="Stackholders" FontSize="14"  TextColor="Black"/>
 
@@ -227,18 +236,32 @@
                         </ListView.ItemTemplate>
                     </ListView>
                     </Grid>
-    <Grid Grid.Row="0" Grid.Column="1" RowDefinitions="Auto,Auto,Auto" >
+    <Grid Grid.Row="0" Grid.Column="1" RowDefinitions="Auto,Auto" >
          <Label Grid.Row="0" Text="Stackholders Response" FontSize="14"  TextColor="Black" FontAttributes="Bold"/>
-        <Grid Grid.Row="1" RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,Auto" >
-             <Label Grid.Row="0" Grid.Column="0" Text="{Binding SelectedStackholderResponse.CreatedBy,StringFormat='Stackholder: {0}'}"  FontSize="14"  TextColor="Black" />
-             <Label Grid.Row="0" Grid.Column="1" Text="{Binding SelectedStackholderResponse.Decision,StringFormat='Comment: {0}'}" FontSize="14"  TextColor="Black" />
-             <Label Grid.Row="1" Grid.Column="0" Text="{Binding SelectedStackholderResponse.SthcmntID,StringFormat='Response: {0}'}" FontSize="14"  TextColor="Black" />
+        <Grid Grid.Row="1" RowDefinitions="Auto,Auto"  >
+             <Label Grid.Row="0"     >
+                  <Label.FormattedText>
+                     <FormattedString>
+                         <Span Text="Stackholder: " FontSize="14" FontAttributes="Bold" TextColor="Black" />
+                         <Span Text="{Binding SelectedStackholderResponse.CreatedBy}" FontSize="14" FontAttributes="Bold" TextColor="{DynamicResource BrandPrimary}" /> 
+                     </FormattedString>                       
+                  </Label.FormattedText>
+             </Label>
+             <Label Grid.Row="1"  >
+                 <Label.FormattedText>
+                     <FormattedString>
+                         <Span Text="Comment: " FontSize="14" FontAttributes="Bold" TextColor="Black" />
+                         <Span Text="{Binding SelectedStackholderResponse.Comment}" FontSize="14" FontAttributes="Bold" TextColor="{DynamicResource BrandPrimary}" /> 
+                     </FormattedString>                       
+                  </Label.FormattedText>
+             </Label>
+             <!--<Label Grid.Row="1" Grid.Column="0" Text="{Binding SelectedStackholderResponse.SthcmntID,StringFormat='Response: {0}'}" FontSize="14"  TextColor="Black" />-->
         </Grid>
         <!--Stackholdr Part -->
-                <Grid Grid.Row="2" BackgroundColor="LightGray"   RowDefinitions="Auto,Auto"  Padding="0"  Margin="10,5,10,5">
+                <Grid Grid.Row="2" BackgroundColor="LightGray"   RowDefinitions="Auto,Auto"  Padding="0" RowSpacing="0" >
 
                     
-                   <Frame Grid.Row="0"  HeightRequest="180" BorderColor="Gray" BackgroundColor="LightGray" Padding="0" Margin="0" HasShadow="False" >
+                   <Frame Grid.Row="0"  HeightRequest="180" BorderColor="Gray" BackgroundColor="LightGray" Padding="5,0,5,0" Margin="0" HasShadow="False" >
                     <Grid  RowDefinitions="Auto,Auto,Auto" RowSpacing="0" >
                     <Grid Grid.Row="0" HeightRequest="40" BackgroundColor="LightGray">
                         <Label Text="Attachments" Grid.Column="0" FontSize="12" HorizontalOptions="Center" VerticalOptions="Center"/>
@@ -254,7 +277,7 @@
                         <Label Text="Download" Grid.Column="3" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
                         </Grid>
                         </Frame>
-                    <ListView Grid.Row="2" ItemsSource="{Binding StackholderAttachmentsModelList}" HeightRequest="120" Margin="0" HasUnevenRows="True" BackgroundColor="LightGray" SeparatorColor="DarkGray"  >
+                    <ListView Grid.Row="2" ItemsSource="{Binding StackholderAttachmentsModelList}" HeightRequest="80" Margin="0" HasUnevenRows="True" BackgroundColor="LightGray" SeparatorColor="DarkGray"  >
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
@@ -298,7 +321,29 @@
     </Grid>
 
 </Grid>
-              
+
+                          
+                          <StackLayout Grid.Row="7" Orientation="Horizontal" Margin="10,5,10,5">
+                     <Frame   Padding="0" BackgroundColor="{DynamicResource BrandPrimary}" HasShadow="False" Margin="0">
+                         <Label Text="No Objection"   FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5"/>
+                          <Frame.GestureRecognizers>
+                              <TapGestureRecognizer Command="{Binding NoObjectionCommand}"/>
+                          </Frame.GestureRecognizers>
+                     </Frame>
+                      <Frame   Padding="0" BackgroundColor="Gray" HasShadow="False" Margin="0">
+                           <Label Text="Objection" FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5" />
+                          <Frame.GestureRecognizers>
+                              <TapGestureRecognizer Command="{Binding RaiseObjectionCommand}"/>
+                          </Frame.GestureRecognizers>
+                      </Frame>
+
+                               <Frame   Padding="0" BackgroundColor="Gray" HasShadow="False" Margin="0">
+                           <Label Text="Save" FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5" />
+                          <Frame.GestureRecognizers>
+                              <TapGestureRecognizer Command="{Binding SaveCommentAndAttachmentCommand}"/>
+                          </Frame.GestureRecognizers>
+                      </Frame>
+                </StackLayout>
             </Grid>
             
                  </ScrollView>

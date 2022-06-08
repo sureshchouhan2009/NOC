@@ -72,7 +72,22 @@ namespace NOC.Droid.Renderers
 
             if (Control != null && this.Element != null && !string.IsNullOrEmpty(element.Image))
             {
-                Control.Background = AddPickerStyles(element.Image);
+
+                //Control.Background = AddPickerStyles(element.Image);
+                ////Control.SetBackgroundColor(Android.Graphics.Color.Transparent);
+                //Control.Background.SetColorFilter(Android.Graphics.Color.Transparent, PorterDuff.Mode.SrcAtop);
+
+                Control.Background = null;
+
+                var layoutParams = new MarginLayoutParams(Control.LayoutParameters);
+                layoutParams.SetMargins(0, 0, 0, 0);
+                LayoutParameters = layoutParams;
+                GradientDrawable gd = new GradientDrawable();
+                gd.SetStroke(0, Android.Graphics.Color.LightGray);
+                Control.SetBackgroundDrawable(gd);
+                Control.LayoutParameters = layoutParams;
+                Control.SetPadding(0, 0, 0, 0);
+                SetPadding(0, 0, 0, 0);
             }
 
         }
