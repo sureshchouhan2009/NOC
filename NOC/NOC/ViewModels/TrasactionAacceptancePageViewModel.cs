@@ -431,8 +431,7 @@ namespace NOC.ViewModels
         {
           var  currentStackholder = obj as StackholderModel;
           SelectedStackholderResponse =  AllstackHolderResponseList.FirstOrDefault(e => e.StakeholderID == currentStackholder.ERStakeHoldersID);
-
-
+          getLatestAttachmentsForStackHolder(SelectedStackholderResponse?.SthcmntID ?? 0);
         }
         private AllStackholderResponse _selectedStackholderResponse;
         public AllStackholderResponse SelectedStackholderResponse
@@ -586,7 +585,7 @@ namespace NOC.ViewModels
                 var transactionID = TransactonDetail.Transaction.TransactionID.ToString();//correct
                 ExistingComment = await ApiService.Instance.GetReviewerSpecificComment(transactionID);//319
                 SpecificMessageText = ExistingComment.Comment;
-                getLatestAttachments();
+                getLatestAttachmentsForReviewerComments(ExistingComment?.SthcmntID ?? 0);
                 return true;
             }
             catch (Exception ex)
@@ -648,14 +647,16 @@ namespace NOC.ViewModels
 
                 var transactionID = TransactonDetail.Transaction.TransactionID.ToString();//correct
                 StackHolderList = new ObservableCollection<StackholderModel>(await ApiService.Instance.GetStackHolderList(transactionID));//319
-                AllstackHolderResponseList = new ObservableCollection<AllStackholderResponse>(await ApiService.Instance.GetAllStackHolderResponseData("319"));//319
+                AllstackHolderResponseList = new ObservableCollection<AllStackholderResponse>(await ApiService.Instance.GetAllStackHolderResponseData(transactionID));//319
                 if (StackHolderList.Count > 0)
                 {
                     SelectedStackholderResponse = AllstackHolderResponseList.FirstOrDefault(x => x.StakeholderID == StackHolderList.FirstOrDefault()?.ERStakeHoldersID);
                 }
                 ExistingComment = await ApiService.Instance.GetReviewerSpecificComment(transactionID);//319
                 SpecificMessageText = ExistingComment?.Comment??"";
-                getLatestAttachments();
+                getLatestAttachmentsForStackHolder(SelectedStackholderResponse?.SthcmntID??0);
+
+                getLatestAttachmentsForReviewerComments(ExistingComment?.SthcmntID??0);
             }
             catch (Exception ex)
             {
@@ -665,12 +666,27 @@ namespace NOC.ViewModels
         }
 
 
-        public async void getLatestAttachments()
+        //public async void getLatestAttachments()
+        //{
+        //    IsBusy = true;
+        //    AttachmentList = new ObservableCollection<CommentsRelatedAttachmentModel>(await ApiService.Instance.GetCommentsRelatedAttachment(ExistingComment?.SthcmntID.ToString()));
+        //    StackholderAttachmentsModelList = new ObservableCollection<CommentsRelatedAttachmentModel>(await ApiService.Instance.GetCommentsRelatedAttachment(SelectedStackholderResponse.SthcmntID.ToString()));//376
+        //    //StackholderAttachmentsModelList = AttachmentList;
+        //    IsBusy = false;
+        //}
+
+        public async void getLatestAttachmentsForStackHolder(int SthcmntID)
         {
             IsBusy = true;
-            // AttachmentList = new ObservableCollection<AttachmentModel>( await ApiService.Instance.GetCommentsRelatedAttachment(Session.Instance.CurrentTransaction.Transaction.TransactionID.ToString()));
-            AttachmentList = new ObservableCollection<CommentsRelatedAttachmentModel>(await ApiService.Instance.GetCommentsRelatedAttachment(ExistingComment?.SthcmntID.ToString()));//376
-            StackholderAttachmentsModelList = AttachmentList;
+            StackholderAttachmentsModelList = new ObservableCollection<CommentsRelatedAttachmentModel>(await ApiService.Instance.GetCommentsRelatedAttachment(SthcmntID.ToString()));//376
+            IsBusy = false;
+        }
+
+        public async void getLatestAttachmentsForReviewerComments(int SthcmntID)
+        {
+            IsBusy = true;
+            AttachmentList = new ObservableCollection<CommentsRelatedAttachmentModel>( await ApiService.Instance.GetCommentsRelatedAttachment(ExistingComment?.SthcmntID.ToString()));
+            
             IsBusy = false;
         }
     }
