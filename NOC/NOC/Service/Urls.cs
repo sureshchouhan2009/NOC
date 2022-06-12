@@ -72,5 +72,9 @@ namespace NOC.Service
         public const string GetReviewerSpecificComment = BaseUrl + "api/search/GetReviewerSpecificComment/";//319
         public const string PostDecisionCommentsave = BaseUrl + "api/search/DecisionCommentsave";//ToSaveNewComment in reviewerPage
         public const string PostDecisionCommentUpdate = BaseUrl + "api/search/Responcesaveingupdate";//ToUpdateComment in reviewerPage
+
+        public const string SpecificConditionGetAllStakeHolderResponse = BaseUrl+"api/SpecificCondition/GetAllStakeHolderResponse/";//319
+        public const string SaveSpecificCondition = BaseUrl + "api/SpecificCondition/SaveSpecificCondition/"; //send the "true" for the reviewer role.
+
     }
 }

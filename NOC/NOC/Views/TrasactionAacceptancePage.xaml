@@ -67,27 +67,23 @@
 
                  <ScrollView Grid.Row="1">
 
-                     <Grid  RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" >
+                     <Grid  RowDefinitions="Auto,Auto,Auto,Auto,Auto" >
                 
-
+                         <!--#region Static Part-->
 
                           <Frame Grid.Row="0" Padding="4" BackgroundColor="{DynamicResource BrandPrimary}" HeightRequest="50" VerticalOptions="Center" HasShadow="False">
                         <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="2*,8*" RowSpacing="0" VerticalOptions="Center">
                             <Frame Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Style="{StaticResource circleFram}" HasShadow="False" >
                                 <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="35"></Image>
                             </Frame>
-                        <Label Grid.Row="0" Grid.Column="1" Style="{StaticResource menuLabel}" Text="{Binding TransactonDetail.Transaction.TransactionNumber}" />
-                        <Label Grid.Row="1" Grid.Column="1" Style="{StaticResource menuLabel}" Text="{Binding TransactonDetail.ProjectStage.ProjectStageCode}" FontSize="12" />
+                           <Label Grid.Row="0" Grid.Column="1" Style="{StaticResource menuLabel}" Text="{Binding TransactonDetail.Transaction.TransactionNumber}" />
+                           <Label Grid.Row="1" Grid.Column="1" Style="{StaticResource menuLabel}" Text="{Binding TransactonDetail.ProjectStage.ProjectStageCode}" FontSize="12" />
                             
-                    </Grid>
-                    </Frame>
-
-
+                          </Grid>
+                         </Frame>
                           <Label Grid.Row="1" VerticalOptions="Center"  Style="{StaticResource menuLabel}" Text="Approve/Reject" TextColor="{DynamicResource BrandPrimary}"/>
-
                           <BoxView Grid.Row="2" HeightRequest="1" HorizontalOptions="FillAndExpand" Color="Gray"/>
-
-
+                         <!--#endregion-->
                           <StackLayout Grid.Row="3" Orientation="Horizontal" Margin="10,5,10,5">
                      <Frame   Padding="0" BackgroundColor="{DynamicResource BrandPrimary}" Margin="0" HasShadow="False">
                          <Label Text="Review Decision"   FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5"/>
@@ -105,10 +101,11 @@
                       </Frame>
                 </StackLayout>
 
-
-
-                         <!--#stackholder List-->
-                        <Frame Grid.Row="4" Margin="10,5,10,5" BackgroundColor="Gray" Padding="5" HasShadow="False" >
+                         <!--#region ReviewerDecision Specific Part-->
+                         <Grid Grid.Row="4" RowDefinitions="Auto,Auto,Auto,Auto,Auto" IsVisible="{Binding IsReviewerConditionFlow}">
+                   
+                               <!--#stackholder List-->
+                        <Frame Grid.Row="0" Margin="10,5,10,5" BackgroundColor="Gray" Padding="5" HasShadow="False" >
                             <Grid  RowDefinitions="Auto,Auto">
                     <Label Grid.Row="0" Text="Stackholders" FontSize="14"  TextColor="Black"/>
 
@@ -133,10 +130,10 @@
                 </Grid>
 
                         </Frame>
-                         <!--#endregion-->
+                        
 
                           <!--Middle Part Start-->
-                          <Grid Grid.Row="5" BackgroundColor="LightGray"  HeightRequest="300" RowDefinitions="Auto,Auto"  Padding="0"  Margin="10,5,10,5">
+                          <Grid Grid.Row="1" BackgroundColor="LightGray"  HeightRequest="300" RowDefinitions="Auto,Auto"  Padding="0"  Margin="10,5,10,5">
 
                     
                    <Frame Grid.Row="0"  HeightRequest="180" BorderColor="Gray" BackgroundColor="LightGray" Padding="0" Margin="0" HasShadow="False" >
@@ -154,7 +151,7 @@
 
                             <Frame  BackgroundColor="MediumBlue" HasShadow="False"  CornerRadius="{OnPlatform iOS=12, Android=20}" Padding="5" Margin="0" HorizontalOptions="Center" VerticalOptions="Center">
                                 <Image Source="upload.png" HeightRequest="30" WidthRequest="30" />
-                                <!--<Label Text="Upload Attachment"  FontSize="12" TextColor="White" />-->
+                                
                                 <Frame.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding UploadAttachmentCommand}"/>
                                 </Frame.GestureRecognizers>
@@ -224,7 +221,7 @@
                           <!--Middle Part End-->
                          
                            <!--Validity Part Start-->
-                          <Grid Grid.Row="6" RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,Auto" Margin="10,5,10,5" >
+                          <Grid Grid.Row="2" RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,Auto" Margin="10,5,10,5" >
      <Label Grid.Row="0" Grid.ColumnSpan="2" HorizontalOptions="Start" VerticalOptions="Center" Text="Validity Period" FontSize="14"  TextColor="Black"/>
      <Frame Grid.Row="1" Grid.Column="0"  Margin="0" BorderColor="Gray" Padding="0" HasShadow="False">
                     <components:CustomEntry  Text="{Binding DurationValuetext}" Keyboard="Numeric"  Placeholder="Validity Duration" BackgroundColor="Transparent">
@@ -253,7 +250,7 @@
                           <!--Validity Part End-->
 
                           <!--Stackholder Response Part Start-->
-                          <Grid Grid.Row="7" RowDefinitions="Auto" Margin="10,5,10,5"   ColumnSpacing="0" BackgroundColor="Gray"   > 
+                          <Grid Grid.Row="3" RowDefinitions="Auto" Margin="10,5,10,5"   ColumnSpacing="0" BackgroundColor="Gray"   > 
    
                   <Grid Grid.Row="0"  RowDefinitions="Auto,Auto" >
                     <Label Grid.Row="0" Text="Stackholders Response" FontSize="14"  TextColor="Black" FontAttributes="Bold"/>
@@ -345,7 +342,7 @@
                           <!--Stackholder Response Part End-->
 
                           <!--Objection NoObjection Part Start-->
-                          <StackLayout Grid.Row="8" Orientation="Horizontal" Margin="10,5,10,5">
+                          <StackLayout Grid.Row="4" Orientation="Horizontal" Margin="10,5,10,5">
                      <Frame   Padding="0" BackgroundColor="{DynamicResource BrandPrimary}" HasShadow="False" Margin="0">
                          <Label Text="No Objection"   FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5"/>
                           <Frame.GestureRecognizers>
@@ -367,6 +364,122 @@
                       </Frame>
                 </StackLayout>
                           <!--Objection NoObjection Part End-->
+
+
+                         </Grid>
+                          <!--#endregion-->
+
+
+                          <!--#region Decision Specific Part-->
+                          <Grid Grid.Row="4" RowDefinitions="Auto,Auto"  IsVisible="{Binding IsReviewerConditionFlow, Converter={StaticResource InvertedBoolConverter}}">
+
+                                <StackLayout Grid.Row="0" Orientation="Horizontal" Margin="20,5,20,5">
+                                     <Frame   Padding="0" BackgroundColor="{DynamicResource BrandPrimary}" Margin="0" HasShadow="False">
+                                         <Label Text="Stackholders"   FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5"/>
+                                         <Frame.GestureRecognizers>
+                                             <TapGestureRecognizer Command="{Binding StackholdersTappedCommand}" />
+                                         </Frame.GestureRecognizers>
+                                     </Frame>
+
+
+                                      <Frame Padding="0" BackgroundColor="Gray" Margin="0" HasShadow="False">
+                                           <Label Text="Reviewer" FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5" />
+                                           <Frame.GestureRecognizers>
+                                             <TapGestureRecognizer Command="{Binding ReviewerTappedCommand}" />
+                                         </Frame.GestureRecognizers>
+                                      </Frame>
+                                </StackLayout>
+
+                              <!--#region StackholderComments-->
+                              <Frame Grid.Row="1" Padding="0" IsVisible="{Binding IsStackholderCommentsFlow}" Margin="10,5,10,5" BorderColor="LightGray" HasShadow="False">
+                                  <Grid   RowDefinitions="Auto,Auto,Auto" >
+
+                                    <Frame Grid.Row="0" HeightRequest="40"  HasShadow="False"  Padding="0" Margin="0" >
+                                        <Grid  ColumnDefinitions="3*,.1*,6.9*" HeightRequest="40" >
+                                        <Label Text="Stackholder Name" Grid.Column="0"  FontSize="12" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                                        <BoxView Grid.Column="1" WidthRequest="1" Color="DarkGray" Margin="0,0,0,-10" HorizontalOptions="EndAndExpand"/>
+                                        <Label Text="Condition" Grid.Column="2" FontSize="12" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                                        </Grid>
+                                    </Frame>
+
+
+                                    <ListView Grid.Row="1" ItemsSource="{Binding StackHolderCommentsList}" HeightRequest="250" HasUnevenRows="True" SeparatorColor="DarkGray">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <ViewCell>
+                                                    <Grid ColumnDefinitions="3*,.1*,6.9*">
+                                                         <Label Grid.Column="0" Text="{Binding StakeholderName}" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                                                         <BoxView Grid.Column="1" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
+                                                         <Label Grid.Column="2" Text="{Binding condition}" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center" />
+                                                    </Grid>
+                                                </ViewCell>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                </Grid>
+
+                              </Frame>
+                               <!--#endregion--> 
+                               
+                               <!--#region ReviewerComments-->
+                               <Frame Grid.Row="1" Padding="0" IsVisible="{Binding IsStackholderCommentsFlow, Converter={StaticResource InvertedBoolConverter}}" Margin="10,5,10,5" BorderColor="LightGray" HasShadow="False">
+                                  <Grid   RowDefinitions="Auto,Auto,Auto" >
+                                      <Frame Grid.Row="0" HeightRequest="40"  HasShadow="False"  Padding="0" Margin="0" >
+                                        <Grid  ColumnDefinitions="3*,.1*,6.9*" HeightRequest="40" >
+                                        <Label Text="Stackholder Name" Grid.Column="0"  FontSize="12" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                                        <BoxView Grid.Column="1" WidthRequest="1" Color="DarkGray" Margin="0,0,0,-10" HorizontalOptions="EndAndExpand"/>
+                                        <Label Text="Condition" Grid.Column="2" FontSize="12" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                                        </Grid>
+                                    </Frame>
+                                      <ListView Grid.Row="1" ItemsSource="{Binding StackHolderCommentsList}" HeightRequest="250" HasUnevenRows="True" SeparatorColor="DarkGray">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <ViewCell>
+                                                    <Grid ColumnDefinitions="3*,.1*,6.9*">
+                                                         <Label Grid.Column="0" Text="{Binding StakeholderName}" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                                                         <BoxView Grid.Column="1" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
+                                                         <Label Grid.Column="2" Text="{Binding condition}" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center" />
+                                                    </Grid>
+                                                </ViewCell>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+
+                                      <Grid Grid.Row="2" RowDefinitions="Auto,Auto,Auto" IsVisible="{Binding IsOwnedFlow}">
+                                             <Frame Grid.Row="0"  Padding="0" BackgroundColor="Gray" Margin="0" HasShadow="False" WidthRequest="60" IsVisible="{Binding IsReviewerAddCommentButtonVisible}" HorizontalOptions="Center">
+                                                 <Label Text="Add"   FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5"/>
+                                                 <Frame.GestureRecognizers>
+                                                     <TapGestureRecognizer Command="{Binding AddCommand}" />
+                                                 </Frame.GestureRecognizers>
+                                             </Frame>
+
+
+                                          <Frame Grid.Row="1" HeightRequest="80"  VerticalOptions="FillAndExpand" BorderColor="DarkGray" HasShadow="False" Padding="0" IsVisible="{Binding IsReviewerAddCommentButtonVisible, Converter={StaticResource InvertedBoolConverter}}">
+                                                <components:CustomEditor Text="{Binding ReviewerSpecificComment}" FontSize="16"  BackgroundColor="Transparent"/>
+                                           </Frame>
+
+                                          <StackLayout Grid.Row="2" Orientation="Horizontal" Margin="20,5,20,5" HorizontalOptions="Center" IsVisible="{Binding IsReviewerAddCommentButtonVisible, Converter={StaticResource InvertedBoolConverter}}">
+                                             <Frame   Padding="0" BackgroundColor="Gray" Margin="0" HasShadow="False">
+                                                 <Label Text="Save"   FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5"/>
+                                                 <Frame.GestureRecognizers>
+                                                     <TapGestureRecognizer Command="{Binding SaveCommand}" />
+                                                 </Frame.GestureRecognizers>
+                                             </Frame>
+                                              <Frame Padding="0" BackgroundColor="Gray" Margin="0" HasShadow="False">
+                                                   <Label Text="Cancel" FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5" />
+                                                   <Frame.GestureRecognizers>
+                                                     <TapGestureRecognizer Command="{Binding CancelCommand}" />
+                                                 </Frame.GestureRecognizers>
+                                              </Frame>
+                                            </StackLayout>
+                                      </Grid>
+                                  </Grid>
+
+                              </Frame>
+                               <!--#endregion--> 
+
+                          </Grid>
+                         <!--#endregion-->
                  
             </Grid>
             

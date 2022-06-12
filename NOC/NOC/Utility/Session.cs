@@ -33,5 +33,6 @@ namespace NOC.Utility
         public List<CommentsModel> CurerentTransactionCommentsList = new List<CommentsModel>();
         public bool IsNewNocApplicationFlow { get; set; }
        public string SavedFilePathForReviewerPage { get; set; }
+        public bool IsOwnedApplicationFlow { get; set; }
     }
 }

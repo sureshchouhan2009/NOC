@@ -207,6 +207,15 @@ namespace NOC.ViewModels
                 {
                     Session.Instance.IsNewNocApplicationFlow = false;
                 }
+                //checking for owned application
+                if (inputValue == 5)
+                {
+                    Session.Instance.IsOwnedApplicationFlow = true;
+                }
+                else
+                {
+                    Session.Instance.IsOwnedApplicationFlow = false ;
+                }
             }
             catch (Exception ex)
             {

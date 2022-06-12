@@ -692,6 +692,61 @@ namespace NOC.Service
             return responsedata;
         }
 
+        public async Task<List<StackholderCommentsInReviewerPageModel>> StackHolderCommentsForCondition(string transactionID)
+        {
+            List<StackholderCommentsInReviewerPageModel> responsedata = new List<StackholderCommentsInReviewerPageModel>();
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.SpecificConditionGetAllStakeHolderResponse+transactionID;
+                //var payload = ServiceUtility.BuildRequest(RequestModel);
+                var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = null };
+                var response = await client.SendAsync(req);
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    responsedata = JsonConvert.DeserializeObject<List<StackholderCommentsInReviewerPageModel>>(result, ServiceUtility.GetJsonSerializationSettings());
+                }
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+            return responsedata;
+        }
+
+        internal async Task<String> PostreviewerSpecificComment(PostReviewerSpecificComment specificComment)
+        {
+            string responsedata = "";
+            try
+            {
+                bool IsReviewer = Session.Instance.CurrentUserType == UserTypes.Reviewer;
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.SaveSpecificCondition+ IsReviewer;
+                var payload = ServiceUtility.BuildRequest(specificComment);
+                var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
+                var response = await client.SendAsync(req);
+                //if (response.IsSuccessStatusCode)
+                //{
+                    string result = await response.Content.ReadAsStringAsync();
+                    responsedata = JsonConvert.DeserializeObject<string>(result, ServiceUtility.GetJsonSerializationSettings());
+                //}
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+            return responsedata;
+        }
+
+
+
 
 
         /// <summary>
