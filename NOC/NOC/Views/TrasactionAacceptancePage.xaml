@@ -66,10 +66,12 @@
             </Frame>
 
                  <ScrollView Grid.Row="1">
-                      <Grid  RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" >
+
+                     <Grid  RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" >
                 
 
-                 <Frame Grid.Row="0" Padding="4" BackgroundColor="{DynamicResource BrandPrimary}" HeightRequest="50" VerticalOptions="Center" HasShadow="False">
+
+                          <Frame Grid.Row="0" Padding="4" BackgroundColor="{DynamicResource BrandPrimary}" HeightRequest="50" VerticalOptions="Center" HasShadow="False">
                         <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="2*,8*" RowSpacing="0" VerticalOptions="Center">
                             <Frame Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Style="{StaticResource circleFram}" HasShadow="False" >
                                 <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="35"></Image>
@@ -80,49 +82,61 @@
                     </Grid>
                     </Frame>
 
-                 <Label Grid.Row="1" VerticalOptions="Center"  Style="{StaticResource menuLabel}" Text="Approve/Reject" TextColor="{DynamicResource BrandPrimary}"/>
-                 <BoxView Grid.Row="2" HeightRequest="1" HorizontalOptions="FillAndExpand" Color="Gray"/>
 
-                 <StackLayout Grid.Row="3" Orientation="Horizontal" Margin="10,5,10,5">
+                          <Label Grid.Row="1" VerticalOptions="Center"  Style="{StaticResource menuLabel}" Text="Approve/Reject" TextColor="{DynamicResource BrandPrimary}"/>
+
+                          <BoxView Grid.Row="2" HeightRequest="1" HorizontalOptions="FillAndExpand" Color="Gray"/>
+
+
+                          <StackLayout Grid.Row="3" Orientation="Horizontal" Margin="10,5,10,5">
                      <Frame   Padding="0" BackgroundColor="{DynamicResource BrandPrimary}" Margin="0" HasShadow="False">
                          <Label Text="Review Decision"   FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5"/>
+                         <Frame.GestureRecognizers>
+                             <TapGestureRecognizer Command="{Binding ReviewDecisionTappedCommand}" />
+                         </Frame.GestureRecognizers>
                      </Frame>
+
+
                       <Frame Padding="0" BackgroundColor="Gray" Margin="0" HasShadow="False">
                            <Label Text="Condition" FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5" />
+                           <Frame.GestureRecognizers>
+                             <TapGestureRecognizer Command="{Binding DecisionTappedCommand}" />
+                         </Frame.GestureRecognizers>
                       </Frame>
                 </StackLayout>
 
 
 
-                   <Frame Grid.Row="4" Margin="10,5,10,5" BackgroundColor="Gray" Padding="5" HasShadow="False" >
-                               <Grid  RowDefinitions="Auto,Auto">
-                        <Label Grid.Row="0" Text="Stackholders" FontSize="14"  TextColor="Black"/>
+                         <!--#stackholder List-->
+                        <Frame Grid.Row="4" Margin="10,5,10,5" BackgroundColor="Gray" Padding="5" HasShadow="False" >
+                            <Grid  RowDefinitions="Auto,Auto">
+                    <Label Grid.Row="0" Text="Stackholders" FontSize="14"  TextColor="Black"/>
 
-                        <Label Grid.Row="1" IsVisible="{Binding  StackHolderList.Count ,Converter={StaticResource intToBoolConverter}}" Text="No stackholder availabe"  FontSize="16" VerticalOptions="Center" HorizontalOptions="Center" />
+                    <Label Grid.Row="1" IsVisible="{Binding  StackHolderList.Count ,Converter={StaticResource intToBoolConverter}}" Text="No stackholder availabe"  FontSize="16" VerticalOptions="Center" HorizontalOptions="Center" />
                  
-                        <ListView Grid.Row="1" Grid.Column="0" ItemsSource="{Binding StackHolderList}" HeightRequest="80" BackgroundColor="White" >
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <Frame Padding="5,0,0,0" Margin="0" BackgroundColor="LightGray" HasShadow="False">
-                                    <Label Text="{Binding ERGroup}" FontSize="14"  TextColor="Black" VerticalOptions="Center">
-                                    </Label>
-                                         <Frame.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding Source={x:Reference ReviewerPage}, Path=BindingContext.ShowSelectedStackholderresponse}" CommandParameter="{Binding .}"/>
-                                        </Frame.GestureRecognizers>
-                                    </Frame>
+                    <ListView Grid.Row="1" Grid.Column="0" ItemsSource="{Binding StackHolderList}" HeightRequest="80" BackgroundColor="White" >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Frame Padding="5,0,0,0" Margin="0" BackgroundColor="LightGray" HasShadow="False">
+                                <Label Text="{Binding ERGroup}" FontSize="14"  TextColor="Black" VerticalOptions="Center">
+                                </Label>
+                                        <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={x:Reference ReviewerPage}, Path=BindingContext.ShowSelectedStackholderresponse}" CommandParameter="{Binding .}"/>
+                                    </Frame.GestureRecognizers>
+                                </Frame>
                                     
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                    </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                </Grid>
 
-                          </Frame>
-                
+                        </Frame>
+                         <!--#endregion-->
 
-                <!--Middle Part Start-->
-                 <Grid Grid.Row="5" BackgroundColor="LightGray"  HeightRequest="300" RowDefinitions="Auto,Auto"  Padding="0"  Margin="10,5,10,5">
+                          <!--Middle Part Start-->
+                          <Grid Grid.Row="5" BackgroundColor="LightGray"  HeightRequest="300" RowDefinitions="Auto,Auto"  Padding="0"  Margin="10,5,10,5">
 
                     
                    <Frame Grid.Row="0"  HeightRequest="180" BorderColor="Gray" BackgroundColor="LightGray" Padding="0" Margin="0" HasShadow="False" >
@@ -207,10 +221,10 @@
                      
 
                 </Grid>
-                <!--Middle Part End-->
-
+                          <!--Middle Part End-->
                          
-                 <Grid Grid.Row="6" RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,Auto" Margin="10,5,10,5" >
+                           <!--Validity Part Start-->
+                          <Grid Grid.Row="6" RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,Auto" Margin="10,5,10,5" >
      <Label Grid.Row="0" Grid.ColumnSpan="2" HorizontalOptions="Start" VerticalOptions="Center" Text="Validity Period" FontSize="14"  TextColor="Black"/>
      <Frame Grid.Row="1" Grid.Column="0"  Margin="0" BorderColor="Gray" Padding="0" HasShadow="False">
                     <components:CustomEntry  Text="{Binding DurationValuetext}" Keyboard="Numeric"  Placeholder="Validity Duration" BackgroundColor="Transparent">
@@ -236,8 +250,10 @@
                                         </Label.FormattedText>
                                     </Label>
 </Grid>
+                          <!--Validity Part End-->
 
-                 <Grid Grid.Row="7" RowDefinitions="Auto" Margin="10,5,10,5"   ColumnSpacing="0" BackgroundColor="Gray"   > 
+                          <!--Stackholder Response Part Start-->
+                          <Grid Grid.Row="7" RowDefinitions="Auto" Margin="10,5,10,5"   ColumnSpacing="0" BackgroundColor="Gray"   > 
    
                   <Grid Grid.Row="0"  RowDefinitions="Auto,Auto" >
                     <Label Grid.Row="0" Text="Stackholders Response" FontSize="14"  TextColor="Black" FontAttributes="Bold"/>
@@ -326,7 +342,10 @@
                  
 
                  </Grid>
-   <StackLayout Grid.Row="8" Orientation="Horizontal" Margin="10,5,10,5">
+                          <!--Stackholder Response Part End-->
+
+                          <!--Objection NoObjection Part Start-->
+                          <StackLayout Grid.Row="8" Orientation="Horizontal" Margin="10,5,10,5">
                      <Frame   Padding="0" BackgroundColor="{DynamicResource BrandPrimary}" HasShadow="False" Margin="0">
                          <Label Text="No Objection"   FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5"/>
                           <Frame.GestureRecognizers>
@@ -347,6 +366,7 @@
                           </Frame.GestureRecognizers>
                       </Frame>
                 </StackLayout>
+                          <!--Objection NoObjection Part End-->
                  
             </Grid>
             
