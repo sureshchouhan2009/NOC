@@ -18,8 +18,8 @@ namespace NOC.ViewModels
 {
     public class TrasactionAacceptancePageViewModel : ViewModelBase
     {
-        private List<string> _doccumentTypes = new List<string>();
-        public List<string> DoccumentTypes
+        private List<AttachmentsTypesResourceModel> _doccumentTypes = new List<AttachmentsTypesResourceModel>();
+        public List<AttachmentsTypesResourceModel> DoccumentTypes
         {
             get
             {
@@ -33,8 +33,8 @@ namespace NOC.ViewModels
 
         }
 
-        private string _doccumentTypeSelectedItem;
-        public string DoccumentTypeSelectedItem
+        private AttachmentsTypesResourceModel _doccumentTypeSelectedItem;
+        public AttachmentsTypesResourceModel DoccumentTypeSelectedItem
         {
             get
             {
@@ -146,13 +146,7 @@ namespace NOC.ViewModels
             ValidityPickerSelectedItem = DDSourceList.FirstOrDefault();
             IsReviewerAddCommentButtonVisible = true;
 
-            DoccumentTypes.Add("DOC1");
-            DoccumentTypes.Add("DOC2");
-            DoccumentTypes.Add("DOC3");
-            DoccumentTypes.Add("DOC4");
-            DoccumentTypes.Add("DOC5");
-            DoccumentTypes.Add("DOC6");
-            DoccumentTypes.Add("DOC7");
+          
             
         }
 
@@ -227,12 +221,12 @@ namespace NOC.ViewModels
             
             try
             {
-                if(!string.IsNullOrEmpty(DoccumentTypeSelectedItem))
+                if(!string.IsNullOrEmpty(DoccumentTypeSelectedItem.AttachmentTypeCode))
                 {
                     NewAttachmentModel requestModel = new NewAttachmentModel();
                     var options = new PickOptions
                     {
-                        PickerTitle = "Please select a comic file",
+                        PickerTitle = "Please select a file",
                         // FileTypes = customFileType,
                     };
                     var result = await FilePicker.PickAsync();
@@ -551,7 +545,7 @@ namespace NOC.ViewModels
                         uploadModel.attachments = new Models.ReviwerSpecific.Attachments { TransactionID = TransactonDetail.Transaction.TransactionID };
                         uploadModel.attchtypeandfilepath.Add(new Attchtypeandfilepath
                         {
-                            Attachmenttype = calculateAttachmentType(),
+                            Attachmenttype = DoccumentTypeSelectedItem.AttachmentTypeID,
                             commentID = int.Parse(CommentId),
                             filepath = Session.Instance.SavedFilePathForReviewerPage
                         });
@@ -560,7 +554,7 @@ namespace NOC.ViewModels
                         string successMessage = await ApiService.Instance.UploadFileAgainstReviewerComment(uploadModel);
                         await Application.Current.MainPage.DisplayToastAsync(successMessage);
                         Session.Instance.SavedFilePathForReviewerPage = "";
-                        DoccumentTypeSelectedItem = string.Empty;
+                        DoccumentTypeSelectedItem = new AttachmentsTypesResourceModel();
                     }
 
                     //check here  latest comment and latest attachment update in UI
@@ -596,33 +590,7 @@ namespace NOC.ViewModels
             }
         }
 
-        private int calculateAttachmentType()
-        {
-            if (DoccumentTypeSelectedItem == "Doc1")
-            {
-                return 1;
-            }
-            else if(DoccumentTypeSelectedItem == "Doc2")
-            {
-                return 2;
-            }
-            else if (DoccumentTypeSelectedItem == "Doc3")
-            {
-                return 3;
-            }
-            else if (DoccumentTypeSelectedItem == "Doc4")
-            {
-                return 4;
-            }
-            else if (DoccumentTypeSelectedItem == "Doc5")
-            {
-                return 5;
-            }
-            else
-            {
-                return 5;
-            }
-        }
+        
 
         private bool _isReviewerConditionFlow;
         public bool IsReviewerConditionFlow
@@ -888,6 +856,7 @@ namespace NOC.ViewModels
             {
 
                 var transactionID = TransactonDetail.Transaction.TransactionID.ToString();//correct
+                DoccumentTypes = await ApiService.Instance.GetAttachmentsTypesForDD();
                 StackHolderList = new ObservableCollection<StackholderModel>(await ApiService.Instance.GetStackHolderList(transactionID));//319
                 AllstackHolderResponseList = new ObservableCollection<AllStackholderResponse>(await ApiService.Instance.GetAllStackHolderResponseData(transactionID));//319
                 if (StackHolderList.Count > 0)

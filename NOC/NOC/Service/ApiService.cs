@@ -27,6 +27,36 @@ namespace NOC.Service
             }
         }
 
+
+        /// <summary>
+        /// To Get the attchment type available for DD
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<AttachmentsTypesResourceModel>> GetAttachmentsTypesForDD()
+        {
+            List<AttachmentsTypesResourceModel> responsedata = new List<AttachmentsTypesResourceModel>();
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.GetAttachmentsTypesForDD;
+                var response = await client.GetAsync(RequestUrl);
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    responsedata = JsonConvert.DeserializeObject<List<AttachmentsTypesResourceModel>>(result, ServiceUtility.GetJsonSerializationSettings());
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return responsedata.Where(e=>e.Isvisible==true).ToList();
+        }
+
+
         public async Task<bool> PostReplyComment(CommentReplyModel RequestModel)
         {
             bool isSuccess = false;

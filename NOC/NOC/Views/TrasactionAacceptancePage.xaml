@@ -142,21 +142,21 @@
                         <Label Text="Attachments" Grid.Column="0" FontSize="12" HorizontalOptions="Center" VerticalOptions="Center"/>
                         <BoxView Grid.Column="0" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
 
-                         <StackLayout Grid.Column="1"  Orientation="Horizontal" Spacing="5" HeightRequest="30"  HorizontalOptions="Center" VerticalOptions="Center" >
-                             <Frame  Padding="5,0,5,0" BackgroundColor="White" HasShadow="False"  >
-                                <components:CustomPicker ItemsSource="{Binding DoccumentTypes}"  Image="upload" Title="Attachment Type" Margin="0" SelectedItem="{Binding DoccumentTypeSelectedItem, Mode=TwoWay}"   />
+                         <Grid Grid.Column="1" ColumnDefinitions="8*,2*"   HeightRequest="30"  HorizontalOptions="Center" VerticalOptions="Center" >
+                             <Frame Grid.Column="0" Padding="5,0,5,0" BackgroundColor="White" HasShadow="False" >
+                                <components:CustomPicker ItemsSource="{Binding DoccumentTypes}" FontSize="12"  ItemDisplayBinding="{Binding AttachmentTypeCode}" Image="upload" Title="Attachment Type" Margin="0" SelectedItem="{Binding DoccumentTypeSelectedItem, Mode=TwoWay}"   />
                              </Frame>
 
 
 
-                            <Frame  BackgroundColor="MediumBlue" HasShadow="False"  CornerRadius="{OnPlatform iOS=12, Android=20}" Padding="5" Margin="0" HorizontalOptions="Center" VerticalOptions="Center">
+                            <Frame Grid.Column="1" BackgroundColor="MediumBlue" HasShadow="False"  CornerRadius="{OnPlatform iOS=12, Android=20}" Padding="5" Margin="0" HorizontalOptions="Center" VerticalOptions="Center">
                                 <Image Source="upload.png" HeightRequest="30" WidthRequest="30" />
                                 
                                 <Frame.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding UploadAttachmentCommand}"/>
                                 </Frame.GestureRecognizers>
                             </Frame>
-                          </StackLayout>
+                          </Grid>
                     </Grid>
                     <Frame Grid.Row="1" HeightRequest="40" BorderColor="LightGray" HasShadow="False"  Padding="0" Margin="0" BackgroundColor="LightGray" >
                         <Grid  ColumnDefinitions="2.5*,2.5*,2.5*,2.5*" HeightRequest="40" >

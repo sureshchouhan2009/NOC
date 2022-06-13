@@ -14,6 +14,8 @@ namespace NOC.Service
         public const string CheckReviewer = BaseUrl + "api/Users/CheckReviewer";
         public const string CheckStakeholder = BaseUrl + "api/Users/ERStakeholder";
         public const string CheckOfficer = BaseUrl + "api/Users/CheckOfficer";
+        public const string GetAttachmentsTypesForDD = BaseUrl + "api/Attachments/GetAttachmenttype";
+
 
 
 
