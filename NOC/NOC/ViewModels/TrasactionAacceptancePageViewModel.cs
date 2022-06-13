@@ -1035,14 +1035,7 @@ namespace NOC.ViewModels
         }
 
 
-        //public async void getLatestAttachments()
-        //{
-        //    IsBusy = true;
-        //    AttachmentList = new ObservableCollection<CommentsRelatedAttachmentModel>(await ApiService.Instance.GetCommentsRelatedAttachment(ExistingComment?.SthcmntID.ToString()));
-        //    StackholderAttachmentsModelList = new ObservableCollection<CommentsRelatedAttachmentModel>(await ApiService.Instance.GetCommentsRelatedAttachment(SelectedStackholderResponse.SthcmntID.ToString()));//376
-        //    //StackholderAttachmentsModelList = AttachmentList;
-        //    IsBusy = false;
-        //}
+       
 
         public async void getLatestAttachmentsForStackHolder(int SthcmntID)
         {
