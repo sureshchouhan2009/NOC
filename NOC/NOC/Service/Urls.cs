@@ -77,6 +77,10 @@ namespace NOC.Service
 
         public const string SpecificConditionGetAllStakeHolderResponse = BaseUrl+"api/SpecificCondition/GetAllStakeHolderResponse/";//319
         public const string SaveSpecificCondition = BaseUrl + "api/SpecificCondition/SaveSpecificCondition/"; //send the "true" for the reviewer role.
+        public const string UpdatepecificCondition = BaseUrl + "api/SpecificCondition/UpdateSpecificCondition"; //update exisiting conditions
+
+
+        public const string GetReviewerConditons = BaseUrl + "api/SpecificCondition/GetReviewerConditons/";//RKT-20220407-1004
 
     }
 }

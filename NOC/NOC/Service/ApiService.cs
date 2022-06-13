@@ -722,9 +722,14 @@ namespace NOC.Service
             return responsedata;
         }
 
-        public async Task<List<StackholderCommentsInReviewerPageModel>> StackHolderCommentsForCondition(string transactionID)
+        /// <summary>
+        /// This Method Retrives Stackholder related condtion list to Display in Condtion Tab
+        /// </summary>
+        /// <param name="transactionID"></param>
+        /// <returns></returns>
+        public async Task<List<StackholderConditionInReviewerPageModel>> StackHolderCommentsForCondition(string transactionID)
         {
-            List<StackholderCommentsInReviewerPageModel> responsedata = new List<StackholderCommentsInReviewerPageModel>();
+            List<StackholderConditionInReviewerPageModel> responsedata = new List<StackholderConditionInReviewerPageModel>();
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
@@ -737,7 +742,7 @@ namespace NOC.Service
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
-                    responsedata = JsonConvert.DeserializeObject<List<StackholderCommentsInReviewerPageModel>>(result, ServiceUtility.GetJsonSerializationSettings());
+                    responsedata = JsonConvert.DeserializeObject<List<StackholderConditionInReviewerPageModel>>(result, ServiceUtility.GetJsonSerializationSettings());
                 }
             }
             catch (Exception ex)
@@ -748,24 +753,70 @@ namespace NOC.Service
             return responsedata;
         }
 
-        internal async Task<String> PostreviewerSpecificComment(PostReviewerSpecificComment specificComment)
+
+        /// <summary>
+        /// This Method Retrives Reviewer related condtion list to Display in Condtion Tab
+        /// </summary>
+        /// <param name="Application Number"></param>
+        /// <returns></returns>
+        public async Task<List<SystemAndUserSpCondition>> GetReviewerConditons(string ApplicationNumber)
         {
-            string responsedata = "";
+            List<SystemAndUserSpCondition>responsedata = new List<SystemAndUserSpCondition>();
             try
             {
-                bool IsReviewer = Session.Instance.CurrentUserType == UserTypes.Reviewer;
                 var client = ServiceUtility.CreateNewHttpClient();
                 var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
                 client.DefaultRequestHeaders.Authorization = authHeader;
-                String RequestUrl = Urls.SaveSpecificCondition+ IsReviewer;
-                var payload = ServiceUtility.BuildRequest(specificComment);
-                var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
+                String RequestUrl = Urls.GetReviewerConditons + ApplicationNumber;
+                //var payload = ServiceUtility.BuildRequest(RequestModel);
+                var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = null };
                 var response = await client.SendAsync(req);
-                //if (response.IsSuccessStatusCode)
-                //{
+                if (response.IsSuccessStatusCode)
+                {
                     string result = await response.Content.ReadAsStringAsync();
-                    responsedata = JsonConvert.DeserializeObject<string>(result, ServiceUtility.GetJsonSerializationSettings());
-                //}
+                    var compositCondition = JsonConvert.DeserializeObject<ReviewerConditionInReviewerPageModel>(result, ServiceUtility.GetJsonSerializationSettings());
+
+                    List<SystemAndUserSpCondition> systemAndUserSpCondition = new List<SystemAndUserSpCondition>();
+                    int index = 0;
+                   
+                        foreach(var systemCondition in compositCondition.SystemSpCondition)
+                        {
+
+                            responsedata.Add(new SystemAndUserSpCondition
+                            {
+                                IndexNumber = index++,
+                                COMMENTTYPE = systemCondition.COMMENTTYPE,
+                                CONDITIONS = systemCondition.CONDITIONS,
+                                CreatedBy = systemCondition.CreatedBy,
+                                CreationDate = systemCondition.CreationDate,
+                                LastModificationDate = systemCondition.LastModificationDate,
+                                SOLUTIONROLEID = systemCondition.SOLUTIONROLEID,
+                                STAKEHOLDERID = systemCondition.STAKEHOLDERID,
+                                TRANSACTIONID = systemCondition.TRANSACTIONID,
+                                TRA_SPECCOND_ID = systemCondition.TRA_SPECCOND_ID,
+                                USERID = systemCondition.USERID,
+                            });
+                        }
+
+                        foreach (var userCondition in compositCondition.UserSpCondition)
+                        {
+                            responsedata.Add(new SystemAndUserSpCondition
+                            {
+                                IndexNumber = index++,
+                                COMMENTTYPE = userCondition.COMMENTTYPE,
+                                CONDITIONS = userCondition.CONDITIONS,
+                                CreatedBy = userCondition.CreatedBy,
+                                CreationDate = userCondition.CreationDate,
+                                LastModificationDate = userCondition.LastModificationDate,
+                                SOLUTIONROLEID = userCondition.SOLUTIONROLEID,
+                                STAKEHOLDERID = userCondition.STAKEHOLDERID,
+                                TRANSACTIONID = userCondition.TRANSACTIONID,
+                                TRA_SPECCOND_ID = userCondition.TRA_SPECCOND_ID,
+                                USERID = userCondition.USERID,
+                            });
+                        }
+                    }
+                
             }
             catch (Exception ex)
             {
@@ -775,6 +826,73 @@ namespace NOC.Service
             return responsedata;
         }
 
+        internal async Task<String> PostreviewerSpecificComment(PostReviewerSpecificComment usaveCondition)
+        {
+            string responsedata = "";
+            try
+            {
+                bool IsReviewer = Session.Instance.CurrentUserType == UserTypes.Reviewer;
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.SaveSpecificCondition+ IsReviewer.ToString().ToLower();
+                var payload = ServiceUtility.BuildRequest(usaveCondition);
+                var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
+                var response = await client.SendAsync(req);
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    responsedata = JsonConvert.DeserializeObject<string>(result, ServiceUtility.GetJsonSerializationSettings());
+                }
+                else
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    responsedata = JsonConvert.DeserializeObject<string>(result, ServiceUtility.GetJsonSerializationSettings());
+                }
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+            return responsedata;
+        }
+        /// <summary>
+        /// Update the Existing 
+        /// </summary>
+        /// <param name="specificComment"></param>
+        /// <returns></returns>
+        internal async Task<String> UpdateReviewerSpecificComment(UpdateReviewerSpecificComment updatedCondition)
+        {
+            string responsedata = "";
+            try
+            {
+                bool IsReviewer = Session.Instance.CurrentUserType == UserTypes.Reviewer;
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.UpdatepecificCondition ;
+                var payload = ServiceUtility.BuildRequest(updatedCondition);
+                var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
+                var response = await client.SendAsync(req);
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    responsedata = JsonConvert.DeserializeObject<string>(result, ServiceUtility.GetJsonSerializationSettings());
+                }
+                else
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    responsedata = JsonConvert.DeserializeObject<string>(result, ServiceUtility.GetJsonSerializationSettings());
+                }
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+            return responsedata;
+        }
 
 
 

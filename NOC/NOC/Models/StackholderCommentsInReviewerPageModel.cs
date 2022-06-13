@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace NOC.Models
 {
-    public class StackholderCommentsInReviewerPageModel
+    public class StackholderConditionInReviewerPageModel
     {
       
             public string StakeholderName { get; set; }
@@ -9,4 +11,7 @@ namespace NOC.Models
             public object CommentType { get; set; }
      
     }
+
+  
+    
 }

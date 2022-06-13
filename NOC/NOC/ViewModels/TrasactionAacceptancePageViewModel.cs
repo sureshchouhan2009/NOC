@@ -18,6 +18,32 @@ namespace NOC.ViewModels
 {
     public class TrasactionAacceptancePageViewModel : ViewModelBase
     {
+        private bool _isConditionSelected;
+        public bool IsConditionSelected
+        {
+            get
+            {
+                return _isConditionSelected;
+            }
+            set
+            {
+                SetProperty(ref _isConditionSelected, value);
+            }
+        }
+        private bool _isReviewerDecisionSelected;
+        public bool IsReviewerDecisionSelected
+        {
+            get
+            {
+                return _isReviewerDecisionSelected;
+            }
+            set
+            {
+                SetProperty(ref _isReviewerDecisionSelected, value);
+            }
+        }
+
+
         private List<AttachmentsTypesResourceModel> _doccumentTypes = new List<AttachmentsTypesResourceModel>();
         public List<AttachmentsTypesResourceModel> DoccumentTypes
         {
@@ -136,8 +162,14 @@ namespace NOC.ViewModels
 
         public TrasactionAacceptancePageViewModel(INavigationService navigationService) : base(navigationService)
         {
+            IsReviewerDecisionSelected = true;
+            IsConditionSelected = false;
+
+
             IsReviewerConditionFlow = true;
             IsStackholderCommentsFlow = true;
+            IsStackHolderSelected = true;
+            IsReviewerSelected = false;
             Title = "Transaction Info";
             DDSourceList.Add("Days");
             DDSourceList.Add("Months");
@@ -442,7 +474,7 @@ namespace NOC.ViewModels
             }
         }
 
-        private ObservableCollection<CommentsRelatedAttachmentModel> _StackholderAttachmentsModelList;
+        private ObservableCollection<CommentsRelatedAttachmentModel> _StackholderAttachmentsModelList=new ObservableCollection<CommentsRelatedAttachmentModel>();
         public ObservableCollection<CommentsRelatedAttachmentModel> StackholderAttachmentsModelList
         {
             get
@@ -624,6 +656,8 @@ namespace NOC.ViewModels
         private void ReviewDecisionTappedCommandExecute(object obj)
         {
             IsReviewerConditionFlow = true;
+            IsReviewerDecisionSelected = true;
+            IsConditionSelected = false;
         }
 
         private ICommand _decisionTappedCommand;
@@ -644,6 +678,8 @@ namespace NOC.ViewModels
         private void DecisionTappedCommandExecute(object obj)
         {
             IsReviewerConditionFlow = false;
+            IsReviewerDecisionSelected = false;
+            IsConditionSelected = true;
         }
 
         private List<string> _dDSourceList= new List<string>();
@@ -680,6 +716,8 @@ namespace NOC.ViewModels
         private void StackholdersTappedCommandExecute(object obj)
         {
             IsStackholderCommentsFlow = true;
+            IsReviewerSelected = false;
+            IsStackHolderSelected = true;
         }
 
         private ICommand _reviewerTappedCommand;
@@ -700,6 +738,8 @@ namespace NOC.ViewModels
         private void ReviewerTappedCommandExecute(object obj)
         {
             IsStackholderCommentsFlow = false;
+            IsReviewerSelected = true;
+            IsStackHolderSelected = false;
         }
 
         private bool _isStackholderCommentsFlow;
@@ -728,6 +768,33 @@ namespace NOC.ViewModels
             }
         }
 
+
+
+
+        private bool _isStackHolderSelected;
+        public bool IsStackHolderSelected
+        {
+            get
+            {
+                return _isStackHolderSelected;
+            }
+            set
+            {
+                SetProperty(ref _isStackHolderSelected, value);
+            }
+        }
+        private bool _isReviewerSelected;
+        public bool IsReviewerSelected
+        {
+            get
+            {
+                return _isReviewerSelected;
+            }
+            set
+            {
+                SetProperty(ref _isReviewerSelected, value);
+            }
+        }
 
         private bool _isReviewerAddCommentButtonVisible;
         public bool IsReviewerAddCommentButtonVisible
@@ -775,9 +842,25 @@ namespace NOC.ViewModels
             }
         }
 
-        private ObservableCollection<StackholderCommentsInReviewerPageModel> _stackHolderCommentsList;
+        private ObservableCollection<SystemAndUserSpCondition> _reviewerAllConditonsList=new ObservableCollection<SystemAndUserSpCondition>();
 
-        public ObservableCollection<StackholderCommentsInReviewerPageModel> StackHolderCommentsList
+        public ObservableCollection<SystemAndUserSpCondition> ReviewerAllConditonsList
+        {
+            get
+            {
+
+                return _reviewerAllConditonsList;
+            }
+            set
+            {
+                SetProperty(ref _reviewerAllConditonsList, value);
+            }
+        }
+
+
+        private ObservableCollection<StackholderConditionInReviewerPageModel> _stackHolderCommentsList=new ObservableCollection<StackholderConditionInReviewerPageModel>();
+
+        public ObservableCollection<StackholderConditionInReviewerPageModel> StackHolderCommentsList
         {
             get
             {
@@ -799,26 +882,46 @@ namespace NOC.ViewModels
             {
                 if (_saveCommand == null)
                 {
-                    _saveCommand = new Command(SaveCommandExecute);
+                    _saveCommand = new Command(SaveOrUpdateCommandExecute);
                 }
 
                 return _saveCommand;
             }
         }
 
-        private async void SaveCommandExecute(object obj)
+        private async void SaveOrUpdateCommandExecute(object obj)
         {
             IsBusy = true;
             try
             {
+                if (SelectedReviewerSpecificComment!=null)
+                {
+                    //update
+                    UpdateReviewerSpecificComment specificComment = new UpdateReviewerSpecificComment();
+                    specificComment.CONDITIONS = ReviewerSpecificComment;
+                    specificComment.TRA_SPECCOND_ID = SelectedReviewerSpecificComment.TRA_SPECCOND_ID;
+                    string result = await ApiService.Instance.UpdateReviewerSpecificComment(specificComment);
+                   
+                    ReviewerSpecificComment = "";
+                    IsReviewerAddCommentButtonVisible = true;
+                    SelectedReviewerSpecificComment = new SystemAndUserSpCondition();
+                   await GetAndFillConditionSpecificPart(TransactonDetail.Transaction.TransactionID.ToString());
+                    await Application.Current.MainPage.DisplayToastAsync("Updated successfully");
+                }
+                else
+                {
+                    //Save
+                    PostReviewerSpecificComment saveCondition = new PostReviewerSpecificComment();
+                    saveCondition.CONDITIONS = ReviewerSpecificComment;
+                    saveCondition.TRANSACTIONID = TransactonDetail.Transaction.TransactionID;
+                    string result = await ApiService.Instance.PostreviewerSpecificComment(saveCondition);
+                    ReviewerSpecificComment = "";
+                    IsReviewerAddCommentButtonVisible = true;
+                    await GetAndFillConditionSpecificPart(TransactonDetail.Transaction.TransactionID.ToString());
+                    await Application.Current.MainPage.DisplayToastAsync("Saved successfully");
+                }
 
-                PostReviewerSpecificComment specificComment = new PostReviewerSpecificComment();
-                specificComment.CONDITIONS = ReviewerSpecificComment;
-                specificComment.TRANSACTIONID = TransactonDetail.Transaction.TransactionID;
-                string result = await ApiService.Instance.PostreviewerSpecificComment(specificComment);
-                await Application.Current.MainPage.DisplayToastAsync(result);
-                ReviewerSpecificComment = "";
-                IsReviewerAddCommentButtonVisible = true;
+              
             }
             catch (Exception ex)
             {
@@ -847,6 +950,48 @@ namespace NOC.ViewModels
             IsReviewerAddCommentButtonVisible = true;
         }
 
+        private ICommand _selectUserConditionCommand;
+
+        public ICommand SelectUserConditionCommand
+        {
+            get
+            {
+                if (_selectUserConditionCommand == null)
+                {
+                    _selectUserConditionCommand = new Command(SelectUserConditionCommandExecute);
+                }
+
+                return _selectUserConditionCommand;
+            }
+        }
+
+        private void SelectUserConditionCommandExecute(object obj)
+        {
+            SelectedReviewerSpecificComment= obj as SystemAndUserSpCondition;
+            if (SelectedReviewerSpecificComment.COMMENTTYPE == "User")
+            {
+                IsReviewerAddCommentButtonVisible = false;
+                ReviewerSpecificComment = SelectedReviewerSpecificComment.CONDITIONS;
+            }
+            
+        }
+
+
+
+
+
+        private SystemAndUserSpCondition _selectedReviewerSpecificComment;
+        public SystemAndUserSpCondition SelectedReviewerSpecificComment
+        {
+            get
+            {
+                return _selectedReviewerSpecificComment;
+            }
+            set
+            {
+                SetProperty(ref _selectedReviewerSpecificComment, value);
+            }
+        }
         public override async void OnNavigatedTo(INavigationParameters parameters)
         {
             IsBusy = true;
@@ -857,7 +1002,9 @@ namespace NOC.ViewModels
 
                 var transactionID = TransactonDetail.Transaction.TransactionID.ToString();//correct
                 DoccumentTypes = await ApiService.Instance.GetAttachmentsTypesForDD();
+
                 StackHolderList = new ObservableCollection<StackholderModel>(await ApiService.Instance.GetStackHolderList(transactionID));//319
+                
                 AllstackHolderResponseList = new ObservableCollection<AllStackholderResponse>(await ApiService.Instance.GetAllStackHolderResponseData(transactionID));//319
                 if (StackHolderList.Count > 0)
                 {
@@ -881,7 +1028,8 @@ namespace NOC.ViewModels
 
         private async Task<bool> GetAndFillConditionSpecificPart(string transactionID)
         {
-            StackHolderCommentsList = new ObservableCollection<StackholderCommentsInReviewerPageModel>(await ApiService.Instance.StackHolderCommentsForCondition("319"));
+            StackHolderCommentsList = new ObservableCollection<StackholderConditionInReviewerPageModel>(await ApiService.Instance.StackHolderCommentsForCondition(transactionID));//319
+            ReviewerAllConditonsList = new ObservableCollection<SystemAndUserSpCondition>(await ApiService.Instance.GetReviewerConditons(TransactonDetail.Transaction.TransactionNumber));
 
             return StackHolderCommentsList.Count > 0;
         }

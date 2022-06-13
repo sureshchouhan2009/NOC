@@ -4,30 +4,13 @@ using Xamarin.Forms;
 
 namespace NOC.Converters
 {
-    public class IntToBoolConverter : IValueConverter
+    public class BoolToColorConverter : IValueConverter
     {
-
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            bool input = (bool)value  ;
 
-        try
-        {
-            var listCount = int.Parse(value.ToString());
-            if (listCount == 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        catch (Exception ex)
-        {
-
-            return false;
-        }
-
+            return input? Color.FromHex("#aa182c"): Color.DarkGray;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
