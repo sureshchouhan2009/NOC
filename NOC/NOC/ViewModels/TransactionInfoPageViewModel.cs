@@ -23,6 +23,7 @@ namespace NOC.ViewModels
             Title = "Transaction Info";
             IsReviewer = Session.Instance.CurrentUserType == UserTypes.Reviewer;
             IsNewApplication = Session.Instance.IsNewNocApplicationFlow;
+            IsOwnedApplication = Session.Instance.IsOwnedApplicationFlow||Session.Instance.IsRepliedNocApplicationFlow;
         }
 
         private List<AttachmentModel> _attachmentList;
@@ -53,6 +54,20 @@ namespace NOC.ViewModels
             set
             {
                 SetProperty(ref _isNewApplication, value);
+            }
+        }
+
+        private bool _isOwnedApplication;
+        public bool IsOwnedApplication
+        {
+            get
+            {
+
+                return _isOwnedApplication;
+            }
+            set
+            {
+                SetProperty(ref _isOwnedApplication, value);
             }
         }
 

@@ -48,11 +48,15 @@ namespace NOC.ViewModels
 
         private async void PerformLoginComand(object obj)
         {
-            //EmailText = "applicant_test";
-            //PasswordText = "user123";
+            EmailText = "applicant_test";
+            PasswordText = "U$er123";
 
             //for Processor
             //EmailText = "officer_test";
+            //PasswordText = "user123";
+
+            //StakHolder
+            //EmailText = "stackholder_test";
             //PasswordText = "user123";
 
             //for Reviewer

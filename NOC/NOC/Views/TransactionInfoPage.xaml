@@ -94,8 +94,7 @@
 
                         </Grid>
                         
-                         <Label Grid.Row="1" IsVisible="{Binding  AttachmentList.Count ,Converter={StaticResource intToBoolConverter}}" Text="No attachment availabe"  FontSize="16" VerticalOptions="Center" HorizontalOptions="Center" />
-           
+                        
                         <ListView  Grid.Row="1" ItemsSource="{Binding AttachmentList}" HasUnevenRows="True" HeightRequest="120" SeparatorVisibility="None">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
@@ -112,7 +111,10 @@
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
+                         <Label Grid.Row="1" IsVisible="{Binding  AttachmentList.Count ,Converter={StaticResource intToBoolConverter}}" Text="No attachment availabe"  FontSize="16" VerticalOptions="Center" HorizontalOptions="Center" />
+           
                     </Grid>
+                    
                     <BoxView Grid.Row="5" HeightRequest="1" Color="Gray" HorizontalOptions="FillAndExpand" />
                     <Grid Grid.Row="6"  Margin="10">
                         <Label Grid.Row="0" Text="Project Location" Style="{StaticResource HeaderRedLabel}" />
@@ -130,14 +132,16 @@
                     </Grid>
                     <BoxView Grid.Row="9" HeightRequest="1" Color="Gray" HorizontalOptions="FillAndExpand" />
 
-                    <Grid Grid.Row="10" RowDefinitions="Auto" ColumnDefinitions="5*,5*" Margin="10,0,10,0"  IsVisible="{Binding IsNewApplication }">
-                      <Frame Grid.Row="0" Grid.Column="0"  Padding="0" BackgroundColor="{DynamicResource BrandPrimary}" Margin="0" HeightRequest="40" HasShadow="False">
+                    <Grid Grid.Row="10" RowDefinitions="Auto" Margin="10,0,10,0"  >
+                        <!-- visible only New Application-->
+                      <Frame Grid.Row="0"  IsVisible="{Binding IsNewApplication }"  Padding="0" BackgroundColor="{DynamicResource BrandPrimary}" Margin="0" HeightRequest="40" HasShadow="False">
                          <Label Text="Own NOC"   FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5"/>
                           <Frame.GestureRecognizers>
                               <TapGestureRecognizer Command="{Binding OwnNocCommand}"/>
                           </Frame.GestureRecognizers>
                       </Frame>
-                      <Frame Grid.Row="0" Grid.Column="1"  Padding="0" BackgroundColor="Gray" Margin="0" HasShadow="False" HeightRequest="40">
+                          <!-- visible only Owned Application-->
+                      <Frame Grid.Row="0"  IsVisible="{Binding IsOwnedApplication }"  Padding="0" BackgroundColor="{DynamicResource BrandPrimary}" Margin="0" HasShadow="False" HeightRequest="40">
                            <Label Text="Transfer Ownership" FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5" />
                            <Frame.GestureRecognizers>
                               <TapGestureRecognizer Command="{Binding TransferNocCommand}"/>

@@ -18,6 +18,88 @@ namespace NOC.ViewModels
 {
     public class TrasactionAacceptancePageViewModel : ViewModelBase
     {
+
+        private bool _isNoObjectionSaveAndObjectionButtonEnable;
+        public bool IsNoObjectionSaveAndObjectionButtonEnable
+        {
+            get
+            {
+                return CalculateConditionForDisablingObjectionSaveAndNoObjectionButton() ;
+            }
+            set
+            {
+                SetProperty(ref _isNoObjectionSaveAndObjectionButtonEnable, value);
+            }
+        }
+
+        //For enable and disable the acytion Buttons
+        private bool CalculateConditionForDisablingObjectionSaveAndNoObjectionButton()
+        {
+            if (IsCompletedApplicationFlow)
+            {
+                return false;
+            }
+            else if(Session.Instance.IsNewNocApplicationFlow)
+            {
+                return false;
+            }
+            else if (Session.Instance.IsCommentedApplicationFlow)
+            {
+                return false;
+            }
+            else if (Session.Instance.IsOwnedApplicationFlow)
+            {
+                return true;
+            }
+            else if (IsRepliedNocApplicationFlow)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool _isRepliedNocApplicationFlow;
+        public bool IsRepliedNocApplicationFlow
+        {
+            get
+            {
+                return Session.Instance.IsRepliedNocApplicationFlow;
+            }
+            set
+            {
+                SetProperty(ref _isRepliedNocApplicationFlow, value);
+            }
+        }
+
+        private bool _isCompletedApplicationFlow;
+        public bool IsCompletedApplicationFlow
+        {
+            get
+            {
+                return Session.Instance.IsCompletedApplicationFlow;
+            }
+            set
+            {
+                SetProperty(ref _isCompletedApplicationFlow, value);
+            }
+        }
+
+        private bool _isCommentedApplicationFlow;
+        public bool IsCommentedApplicationFlow
+        {
+            get
+            {
+                return Session.Instance.IsCommentedApplicationFlow;
+            }
+            set
+            {
+                SetProperty(ref _isCommentedApplicationFlow, value);
+            }
+        }
+
         private bool _isConditionSelected;
         public bool IsConditionSelected
         {

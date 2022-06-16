@@ -34,5 +34,8 @@ namespace NOC.Utility
         public bool IsNewNocApplicationFlow { get; set; }
        public string SavedFilePathForReviewerPage { get; set; }
         public bool IsOwnedApplicationFlow { get; set; }
+        public bool IsCommentedApplicationFlow { get; set; }
+        public bool IsRepliedNocApplicationFlow { get; set; }
+        public bool IsCompletedApplicationFlow { get; set; }
     }
 }

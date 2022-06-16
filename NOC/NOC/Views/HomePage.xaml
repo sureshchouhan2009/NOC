@@ -170,7 +170,7 @@
                     </Frame.GestureRecognizers>
                 </Frame>
 
-                 <!--Replied NOCs flow-->
+                 <!--Replied NOCs|OR| Comment Reply flow-->
                  <Frame Grid.Row="3" Padding="0" BackgroundColor="LightGray" HasShadow="False" Margin="0" HeightRequest="60" IsVisible="{Binding IsProcessorFlow}">
                     <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
                         <Frame Grid.Column="0" Style="{StaticResource circleFram}">
@@ -178,7 +178,7 @@
                         </Frame>
                        
                         <StackLayout Grid.Column="1" Orientation="Horizontal" Padding="0" Margin="0">
-                            <Label  Style="{StaticResource menuLabel}" Text="Replied NOCs" />
+                            <Label  Style="{StaticResource menuLabel}" Text="Comment Reply" />
                             <Frame Style="{StaticResource counterCircleFram}">
                                 <Label Text="{Binding RepliedNOCsCount}" Style="{StaticResource countLabel}"></Label>
                             </Frame>

@@ -199,6 +199,7 @@ namespace NOC.ViewModels
                 Session.Instance.ApplicationsOrTransactionsList.Clear();
                 Session.Instance.ApplicationsOrTransactionsList = await ApiService.Instance.ApplicantGetTransactionList(inputValue);// send two for first option
                 await NavigationService.NavigateAsync("ApplicationsListPage");
+                //checking for New application
                 if (inputValue == 10)
                 {
                     Session.Instance.IsNewNocApplicationFlow = true;
@@ -215,6 +216,36 @@ namespace NOC.ViewModels
                 else
                 {
                     Session.Instance.IsOwnedApplicationFlow = false ;
+                }
+
+
+                //checking for CommentedApplicationFlow 
+                if (inputValue == 1)
+                {
+                    Session.Instance.IsCommentedApplicationFlow = true;
+                }
+                else
+                {
+                    Session.Instance.IsCommentedApplicationFlow = false;
+                }
+
+                //checking for RepliedNocApplicationFlow 
+                if (inputValue == 9)
+                {
+                    Session.Instance.IsRepliedNocApplicationFlow = true;
+                }
+                else
+                {
+                    Session.Instance.IsRepliedNocApplicationFlow = false;
+                }
+                //checking for Completed Application 
+                if (inputValue == 9)
+                {
+                    Session.Instance.IsCommentedApplicationFlow = true;
+                }
+                else
+                {
+                    Session.Instance.IsCommentedApplicationFlow = false;
                 }
             }
             catch (Exception ex)
