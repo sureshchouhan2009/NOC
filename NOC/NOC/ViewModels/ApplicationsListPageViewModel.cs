@@ -16,6 +16,7 @@ namespace NOC.ViewModels
     {
         public ApplicationsListPageViewModel(INavigationService navigationService) : base(navigationService)
         {
+            ApplicationListPageTitle = Session.Instance.ApplicationListPageTitle;
             TransactionsList = new ObservableCollection<TransactionModel>(Session.Instance.ApplicationsOrTransactionsList);
         }
         private ObservableCollection<TransactionModel> transactionsList = new ObservableCollection<TransactionModel>();
@@ -24,6 +25,14 @@ namespace NOC.ViewModels
             get { return transactionsList; }
             set { SetProperty(ref transactionsList, value); }
         }
+
+        private string _applicationListPageTitle;
+        public string ApplicationListPageTitle
+        {
+            get { return _applicationListPageTitle; }
+            set { SetProperty(ref _applicationListPageTitle, value); }
+        }
+
         private String _searchText;
         public String SearchText
         {

@@ -400,7 +400,7 @@ namespace NOC.Service
                     {
                         if (com.Comments.CommentsID == sub.Comments.ParentCommentID)
                         {
-                            com.list.Add(com.Comments.Comment);
+                            com.list.Add(sub.Comments.Comment);
                         }
                     }
                 }
@@ -596,11 +596,11 @@ namespace NOC.Service
                 var payload = ServiceUtility.BuildRequest(requestModel);
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
                 var response = await client.SendAsync(req);
-                //if (response?.IsSuccessStatusCode ?? false)
-                //{
-                string result = await response.Content.ReadAsStringAsync();
-                SuccessResult = JsonConvert.DeserializeObject<String>(result);
-                //}
+                if (response?.IsSuccessStatusCode ?? false)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    SuccessResult = JsonConvert.DeserializeObject<String>(result);
+                }
             }
             catch (Exception ex)
             {
@@ -610,7 +610,7 @@ namespace NOC.Service
             return SuccessResult;
         }
 
-        public async Task<String> GetTransferNocApiCall(ObjectionOptionPostModel requestModel)
+        public async Task<String> PostTransferNocApiCall(TransferNocRequestModel TransferRequestModel)
         {
             string responsedata = "";
             try
@@ -618,19 +618,21 @@ namespace NOC.Service
                 var client = ServiceUtility.CreateNewHttpClient();
                 var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
                 client.DefaultRequestHeaders.Authorization = authHeader;
-                String RequestUrl = Urls.TransferOwnership + "?" + "transNumber=" + requestModel.transactionid + "&" + "transferUserId=" + requestModel.userID;
+                String RequestUrl = Urls.TransferOwnership;
 
-                //
-
-
-                //
-
-                var response = await client.GetAsync(RequestUrl);
-                //if (response.IsSuccessStatusCode)
-                //{
+                var payload = ServiceUtility.BuildRequest(TransferRequestModel);
+                var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
+                var response = await client.SendAsync(req);
+                if (response.IsSuccessStatusCode)
+                {
                     string result = await response.Content.ReadAsStringAsync();
                     responsedata = JsonConvert.DeserializeObject<string>(result, ServiceUtility.GetJsonSerializationSettings());
-                //}
+                }
+                else
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    responsedata = JsonConvert.DeserializeObject<string>(result, ServiceUtility.GetJsonSerializationSettings());
+                }
             }
             catch (Exception ex)
             {

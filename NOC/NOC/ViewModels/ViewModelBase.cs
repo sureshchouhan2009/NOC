@@ -22,6 +22,9 @@ namespace NOC.ViewModels
             get { return _title; }
             set { SetProperty(ref _title, value); }
         }
+
+       
+
         private TransactionDetailsModel _transactonDetail;
         public TransactionDetailsModel TransactonDetail
         {

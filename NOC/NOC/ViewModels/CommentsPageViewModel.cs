@@ -262,7 +262,7 @@ public class CommentsPageViewModel : ViewModelBase
                 model.Comment = currentComment.ReplyMessageText;
                 model.CommentsDate = DateTime.Now;
                 model.CommentType = 1;
-                model.ParentCommentID = currentComment.Comments.ParentCommentID ?? 1;
+                model.ParentCommentID = currentComment.Comments.CommentsID;
                 model.TransactionID = trasactionID;
                 model.UserID = currentComment.Comments.UserID;
                 var response=  await ApiService.Instance.PostReplyComment(model);

@@ -37,5 +37,6 @@ namespace NOC.Utility
         public bool IsCommentedApplicationFlow { get; set; }
         public bool IsRepliedNocApplicationFlow { get; set; }
         public bool IsCompletedApplicationFlow { get; set; }
+        public string ApplicationListPageTitle { get; set; }
     }
 }

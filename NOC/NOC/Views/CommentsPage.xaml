@@ -39,7 +39,7 @@
                             <TapGestureRecognizer Command="{Binding GoBackCommand}" />
                         </Image.GestureRecognizers>
                     </Image>
-                    <Label Text="Transactions Info" Style="{StaticResource TitleLabelStyle}" />
+                    <Label Text="Comments" Style="{StaticResource TitleLabelStyle}" />
 
                 </Grid>
 

@@ -49,8 +49,8 @@
                                         <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="35"></Image>
                                     </Frame>
                                    
-                                    <Label Grid.Column="1" Style="{StaticResource menuLabel}" Text="{Binding Message}" />
-                                    <Label Grid.Column="2" Text="{Binding CreationDate,StringFormat='{0:dd-MM-yyyy}'}" TextColor="{DynamicResource BrandPrimary}" FontSize="16" HorizontalOptions="End" VerticalOptions="Center" />
+                                    <Label Grid.Column="1" Style="{StaticResource menuLabel}" Text="{Binding Message}" FontSize="14" />
+                                    <Label Grid.Column="2" Text="{Binding CreationDate,StringFormat='{0:dd-MM-yyyy}'}" TextColor="{DynamicResource BrandPrimary}" FontSize="12" HorizontalOptions="End" VerticalOptions="Center" />
 
                                 </Grid>
                             </Frame>

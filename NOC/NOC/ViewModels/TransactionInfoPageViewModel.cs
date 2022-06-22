@@ -219,13 +219,11 @@ namespace NOC.ViewModels
         {
             try
             {
-
-                ObjectionOptionPostModel transferNocModel = new ObjectionOptionPostModel();
-                transferNocModel.transactionid = TransactonDetail.Transaction.TransactionNumber;
-                transferNocModel.userID = TransactonDetail.Transaction.UserID;
-                var result = await ApiService.Instance.GetTransferNocApiCall(transferNocModel);
+                TransferNocRequestModel transferNocModel = new TransferNocRequestModel();
+                transferNocModel.transNumber = TransactonDetail.Transaction.TransactionNumber;
+                transferNocModel.transferUserId = TransactonDetail.Transaction.UserID;
+                var result = await ApiService.Instance.PostTransferNocApiCall(transferNocModel);
                 await Application.Current.MainPage.DisplayToastAsync(result);
-
             }
             catch (Exception ex)
             {

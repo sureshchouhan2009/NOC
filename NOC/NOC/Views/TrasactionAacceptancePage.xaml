@@ -140,17 +140,17 @@
 									<Frame Grid.Row="0"  HeightRequest="180" BorderColor="Gray" BackgroundColor="LightGray" Padding="5,0,5,0" Margin="0" HasShadow="False" >
 										<Grid  RowDefinitions="Auto,Auto,Auto" RowSpacing="0" >
 											<Grid Grid.Row="0" HeightRequest="40" BackgroundColor="LightGray">
-												<Label Text="Attachments" Grid.Column="0" FontSize="12" HorizontalOptions="Center" VerticalOptions="Center"/>
+												<Label Text="Attachments" FontAttributes="Bold" Grid.Column="0" FontSize="12" HorizontalOptions="Center" VerticalOptions="Center"/>
 											</Grid>
-											<Frame Grid.Row="1" HeightRequest="40" BorderColor="Black" HasShadow="False"  Padding="0" Margin="0" BackgroundColor="LightGray" >
+											<Frame Grid.Row="1" HeightRequest="40"  BorderColor="Black" HasShadow="False"  Padding="0" Margin="0" BackgroundColor="LightGray" >
 												<Grid  ColumnDefinitions="2.5*,2.5*,2.5*,2.5*" HeightRequest="40" >
-													<Label Text="File Name" Grid.Column="0"  FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
+													<Label Text="File Name" Grid.Column="0" FontAttributes="Bold"  FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
 													<BoxView Grid.Column="0" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
-													<Label Text="Attachment Type" Grid.Column="1" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
+													<Label Text="Attachment Type" Grid.Column="1" FontAttributes="Bold"  FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
 													<BoxView Grid.Column="1" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
-													<Label Text="Upload Date" Grid.Column="2" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
+													<Label Text="Upload Date" Grid.Column="2" FontAttributes="Bold"  FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
 													<BoxView Grid.Column="2" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
-													<Label Text="Download" Grid.Column="3" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
+													<Label Text="Download" Grid.Column="3" FontAttributes="Bold"  FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
 												</Grid>
 											</Frame>
 											<ListView Grid.Row="2" ItemsSource="{Binding StackholderAttachmentsModelList}" HeightRequest="80" Margin="0" HasUnevenRows="True" BackgroundColor="LightGray" SeparatorColor="DarkGray"  >
@@ -189,7 +189,7 @@
 							<Frame Grid.Row="0"  HeightRequest="180" BorderColor="Gray" BackgroundColor="LightGray" Padding="0" Margin="0" HasShadow="False" >
 								<Grid  RowDefinitions="Auto,Auto,Auto" RowSpacing="0" >
 									<Grid Grid.Row="0" ColumnDefinitions="3*,7*" HeightRequest="40" BackgroundColor="LightGray">
-										<Label Text="Attachments" Grid.Column="0" FontSize="12" HorizontalOptions="Center" VerticalOptions="Center"/>
+										<Label Text="Attachments" FontAttributes="Bold"  Grid.Column="0" FontSize="12" HorizontalOptions="Center" VerticalOptions="Center"/>
 										<BoxView Grid.Column="0" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
 										<Grid Grid.Column="1" ColumnDefinitions="8*,2*"   HeightRequest="30"  HorizontalOptions="Center" VerticalOptions="Center" >
 											<Frame Grid.Column="0" Padding="5,0,5,0" BackgroundColor="White" HasShadow="False" >
@@ -205,13 +205,13 @@
 									</Grid>
 									<Frame Grid.Row="1" HeightRequest="40" BorderColor="LightGray" HasShadow="False"  Padding="0" Margin="0" BackgroundColor="LightGray" >
 										<Grid  ColumnDefinitions="2.5*,2.5*,2.5*,2.5*" HeightRequest="40" >
-											<Label Text="File Name" Grid.Column="0"  FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
+											<Label Text="File Name" FontAttributes="Bold"  Grid.Column="0"  FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
 											<BoxView Grid.Column="0" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
-											<Label Text="Attachment Type" Grid.Column="1" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
+											<Label Text="Attachment Type" FontAttributes="Bold"  Grid.Column="1" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
 											<BoxView Grid.Column="1" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
-											<Label Text="Upload Date" Grid.Column="2" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
+											<Label Text="Upload Date" FontAttributes="Bold"  Grid.Column="2" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
 											<BoxView Grid.Column="2" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
-											<Label Text="Download" Grid.Column="3" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
+											<Label Text="Download" FontAttributes="Bold"  Grid.Column="3" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
 										</Grid>
 									</Frame>
 									<ListView Grid.Row="2" ItemsSource="{Binding AttachmentList}" HeightRequest="80" Margin="0" HasUnevenRows="True" BackgroundColor="LightGray" SeparatorColor="DarkGray"  >
@@ -348,9 +348,9 @@
 							<Grid   RowDefinitions="Auto,Auto,Auto" >
 								<Frame Grid.Row="0" HeightRequest="40"  HasShadow="False"  Padding="0" Margin="0" >
 									<Grid  ColumnDefinitions="3*,.1*,6.9*" HeightRequest="40" >
-										<Label Text="No" Grid.Column="0"  FontSize="12" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+										<Label Text="No" FontAttributes="Bold"  Grid.Column="0"  FontSize="12" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
 										<BoxView Grid.Column="1" WidthRequest="1" Color="Black" Margin="0,0,0,-10" HorizontalOptions="EndAndExpand"/>
-										<Label Text="Condition" Grid.Column="2" FontSize="12" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+										<Label Text="Condition" FontAttributes="Bold"  Grid.Column="2" FontSize="12" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
 									</Grid>
 								</Frame>
 								<ListView Grid.Row="1" ItemsSource="{Binding  ReviewerAllConditonsList}" HeightRequest="250" HasUnevenRows="True" SeparatorColor="Black">

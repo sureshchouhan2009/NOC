@@ -197,12 +197,15 @@ namespace NOC.ViewModels
             {
                 int inputValue = int.Parse(obj.ToString());
                 Session.Instance.ApplicationsOrTransactionsList.Clear();
+                Session.Instance.ApplicationListPageTitle = determineApplicationListPageTitle(inputValue);
                 Session.Instance.ApplicationsOrTransactionsList = await ApiService.Instance.ApplicantGetTransactionList(inputValue);// send two for first option
                 await NavigationService.NavigateAsync("ApplicationsListPage");
+            
                 //checking for New application
                 if (inputValue == 10)
                 {
                     Session.Instance.IsNewNocApplicationFlow = true;
+                    
                 }
                 else
                 {
@@ -253,6 +256,56 @@ namespace NOC.ViewModels
 
             }
             IsBusy = false;
+        }
+
+        private string determineApplicationListPageTitle(int inputValue)
+        {
+            if (inputValue == 1)
+            {
+                return "Commented NOCs";
+            }
+            else if(inputValue==2)
+            {
+                return "My NOCs";
+            }
+            //else if (inputValue == 3)
+            //{
+            //    return "Commented NOCs";
+            //}
+            //else if (inputValue == 4)
+            //{
+            //    return "Commented NOCs";
+            //}
+            else if (inputValue == 5)
+            {
+                return "Owned NOCs";
+            }
+            else if (inputValue == 6)
+            {
+                return "NOCs for Revalidation in 10 Days";
+            }
+            //else if (inputValue == 7)
+            //{
+            //    return "Commented NOCs";
+            //}
+            else if (inputValue == 9)
+            {
+                return "Comment Reply";
+            }else if (inputValue == 10)
+            {
+                return "New NOC Applications";
+                
+            }
+            else if (inputValue == 11)
+            {
+                return "Completed NOCs";
+
+            }
+            else
+            {
+                return "Transactions";
+            }
+
         }
 
         private async void ShowNotificationsExecute(object obj)

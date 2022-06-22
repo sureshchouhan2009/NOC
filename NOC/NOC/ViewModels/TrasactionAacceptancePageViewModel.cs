@@ -256,8 +256,8 @@ namespace NOC.ViewModels
             DDSourceList.Add("Days");
             DDSourceList.Add("Months");
             DDSourceList.Add("Years");
-            DurationValuetext = "180";
-            ValidityPickerSelectedItem = DDSourceList.FirstOrDefault();
+            DurationValuetext = "6";
+            ValidityPickerSelectedItem = DDSourceList[1];
             IsReviewerAddCommentButtonVisible = true;
 
           
@@ -283,13 +283,21 @@ namespace NOC.ViewModels
         {
             try
             {
+                if(DateTime.Parse(CalculatedValidTillDate) > DateTime.Now.Date.AddDays(7))
+                {
+                    ObjectionOptionPostModel objectionOptionPostModel = new ObjectionOptionPostModel();
+                    objectionOptionPostModel.transactionid = TransactonDetail.Transaction.TransactionNumber;
+                    objectionOptionPostModel.userID = TransactonDetail.Transaction.UserID;
+                    objectionOptionPostModel.expirydate = DateTime.Now.AddDays(180).ToString("dd/MMM/yyyy");
+                    var result = await ApiService.Instance.PostNoObjection(objectionOptionPostModel);
+                    await Application.Current.MainPage.DisplayToastAsync(result);
 
-                ObjectionOptionPostModel objectionOptionPostModel = new ObjectionOptionPostModel();
-                objectionOptionPostModel.transactionid = TransactonDetail.Transaction.TransactionNumber;
-                objectionOptionPostModel.userID = TransactonDetail.Transaction.UserID;
-                objectionOptionPostModel.expirydate = DateTime.Now.AddDays(180).ToString("dd/MMM/yyyy");
-                var result = await ApiService.Instance.PostNoObjection(objectionOptionPostModel);
-                await Application.Current.MainPage.DisplayToastAsync(result);
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayToastAsync("Please enter a validity Duration");
+                }
+
 
             }
             catch (Exception ex)
