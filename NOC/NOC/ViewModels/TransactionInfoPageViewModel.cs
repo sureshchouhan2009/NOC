@@ -182,8 +182,10 @@ namespace NOC.ViewModels
 
         private async void OwnNocCommandExecuteAsync(object obj)
         {
+            IsBusy = true;
             try
             {
+
 
                 ObjectionOptionPostModel objectionOptionPostModel = new ObjectionOptionPostModel();
                 objectionOptionPostModel.transactionid = TransactonDetail.Transaction.TransactionNumber;
@@ -198,7 +200,7 @@ namespace NOC.ViewModels
             {
 
             }
-
+            IsBusy = false;
         }
         private ICommand transferNocCommand;
 
@@ -217,6 +219,7 @@ namespace NOC.ViewModels
 
         private async void TransferNocCommandExecute(object obj)
         {
+            IsBusy = true;
             try
             {
                 TransferNocRequestModel transferNocModel = new TransferNocRequestModel();
@@ -229,6 +232,7 @@ namespace NOC.ViewModels
             {
 
             }
+            IsBusy = false;
         }
 
         private async void NavigateToCommentsPage(object obj)

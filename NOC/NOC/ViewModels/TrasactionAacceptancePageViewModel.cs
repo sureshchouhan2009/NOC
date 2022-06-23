@@ -424,16 +424,14 @@ namespace NOC.ViewModels
             
         }
 
-        private void DownloadCommentsAttachmentsCommandExecute(object obj)
+        private async void DownloadCommentsAttachmentsCommandExecute(object obj)
         {
-          var currentModel=  obj as CommentsRelatedAttachmentModel;
+            IsBusy = true;
+            var currentModel=  obj as CommentsRelatedAttachmentModel;
             IDownloader downloader = DependencyService.Get<IDownloader>();
-
             downloader.OnFileDownloaded += OnFileDownloaded;
-
-            //downloader.DownloadFile(currentModel.UrlPath, "XF_Downloads");
             downloader.DownloadFile(currentModel.UrlPath, "XF_Downloads");
-        
+            IsBusy = false;
         }
 
         private void OnFileDownloaded(object sender, DownloadEventArgs e)
@@ -469,13 +467,14 @@ namespace NOC.ViewModels
         {
             try
             {
-
+                IsBusy = true;
                 ObjectionOptionPostModel objectionOptionPostModel = new ObjectionOptionPostModel();
                 objectionOptionPostModel.transactionid = TransactonDetail.Transaction.TransactionNumber;
                 objectionOptionPostModel.userID = TransactonDetail.Transaction.UserID;
-                objectionOptionPostModel.expirydate = null;
+                objectionOptionPostModel.expirydate = CalculatedValidTillDate;
                 var result = await ApiService.Instance.PostObjection(objectionOptionPostModel);
                 await Application.Current.MainPage.DisplayToastAsync(result);
+                IsBusy=false;
 
             }
             catch (Exception ex)

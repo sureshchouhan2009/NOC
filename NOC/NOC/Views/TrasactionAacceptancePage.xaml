@@ -93,7 +93,7 @@
 						<!--#stackholder List-->
 						<Frame Grid.Row="0" Margin="10,5,10,5" BackgroundColor="Gray" Padding="5" HasShadow="False" >
 							<Grid  RowDefinitions="Auto,Auto">
-								<Label Grid.Row="0" Text="Stackholders" FontSize="14"  TextColor="Black"/>
+								<Label Grid.Row="0" Text="Stakeholders" FontSize="14"  TextColor="Black"/>
 										
 								<ListView Grid.Row="1" Grid.Column="0" ItemsSource="{Binding StackHolderList}" HeightRequest="80" BackgroundColor="White" >
 									<ListView.ItemTemplate>
@@ -110,19 +110,19 @@
 									</ListView.ItemTemplate>
 								</ListView>
 
-								<Label Grid.Row="1" IsVisible="{Binding  StackHolderList.Count,Converter={StaticResource intToBoolConverter}}" Text="No Stackholder availabe"  FontSize="16" TextColor="Black"  VerticalOptions="Center" HorizontalOptions="Center" />
+								<Label Grid.Row="1" IsVisible="{Binding  StackHolderList.Count,Converter={StaticResource intToBoolConverter}}" Text="No Stakeholder availabe"  FontSize="16" TextColor="Black"  VerticalOptions="Center" HorizontalOptions="Center" />
 								
 							</Grid>
 						</Frame>
 						<!--#region AllStackholder-->
 						<Grid Grid.Row="1" RowDefinitions="Auto" Margin="10,5,10,5"   ColumnSpacing="0" BackgroundColor="Gray"   >
 							<Grid Grid.Row="0"  RowDefinitions="Auto,Auto" >
-								<Label Grid.Row="0" Text="Stackholders Response" FontSize="14"  TextColor="Black" FontAttributes="Bold"/>
+								<Label Grid.Row="0" Text="Stakeholders Response" FontSize="14"  TextColor="Black" FontAttributes="Bold"/>
 								<Grid Grid.Row="1" RowDefinitions="Auto,Auto"  >
 									<Label Grid.Row="0"     >
 										<Label.FormattedText>
 											<FormattedString>
-												<Span Text="Stackholder: " FontSize="14" FontAttributes="Bold" TextColor="Black" />
+												<Span Text="Stakeholder: " FontSize="14" FontAttributes="Bold" TextColor="Black" />
 												<Span Text="{Binding SelectedStackholderResponse.CreatedBy}" FontSize="14" FontAttributes="Bold" TextColor="{DynamicResource BrandPrimary}" />
 											</FormattedString>
 										</Label.FormattedText>
@@ -303,7 +303,7 @@
 					<Grid Grid.Row="4" RowDefinitions="Auto,Auto"  IsVisible="{Binding IsReviewerConditionFlow, Converter={StaticResource InvertedBoolConverter}}">
 						<StackLayout Grid.Row="0" Orientation="Horizontal" Margin="20,5,20,5">
 							<Frame   Padding="0" BackgroundColor="{Binding IsStackHolderSelected, Converter={StaticResource boolToColorConverter}}" Margin="0" HasShadow="False">
-								<Label Text="Stackholders"   FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5"/>
+								<Label Text="Stakeholder"   FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5"/>
 								<Frame.GestureRecognizers>
 									<TapGestureRecognizer Command="{Binding StackholdersTappedCommand}" />
 								</Frame.GestureRecognizers>
@@ -316,11 +316,11 @@
 							</Frame>
 						</StackLayout>
 						<!--#region StackholderCondition-->
-						<Frame Grid.Row="1" Padding="0" IsVisible="{Binding IsStackholderCommentsFlow}" Margin="10,5,10,5" BorderColor="LightGray" HasShadow="False">
-							<Grid   RowDefinitions="Auto,Auto,Auto" >
+						<Frame Grid.Row="1" Padding="0"  IsVisible="{Binding IsStackholderCommentsFlow}" Margin="10,5,10,5" BorderColor="LightGray" HasShadow="False">
+							<Grid   RowDefinitions="Auto,Auto" >
 								<Frame Grid.Row="0" HeightRequest="40"  HasShadow="False"  Padding="0" Margin="0" >
 									<Grid  ColumnDefinitions="3*,.1*,6.9*" HeightRequest="40" >
-										<Label Text="Stackholder Name" Grid.Column="0"  FontSize="12" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+										<Label Text="Stakeholder Name" Grid.Column="0"  FontSize="12" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
 										<BoxView Grid.Column="1" WidthRequest="1" Color="DarkGray" Margin="0,0,0,-10" HorizontalOptions="EndAndExpand"/>
 										<Label Text="Condition" Grid.Column="2" FontSize="12" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
 									</Grid>
@@ -329,17 +329,27 @@
 									<ListView.ItemTemplate>
 										<DataTemplate>
 											<ViewCell>
-												<Grid ColumnDefinitions="3*,.1*,6.9*">
-													<Label Grid.Column="0" Text="{Binding StakeholderName}" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+												<!--<Grid ColumnDefinitions="3*,.1*,6.9*" >
+													<Label Grid.Column="0" Text="{Binding StakeholderName}" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Start" />
 													<BoxView Grid.Column="1" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
-													<Label Grid.Column="2" Text="{Binding condition}" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center" />
+													<Label Grid.Column="2" Text="{Binding condition}" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Start" />
+												</Grid>-->
+
+
+												<Grid ColumnDefinitions="3*,.1*,6.9*" VerticalOptions="Center" HorizontalOptions="FillAndExpand" >
+													<Label Grid.Column="0" Text="{Binding StakeholderName}" FontSize="10" />
+													<BoxView Grid.Column="1" WidthRequest="1" Color="Black" HorizontalOptions="EndAndExpand"/>
+													<Label Grid.Column="2" Text="{Binding condition}" FontSize="10"   />
+													
 												</Grid>
+
+
 											</ViewCell>
 										</DataTemplate>
 									</ListView.ItemTemplate>
 								</ListView>
 
-								<Label Grid.Row="1" IsVisible="{Binding  StackHolderCommentsList.Count ,Converter={StaticResource intToBoolConverter}}" Text="Stackholder Conditions Unavailable"  FontSize="16" VerticalOptions="Center" HorizontalOptions="Center" />
+								<Label Grid.Row="1" IsVisible="{Binding  StackHolderCommentsList.Count ,Converter={StaticResource intToBoolConverter}}" Text="Stakeholder Conditions Unavailable"  FontSize="16" VerticalOptions="Center" HorizontalOptions="Center" />
 							</Grid>
 						</Frame>
 						<!--#endregion-->
@@ -349,7 +359,7 @@
 								<Frame Grid.Row="0" HeightRequest="40"  HasShadow="False"  Padding="0" Margin="0" >
 									<Grid  ColumnDefinitions="3*,.1*,6.9*" HeightRequest="40" >
 										<Label Text="No" FontAttributes="Bold"  Grid.Column="0"  FontSize="12" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
-										<BoxView Grid.Column="1" WidthRequest="1" Color="Black" Margin="0,0,0,-10" HorizontalOptions="EndAndExpand"/>
+										<BoxView Grid.Column="1" WidthRequest="1" Color="Black" Margin="0,0,0,-2" HorizontalOptions="EndAndExpand"/>
 										<Label Text="Condition" FontAttributes="Bold"  Grid.Column="2" FontSize="12" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
 									</Grid>
 								</Frame>
