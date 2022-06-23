@@ -318,11 +318,11 @@
 						<!--#region StackholderCondition-->
 						<Frame Grid.Row="1" Padding="0"  IsVisible="{Binding IsStackholderCommentsFlow}" Margin="10,5,10,5" BorderColor="LightGray" HasShadow="False">
 							<Grid   RowDefinitions="Auto,Auto" >
-								<Frame Grid.Row="0" HeightRequest="40"  HasShadow="False"  Padding="0" Margin="0" >
+								<Frame Grid.Row="0" HeightRequest="40" BorderColor="Gray" HasShadow="False"  Padding="0" Margin="0" >
 									<Grid  ColumnDefinitions="3*,.1*,6.9*" HeightRequest="40" >
-										<Label Text="Stakeholder Name" Grid.Column="0"  FontSize="12" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+										<Label Text="Stakeholder Name" FontAttributes="Bold" Grid.Column="0"  FontSize="12" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
 										<BoxView Grid.Column="1" WidthRequest="1" Color="DarkGray" Margin="0,0,0,-10" HorizontalOptions="EndAndExpand"/>
-										<Label Text="Condition" Grid.Column="2" FontSize="12" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+										<Label Text="Condition" Grid.Column="2" FontAttributes="Bold" FontSize="12" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
 									</Grid>
 								</Frame>
 								<ListView Grid.Row="1" ItemsSource="{Binding StackHolderCommentsList}" HeightRequest="250" HasUnevenRows="True" SeparatorColor="DarkGray">
@@ -338,7 +338,7 @@
 
 												<Grid ColumnDefinitions="3*,.1*,6.9*" VerticalOptions="Center" HorizontalOptions="FillAndExpand" >
 													<Label Grid.Column="0" Text="{Binding StakeholderName}" FontSize="10" />
-													<BoxView Grid.Column="1" WidthRequest="1" Color="Black" HorizontalOptions="EndAndExpand"/>
+													<BoxView Grid.Column="1" WidthRequest="1" Color="Gray" HorizontalOptions="EndAndExpand"/>
 													<Label Grid.Column="2" Text="{Binding condition}" FontSize="10"   />
 													
 												</Grid>
