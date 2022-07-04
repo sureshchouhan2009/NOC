@@ -7,4 +7,7 @@ namespace NOC.Models
         public string transactionid { get; set; }
         public string expirydate { get; set; }
     }
+
+
+    
 }

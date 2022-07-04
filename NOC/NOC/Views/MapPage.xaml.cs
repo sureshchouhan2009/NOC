@@ -104,7 +104,7 @@ namespace NOC.Views
                 var token = Session.Instance.Token;
                 var TransactionID = Session.Instance.CurrentTransaction.Transaction.TransactionID;
                
-                int roleID = 1;
+                int roleID = 0;
                 using (var stream = await FileSystem.OpenAppPackageFileAsync(fileName))
                 {
                     using (var reader = new StreamReader(stream))

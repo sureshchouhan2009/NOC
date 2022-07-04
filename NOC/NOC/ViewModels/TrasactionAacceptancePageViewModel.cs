@@ -281,6 +281,7 @@ namespace NOC.ViewModels
 
         private async void NoObjectionCommandExecute(object obj)
         {
+            IsBusy = true;
             try
             {
                 if(DateTime.Parse(CalculatedValidTillDate) > DateTime.Now.Date.AddDays(7))
@@ -291,7 +292,7 @@ namespace NOC.ViewModels
                     objectionOptionPostModel.expirydate = DateTime.Now.AddDays(180).ToString("dd/MMM/yyyy");
                     var result = await ApiService.Instance.PostNoObjection(objectionOptionPostModel);
                     await Application.Current.MainPage.DisplayToastAsync(result);
-
+                    await NavigationService.NavigateAsync("app:///HomePage");
                 }
                 else
                 {
@@ -304,7 +305,7 @@ namespace NOC.ViewModels
             {
 
             }
-
+            IsBusy = false;
         }
         
         private ICommand _downloadCommentsAttachmentsCommand;
@@ -474,12 +475,13 @@ namespace NOC.ViewModels
                 objectionOptionPostModel.expirydate = CalculatedValidTillDate;
                 var result = await ApiService.Instance.PostObjection(objectionOptionPostModel);
                 await Application.Current.MainPage.DisplayToastAsync(result);
-                IsBusy=false;
+                await NavigationService.NavigateAsync("app:///HomePage");
+                IsBusy =false;
 
             }
             catch (Exception ex)
             {
-
+                IsBusy = false;
             }
 
         }

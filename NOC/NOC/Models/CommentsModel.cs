@@ -106,7 +106,7 @@ namespace NOC.Models
         public object LkTransStepsReply { get; set; }
         public object SolutionRoles { get; set; }
         public object SolutionRoleUser { get; set; }
-        public object Attachments { get; set; }
+        public List<AttachmentModel> Attachments { get; set; } = new List<AttachmentModel>();
         public object Stakeholder_Comments { get; set; }
         public object Decision { get; set; }
         public SolutionRoleswithUserID SolutionRoleswithUserID { get; set; }

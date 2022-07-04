@@ -33,7 +33,7 @@
                             <TapGestureRecognizer Command="{Binding GoBackCommand}" />
                         </Image.GestureRecognizers>
                     </Image>
-                    <Label Text="Notifications" Style="{StaticResource TitleLabelStyle}"  />
+                    <Label Text="Notifications" FontAttributes="Bold" Style="{StaticResource TitleLabelStyle}"  />
 
                 </Grid>
 

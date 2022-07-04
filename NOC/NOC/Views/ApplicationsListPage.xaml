@@ -13,6 +13,7 @@
             <Setter Property="HorizontalOptions" Value="Center" />
             <Setter Property="BackgroundColor" Value="White" />
             <Setter Property="HasShadow" Value="False"/>
+            <Setter Property="BorderColor" Value="{DynamicResource DarkGray}"/>
              <Setter Property="CornerRadius" 
       Value="{OnPlatform iOS=18, Android=30}" />  
             <Setter Property="Padding" Value="0" />
@@ -20,7 +21,7 @@
         <Style x:Key="menuLabel" TargetType="Label">
             <Setter Property="VerticalOptions" Value="Center" />
             <Setter Property="HorizontalOptions" Value="Start" />
-            <Setter Property="TextColor" Value="Gray" />
+            <Setter Property="TextColor" Value="{DynamicResource DarkGray}" />
             <Setter Property="FontSize" Value="16" />
         </Style>
     </ContentPage.Resources>
@@ -33,7 +34,7 @@
                             <TapGestureRecognizer Command="{Binding GoBackCommand}" />
                         </Image.GestureRecognizers>
                     </Image>
-                    <Label Text="{Binding ApplicationListPageTitle}" Style="{StaticResource TitleLabelStyle}" />
+                    <Label Text="{Binding ApplicationListPageTitle}" FontAttributes="Bold" Style="{StaticResource TitleLabelStyle}" />
 
                 </Grid>
 
@@ -58,7 +59,7 @@
                         </Frame.Content>
                 </Frame>
 
-                <ListView Grid.Row="1" BackgroundColor="LightGray"  ItemsSource="{Binding TransactionsList}" HasUnevenRows="True"  SeparatorVisibility="Default" SeparatorColor="Black">
+                <ListView Grid.Row="1" BackgroundColor="{DynamicResource AppBackgroundGray}"  ItemsSource="{Binding TransactionsList}" HasUnevenRows="True"  SeparatorVisibility="Default" SeparatorColor="Black">
                     <ListView.ItemTemplate >
                         <DataTemplate >
                             <ViewCell >

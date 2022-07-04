@@ -26,6 +26,7 @@ namespace NOC
             #region Get looged in person details
             Preferences.Get("UserName", "");
             Preferences.Get("Password", "");
+            
             if(Preferences.Get("UserType", "")== "Officer")
             {
                 Session.Instance.CurrentUserType = UserTypes.Officer;
@@ -55,9 +56,10 @@ namespace NOC
                 if (CheckIfLoggedIn())
                 {
                     Session.Instance.Token = Preferences.Get("Token", "");
+                    Session.Instance.CurrentUserID = Preferences.Get("CurrentUserID", "");
                     // also need to check for User Type and accordingly navigate
 
-                    if (Session.Instance.Token != "")
+                    if (Session.Instance.Token != "" && Session.Instance.CurrentUserID!="")
                     {
                        
                         await NavigationService.NavigateAsync("/HomePage");

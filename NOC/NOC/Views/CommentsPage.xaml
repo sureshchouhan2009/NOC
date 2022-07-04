@@ -39,7 +39,7 @@
                             <TapGestureRecognizer Command="{Binding GoBackCommand}" />
                         </Image.GestureRecognizers>
                     </Image>
-                    <Label Text="Comments" Style="{StaticResource TitleLabelStyle}" />
+                    <Label Text="Comments" FontAttributes="Bold" Style="{StaticResource TitleLabelStyle}" />
 
                 </Grid>
 
@@ -90,11 +90,11 @@
                      </RadioButton>
                  </Grid>
 
-                 <ListView Grid.Row="1"  ItemsSource="{Binding CommentsList}" HasUnevenRows="True" SeparatorColor="Black" SelectionMode="None">
+                 <ListView Grid.Row="1"  ItemsSource="{Binding CommentsList}" HasUnevenRows="True" SeparatorColor="Black" SelectionMode="None" >
                      <ListView.ItemTemplate>
                          <DataTemplate>
                              <ViewCell>
-                                  <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto" Padding="20,0,20,0">
+                                  <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" Padding="20,0,20,0">
                                      <Grid Grid.Row="0" RowDefinitions="Auto,Auto" ColumnDefinitions="5*,5*" >
                                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding Users.UserType.UserTypeValue }" HorizontalOptions="Start" VerticalOptions="Center"/>
                                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Comments.CommentsDate,StringFormat='{0:dd/MM/yyyy}'}" HorizontalOptions="Center" VerticalOptions="Center"/>
@@ -104,6 +104,8 @@
                                          <Label Text="{Binding Users.ContactEmail,StringFormat='Entered by: {0}'}" FontSize="12"/>
                                          <Label Text="{Binding Users.ContactEmail,StringFormat='Person email: {0}'}" FontSize="12"/>
                                          <Label Text="{Binding Users.ContactMobile,StringFormat='Person office phone no: {0}'}" FontSize="12"/>
+                                         
+                                                        
                                      </StackLayout>
                                      <Label Grid.Row="2" Text="{Binding Comments.Comment,StringFormat='Comment: {0}'}" TextColor="Black" FontSize="12" Margin="0,10,0,10"/>
                                      <StackLayout Grid.Row="3" Padding="0" HeightRequest="20"  HorizontalOptions="End" Orientation="Horizontal">
@@ -114,11 +116,35 @@
                                          </StackLayout.GestureRecognizers>
                                       </StackLayout>
                                      <BoxView Grid.Row="4"  Color="LightGray" HeightRequest="1" Margin="0,10,0,10"/>
-                                       <ListView ItemsSource="{Binding list }" Grid.Row="5" IsVisible="{Binding  list.Count ,Converter={StaticResource intToBoolConverter}}"  HasUnevenRows="True" HeightRequest="150">
+                                       <ListView ItemsSource="{Binding list }" Grid.Row="5" IsVisible="{Binding  list.Count ,Converter={StaticResource intToBoolConverter}}"  HasUnevenRows="True" HeightRequest="100">
                                              <ListView.ItemTemplate>
                                                  <DataTemplate>
                                                      <ViewCell>
-                                                         <Label Text="{Binding .,StringFormat='Replied: {0}'}" TextColor="Black" FontSize="12" Margin="0,10,0,10"/>
+                                                         <Grid RowDefinitions="Auto">
+                                                             <Label Grid.Row="0" Text="{Binding .,StringFormat='Replied: {0}'}" TextColor="Black" FontSize="12" Margin="0,10,0,10"/>
+                                                         </Grid>
+                                                     </ViewCell>
+                                                 </DataTemplate>
+                                             </ListView.ItemTemplate>
+
+                                         </ListView>
+
+                                       <ListView ItemsSource="{Binding Attachments }" Header=""  Grid.Row="6" IsVisible="{Binding  Attachments.Count ,Converter={StaticResource intToBoolConverter}}"  HasUnevenRows="True" HeightRequest="100" Margin="0,0,0,10">
+                                            <ListView.HeaderTemplate>
+                                                <DataTemplate>
+                                                    <Label  Text="Attachments" TextColor="Black" FontSize="14" FontAttributes="Bold" Margin="0,10,0,10"/>
+                                                </DataTemplate>
+                                            </ListView.HeaderTemplate>
+                                           <ListView.ItemTemplate>
+                                                 <DataTemplate>
+                                                     <ViewCell>
+                                                         
+                                                             <Label  Text="{Binding FileName}" TextColor="Blue" FontSize="12" FontAttributes="Italic" Margin="0,10,0,10">
+                                                                 <Label.GestureRecognizers>
+                                                                    <TapGestureRecognizer Command="{Binding Source={x:Reference commentsPageRef},Path=BindingContext.CommentPageAttachmentShow}" CommandParameter="{Binding .}"/>
+                                                                 </Label.GestureRecognizers>
+                                                             </Label>
+                                                       
                                                      </ViewCell>
                                                  </DataTemplate>
                                              </ListView.ItemTemplate>
@@ -126,7 +152,7 @@
                                          </ListView>
 
 
-                                      <Grid  IsVisible="{Binding IsReplyViewVisible}" Grid.Row="6" RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="5*,5*" >
+                                      <Grid  IsVisible="{Binding IsReplyViewVisible}" Grid.Row="7" RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="5*,5*" >
                                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding Users.UserType.UserTypeValue }" HorizontalOptions="Start" VerticalOptions="Center"/>
                                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Comments.CommentsDate,StringFormat='{0:dd/MM/yyyy}'}" HorizontalOptions="Center" VerticalOptions="Center"/>
 

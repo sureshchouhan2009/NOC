@@ -189,11 +189,13 @@ namespace NOC.ViewModels
 
                 ObjectionOptionPostModel objectionOptionPostModel = new ObjectionOptionPostModel();
                 objectionOptionPostModel.transactionid = TransactonDetail.Transaction.TransactionNumber;
-                objectionOptionPostModel.userID = TransactonDetail.Transaction.UserID;
+                objectionOptionPostModel.userID = Session.Instance.CurrentUserID;//"faa81574-c437-4d58-85e4-f115f1e22d12"; //TransactonDetail.Transaction.UserID;
 
                 var str = JsonConvert.SerializeObject(objectionOptionPostModel);
                 var result = await ApiService.Instance.PostOwnNoc(objectionOptionPostModel);
                 await Application.Current.MainPage.DisplayToastAsync(result);
+
+                await NavigationService.NavigateAsync("app:///HomePage");
 
             }
             catch (Exception ex)
@@ -227,6 +229,7 @@ namespace NOC.ViewModels
                 transferNocModel.transferUserId = TransactonDetail.Transaction.UserID;
                 var result = await ApiService.Instance.PostTransferNocApiCall(transferNocModel);
                 await Application.Current.MainPage.DisplayToastAsync(result);
+                await NavigationService.NavigateAsync("app:///HomePage");
             }
             catch (Exception ex)
             {
@@ -321,7 +324,7 @@ namespace NOC.ViewModels
                         ActualAttachmentRequest.TransactionNumber = Session.Instance.CurrentTransaction.Transaction.TransactionNumber;
 
                         string FinalResponse = await ApiService.Instance.SaveCommentAttachmentToDB(ActualAttachmentRequest);
-                        getLatestAttachments();
+                       await getLatestAttachments();
                         await Application.Current.MainPage.DisplayToastAsync(FinalResponse);
                     }
                     else
@@ -353,17 +356,19 @@ namespace NOC.ViewModels
         {
            // IsBusy = true;
             base.OnNavigatedTo(parameters);
-            getLatestAttachments();
+           await getLatestAttachments();
              //AttachmentList =await ApiService.Instance.GetTransactionAttachment(Session.Instance.CurrentTransaction.Transaction.TransactionID.ToString());
             // IsBusy = false;
         }
 
 
-        public async void getLatestAttachments()
+        public async Task<bool> getLatestAttachments()
         {
             IsBusy = true;
             AttachmentList = await ApiService.Instance.GetTransactionAttachment(Session.Instance.CurrentTransaction.Transaction.TransactionID.ToString());
             IsBusy = false;
+
+            return AttachmentList.Count>0;
         }
 
     }

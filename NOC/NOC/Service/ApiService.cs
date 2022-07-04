@@ -320,8 +320,10 @@ namespace NOC.Service
                     string result = await response.Content.ReadAsStringAsync();
                     var commentList= JsonConvert.DeserializeObject<List<CommentsModel>>(result, ServiceUtility.GetJsonSerializationSettings());
 
-                    responsedata = ModifyCommentListAndReturnAsCommentAndRepliedCommentsList(commentList);
+                   
 
+                    List<AttachmentModel> allAttachments =  await GetTransactionAttachment(Session.Instance.CurrentTransaction.Transaction.TransactionID.ToString());
+                    responsedata = ModifyCommentListAndReturnAsCommentAndRepliedCommentsList(commentList, allAttachments);
 
                     //responsedata = JsonConvert.DeserializeObject<List<CommentsModel>>(result, ServiceUtility.GetJsonSerializationSettings());
                 }
@@ -389,7 +391,7 @@ namespace NOC.Service
 
 
 
-        private List<CommentsModel> ModifyCommentListAndReturnAsCommentAndRepliedCommentsList(List<CommentsModel> commentList)
+        private List<CommentsModel> ModifyCommentListAndReturnAsCommentAndRepliedCommentsList(List<CommentsModel> commentList, List<AttachmentModel> allAttachments)
         {
             // List<CommentsModel> modifiedList = new List<CommentsModel>();
             foreach (var com in commentList)
@@ -404,13 +406,21 @@ namespace NOC.Service
                         }
                     }
                 }
-                
-
-
-
             }
             var list= commentList.Where(x => x.Comments.ParentCommentID == null).ToList();
-            return list;
+            List<CommentsModel> commentWithAttachment = new List<CommentsModel>();
+            foreach (var modifiedcomment in list)
+            {
+                foreach(var attachment in allAttachments)
+                {
+                    if(modifiedcomment.Comments.CommentsID== attachment.CommentsID)
+                    {
+                        modifiedcomment.Attachments.Add( attachment);
+                    }
+                }
+                commentWithAttachment.Add(modifiedcomment);
+            }
+            return commentWithAttachment;
         }
 
         public async Task<string> UploadFileAgainstReviewerComment(ReviewerAttachmentUploadModel uploadModel)

@@ -15,14 +15,16 @@
         </Style>
 
        <!-- Application resource Colors -->
-            <Color x:Key="BrandPrimary">#aa182c</Color>
+            <!--<Color x:Key="BrandPrimary">#aa182c</Color>-->
+            <Color x:Key="BrandPrimary">#e9003f</Color>
             <Color x:Key="BrandSecondary">#595959</Color>
             <Color x:Key="BrandTertiary">#F5D563</Color>
             <Color x:Key="PageBackground">#F0F5F8</Color>
             <Color x:Key="SectionBackground">#FFFFFF</Color>
 
 
-
+       <Color x:Key="AppBackgroundGray">#f2f2f2</Color>
+       <Color x:Key="DarkGray">#4d4d4d</Color>
        
     </Application.Resources>
 </prism:PrismApplication>

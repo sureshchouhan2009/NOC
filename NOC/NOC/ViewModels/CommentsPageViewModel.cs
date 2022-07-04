@@ -162,8 +162,40 @@ public class CommentsPageViewModel : ViewModelBase
             return addReplyCommand;
         }
     }
+ private ICommand _commentPageAttachmentShow;
 
-    private void AddReplyCommandExecute(object obj)
+    public ICommand CommentPageAttachmentShow
+        {
+        get
+        {
+            if (_commentPageAttachmentShow == null)
+            {
+                    _commentPageAttachmentShow = new Command(CommentPageAttachmentShowExecute);
+            }
+
+            return _commentPageAttachmentShow;
+        }
+    }
+
+        private async void CommentPageAttachmentShowExecute(object obj)
+        {
+            IsBusy = true;
+           
+            try
+            {
+
+                var currentAttachment = obj as AttachmentModel;
+                await Launcher.OpenAsync(currentAttachment.UrlPath);
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            IsBusy = false;
+        }
+
+        private void AddReplyCommandExecute(object obj)
     {
         try
         {
@@ -373,17 +405,19 @@ public class CommentsPageViewModel : ViewModelBase
     {
         IsBusy = true;
         base.OnNavigatedTo(parameters);
-        getLatestComments();
+        await getLatestComments();
         IsBusy = false;
     }
 
         
 
-    private async void getLatestComments()
+    private async Task<bool> getLatestComments()
     {
         var transactionDetails = Session.Instance.CurrentTransaction;
         Session.Instance.CurerentTransactionCommentsList = await ApiService.Instance.GetTransactionComents(transactionDetails.Transaction.TransactionNumber);
         CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList);
+        return commentsList.Count > 0;
     }
 }
+
 }

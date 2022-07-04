@@ -57,7 +57,7 @@
                             <TapGestureRecognizer Command="{Binding GoBackCommand}" />
                         </Image.GestureRecognizers>
                     </Image>
-                    <Label Text="{Binding Title}" Style="{StaticResource TitleLabelStyle}" />
+                    <Label Text="{Binding Title}" FontAttributes="Bold" Style="{StaticResource TitleLabelStyle}" />
                 </Grid>
             </Frame>
             <ScrollView Grid.Row="1">

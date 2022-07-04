@@ -4,6 +4,7 @@ using NOC.Service;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -46,5 +47,34 @@ namespace NOC.Utility
             return token;
         }
 
+
+
+        public static async Task<string> GetTokenDetails(string Token)
+        {
+            string userID = "";
+                try
+                {
+                    var client = ServiceUtility.CreateNewHttpClient();
+                    var authHeader = new AuthenticationHeaderValue("bearer", Token);
+                    client.DefaultRequestHeaders.Authorization = authHeader;
+                    String RequestUrl = Urls.Gettokenurls ;
+                    var response = await client.GetAsync(RequestUrl);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string result = await response.Content.ReadAsStringAsync();
+                        userID = JsonConvert.DeserializeObject<string>(result, ServiceUtility.GetJsonSerializationSettings());
+                       
+                    }
+                }
+                catch (Exception ex)
+                {
+
+
+                }
+                return userID;
+            }
+
+
+        }
     }
-}
+

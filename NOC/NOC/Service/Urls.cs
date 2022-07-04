@@ -10,6 +10,7 @@ namespace NOC.Service
 
 
         public const string TokenURL = BaseUrl + "Token";
+        public const string Gettokenurls = BaseUrl+"api/Account/UserInfo";
         public const string CheckApplicant = BaseUrl + "api/Users/CheckApplicant";
         public const string CheckReviewer = BaseUrl + "api/Users/CheckReviewer";
         public const string CheckStakeholder = BaseUrl + "api/Users/ERStakeholder";

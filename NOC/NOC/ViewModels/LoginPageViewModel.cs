@@ -74,6 +74,8 @@ namespace NOC.ViewModels
                 {
                     var token = await TokenClass.GetToken(EmailText, passwordText);
 
+                    var userID = await TokenClass.GetTokenDetails(token);
+
                     if (!string.IsNullOrEmpty(token))
                     {
                         UserTypes userType = await RecogniseTokenAndReturnTheUserType(token);
@@ -81,9 +83,12 @@ namespace NOC.ViewModels
                         {
                             Session.Instance.CurrentUserType = userType;
                             Session.Instance.Token = token;
+                            Session.Instance.CurrentUserID = userID;
+
                             Preferences.Set("UserType", userType.ToString());
                             Preferences.Set("Token", token);
                             Preferences.Set("UserName", EmailText);
+                            Preferences.Set("CurrentUserID", userID);
                             Preferences.Set("Password", PasswordText);
                             Preferences.Set("IsLoggedIN", true);
 
@@ -92,10 +97,12 @@ namespace NOC.ViewModels
                         {
                             Session.Instance.CurrentUserType = userType;
                             Session.Instance.Token = token;
+
                             Preferences.Set("UserType", userType.ToString());
                             Preferences.Set("Token", token);
                             Preferences.Set("UserName", EmailText);
                             Preferences.Set("Password", PasswordText);
+                            Preferences.Set("CurrentUserID", userID);
                             Preferences.Set("IsLoggedIN", true);
                             await NavigationService.NavigateAsync("NavigationPage/HomePage");
                         }

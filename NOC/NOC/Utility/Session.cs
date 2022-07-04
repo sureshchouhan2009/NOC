@@ -23,6 +23,7 @@ namespace NOC.Utility
         #endregion
 
         public String Token;
+        public string CurrentUserID;
         public UserTypes CurrentUserType { get; set; }
 
         public List<NotificationsModel> NotificationsModelList = new List<NotificationsModel>();

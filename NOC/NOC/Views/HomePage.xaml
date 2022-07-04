@@ -14,6 +14,7 @@
             <Setter Property="HorizontalOptions" Value="Center" />
             <Setter Property="BackgroundColor" Value="White" />
              <Setter Property="HasShadow" Value="False"/>
+            <Setter Property="BorderColor" Value="{DynamicResource DarkGray}"/>
              <Setter Property="CornerRadius" 
       Value="{OnPlatform iOS=20, Android=40}" />  
             <Setter Property="Padding" Value="3" />
@@ -22,12 +23,12 @@
          <Style x:Key="counterCircleFram" TargetType="Frame">
             <Setter Property="VerticalOptions" Value="Center" />
             <Setter Property="HorizontalOptions" Value="Center" />
-            <Setter Property="BackgroundColor" Value="White" />
-                <Setter Property="HasShadow" Value="False"/>
-             <Setter Property="Padding" Value="3" />
+            <Setter Property="BackgroundColor" Value="{DynamicResource DarkGray}" />
+            <Setter Property="HasShadow" Value="False"/>
+            <Setter Property="Padding" Value="3" />
             <Setter Property="CornerRadius" Value="12" />
-             <Setter Property="CornerRadius" 
-      Value="{OnPlatform iOS=12, Android=30}" />  
+            <Setter Property="CornerRadius" 
+            Value="{OnPlatform iOS=12, Android=30}" />  
                           
                         
             
@@ -37,7 +38,7 @@
         <Style x:Key="menuLabel" TargetType="Label">
             <Setter Property="VerticalOptions" Value="Center" />
             <Setter Property="HorizontalOptions" Value="Start" />
-            <Setter Property="TextColor" Value="Gray" />
+            <Setter Property="TextColor" Value="{DynamicResource DarkGray}" />
             <Setter Property="FontSize" Value="16" />
         </Style>
 
@@ -46,7 +47,7 @@
             <Setter Property="HorizontalOptions" Value="Center" />
             <Setter Property="HorizontalTextAlignment" Value="Center" />
             <Setter Property="VerticalTextAlignment" Value="Center" />
-            <Setter Property="TextColor" Value="Black" />
+            <Setter Property="TextColor" Value="White" />
             <Setter Property="FontSize" Value="12" />
             <Setter Property="HeightRequest" Value="20" />
             <Setter Property="WidthRequest" Value="20" />
@@ -63,11 +64,11 @@
         <Grid RowDefinitions="Auto,*,Auto"  RowSpacing="0" >
            
             <Frame Grid.Row="0" Padding="10" HeightRequest="40" HasShadow="False">
-                <Label Grid.Column="1" Text="Menu" Style="{StaticResource TitleLabelStyle}" Padding="0" Margin="0" />
+                <Label Grid.Column="1" Text="Menu" FontAttributes="Bold" Style="{StaticResource TitleLabelStyle}" Padding="0" Margin="0" />
             </Frame>
-            <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="3"  >
+            <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="3"   >
                <!--My Noc/New Noc-->
-                <Frame Grid.Row="0" Padding="0" Margin="0" BackgroundColor="LightGray" HasShadow="False" HeightRequest="60" IsVisible="{Binding IsProcessorFlow, Converter={StaticResource InvertedBoolConverter}}">
+                <Frame Grid.Row="0" Padding="0" Margin="0" BackgroundColor="{DynamicResource AppBackgroundGray}" HasShadow="False" HeightRequest="60" IsVisible="{Binding IsProcessorFlow, Converter={StaticResource InvertedBoolConverter}}">
                     <Grid  ColumnDefinitions="2*,8*,2*" Margin="10"  >
                         <Frame Grid.Column="0" Style="{StaticResource circleFram}">
                             <Image  Source="doc_icon" Aspect="AspectFit" HeightRequest="40" ></Image>
@@ -86,7 +87,7 @@
                     </Frame.GestureRecognizers> 
                     
                 </Frame>
-                <Frame Grid.Row="0" Padding="0" Margin="0" BackgroundColor="LightGray" HasShadow="False" HeightRequest="60" IsVisible="{Binding IsProcessorFlow}">
+                <Frame Grid.Row="0" Padding="0" Margin="0" BackgroundColor="{DynamicResource AppBackgroundGray}" HasShadow="False" HeightRequest="60" IsVisible="{Binding IsProcessorFlow}">
                     <Grid  ColumnDefinitions="2*,8*,2*" Margin="10"  >
                         <Frame Grid.Column="0" Style="{StaticResource circleFram}">
                             <Image  Source="doc_icon" Aspect="AspectFit" HeightRequest="40" ></Image>
@@ -108,7 +109,7 @@
 
 
                   <!--Owned Noc for reviewer-->
-                <Frame Grid.Row="1" Padding="0" BackgroundColor="LightGray" HasShadow="False" Margin="0" HeightRequest="60" IsVisible="{Binding IsProcessorFlow}">
+                <Frame Grid.Row="1" Padding="0" BackgroundColor="{DynamicResource AppBackgroundGray}" HasShadow="False" Margin="0" HeightRequest="60" IsVisible="{Binding IsProcessorFlow}">
                     <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
                         <Frame Grid.Column="0" Style="{StaticResource circleFram}">
                             <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="40"></Image>
@@ -128,7 +129,7 @@
                 </Frame>
 
                  <!--Commented Noc-->
-                <Frame Grid.Row="2" Padding="0" BackgroundColor="LightGray" HasShadow="False" Margin="0" HeightRequest="60">
+                <Frame Grid.Row="2" Padding="0" BackgroundColor="{DynamicResource AppBackgroundGray}" HasShadow="False" Margin="0" HeightRequest="60">
                     <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
                         <Frame Grid.Column="0" Style="{StaticResource circleFram}">
                             <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="40"></Image>
@@ -151,7 +152,7 @@
 
 
                 <!--Revalidation in 10 Days Noc Or Replied Noc for Processor flow-->
-                <Frame Grid.Row="3" Padding="0" BackgroundColor="LightGray" HasShadow="False" Margin="0" HeightRequest="60" IsVisible="{Binding IsProcessorFlow, Converter={StaticResource InvertedBoolConverter}}">
+                <Frame Grid.Row="3" Padding="0" BackgroundColor="{DynamicResource AppBackgroundGray}" HasShadow="False" Margin="0" HeightRequest="60" IsVisible="{Binding IsProcessorFlow, Converter={StaticResource InvertedBoolConverter}}">
                     <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
                         <Frame Grid.Column="0" Style="{StaticResource circleFram}">
                             <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="40"></Image>
@@ -171,7 +172,7 @@
                 </Frame>
 
                  <!--Replied NOCs|OR| Comment Reply flow-->
-                 <Frame Grid.Row="3" Padding="0" BackgroundColor="LightGray" HasShadow="False" Margin="0" HeightRequest="60" IsVisible="{Binding IsProcessorFlow}">
+                 <Frame Grid.Row="3" Padding="0" BackgroundColor="{DynamicResource AppBackgroundGray}" HasShadow="False" Margin="0" HeightRequest="60" IsVisible="{Binding IsProcessorFlow}">
                     <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
                         <Frame Grid.Column="0" Style="{StaticResource circleFram}">
                             <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="40"></Image>
@@ -192,7 +193,7 @@
                 
 
                  <!--Completed Nocs-->
-                <Frame Grid.Row="4" Padding="0" BackgroundColor="LightGray" HasShadow="False" Margin="0" HeightRequest="60" >
+                <Frame Grid.Row="4" Padding="0" BackgroundColor="{DynamicResource AppBackgroundGray}" HasShadow="False" Margin="0" HeightRequest="60" >
                     <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
                         <Frame Grid.Column="0" Style="{StaticResource circleFram}">
                             <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="40"></Image>
@@ -213,7 +214,7 @@
                 
 
                <!--Notifications-->
-                <Frame Grid.Row="5" Padding="0" BackgroundColor="LightGray" HasShadow="False" Margin="0" HeightRequest="60">
+                <Frame Grid.Row="5" Padding="0" BackgroundColor="{DynamicResource AppBackgroundGray}" HasShadow="False" Margin="0" HeightRequest="60">
                     <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
                         <Frame Grid.Column="0" Style="{StaticResource circleFram}">
                             <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="40"></Image>
@@ -232,7 +233,7 @@
                     </Frame.GestureRecognizers>
                 </Frame>
                  <!--Logout-->
-                <Frame Grid.Row="6" Padding="0" BackgroundColor="LightGray" HasShadow="False" Margin="0" HeightRequest="60">
+                <Frame Grid.Row="6" Padding="0" BackgroundColor="{DynamicResource AppBackgroundGray}" HasShadow="False" Margin="0" HeightRequest="60">
                     <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
                         <Frame Grid.Column="0" Style="{StaticResource circleFram}">
                             <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="40"></Image>
