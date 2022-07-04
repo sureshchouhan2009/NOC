@@ -84,6 +84,33 @@ namespace NOC.Service
         }
 
 
+        public async Task<bool> deleteReviewerSpecificCustomCondition(string commentID)
+        {
+            bool isSuccess = false;
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer",  Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.deleteReviewerSpecificCustomConditions+ commentID;
+                //var payload = ServiceUtility.BuildRequest(RequestModel);
+                var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = null };
+                var response = await client.SendAsync(req);
+                if (response?.IsSuccessStatusCode ?? false)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    isSuccess = JsonConvert.DeserializeObject<bool>(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                isSuccess = false;
+
+            }
+            return isSuccess;
+        }
+
+
         //for mobile this method saves actual file to the server folder structure and returns the file path
         public async Task<String> SaveCommentAttachment(NewAttachmentModel attachmentRequestModel)
         {

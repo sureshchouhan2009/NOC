@@ -405,6 +405,13 @@
 												<TapGestureRecognizer Command="{Binding CancelCommand}" />
 											</Frame.GestureRecognizers>
 										</Frame>
+
+										<Frame Padding="0" BackgroundColor="Gray" Margin="0" HasShadow="False" IsVisible="{Binding IsDeleteButtonVisible}">
+											<Label Text="Delete" FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5" />
+											<Frame.GestureRecognizers>
+												<TapGestureRecognizer Command="{Binding DeleteCommand}" />
+											</Frame.GestureRecognizers>
+										</Frame>
 									</StackLayout>
 								</Grid>
 							</Grid>

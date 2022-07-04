@@ -918,6 +918,9 @@ namespace NOC.ViewModels
         private void AddCommandExecute(object obj)
         {
             IsReviewerAddCommentButtonVisible = false;
+            IsDeleteButtonVisible = false;
+            ReviewerSpecificComment = "";
+            SelectedReviewerSpecificComment = null;
         }
 
         private string _reviewerSpecificComment;
@@ -995,6 +998,7 @@ namespace NOC.ViewModels
                    
                     ReviewerSpecificComment = "";
                     IsReviewerAddCommentButtonVisible = true;
+                    IsDeleteButtonVisible = false;
                     SelectedReviewerSpecificComment = new SystemAndUserSpCondition();
                    await GetAndFillConditionSpecificPart(TransactonDetail.Transaction.TransactionID.ToString());
                     await Application.Current.MainPage.DisplayToastAsync("Updated successfully");
@@ -1008,6 +1012,7 @@ namespace NOC.ViewModels
                     string result = await ApiService.Instance.PostreviewerSpecificComment(saveCondition);
                     ReviewerSpecificComment = "";
                     IsReviewerAddCommentButtonVisible = true;
+                    IsDeleteButtonVisible = false;
                     await GetAndFillConditionSpecificPart(TransactonDetail.Transaction.TransactionID.ToString());
                     await Application.Current.MainPage.DisplayToastAsync("Saved successfully");
                 }
@@ -1036,10 +1041,74 @@ namespace NOC.ViewModels
             }
         }
 
+        private bool _isDeleteButtonVisible;
+        public bool IsDeleteButtonVisible
+        {
+            get
+            {
+                return _isDeleteButtonVisible;
+            }
+            set
+            {
+                SetProperty(ref _isDeleteButtonVisible, value);
+            }
+        }
+
+
+         private ICommand _deleteCommand;
+
+        public ICommand DeleteCommand
+        {
+            get
+            {
+                if (_deleteCommand == null)
+                {
+                    _deleteCommand = new Command(DeleteCommandExecute);
+                }
+
+                return _deleteCommand;
+            }
+        }
+
+      
         private void CancelCommandExecute(object obj)
         {
             IsReviewerAddCommentButtonVisible = true;
+            IsDeleteButtonVisible = false;
+            ReviewerSpecificComment = "";
+            SelectedReviewerSpecificComment = null;
         }
+
+
+        private async void DeleteCommandExecute(object obj)
+        {
+            IsBusy = true;
+            try
+            {
+                if (SelectedReviewerSpecificComment != null)
+                {
+                    //delete
+                    var response=   await ApiService.Instance.deleteReviewerSpecificCustomCondition(SelectedReviewerSpecificComment.TRA_SPECCOND_ID.ToString());
+                    ReviewerSpecificComment = "";
+                    IsReviewerAddCommentButtonVisible = true;
+                    SelectedReviewerSpecificComment = null;
+                    IsDeleteButtonVisible = false;
+                    await GetAndFillConditionSpecificPart(TransactonDetail.Transaction.TransactionID.ToString());
+                    await Application.Current.MainPage.DisplayToastAsync(response.ToString());
+                }
+                else
+                {
+                    IsReviewerAddCommentButtonVisible = true;
+                    IsDeleteButtonVisible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayToastAsync(ex.ToString());
+            }
+            IsBusy = false;
+        }
+
 
         private ICommand _selectUserConditionCommand;
 
@@ -1062,6 +1131,7 @@ namespace NOC.ViewModels
             if (SelectedReviewerSpecificComment.COMMENTTYPE == "User")
             {
                 IsReviewerAddCommentButtonVisible = false;
+                IsDeleteButtonVisible = true;
                 ReviewerSpecificComment = SelectedReviewerSpecificComment.CONDITIONS;
             }
             
