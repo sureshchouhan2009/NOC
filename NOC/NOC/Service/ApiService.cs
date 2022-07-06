@@ -621,7 +621,7 @@ namespace NOC.Service
         }
 
 
-        public async Task<String> PostOwnNoc(ObjectionOptionPostModel requestModel)
+        public async Task<String> PostOwnNoc(OwnNocPostModel requestModel)
         {
             String SuccessResult = "";
             try
@@ -964,5 +964,36 @@ namespace NOC.Service
             }
             return responsedata;
         }
+
+
+
+
+
+        public async Task<List<EligibletranferNocsUserModel>> GeteleigibleTransferNocsUsersList()
+        {
+            List<EligibletranferNocsUserModel> responsedata = new List<EligibletranferNocsUserModel>();
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.transferOwnerUserList;
+                var response = await client.GetAsync(RequestUrl);
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    responsedata = JsonConvert.DeserializeObject<List<EligibletranferNocsUserModel>>(result, ServiceUtility.GetJsonSerializationSettings());
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return responsedata;
+        }
+
+
+
     }
 }

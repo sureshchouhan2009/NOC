@@ -187,14 +187,12 @@ namespace NOC.ViewModels
             {
 
 
-                ObjectionOptionPostModel objectionOptionPostModel = new ObjectionOptionPostModel();
+                OwnNocPostModel objectionOptionPostModel = new OwnNocPostModel();
                 objectionOptionPostModel.transactionid = TransactonDetail.Transaction.TransactionNumber;
                 objectionOptionPostModel.userID = Session.Instance.CurrentUserID;//"faa81574-c437-4d58-85e4-f115f1e22d12"; //TransactonDetail.Transaction.UserID;
-
                 var str = JsonConvert.SerializeObject(objectionOptionPostModel);
                 var result = await ApiService.Instance.PostOwnNoc(objectionOptionPostModel);
                 await Application.Current.MainPage.DisplayToastAsync(result);
-
                 await NavigationService.NavigateAsync("app:///HomePage");
 
             }
@@ -221,21 +219,31 @@ namespace NOC.ViewModels
 
         private async void TransferNocCommandExecute(object obj)
         {
-            IsBusy = true;
+            
             try
             {
-                TransferNocRequestModel transferNocModel = new TransferNocRequestModel();
-                transferNocModel.transNumber = TransactonDetail.Transaction.TransactionNumber;
-                transferNocModel.transferUserId = TransactonDetail.Transaction.UserID;
-                var result = await ApiService.Instance.PostTransferNocApiCall(transferNocModel);
-                await Application.Current.MainPage.DisplayToastAsync(result);
-                await NavigationService.NavigateAsync("app:///HomePage");
+                if (SelectedEligibleUserforTransferNOcs != null)
+                {
+                    IsBusy = true;
+                    TransferNocRequestModel transferNocModel = new TransferNocRequestModel();
+                    transferNocModel.transNumber = TransactonDetail.Transaction.TransactionNumber;
+                    transferNocModel.transferUserId = SelectedEligibleUserforTransferNOcs.UserId;//TransactonDetail.Transaction.UserID;
+                    var result = await ApiService.Instance.PostTransferNocApiCall(transferNocModel);
+                    await Application.Current.MainPage.DisplayToastAsync(result);
+                    await NavigationService.NavigateAsync("app:///HomePage");
+                    IsBusy = false;
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayToastAsync("Please select an user to whom you want to transfer NOC");
+                }
+                
             }
             catch (Exception ex)
             {
-
+                IsBusy = false;
             }
-            IsBusy = false;
+           
         }
 
         private async void NavigateToCommentsPage(object obj)
@@ -337,13 +345,6 @@ namespace NOC.ViewModels
                 {
                     await Application.Current.MainPage.DisplayToastAsync("No selection");
                 }
-               
-               
-
-               
-
-
-                
             }
             catch (Exception ex)
             {
@@ -351,24 +352,47 @@ namespace NOC.ViewModels
             }
             IsBusy = false;
         }
-
-        public override async void OnNavigatedTo(INavigationParameters parameters)
+        private EligibletranferNocsUserModel _selectedEligibleUserforTransferNOcs;
+        public EligibletranferNocsUserModel SelectedEligibleUserforTransferNOcs
         {
-           // IsBusy = true;
-            base.OnNavigatedTo(parameters);
-           await getLatestAttachments();
-             //AttachmentList =await ApiService.Instance.GetTransactionAttachment(Session.Instance.CurrentTransaction.Transaction.TransactionID.ToString());
-            // IsBusy = false;
+            get
+            {
+                return _selectedEligibleUserforTransferNOcs;
+            }
+            set
+            {
+                SetProperty(ref _selectedEligibleUserforTransferNOcs, value);
+            }
+        }
+
+        private List<EligibletranferNocsUserModel> _EligibleUsersForTransferList;
+        public List<EligibletranferNocsUserModel> EligibleUsersForTransferList
+        {
+            get
+            {
+
+                return _EligibleUsersForTransferList;
+            }
+            set
+            {
+                SetProperty(ref _EligibleUsersForTransferList, value);
+            }
         }
 
 
+        public override async void OnNavigatedTo(INavigationParameters parameters)
+        {
+             IsBusy = true;
+             base.OnNavigatedTo(parameters);
+            var response= await getLatestAttachments();
+            EligibleUsersForTransferList= await ApiService.Instance.GeteleigibleTransferNocsUsersList();
+             IsBusy = false;
+        }
+
         public async Task<bool> getLatestAttachments()
         {
-            IsBusy = true;
-            AttachmentList = await ApiService.Instance.GetTransactionAttachment(Session.Instance.CurrentTransaction.Transaction.TransactionID.ToString());
-            IsBusy = false;
-
-            return AttachmentList.Count>0;
+          AttachmentList = await ApiService.Instance.GetTransactionAttachment(Session.Instance.CurrentTransaction.Transaction.TransactionID.ToString());
+          return AttachmentList.Count>0;
         }
 
     }

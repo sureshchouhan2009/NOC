@@ -8,6 +8,11 @@ namespace NOC.Models
         public string expirydate { get; set; }
     }
 
+    public class OwnNocPostModel
+    {
+        public string userID { get; set; }
+        public string transactionid { get; set; }
+        
+    }
 
-    
 }

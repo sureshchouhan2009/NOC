@@ -83,5 +83,6 @@ namespace NOC.Service
 
         public const string GetReviewerConditons = BaseUrl + "api/SpecificCondition/GetReviewerConditons/";//RKT-20220407-1004
         public const string deleteReviewerSpecificCustomConditions=BaseUrl+ "api/SpecificCondition/DeleteUserspecificcondition/"; //conditionid
+        public const string transferOwnerUserList=BaseUrl+ "api/Users/TransferOwner";
     }
 }

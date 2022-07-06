@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
              ios:Page.UseSafeArea="true"
-             xmlns:Converter="clr-namespace:NOC.Converters" xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:Converter="clr-namespace:NOC.Converters" xmlns:xct="http://xamarin.com/schemas/2020/toolkit" xmlns:components="clr-namespace:NOC.Components"
               NavigationPage.HasNavigationBar="False"
              x:Class="NOC.Views.TransactionInfoPage" x:Name="TransactionDetails">
     <ContentPage.Resources>
@@ -141,12 +141,21 @@
                           </Frame.GestureRecognizers>
                       </Frame>
                           <!-- visible only Owned Application-->
-                      <Frame Grid.Row="0"  IsVisible="{Binding IsOwnedApplication }"  Padding="0" BackgroundColor="{DynamicResource BrandPrimary}" Margin="0" HasShadow="False" HeightRequest="40">
+                        <Grid Grid.Row="0" RowDefinitions="Auto,Auto" IsVisible="{Binding IsOwnedApplication }">
+
+                            <Frame Grid.Row="0"   Padding="5" BackgroundColor="White" BorderColor="{DynamicResource BrandPrimary}"  HasShadow="False" HorizontalOptions="Center" Margin="10">
+								<components:CustomPicker   ItemsSource="{Binding EligibleUsersForTransferList}" ItemDisplayBinding="{Binding UserName}" SelectedItem="{Binding SelectedEligibleUserforTransferNOcs, Mode=TwoWay}" Title=" Select User "  Image="upload" ></components:CustomPicker>
+							</Frame>
+                          <Frame Grid.Row="1"    Padding="0" BackgroundColor="{DynamicResource BrandPrimary}" Margin="0" HasShadow="False" HeightRequest="40">
                            <Label Text="Transfer Ownership" FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5" />
                            <Frame.GestureRecognizers>
                               <TapGestureRecognizer Command="{Binding TransferNocCommand}"/>
                           </Frame.GestureRecognizers>
                       </Frame>
+                        </Grid>
+
+
+                     
 
                         
                  </Grid>

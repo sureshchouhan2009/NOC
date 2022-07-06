@@ -97,7 +97,7 @@ namespace NOC.ViewModels
                         {
                             Session.Instance.CurrentUserType = userType;
                             Session.Instance.Token = token;
-
+                            Session.Instance.CurrentUserID = userID;
                             Preferences.Set("UserType", userType.ToString());
                             Preferences.Set("Token", token);
                             Preferences.Set("UserName", EmailText);
