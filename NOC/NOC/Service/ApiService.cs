@@ -445,6 +445,10 @@ namespace NOC.Service
                         modifiedcomment.Attachments.Add( attachment);
                     }
                 }
+                if (modifiedcomment.list.Count > 0)
+                {
+                    modifiedcomment.IsApplicatUser = false;
+                }
                 commentWithAttachment.Add(modifiedcomment);
             }
             return commentWithAttachment;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NOC.Utility;
 
 namespace NOC.Models
 {
@@ -112,9 +113,11 @@ namespace NOC.Models
         public SolutionRoleswithUserID SolutionRoleswithUserID { get; set; }
 
         public bool IsReplyViewVisible { get; set; }
-
+        
         public string ReplyMessageText { get; set; }
         public List<string> list { get; set; } = new List<string> ();
+        public bool IsApplicatUser { get; set; } = Session.Instance.CurrentUserType == Enums.UserTypes.Applicant;
+
     }
 
 

@@ -48,8 +48,8 @@ namespace NOC.ViewModels
 
         private async void PerformLoginComand(object obj)
         {
-            //EmailText = "applicant_test";
-            //PasswordText = "U$er123";
+            EmailText = "applicant_test";
+            PasswordText = "U$er123";
 
             //for Processor
             //EmailText = "officer_test";
@@ -60,8 +60,8 @@ namespace NOC.ViewModels
             //PasswordText = "user123";
 
             //for Reviewer
-            EmailText = "reviwer_test";
-            PasswordText = "user123";
+            //EmailText = "reviwer_test";
+            //PasswordText = "user123";
 
             IsBusy = true;
             try

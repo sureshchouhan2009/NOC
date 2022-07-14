@@ -25,6 +25,7 @@ public class CommentsPageViewModel : ViewModelBase
             "Replied","Not Replied"
 
         };
+           
     }
 
     private List<Attchtypeandfilepath> attachmentList= new List<Attchtypeandfilepath>();
@@ -53,6 +54,19 @@ public class CommentsPageViewModel : ViewModelBase
             SetProperty(ref selectedFilter, value);
         }
     }
+
+    //private bool isApplicatUser;
+    //public bool IsApplicatUser
+    //    {
+    //    get
+    //    {
+    //        return isApplicatUser;
+    //    }
+    //    set
+    //    {
+    //        SetProperty(ref isApplicatUser, value);
+    //    }
+    //}
     private ICommand pickerIndexChangedCommand;
 
     public ICommand PickerIndexChangedCommand

@@ -90,7 +90,7 @@
                      </RadioButton>
                  </Grid>
 
-                 <ListView Grid.Row="1"  ItemsSource="{Binding CommentsList}" HasUnevenRows="True" SeparatorColor="Black" SelectionMode="None" >
+                 <ListView Grid.Row="1"  ItemsSource="{Binding CommentsList}" HasUnevenRows="True" SeparatorColor="Black"  SelectionMode="None" >
                      <ListView.ItemTemplate>
                          <DataTemplate>
                              <ViewCell>
@@ -108,7 +108,7 @@
                                                         
                                      </StackLayout>
                                      <Label Grid.Row="2" Text="{Binding Comments.Comment,StringFormat='Comment: {0}'}" TextColor="Black" FontSize="12" Margin="0,10,0,10"/>
-                                     <StackLayout Grid.Row="3" Padding="0" HeightRequest="20"  HorizontalOptions="End" Orientation="Horizontal">
+                                     <StackLayout Grid.Row="3" Padding="0" HeightRequest="20"  HorizontalOptions="End" Orientation="Horizontal" IsVisible="{Binding IsApplicatUser}">
                                           <Image Source="message1.png"  BackgroundColor="Blue"/>
                                           <Label Text="Add Reply" FontSize="14" TextColor="Black"/>
                                          <StackLayout.GestureRecognizers>
@@ -164,14 +164,14 @@
                                                 <components:CustomEditor Text="{Binding ReplyMessageText}" FontSize="16"  BackgroundColor="Transparent"/>
                                             </Frame>
 
-                                         <Label Grid.Row="3" Grid.Column="0"  Text="Attachment: pdf,doc,xls">
+                                         <Label Grid.Row="3" Grid.Column="0"  Text="Attachment: pdf,doc,xls" FontSize="12" VerticalOptions="Center">
                                             <Label.GestureRecognizers>
                                              <TapGestureRecognizer Command="{Binding Source={x:Reference commentsPageRef},Path=BindingContext.AddAttachmentForReplyCommentCommand}" CommandParameter="{Binding .}"/>
                                             </Label.GestureRecognizers>
                                          </Label>
-                                            <StackLayout Grid.Row="3" Grid.Column="1"  Margin="10" HeightRequest="20"  HorizontalOptions="End" Orientation="Horizontal">
-                                          <Image Source="message1.png"  />
-                                          <Label Text=" Reply" FontSize="14" TextColor="Black"/>
+                                            <StackLayout Grid.Row="3" Grid.Column="1"  Margin="10" Padding="0" HeightRequest="20"  HorizontalOptions="End" Orientation="Horizontal">
+                                          <Image Source="message1.png"  VerticalOptions="Center"/>
+                                          <Label Text=" Reply" FontSize="14" TextColor="Black" VerticalOptions="Center"/>
                                                <StackLayout.GestureRecognizers>
                                              <TapGestureRecognizer Command="{Binding Source={x:Reference commentsPageRef},Path=BindingContext.SendReplyToExistingCommand}" CommandParameter="{Binding .}"/>
                                          </StackLayout.GestureRecognizers>
