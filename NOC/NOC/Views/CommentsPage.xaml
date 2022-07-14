@@ -193,11 +193,11 @@
                             <TapGestureRecognizer Command="{Binding GoHomeCommand}" />
                         </Image.GestureRecognizers>
                     </Image>
-                    <Image Grid.Column="1" Source="er_user" HorizontalOptions="End">
+                    <!--<Image Grid.Column="1" Source="er_user" HorizontalOptions="End">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding GoBackCommand}" />
                         </Image.GestureRecognizers>
-                    </Image>
+                    </Image>-->
                 </Grid>
             </Frame>
         </Grid>

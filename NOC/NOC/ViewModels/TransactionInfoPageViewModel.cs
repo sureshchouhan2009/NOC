@@ -7,6 +7,7 @@ using NOC.Utility;
 using Prism.Navigation;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -26,7 +27,7 @@ namespace NOC.ViewModels
             IsOwnedApplication = Session.Instance.IsOwnedApplicationFlow||Session.Instance.IsRepliedNocApplicationFlow;
         }
 
-        private List<AttachmentModel> _attachmentList;
+        private List<AttachmentModel> _attachmentList= new List<AttachmentModel>();
         public List<AttachmentModel> AttachmentList
         {
             get
@@ -391,8 +392,13 @@ namespace NOC.ViewModels
 
         public async Task<bool> getLatestAttachments()
         {
-          AttachmentList = await ApiService.Instance.GetTransactionAttachment(Session.Instance.CurrentTransaction.Transaction.TransactionID.ToString());
-          return AttachmentList.Count>0;
+         var  Attachments = await ApiService.Instance.GetTransactionAttachment(Session.Instance.CurrentTransaction.Transaction.TransactionID.ToString());
+            if (Attachments.Count > 0)
+            {
+                AttachmentList = AttachmentList.Where(e => e.CommentsID == 0).ToList();
+            }
+           
+            return AttachmentList.Count>0;
         }
 
     }

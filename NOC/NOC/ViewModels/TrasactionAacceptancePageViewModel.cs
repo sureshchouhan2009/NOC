@@ -546,9 +546,24 @@ namespace NOC.ViewModels
             }
         }
 
+        private string _selectedStackholderName;
+        public string SelectedStackholderName
+        {
+            get
+            {
+                return _selectedStackholderName;
+            }
+
+            set
+            {
+                SetProperty(ref _selectedStackholderName, value);
+            }
+        }
+
         private void ShowSelectedStackholderresponseExecute(object obj)
         {
           var  currentStackholder = obj as StackholderModel;
+            SelectedStackholderName = currentStackholder.ERGroup;
           SelectedStackholderResponse =  AllstackHolderResponseList.FirstOrDefault(e => e.StakeholderID == currentStackholder.ERStakeHoldersID);
           getLatestAttachmentsForStackHolder(SelectedStackholderResponse?.SthcmntID ?? 0);
         }
@@ -1165,7 +1180,11 @@ namespace NOC.ViewModels
                 DoccumentTypes = await ApiService.Instance.GetAttachmentsTypesForDD();
 
                 StackHolderList = new ObservableCollection<StackholderModel>(await ApiService.Instance.GetStackHolderList(transactionID));//319
-                
+                if (StackHolderList.Count > 0)
+                {
+                    SelectedStackholderName = StackHolderList.FirstOrDefault().ERGroup;
+                }
+               
                 AllstackHolderResponseList = new ObservableCollection<AllStackholderResponse>(await ApiService.Instance.GetAllStackHolderResponseData(transactionID));//319
                 if (StackHolderList.Count > 0)
                 {

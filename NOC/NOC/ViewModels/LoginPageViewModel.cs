@@ -60,8 +60,8 @@ namespace NOC.ViewModels
             //PasswordText = "user123";
 
             //for Reviewer
-            //EmailText = "reviwer_test";
-            //PasswordText = "user123";
+            EmailText = "reviwer_test";
+            PasswordText = "user123";
 
             IsBusy = true;
             try

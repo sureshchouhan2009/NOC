@@ -10,7 +10,7 @@ namespace NOC.Converters
         {
             bool input = (bool)value  ;
 
-            return input? Color.FromHex("#aa182c"): Color.DarkGray;
+            return input? Color.FromHex("#e9003f") : Color.DarkGray;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

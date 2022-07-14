@@ -170,11 +170,11 @@
                             <TapGestureRecognizer Command="{Binding GoHomeCommand}" />
                         </Image.GestureRecognizers>
                     </Image>
-                    <Image Grid.Column="1" Source="er_user" HorizontalOptions="End" IsVisible="{Binding IsReviewer, Converter={StaticResource InvertedBoolConverter}}">
-                        <!--<Image.GestureRecognizers>
+                    <!--<Image Grid.Column="1" Source="er_user" HorizontalOptions="End" IsVisible="{Binding IsReviewer, Converter={StaticResource InvertedBoolConverter}}">
+                        <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding GoBackCommand}" />
-                        </Image.GestureRecognizers>-->
-                    </Image>
+                        </Image.GestureRecognizers>
+                    </Image>-->
                      <Image Grid.Column="1" Source="ForwardArrow.png" HorizontalOptions="End" IsVisible="{Binding IsReviewer}" HeightRequest="30" WidthRequest="30">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ReviewerAcceptancePageNavigateCommand}" />

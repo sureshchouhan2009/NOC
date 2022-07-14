@@ -17,6 +17,7 @@
 			<Converter:ConditionTypeToColorConverter x:Key="conditionTypeToColorConverter"/>
 			<xct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
 			<Converter:DecisionToStackholderTextConverter x:Key="decisionToStackholderTextConverter"/>
+			<Converter:DecisionToStackholderTextColorConverter x:Key="decisionToStackholderTextColorConverter"/>
 		</ResourceDictionary>
 		<Style x:Key="circleFram" TargetType="Frame">
 			<Setter Property="VerticalOptions" Value="Center" />
@@ -118,13 +119,13 @@
 						<!--#region AllStackholder-->
 						<Grid Grid.Row="1" RowDefinitions="Auto" Margin="10,5,10,5"   ColumnSpacing="0" BackgroundColor="Gray"   >
 							<Grid Grid.Row="0"  RowDefinitions="Auto,Auto" >
-								<Label Grid.Row="0" Text="Stakeholders Response" FontSize="14"  TextColor="Black" FontAttributes="Bold"/>
+								<!--<Label Grid.Row="0" Text="Stakeholders Response" FontSize="14"  TextColor="Black" FontAttributes="Bold"/>-->
 								<Grid Grid.Row="1" RowDefinitions="Auto,Auto"  >
 									<Label Grid.Row="0"     >
 										<Label.FormattedText>
 											<FormattedString>
 												<Span Text="Stakeholder: " FontSize="14" FontAttributes="Bold" TextColor="Black" />
-												<Span Text="{Binding SelectedStackholderResponse.CreatedBy}" FontSize="14" FontAttributes="Bold" TextColor="{DynamicResource BrandPrimary}" />
+												<Span Text="{Binding SelectedStackholderName}" FontSize="14" FontAttributes="Bold" TextColor="{DynamicResource BrandPrimary}" />
 											</FormattedString>
 										</Label.FormattedText>
 									</Label>
@@ -132,7 +133,7 @@
 										<Label.FormattedText>
 											<FormattedString>
 												<Span Text="Stakeholder Response: " FontSize="14" FontAttributes="Bold" TextColor="Black" />
-												<Span Text="{Binding SelectedStackholderResponse.Decision,Converter={StaticResource decisionToStackholderTextConverter}}" FontSize="14" FontAttributes="Bold" TextColor="{DynamicResource BrandPrimary}" />
+												<Span Text="{Binding SelectedStackholderResponse.Decision,Converter={StaticResource decisionToStackholderTextConverter}}" FontSize="14" FontAttributes="Bold" TextColor="{Binding SelectedStackholderResponse.Decision,Converter={StaticResource decisionToStackholderTextColorConverter}}" />
 											</FormattedString>
 										</Label.FormattedText>
 									</Label>
@@ -196,7 +197,7 @@
 											<Frame Grid.Column="0" Padding="5,0,5,0" BackgroundColor="White" HasShadow="False" >
 												<components:CustomPicker IsEnabled="{Binding IsNoObjectionSaveAndObjectionButtonEnable}" ItemsSource="{Binding DoccumentTypes}" FontSize="12"  ItemDisplayBinding="{Binding AttachmentTypeCode}" Image="upload" Title="Attachment Type" Margin="0" SelectedItem="{Binding DoccumentTypeSelectedItem, Mode=TwoWay}"   />
 											</Frame>
-											<Frame IsEnabled="{Binding IsNoObjectionSaveAndObjectionButtonEnable}" Grid.Column="1" BackgroundColor="MediumBlue" HasShadow="False"  CornerRadius="{OnPlatform iOS=12, Android=20}" Padding="5" Margin="0" HorizontalOptions="Center" VerticalOptions="Center">
+											<Frame IsEnabled="{Binding IsNoObjectionSaveAndObjectionButtonEnable}" Grid.Column="1" BackgroundColor="#4E738A" HasShadow="False"  CornerRadius="{OnPlatform iOS=12, Android=20}" Padding="5" Margin="0" HorizontalOptions="Center" VerticalOptions="Center">
 												<Image Source="upload.png" HeightRequest="30" WidthRequest="30" />
 												<Frame.GestureRecognizers>
 													<TapGestureRecognizer Command="{Binding UploadAttachmentCommand}"/>
@@ -428,9 +429,9 @@
 							<TapGestureRecognizer Command="{Binding GoHomeCommand}" />
 						</Image.GestureRecognizers>
 					</Image>
-					<Image Grid.Column="1" Source="er_user" HorizontalOptions="End" IsVisible="{Binding IsReviewer, Converter={StaticResource InvertedBoolConverter}}">
-						<!--<Image.GestureRecognizers><TapGestureRecognizer Command="{Binding GoBackCommand}" /></Image.GestureRecognizers>-->
-					</Image>
+					<!--<Image Grid.Column="1" Source="er_user" HorizontalOptions="End" IsVisible="{Binding IsReviewer, Converter={StaticResource InvertedBoolConverter}}">
+						<Image.GestureRecognizers><TapGestureRecognizer Command="{Binding GoBackCommand}" /></Image.GestureRecognizers>
+					</Image>-->
 				</Grid>
 			</Frame>
 		</Grid>
