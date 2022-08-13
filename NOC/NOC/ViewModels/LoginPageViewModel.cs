@@ -48,8 +48,8 @@ namespace NOC.ViewModels
 
         private async void PerformLoginComand(object obj)
         {
-            EmailText = "applicant_test";
-            PasswordText = "U$er123";
+            //EmailText = "applicant_test";
+            //PasswordText = "U$er123";
 
             //for Processor
             //EmailText = "officer_test";
@@ -134,6 +134,7 @@ namespace NOC.ViewModels
 
             try
             {
+                // please check this is not providing correct user type by the urls because of tis reason its being date 13-08-2022
                 if (await ApiService.Instance.ValidateUserTypeFromToken(token, Urls.CheckApplicant))
                 {
                     userType = UserTypes.Applicant;

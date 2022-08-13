@@ -84,5 +84,15 @@ namespace NOC.Service
         public const string GetReviewerConditons = BaseUrl + "api/SpecificCondition/GetReviewerConditons/";//RKT-20220407-1004
         public const string deleteReviewerSpecificCustomConditions=BaseUrl+ "api/SpecificCondition/DeleteUserspecificcondition/"; //conditionid
         public const string transferOwnerUserList=BaseUrl+ "api/Users/TransferOwner";
+
+
+        //to save fresh new comments from applicant{methods post}
+        public const string SaveApplicatNewComment = BaseUrl + "api/search/commentsaveing";//its just saves to server yet to submit
+        public const string SubmitCommentsForApplicant = BaseUrl + "api/SearchOfficer/SubmitCommentProcessor";//submit anather call we need to perform for applicat
+
+        //to save fresh new comments from Internal Comments{methods post}
+        public const string SaveNewCommentForInternal = BaseUrl + "api/search/commentsaveing";//just save enough
+
+
     }
 }

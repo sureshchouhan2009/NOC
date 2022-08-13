@@ -93,7 +93,7 @@ namespace NOC.Models
         public object ProjectActivitySubType { get; set; }
         public object ProjectActivityCategory { get; set; }
         public object Owner { get; set; }
-        public object CommentType { get; set; }
+        public int CommentType { get; set; }
         public Comments Comments { get; set; }
         public object ERStakeHolders { get; set; }
         public object T_ERStakeHolders { get; set; }

@@ -556,6 +556,7 @@ namespace NOC.Service
                 var response = await client.GetAsync(RequestUrl);
                 if (response.IsSuccessStatusCode)
                 {
+                    string result = await response.Content.ReadAsStringAsync();
                     responseData = true;
                 }
                
@@ -998,6 +999,56 @@ namespace NOC.Service
         }
 
 
+
+        public async Task<string> SaveNewCommentCommonforApplicantAndInternal(SaveNewCommentFromApplicantModel SaveNewCommentModel)
+        {
+            string SuccessResult = "";
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.SaveApplicatNewComment;// save url is same for internal and applicant
+                var payload = ServiceUtility.BuildRequest(SaveNewCommentModel);
+                var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
+                var response = await client.SendAsync(req);
+                if (response?.IsSuccessStatusCode ?? false)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    SuccessResult = JsonConvert.DeserializeObject<string>(result);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return SuccessResult;
+        }
+
+        public async Task<string> SubmitNewCommentCommonforApplicantOnly(SubmitApplicantCommentsModel SubmitNewCommentModel)
+        {
+            string SuccessResult = "";
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.SaveApplicatNewComment;// save url is same for internal and applicant
+                var payload = ServiceUtility.BuildRequest(SubmitNewCommentModel);
+                var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
+                var response = await client.SendAsync(req);
+                if (response?.IsSuccessStatusCode ?? false)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    SuccessResult = JsonConvert.DeserializeObject<string>(result);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return SuccessResult;
+        }
 
     }
 }

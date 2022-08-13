@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using NOC.Enums;
 using NOC.Models;
 using NOC.Service;
 using NOC.Utility;
@@ -25,10 +26,120 @@ public class CommentsPageViewModel : ViewModelBase
             "Replied","Not Replied"
 
         };
-           
+
+            IsToApplicantSelected = true;
+            CurrentCommentsDate = DateTime.Now;
+            CurrentUserTypeValue = getUsertypeStringValue();
+            IsProcessorUser = getUsertypeStringValue() != "Applicant";
+
     }
 
-    private List<Attchtypeandfilepath> attachmentList= new List<Attchtypeandfilepath>();
+        private string getUsertypeStringValue()
+        {
+            if (Session.Instance.CurrentUserType == UserTypes.Officer)
+            {
+                return "Officer";
+            }
+            else if (Session.Instance.CurrentUserType == UserTypes.Reviewer)
+            {
+                return "Reviewer";
+            }
+            else if (Session.Instance.CurrentUserType == UserTypes.Stackholder)
+            {
+                return "Stackholder";
+            }
+            else
+            {
+                return "Applicant";
+            }
+        }
+
+        private string _currentUserTypeValue;
+        public string CurrentUserTypeValue
+        {
+            get
+            {
+                return _currentUserTypeValue;
+            }
+            set
+            {
+                SetProperty(ref _currentUserTypeValue, value);
+            }
+        }
+
+         private DateTime _currentCommentsDate;
+        public DateTime CurrentCommentsDate
+        {
+            get
+            {
+                return _currentCommentsDate;
+            }
+            set
+            {
+                SetProperty(ref _currentCommentsDate, value);
+            }
+        }
+
+
+        private int currentCommentType;
+        public int CurrentCommentType
+        {
+            get
+            {
+                return currentCommentType;
+            }
+            set
+            {
+                SetProperty(ref currentCommentType, value);
+            }
+        }
+
+        private bool _isNewCommentViewVisible;
+        public bool IsNewCommentViewVisible
+        {
+            get
+            {
+                return _isNewCommentViewVisible;
+            }
+            set
+            {
+                SetProperty(ref _isNewCommentViewVisible, value);
+            }
+        }
+
+
+        private ICommand addNewComment;
+
+        public ICommand AddNewComment
+        {
+            get
+            {
+                if (addNewComment == null)
+                {
+                    addNewComment = new Command(AddNewCommentCommandExecute);
+                }
+
+                return addNewComment;
+            }
+        }
+
+        private void AddNewCommentCommandExecute(object obj)
+        {
+            CurrentCommentType = Convert.ToInt32(obj);
+            IsNewCommentViewVisible = true;
+            if (CurrentCommentType == 1)
+            {
+                IsToApplicantSelected = true;
+                IsToInternalSelected = false;
+            }
+            else
+            {
+                IsToApplicantSelected = false;
+                IsToInternalSelected = true;
+            }
+        }
+
+        private List<Attchtypeandfilepath> attachmentList= new List<Attchtypeandfilepath>();
     public List<Attchtypeandfilepath> AttachmentList
     {
         get
@@ -42,7 +153,125 @@ public class CommentsPageViewModel : ViewModelBase
     }
 
 
-    private string selectedFilter;
+        private ICommand saveNewCommentCommand;
+
+        public ICommand SaveNewCommentCommand
+        {
+            get
+            {
+                if (saveNewCommentCommand == null)
+                {
+                    saveNewCommentCommand = new Command(SaveNewCommentCommandExecute);
+                }
+
+                return saveNewCommentCommand;
+            }
+        }
+
+        private async void SaveNewCommentCommandExecute(object obj)
+        {
+            IsBusy = true;
+            try
+            {
+                 //save applicat comment
+                if (CurrentCommentType == 1)
+                {
+                    SaveNewCommentFromApplicantModel ApplicantRequestModel = new SaveNewCommentFromApplicantModel();
+                    ApplicantRequestModel.CommentType = currentCommentType;
+                    ApplicantRequestModel.Comment = NewCommentText;
+                    ApplicantRequestModel.UserID = Session.Instance.CurrentUserID;
+                    ApplicantRequestModel.TransactionID = Session.Instance.CurrentTransaction.Transaction.TransactionID;
+                    ApplicantRequestModel.CommentsDate = DateTime.Now;
+
+                    string response = await ApiService.Instance.SaveNewCommentCommonforApplicantAndInternal(ApplicantRequestModel);//still we need to perform a submit call 
+                    if (response != "")
+                    {
+                        NewCommentText = "";
+                        IsNewCommentViewVisible = false;
+                        await getLatestComments();
+                        CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == currentCommentType));
+                        await Application.Current.MainPage.DisplayToastAsync("Saved successfully");
+
+                    }
+                }
+                else
+                {
+                    SaveNewCommentFromApplicantModel InternalCommentRequestModel = new SaveNewCommentFromApplicantModel();
+                    InternalCommentRequestModel.CommentType = currentCommentType;
+                    InternalCommentRequestModel.Comment = NewCommentText;
+                    InternalCommentRequestModel.UserID = Session.Instance.CurrentUserID;
+                    InternalCommentRequestModel.TransactionID = Session.Instance.CurrentTransaction.Transaction.TransactionID;
+                    InternalCommentRequestModel.CommentsDate = DateTime.Now;
+                   string response= await ApiService.Instance.SaveNewCommentCommonforApplicantAndInternal(InternalCommentRequestModel);
+                    if (response != "")
+                    {
+                        NewCommentText = "";
+                        IsNewCommentViewVisible = false;
+                       await getLatestComments();
+                        CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == currentCommentType));
+
+                        await Application.Current.MainPage.DisplayToastAsync("Saved successfully");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            IsBusy = false;
+        }
+
+        private ICommand _submitNewCommentsForApplicatOnlyCommand;
+
+        public ICommand SubmitNewCommentsForApplicatOnlyCommand
+        {
+            get
+            {
+                if (_submitNewCommentsForApplicatOnlyCommand == null)
+                {
+                    _submitNewCommentsForApplicatOnlyCommand = new Command(SubmitNewCommentsForApplicatOnlyCommandExecute);
+                }
+
+                return _submitNewCommentsForApplicatOnlyCommand;
+            }
+        }
+
+        private async void SubmitNewCommentsForApplicatOnlyCommandExecute(object obj)
+        {
+            IsBusy = true;
+            try
+            {
+                SubmitApplicantCommentsModel submitCommentsModel = new SubmitApplicantCommentsModel();
+                submitCommentsModel.transactionid= Session.Instance.CurrentTransaction.Transaction.TransactionNumber;//AUH-20220728-1001
+                submitCommentsModel.userID= Session.Instance.CurrentUserID;
+                submitCommentsModel.transid = Session.Instance.CurrentTransaction.Transaction.TransactionID;//3978
+                var response=  await ApiService.Instance.SubmitNewCommentCommonforApplicantOnly(submitCommentsModel);
+                await getLatestComments();
+                CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == currentCommentType));
+                await Application.Current.MainPage.DisplayToastAsync("Submitted successfully");
+            }
+            catch (Exception ex)
+            {
+
+            }
+            IsBusy = false;
+        }
+
+        private string newCommentText;
+        public string NewCommentText
+        {
+            get
+            {
+                return newCommentText;
+            }
+            set
+            {
+                SetProperty(ref newCommentText, value);
+            }
+        }
+
+
+        private string selectedFilter;
     public string SelectedFilter
     {
         get
@@ -55,19 +284,95 @@ public class CommentsPageViewModel : ViewModelBase
         }
     }
 
-    //private bool isApplicatUser;
-    //public bool IsApplicatUser
-    //    {
-    //    get
-    //    {
-    //        return isApplicatUser;
-    //    }
-    //    set
-    //    {
-    //        SetProperty(ref isApplicatUser, value);
-    //    }
-    //}
-    private ICommand pickerIndexChangedCommand;
+        private bool isApplicantUser;
+        public bool IsApplicantUser
+        {
+            get
+            {
+                return isApplicantUser;
+            }
+            set
+            {
+                SetProperty(ref isApplicantUser, value);
+            }
+        }
+
+        private bool _isProcessorUser;
+        public bool IsProcessorUser
+        {
+            get
+            {
+                return _isProcessorUser;
+            }
+            set
+            {
+                SetProperty(ref _isProcessorUser, value);
+            }
+        }
+
+
+
+        private bool isToApplicantSelected;
+        public bool IsToApplicantSelected
+        {
+            get
+            {
+                return isToApplicantSelected;
+            }
+            set
+            {
+                SetProperty(ref isToApplicantSelected, value);
+            }
+        }
+
+
+        private bool isToInternalSelected;
+        public bool IsToInternalSelected
+        {
+            get
+            {
+                return isToInternalSelected;
+            }
+            set
+            {
+                SetProperty(ref isToInternalSelected, value);
+            }
+        }
+        private ICommand toInternalTapped;
+
+        public ICommand ToInternalTapped
+        {
+            get
+            {
+                if (toInternalTapped == null)
+                {
+                    toInternalTapped = new Command(ToInternalTappedCommandExecute);
+                }
+
+                return toInternalTapped;
+            }
+        }
+
+        private void ToInternalTappedCommandExecute(object obj)
+        {
+            int inputValue=  Convert.ToInt32( obj);
+            CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == inputValue));
+
+            if (inputValue == 2)
+            {
+                IsToInternalSelected = true;
+                IsToApplicantSelected = false;
+            }
+            else
+            {
+               
+                IsToInternalSelected = false;
+                IsToApplicantSelected = true;
+            }
+           
+        }
+
+        private ICommand pickerIndexChangedCommand;
 
     public ICommand PickerIndexChangedCommand
     {
@@ -429,8 +734,10 @@ public class CommentsPageViewModel : ViewModelBase
     {
         var transactionDetails = Session.Instance.CurrentTransaction;
         Session.Instance.CurerentTransactionCommentsList = await ApiService.Instance.GetTransactionComents(transactionDetails.Transaction.TransactionNumber);
-        CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList);
-        return commentsList.Count > 0;
+        //CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList);
+        CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == 1));
+
+            return commentsList.Count > 0;
     }
 }
 
