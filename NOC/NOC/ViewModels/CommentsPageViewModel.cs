@@ -183,16 +183,54 @@ public class CommentsPageViewModel : ViewModelBase
                     ApplicantRequestModel.TransactionID = Session.Instance.CurrentTransaction.Transaction.TransactionID;
                     ApplicantRequestModel.CommentsDate = DateTime.Now;
 
-                    string response = await ApiService.Instance.SaveNewCommentCommonforApplicantAndInternal(ApplicantRequestModel);//still we need to perform a submit call 
-                    if (response != "")
+                    string commentID = await ApiService.Instance.SaveNewCommentCommonforApplicantAndInternal(ApplicantRequestModel);
+                    
+                    if (commentID != "" && AttachmentList.Count > 0)
+                    {
+                        MediaAttachmentModel AttModel = new MediaAttachmentModel();
+
+                        foreach(var listitem in AttachmentList)
+                        {
+                            listitem.commentID = int.Parse(commentID);
+                        }
+
+                        AttModel.attchtypeandfilepath = AttachmentList;
+
+
+                       
+                        AttModel.attachments = new Attachments
+                        {
+                            TransactionID = Session.Instance.CurrentTransaction.Transaction.TransactionID, //trasactionID,
+                            UserID = Session.Instance.CurrentUserID,
+                    };
+
+                        AttModel.RandomID = "";
+                        AttModel.TransactionNumber = Session.Instance.CurrentTransaction.Transaction.TransactionNumber;
+
+
+                        var attacmentSaveResponse = await ApiService.Instance.SaveCommentAttachmentToDB(AttModel);
+
+                        await Application.Current.MainPage.DisplayToastAsync(attacmentSaveResponse);
+                    
+                    if (commentID != "")
                     {
                         NewCommentText = "";
                         IsNewCommentViewVisible = false;
                         await getLatestComments();
                         CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == currentCommentType));
-                        await Application.Current.MainPage.DisplayToastAsync("Saved successfully");
+                        AttachmentList.Clear();
+                        await Application.Current.MainPage.DisplayToastAsync("Saved successfully");// after successful call clear already posted attachments from List object
 
                     }
+                    else
+                    {
+                        await Application.Current.MainPage.DisplayToastAsync("Failed please try again later");
+                    }
+
+
+
+                    }
+
                 }
                 else
                 {
@@ -202,16 +240,65 @@ public class CommentsPageViewModel : ViewModelBase
                     InternalCommentRequestModel.UserID = Session.Instance.CurrentUserID;
                     InternalCommentRequestModel.TransactionID = Session.Instance.CurrentTransaction.Transaction.TransactionID;
                     InternalCommentRequestModel.CommentsDate = DateTime.Now;
-                   string response= await ApiService.Instance.SaveNewCommentCommonforApplicantAndInternal(InternalCommentRequestModel);
-                    if (response != "")
-                    {
-                        NewCommentText = "";
-                        IsNewCommentViewVisible = false;
-                       await getLatestComments();
-                        CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == currentCommentType));
+                   string responsecommentID = await ApiService.Instance.SaveNewCommentCommonforApplicantAndInternal(InternalCommentRequestModel);
 
-                        await Application.Current.MainPage.DisplayToastAsync("Saved successfully");
+                    if (responsecommentID != "" && AttachmentList.Count > 0)
+                    {
+                        MediaAttachmentModel AttModel = new MediaAttachmentModel();
+
+                        foreach (var listitem in AttachmentList)
+                        {
+                            listitem.commentID = int.Parse(responsecommentID);
+                        }
+
+                        AttModel.attchtypeandfilepath = AttachmentList;
+
+
+
+                        AttModel.attachments = new Attachments
+                        {
+                            TransactionID = Session.Instance.CurrentTransaction.Transaction.TransactionID, //trasactionID,
+                            UserID = Session.Instance.CurrentUserID,
+                        };
+
+                        AttModel.RandomID = "";
+                        AttModel.TransactionNumber = Session.Instance.CurrentTransaction.Transaction.TransactionNumber;
+
+
+                        var attacmentSaveResponse = await ApiService.Instance.SaveCommentAttachmentToDB(AttModel);
+
+                        await Application.Current.MainPage.DisplayToastAsync(attacmentSaveResponse);
+
+                        if (responsecommentID != "")
+                        {
+                            NewCommentText = "";
+                            IsNewCommentViewVisible = false;
+                            await getLatestComments();
+                            CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == currentCommentType));
+                            AttachmentList.Clear();
+                            await Application.Current.MainPage.DisplayToastAsync("Saved successfully");// after successful call clear already posted attachments from List object
+
+                        }
+                        else
+                        {
+                            await Application.Current.MainPage.DisplayToastAsync("Failed please try again later");
+                        }
+
+
+
                     }
+
+
+
+                    //if (response != "")
+                    //{
+                    //    NewCommentText = "";
+                    //    IsNewCommentViewVisible = false;
+                    //   await getLatestComments();
+                    //    CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == currentCommentType));
+
+                    //    await Application.Current.MainPage.DisplayToastAsync("Saved successfully");
+                    //}
                 }
             }
             catch (Exception ex)
@@ -639,8 +726,9 @@ public class CommentsPageViewModel : ViewModelBase
                 {
 
                     // currentComment.ReplyMessageText = "";
-                    getLatestComments();
+                         await  getLatestComments();
                         await Application.Current.MainPage.DisplayToastAsync("Reply Added successfully");
+                        AttachmentList.Clear();// after successful call clear already posted attachments from List object
                 }
                 else
                 {
@@ -684,7 +772,7 @@ public class CommentsPageViewModel : ViewModelBase
             var currentComment = obj as CommentsModel;
             var options = new PickOptions
             {
-                PickerTitle = "Please select a comic file",
+                PickerTitle = "Please select a file",
             };
             var result = await FilePicker.PickAsync();
             if (result != null)
@@ -704,7 +792,7 @@ public class CommentsPageViewModel : ViewModelBase
                     AttachmentList.Add(new Attchtypeandfilepath
                     {
                         filepath = serverFilePath,
-                        commentID = currentComment.Comments.CommentsID,
+                        commentID = currentComment?.Comments?.CommentsID??0,
                         Attachmenttype = 3
                     });
                     }

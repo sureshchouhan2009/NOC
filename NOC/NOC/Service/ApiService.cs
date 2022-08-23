@@ -337,10 +337,15 @@ namespace NOC.Service
             List<CommentsModel> responsedata = new List<CommentsModel>();
             try
             {
+                String RequestUrl = "";
                 var client = ServiceUtility.CreateNewHttpClient();
                 var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
                 client.DefaultRequestHeaders.Authorization = authHeader;
-                String RequestUrl = Urls.GetTransactionComents + applicationNumber;
+
+                RequestUrl = Session.Instance.CurrentUserType == UserTypes.Applicant?Urls.GetTransactionComents + applicationNumber: Urls.GetTransactionCommentsForProcessor + applicationNumber;
+
+
+               // RequestUrl = Urls.GetTransactionCommentsForProcessor + applicationNumber;// for processor specific
                 var response = await client.GetAsync(RequestUrl);
                 if (response.IsSuccessStatusCode)
                 {
@@ -557,13 +562,23 @@ namespace NOC.Service
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
-                    responseData = true;
+
+                    UserRolesModel role = JsonConvert.DeserializeObject<UserRolesModel>(result, ServiceUtility.GetJsonSerializationSettings());
+                    if (role.roles != "")
+                    {
+                        responseData = true;
+                    }
+                    else
+                    {
+                        responseData = false;
+                    }
+
                 }
                
             }
             catch (Exception ex)
             {
-
+                responseData = false;
             }
             return responseData;
         }
@@ -1033,7 +1048,7 @@ namespace NOC.Service
                 var client = ServiceUtility.CreateNewHttpClient();
                 var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
                 client.DefaultRequestHeaders.Authorization = authHeader;
-                String RequestUrl = Urls.SaveApplicatNewComment;// save url is same for internal and applicant
+                String RequestUrl = Urls.SubmitCommentsForApplicant;// save url is same for internal and applicant
                 var payload = ServiceUtility.BuildRequest(SubmitNewCommentModel);
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
                 var response = await client.SendAsync(req);

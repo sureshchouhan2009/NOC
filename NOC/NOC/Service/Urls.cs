@@ -41,12 +41,14 @@ namespace NOC.Service
         public const string GetTransactionDetailsNew = BaseUrl + "api/SearchOfficer/process/";//in last we need to pass transaction Application Number
 
         //api/SearchOfficer/process/{tranid}
+        public const string GetTransactionCommentsForProcessor = BaseUrl + "api/comment/getcommentdatalistProcessor/";// specific for processor
+
         public const string GetTransactionAttachment = BaseUrl + "api/Attachments/GetAttachments/?transactionid=";//{173}in last we need to pass transaction ID
         public const string GetTransactionComents = BaseUrl + "api/comment/getcommentdatalist/";//{RKT-20220329-1003}in last we need to pass Application Number
         public const string CommentSaveing = BaseUrl + "api/search/commentsaveing";//add the new or reply comment.
         public const string EditsaveEditSave = BaseUrl + "api/search/Editsave";//update the existing comment. 
 
-        // this method actually saves the file path to the DB
+        // this method actually saves the file path to the DB     
         public const string SaveAttachmentToDatabase = BaseUrl + "api/Attachments/SaveCommentAttachment";//api/Attachments/SaveCommentAttachment. 
 
         //as requested new endpoint created for Mobile uploads

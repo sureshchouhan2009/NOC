@@ -63,7 +63,7 @@
                      <Label   Text="Comments" TextColor="{DynamicResource BrandPrimary}"  FontAttributes="Bold" FontSize="16" />
                      <BoxView  Color="Gray" HeightRequest="1" Margin="0,0,0,5"/>
                      <!--IsVisible="{Binding IsProcessorUser}"-->
-                     <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                     <StackLayout IsVisible="{Binding IsProcessorUser}" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                            <Label   Text="Add Internal Comment"  TextColor="DodgerBlue"  FontAttributes="Bold" FontSize="13" VerticalOptions="Center" HorizontalOptions="StartAndExpand" >
                          <Label.GestureRecognizers >
                              <TapGestureRecognizer Command="{Binding AddNewComment}" CommandParameter="2"/>
@@ -75,8 +75,11 @@
                          </Label.GestureRecognizers>
                      </Label>
                       </StackLayout>
-                       <Button Text="Submit" Margin="0" Padding="0" FontSize="12" IsVisible="{Binding IsToApplicantSelected}" Command="{Binding SubmitNewCommentsForApplicatOnlyCommand}" HeightRequest="30" WidthRequest="80" TextColor="White" BackgroundColor="DodgerBlue" VerticalOptions="Center" HorizontalOptions="Center"/>
-                   </StackLayout>
+                     <StackLayout IsVisible="{Binding IsProcessorUser}">
+                          <Button  Text="Submit" Margin="0" Padding="0" FontSize="12" IsVisible="{Binding IsToApplicantSelected}" Command="{Binding SubmitNewCommentsForApplicatOnlyCommand}" HeightRequest="30" WidthRequest="80" TextColor="White" BackgroundColor="DodgerBlue" VerticalOptions="Center" HorizontalOptions="Center"/>
+                   
+                     </StackLayout>
+                      </StackLayout>
                  <Grid Grid.Row="2" ColumnDefinitions="5*,5*" Margin="10,0,10,0" >
                       <Frame Grid.Column="0"   Padding="0" BackgroundColor="{Binding IsToApplicantSelected, Converter={StaticResource boolToColorConverter}}" HasShadow="False" Margin="0">
                          <Label Text="To Applicant"  TextColor="White" FontSize="14" VerticalOptions="Center" Padding="5"/>
@@ -127,7 +130,7 @@
 
 
                            <!--hiding for time being later once get the api details than implement this-->
-                                         <Label IsVisible="false"  Grid.Row="3" Grid.Column="0"  Text="Add Attachment" FontSize="12" VerticalOptions="Center">
+                                         <Label  Grid.Row="3" Grid.Column="0"  Text="Add Attachment" FontSize="14" TextColor="Black" VerticalOptions="Center">
                                             <Label.GestureRecognizers>
                                              <TapGestureRecognizer Command="{Binding Source={x:Reference commentsPageRef},Path=BindingContext.AddAttachmentForReplyCommentCommand}" CommandParameter="{Binding .}"/>
                                             </Label.GestureRecognizers>
@@ -135,8 +138,8 @@
 
 
                                             <StackLayout Grid.Row="3" Grid.Column="1"  Margin="10" Padding="0" HeightRequest="20"  HorizontalOptions="End" Orientation="Horizontal">
-                                          <Image Source="message1.png"  VerticalOptions="Center"/>
-                                          <Label Text="Add Comment" FontSize="14" TextColor="Black" VerticalOptions="Center"/>
+                                          <!--<Image Source="message1.png"  VerticalOptions="Center"/>-->
+                                          <Label Text="Save Comment" FontSize="14" TextColor="Black" VerticalOptions="Center"/>
                                                <StackLayout.GestureRecognizers>
                                              <TapGestureRecognizer Command="{Binding SaveNewCommentCommand}"/>
                                          </StackLayout.GestureRecognizers>
