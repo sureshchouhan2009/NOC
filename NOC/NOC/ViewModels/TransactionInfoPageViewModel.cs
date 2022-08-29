@@ -22,9 +22,21 @@ namespace NOC.ViewModels
         public TransactionInfoPageViewModel(INavigationService navigationService) : base(navigationService)
         {
             Title = "Transaction Info";
+            //if (Session.Instance.IsCompletedApplicationFlow)
+            //{
+            //    IsReviewer = true;
+            //}
+            //else if (Session.Instance.IsOwnedApplicationFlow || Session.Instance.IsNewNocApplicationFlow)
+            //{
+            //    IsReviewer = false;
+            //}
+            //else
+            //{
+            //    IsReviewer = true;
+            //}
             IsReviewer = Session.Instance.CurrentUserType == UserTypes.Reviewer;
-            IsNewApplication = Session.Instance.IsNewNocApplicationFlow;
-            IsOwnedApplication = Session.Instance.IsOwnedApplicationFlow||Session.Instance.IsRepliedNocApplicationFlow;
+            IsNewApplication = Session.Instance.IsNewNocApplicationFlow ||Session.Instance.IsRepliedNocApplicationFlow;
+            IsOwnedApplication = Session.Instance.IsOwnedApplicationFlow;//||Session.Instance.IsRepliedNocApplicationFlow    // chnaging as per salim
         }
 
         private List<AttachmentModel> _attachmentList= new List<AttachmentModel>();

@@ -90,7 +90,8 @@ namespace NOC.Service
 
         //to save fresh new comments from applicant{methods post}
         public const string SaveApplicatNewComment = BaseUrl + "api/search/commentsaveing";//its just saves to server yet to submit
-        public const string SubmitCommentsForApplicant = BaseUrl + "api/SearchOfficer/SubmitCommentProcessor";//submit anather call we need to perform for applicat
+        public const string SubmitCommentsForApplicant = BaseUrl + "api/SearchOfficer/SubmitCommentApplicant";//submit anather call we need to perform for applicat
+        public const string SubmitCommentsForProcessor = BaseUrl + "api/SearchOfficer/SubmitCommentProcessor";//submit anather call we need to perform for applicat
 
         //to save fresh new comments from Internal Comments{methods post}
         public const string SaveNewCommentForInternal = BaseUrl + "api/search/commentsaveing";//just save enough

@@ -116,7 +116,7 @@ namespace NOC.Models
         
         public string ReplyMessageText { get; set; }
         public List<string> list { get; set; } = new List<string> ();
-        public bool IsApplicatUser { get; set; } = Session.Instance.CurrentUserType == Enums.UserTypes.Applicant;
+        public bool IsApplicatUser { get; set; } //= Session.Instance.CurrentUserType == Enums.UserTypes.Applicant;
 
     }
 

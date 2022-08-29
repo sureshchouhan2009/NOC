@@ -30,9 +30,25 @@ public class CommentsPageViewModel : ViewModelBase
             IsToApplicantSelected = true;
             CurrentCommentsDate = DateTime.Now;
             CurrentUserTypeValue = getUsertypeStringValue();
-            IsProcessorUser = getUsertypeStringValue() != "Applicant";
+            IsProcessorUser = getUsertypeStringValue() != "Applicant"&&Session.Instance.IsOwnedApplicationFlow;//Add comments will be there only for owned applications. and user type processor
+            
+        }
 
-    }
+        private bool checkAndValidateApplicantFlowSubmitButtonVisibility()
+        {
+            if (Session.Instance.IsCompletedApplicationFlow)
+            {
+                return false;
+            }
+            else if (Session.Instance.CurrentUserType==UserTypes.Applicant&&CommentsList.Count>0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         private string getUsertypeStringValue()
         {
@@ -104,6 +120,18 @@ public class CommentsPageViewModel : ViewModelBase
             set
             {
                 SetProperty(ref _isNewCommentViewVisible, value);
+            }
+        }
+         private bool _isApplicantFlowAndValidations;
+        public bool IsApplicantFlowAndValidations
+        {
+            get
+            {
+                return _isApplicantFlowAndValidations;
+            }
+            set
+            {
+                SetProperty(ref _isApplicantFlowAndValidations, value);
             }
         }
 
@@ -287,6 +315,15 @@ public class CommentsPageViewModel : ViewModelBase
 
 
                     }
+                    else
+                    {
+                        NewCommentText = "";
+                        IsNewCommentViewVisible = false;
+                        await getLatestComments();
+                        CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == currentCommentType));
+                        AttachmentList.Clear();
+                        await Application.Current.MainPage.DisplayToastAsync("Saved successfully");
+                    }
 
 
 
@@ -328,14 +365,38 @@ public class CommentsPageViewModel : ViewModelBase
             IsBusy = true;
             try
             {
-                SubmitApplicantCommentsModel submitCommentsModel = new SubmitApplicantCommentsModel();
-                submitCommentsModel.transactionid= Session.Instance.CurrentTransaction.Transaction.TransactionNumber;//AUH-20220728-1001
-                submitCommentsModel.userID= Session.Instance.CurrentUserID;
-                submitCommentsModel.transid = Session.Instance.CurrentTransaction.Transaction.TransactionID;//3978
-                var response=  await ApiService.Instance.SubmitNewCommentCommonforApplicantOnly(submitCommentsModel);
-                await getLatestComments();
-                CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == currentCommentType));
-                await Application.Current.MainPage.DisplayToastAsync("Submitted successfully");
+             var type=   Session.Instance.CurrentUserType.ToString();
+                if (IsApplicantFlowAndValidations)
+                {
+
+                    SubmitApplicantCommentsModel submitCommentsModel = new SubmitApplicantCommentsModel();
+                    submitCommentsModel.transactionid = Session.Instance.CurrentTransaction.Transaction.TransactionNumber;//AUH-20220728-1001
+                    submitCommentsModel.userID = Session.Instance.CurrentUserID;
+                    submitCommentsModel.transid = Session.Instance.CurrentTransaction.Transaction.TransactionID;//3978
+                    var response = await ApiService.Instance.SubmitNewCommentCommonforApplicantOnly(submitCommentsModel);
+                    await getLatestComments();
+                    CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == currentCommentType));
+                    await Application.Current.MainPage.DisplayToastAsync("Submitted successfully");
+                }
+                else
+                {
+                    if (CommentsList.Any(c => c.Users.UserType.UserTypeValue == getUsertypeStringValue()))
+                    {
+                        SubmitApplicantCommentsModel submitCommentsModel = new SubmitApplicantCommentsModel();
+                        submitCommentsModel.transactionid = Session.Instance.CurrentTransaction.Transaction.TransactionNumber;//AUH-20220728-1001
+                        submitCommentsModel.userID = Session.Instance.CurrentUserID;
+                        submitCommentsModel.transid = Session.Instance.CurrentTransaction.Transaction.TransactionID;//3978
+                        var response = await ApiService.Instance.SubmitNewCommentCommonforApplicantOnly(submitCommentsModel);
+                        await getLatestComments();
+                        CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == currentCommentType));
+                        await Application.Current.MainPage.DisplayToastAsync("Submitted successfully");
+
+                    }
+                    else
+                    {
+                        await Application.Current.MainPage.DisplayToastAsync("Please add your comments");
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -370,19 +431,19 @@ public class CommentsPageViewModel : ViewModelBase
             SetProperty(ref selectedFilter, value);
         }
     }
-
-        private bool isApplicantUser;
-        public bool IsApplicantUser
-        {
-            get
-            {
-                return isApplicantUser;
-            }
-            set
-            {
-                SetProperty(ref isApplicantUser, value);
-            }
-        }
+        //created this property in  list model 
+        //private bool isApplicantUser;
+        //public bool IsApplicantUser
+        //{
+        //    get
+        //    {
+        //        return isApplicantUser;
+        //    }
+        //    set
+        //    {
+        //        SetProperty(ref isApplicantUser, value);
+        //    }
+        //}
 
         private bool _isProcessorUser;
         public bool IsProcessorUser
@@ -647,17 +708,17 @@ public class CommentsPageViewModel : ViewModelBase
         }
     }
 
-    private ObservableCollection<CommentsModel> commentsList = new ObservableCollection<CommentsModel>();
+    private ObservableCollection<CommentsModel> _commentsList = new ObservableCollection<CommentsModel>();
     public ObservableCollection<CommentsModel> CommentsList
     {
         get
         {
                 
-            return commentsList;
+            return _commentsList;
         }
         set
         {
-            SetProperty(ref commentsList, value);
+            SetProperty(ref _commentsList, value);
         }
     }
         
@@ -810,22 +871,24 @@ public class CommentsPageViewModel : ViewModelBase
 
     public override async void OnNavigatedTo(INavigationParameters parameters)
     {
-        IsBusy = true;
+       
         base.OnNavigatedTo(parameters);
         await getLatestComments();
-        IsBusy = false;
+        
     }
 
         
 
     private async Task<bool> getLatestComments()
     {
+            IsBusy = true;
         var transactionDetails = Session.Instance.CurrentTransaction;
         Session.Instance.CurerentTransactionCommentsList = await ApiService.Instance.GetTransactionComents(transactionDetails.Transaction.TransactionNumber);
         //CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList);
         CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == 1));
-
-            return commentsList.Count > 0;
+            IsApplicantFlowAndValidations = checkAndValidateApplicantFlowSubmitButtonVisibility();
+            IsBusy = false;
+            return CommentsList.Count > 0;
     }
 }
 

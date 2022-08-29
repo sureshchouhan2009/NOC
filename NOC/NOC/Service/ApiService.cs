@@ -450,10 +450,24 @@ namespace NOC.Service
                         modifiedcomment.Attachments.Add( attachment);
                     }
                 }
-                if (modifiedcomment.list.Count > 0)
+                if(Session.Instance.IsCompletedApplicationFlow || Session.Instance.IsNewNocApplicationFlow|| Session.Instance.CurrentUserType != UserTypes.Applicant)
                 {
-                    modifiedcomment.IsApplicatUser = false;
+                    
+                        modifiedcomment.IsApplicatUser = false;
+                    
                 }
+                else
+                {
+                    if (modifiedcomment.list.Count > 0)
+                    {
+                        modifiedcomment.IsApplicatUser = false;
+                    }
+                    else
+                    {
+                        modifiedcomment.IsApplicatUser = true;
+                    }
+                }
+               
                 commentWithAttachment.Add(modifiedcomment);
             }
             return commentWithAttachment;
@@ -836,7 +850,7 @@ namespace NOC.Service
                     var compositCondition = JsonConvert.DeserializeObject<ReviewerConditionInReviewerPageModel>(result, ServiceUtility.GetJsonSerializationSettings());
 
                     List<SystemAndUserSpCondition> systemAndUserSpCondition = new List<SystemAndUserSpCondition>();
-                    int index = 0;
+                    int index = 1;
                    
                         foreach(var systemCondition in compositCondition.SystemSpCondition)
                         {
@@ -1048,7 +1062,17 @@ namespace NOC.Service
                 var client = ServiceUtility.CreateNewHttpClient();
                 var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
                 client.DefaultRequestHeaders.Authorization = authHeader;
-                String RequestUrl = Urls.SubmitCommentsForApplicant;// save url is same for internal and applicant
+                String RequestUrl = "";
+                if (Session.Instance.CurrentUserType == UserTypes.Applicant)
+                {
+                    RequestUrl = Urls.SubmitCommentsForApplicant;
+                }
+                else
+                {
+                    RequestUrl = Urls.SubmitCommentsForProcessor;
+                }
+
+               // String RequestUrl = Urls.SubmitCommentsForApplicant;// save url is same for internal and applicant
                 var payload = ServiceUtility.BuildRequest(SubmitNewCommentModel);
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
                 var response = await client.SendAsync(req);

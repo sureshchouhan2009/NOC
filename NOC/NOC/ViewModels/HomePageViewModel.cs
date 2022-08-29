@@ -242,13 +242,13 @@ namespace NOC.ViewModels
                     Session.Instance.IsRepliedNocApplicationFlow = false;
                 }
                 //checking for Completed Application 
-                if (inputValue == 9)
+                if (inputValue == 11)
                 {
-                    Session.Instance.IsCommentedApplicationFlow = true;
+                    Session.Instance.IsCompletedApplicationFlow = true;
                 }
                 else
                 {
-                    Session.Instance.IsCommentedApplicationFlow = false;
+                    Session.Instance.IsCompletedApplicationFlow = false;
                 }
             }
             catch (Exception ex)
