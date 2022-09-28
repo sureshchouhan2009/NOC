@@ -23,15 +23,15 @@ public class CommentsPageViewModel : ViewModelBase
     {
         PickerSource = new List<string>
         {
-            "Replied","Not Replied"
+          "Select" , "Replied","Not Replied"
 
         };
-
+            SelectedFilter = "Select";
             IsToApplicantSelected = true;
             CurrentCommentsDate = DateTime.Now;
             CurrentUserTypeValue = getUsertypeStringValue();
             IsProcessorUser = getUsertypeStringValue() != "Applicant"&&Session.Instance.IsOwnedApplicationFlow;//Add comments will be there only for owned applications. and user type processor
-            
+            IsProcessorUserForApplicantAndInternalCommentTabVisibility = getUsertypeStringValue() != "Applicant";
         }
 
         private bool checkAndValidateApplicantFlowSubmitButtonVisibility()
@@ -67,6 +67,19 @@ public class CommentsPageViewModel : ViewModelBase
             else
             {
                 return "Applicant";
+            }
+        }
+
+        private bool _isProcessorUserForApplicantAndInternalCommentTabVisibility;
+        public bool IsProcessorUserForApplicantAndInternalCommentTabVisibility
+        {
+            get
+            {
+                return _isProcessorUserForApplicantAndInternalCommentTabVisibility;
+            }
+            set
+            {
+                SetProperty(ref _isProcessorUserForApplicantAndInternalCommentTabVisibility, value);
             }
         }
 
@@ -248,8 +261,8 @@ public class CommentsPageViewModel : ViewModelBase
                         CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == currentCommentType));
                         AttachmentList.Clear();
                         await Application.Current.MainPage.DisplayToastAsync("Saved successfully");// after successful call clear already posted attachments from List object
-
-                    }
+                         //   await NavigationService.NavigateAsync("/HomePage");
+                        }
                     else
                     {
                         await Application.Current.MainPage.DisplayToastAsync("Failed please try again later");
@@ -377,6 +390,7 @@ public class CommentsPageViewModel : ViewModelBase
                     await getLatestComments();
                     CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == currentCommentType));
                     await Application.Current.MainPage.DisplayToastAsync("Submitted successfully");
+                    await NavigationService.NavigateAsync("/HomePage");
                 }
                 else
                 {
@@ -390,7 +404,7 @@ public class CommentsPageViewModel : ViewModelBase
                         await getLatestComments();
                         CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == currentCommentType));
                         await Application.Current.MainPage.DisplayToastAsync("Submitted successfully");
-
+                        await NavigationService.NavigateAsync("/HomePage");
                     }
                     else
                     {
@@ -537,15 +551,23 @@ public class CommentsPageViewModel : ViewModelBase
 
     private void PickerIndexChangedCommandExecute(object obj)
     {
-        if(selectedFilter== "Replied")
-        {
+            if (selectedFilter == "Select")
+            {
+                CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList);
+            }
+            else if (selectedFilter == "Replied")
+            {
+                CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.list.Count > 0));
+
+            }
+            else
+            {
+                CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.list.Count == 0));
+
+
+            }
 
         }
-        else
-        {
-
-        }
-    }
 
     private ICommand accendingTappedCommand;
 
@@ -790,7 +812,8 @@ public class CommentsPageViewModel : ViewModelBase
                          await  getLatestComments();
                         await Application.Current.MainPage.DisplayToastAsync("Reply Added successfully");
                         AttachmentList.Clear();// after successful call clear already posted attachments from List object
-                }
+                        //await NavigationService.NavigateAsync("/HomePage");// as per client requirement need not to navigate to move to home page
+                    }
                 else
                 {
                     await Application.Current.MainPage.DisplayToastAsync("Failed please try again later");

@@ -8,5 +8,6 @@ namespace NOC.Models
         public int radiovalue { get; set; }
         public string expirydate { get; set; }
         public int transactionid { get; set; }
+        public int unit { get; set; }
     }
 }

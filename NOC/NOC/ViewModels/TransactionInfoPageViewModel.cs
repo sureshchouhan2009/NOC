@@ -22,21 +22,48 @@ namespace NOC.ViewModels
         public TransactionInfoPageViewModel(INavigationService navigationService) : base(navigationService)
         {
             Title = "Transaction Info";
-            //if (Session.Instance.IsCompletedApplicationFlow)
-            //{
-            //    IsReviewer = true;
-            //}
-            //else if (Session.Instance.IsOwnedApplicationFlow || Session.Instance.IsNewNocApplicationFlow)
-            //{
-            //    IsReviewer = false;
-            //}
-            //else
-            //{
-            //    IsReviewer = true;
-            //}
+            IsCameraVisible=checkCameraOptionVisibility();
             IsReviewer = Session.Instance.CurrentUserType == UserTypes.Reviewer;
-            IsNewApplication = Session.Instance.IsNewNocApplicationFlow ||Session.Instance.IsRepliedNocApplicationFlow;
-            IsOwnedApplication = Session.Instance.IsOwnedApplicationFlow;//||Session.Instance.IsRepliedNocApplicationFlow    // chnaging as per salim
+            IsNewApplication = Session.Instance.IsNewNocApplicationFlow;
+            IsOwnedApplication = Session.Instance.IsOwnedApplicationFlow || Session.Instance.IsRepliedNocApplicationFlow;    
+        }
+
+        private bool checkCameraOptionVisibility()
+        {
+            bool isCamera = false;
+            try
+            {
+               
+                if (Session.Instance.IsCompletedApplicationFlow || Session.Instance.CurrentUserType == UserTypes.Reviewer)
+                {
+                     isCamera = false;
+                }
+                else if (Session.Instance.CurrentUserType == UserTypes.Applicant)
+                {
+                     isCamera = true;
+                }
+                else if (Session.Instance.CurrentUserType == UserTypes.Stackholder || Session.Instance.CurrentUserType == UserTypes.Officer)
+                {
+                    if (Session.Instance.IsOwnedApplicationFlow || Session.Instance.IsRepliedNocApplicationFlow)
+                    {
+                         isCamera = true;
+                    }
+                    else
+                    {
+                         isCamera = false;
+                    }
+                }
+                else
+                {
+                     isCamera = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                 isCamera = false;
+            }
+            return isCamera;
+
         }
 
         private List<AttachmentModel> _attachmentList= new List<AttachmentModel>();
@@ -56,7 +83,20 @@ namespace NOC.ViewModels
        
 
 
-        private bool _isNewApplication;
+        private bool _isCameraVisible;
+        public bool IsCameraVisible
+        {
+            get
+            {
+                
+                return _isCameraVisible;
+            }
+            set
+            {
+                SetProperty(ref _isCameraVisible, value);
+            }
+        }
+          private bool _isNewApplication;
         public bool IsNewApplication
         {
             get
@@ -407,7 +447,7 @@ namespace NOC.ViewModels
          var  Attachments = await ApiService.Instance.GetTransactionAttachment(Session.Instance.CurrentTransaction.Transaction.TransactionID.ToString());
             if (Attachments.Count > 0)
             {
-                AttachmentList = AttachmentList.Where(e => e.CommentsID == 0).ToList();
+                AttachmentList = Attachments.Where(e => e.CommentsID == 0).ToList();
             }
            
             return AttachmentList.Count>0;

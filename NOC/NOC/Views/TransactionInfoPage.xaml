@@ -89,11 +89,11 @@
 
                             <!--As discussed with salim no need of this camera most  of the flow so hiding it.-->
 
-                            <!--<Image Grid.Column="1" Source="Camera.png" IsVisible="{Binding IsReviewer, Converter={StaticResource InvertedBoolConverter}}" HeightRequest="20" WidthRequest="20" HorizontalOptions="End">
+                            <Image Grid.Column="1" Source="Camera.png" IsVisible="{Binding IsCameraVisible}" HeightRequest="20" WidthRequest="20" HorizontalOptions="End">
                                 <Image.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding AddAttachmentCommand}"/>
                                 </Image.GestureRecognizers>
-                            </Image>-->
+                            </Image>
 
                         </Grid>
                         

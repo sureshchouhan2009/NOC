@@ -301,7 +301,7 @@ namespace NOC.Service
         /// </summary>
         /// <param name="transactionID"></param>
         /// <returns></returns>
-        public async Task<List<CommentsRelatedAttachmentModel>> GetCommentsRelatedAttachment(string transactionID)
+        public async Task<List<CommentsRelatedAttachmentModel>> GetCommentsRelatedAttachment(string TransactionID,string StackHolderOrReviewerSolutionRoleID, bool IsStackholder)
         {
             List<CommentsRelatedAttachmentModel> responsedata = new List<CommentsRelatedAttachmentModel>();
             try
@@ -309,7 +309,7 @@ namespace NOC.Service
                 var client = ServiceUtility.CreateNewHttpClient();
                 var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
                 client.DefaultRequestHeaders.Authorization = authHeader;
-                String RequestUrl = Urls.GetCommentsRelatedAttachment + transactionID;
+                String RequestUrl = Urls.GetCommentsRelatedAttachment + TransactionID+"/"+ StackHolderOrReviewerSolutionRoleID+"/"+ IsStackholder;
                 var response = await client.GetAsync(RequestUrl);
                 if (response.IsSuccessStatusCode)
                 {
@@ -636,7 +636,7 @@ namespace NOC.Service
                 var client = ServiceUtility.CreateNewHttpClient();
                 var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
                 client.DefaultRequestHeaders.Authorization = authHeader;
-                String RequestUrl = Urls.PostNoObjection;
+                String RequestUrl = Urls.PostObjectionRaised;
                 var payload = ServiceUtility.BuildRequest(RaiseObjectionRequestModel);
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
                 var response = await client.SendAsync(req);
@@ -771,29 +771,29 @@ namespace NOC.Service
         /// </summary>
         /// <param name="transactionID"></param>
         /// <returns></returns>
-        public async Task<List<StackholderAttachmentsModel>> GetStackholderRelatedAttachment(string transactionID)
-        {
-            List<StackholderAttachmentsModel> responsedata = new List<StackholderAttachmentsModel>();
-            try
-            {
-                var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
-                String RequestUrl = Urls.GetStackholderRelatedAttachment + transactionID;
-                var response = await client.GetAsync(RequestUrl);
-                if (response.IsSuccessStatusCode)
-                {
-                    string result = await response.Content.ReadAsStringAsync();
-                    responsedata = JsonConvert.DeserializeObject<List<StackholderAttachmentsModel>>(result, ServiceUtility.GetJsonSerializationSettings());
-                }
-            }
-            catch (Exception ex)
-            {
+        //public async Task<List<StackholderAttachmentsModel>> GetStackholderRelatedAttachment(string transactionID)
+        //{
+        //    List<StackholderAttachmentsModel> responsedata = new List<StackholderAttachmentsModel>();
+        //    try
+        //    {
+        //        var client = ServiceUtility.CreateNewHttpClient();
+        //        var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+        //        client.DefaultRequestHeaders.Authorization = authHeader;
+        //        String RequestUrl = Urls.GetStackholderRelatedAttachment + transactionID;
+        //        var response = await client.GetAsync(RequestUrl);
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            string result = await response.Content.ReadAsStringAsync();
+        //            responsedata = JsonConvert.DeserializeObject<List<StackholderAttachmentsModel>>(result, ServiceUtility.GetJsonSerializationSettings());
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
 
 
-            }
-            return responsedata;
-        }
+        //    }
+        //    return responsedata;
+        //}
 
         /// <summary>
         /// This Method Retrives Stackholder related condtion list to Display in Condtion Tab

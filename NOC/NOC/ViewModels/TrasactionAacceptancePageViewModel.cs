@@ -169,6 +169,23 @@ namespace NOC.ViewModels
             }
         }
 
+        private int _unitValue;
+        public int UnitValue
+        {
+            get
+            {
+
+
+
+                return _unitValue;
+            }
+            set
+            {
+                SetProperty(ref _unitValue, value);
+            }
+        }
+
+
         private string _ValidityPickerSelectedItem;
         public string ValidityPickerSelectedItem
         {
@@ -187,22 +204,58 @@ namespace NOC.ViewModels
         {
             try
             {
+                //check here if the application is completed than CalculatedValidTillDate will be calculated based on Transaction details
 
-                if (validityPickerSelectedItem == "Months")
+                if (Session.Instance.IsCompletedApplicationFlow)
                 {
-                    int monthCount = int.Parse(durationValuetext);
-                    CalculatedValidTillDate = DateTime.Now.AddMonths(monthCount).ToString("dd/MMM/yyyy");
-                }
-                else if (validityPickerSelectedItem == "Years")
-                {
-                    int YearCount = int.Parse(durationValuetext);
-                    CalculatedValidTillDate = DateTime.Now.AddYears(YearCount).ToString("dd/MMM/yyyy");
+                    CalculatedValidTillDate = Session.Instance.CurrentTransaction.Transaction.ValidUntil.ToString("dd/MMM/yyyy");
+
+                    var validityDifference = DateTime.Now-Session.Instance.CurrentTransaction.Transaction.LastModificationDate;
+
+                    if (Session.Instance.CurrentTransaction.Transaction.Unit == 0)
+                    {
+                        DurationValuetext = validityDifference.Days.ToString();
+                        ValidityPickerSelectedItem = DDSourceList[0];
+                    }
+                    else if (Session.Instance.CurrentTransaction.Transaction.Unit == 1)
+                    {
+                        var Valuetext = validityDifference.Days / 7;
+                        DurationValuetext = Valuetext.ToString();
+                        ValidityPickerSelectedItem = DDSourceList[1];
+                    }
+                    else
+                    {
+                        var dateSpan = DateTimeSpan.CompareDates(DateTime.Now, Session.Instance.CurrentTransaction.Transaction.LastModificationDate);
+                        DurationValuetext= dateSpan.Months.ToString();
+                        ValidityPickerSelectedItem = DDSourceList[2];
+                    }
+
                 }
                 else
                 {
-                    int daysCount = int.Parse(durationValuetext);
-                    CalculatedValidTillDate = DateTime.Now.AddDays(daysCount).ToString("dd/MMM/yyyy");
+                    UnitValue = 0;
+
+                    if (validityPickerSelectedItem == "Months")
+                    {
+                        UnitValue = 2;
+                        int monthCount = int.Parse(durationValuetext);
+                        CalculatedValidTillDate = DateTime.Now.AddMonths(monthCount).ToString("dd/MMM/yyyy");
+                    }
+                    else if (validityPickerSelectedItem == "Weeks")
+                    {
+                        UnitValue = 1;
+                        int WeeksCount = int.Parse(durationValuetext);
+                        CalculatedValidTillDate = DateTime.Now.AddYears(WeeksCount * 7).ToString("dd/MMM/yyyy");
+                    }
+                    else
+                    {
+                        UnitValue = 0;
+                        int daysCount = int.Parse(durationValuetext);
+                        CalculatedValidTillDate = DateTime.Now.AddDays(daysCount).ToString("dd/MMM/yyyy");
+                    }
                 }
+
+               
             }
             catch (Exception ex)
             {
@@ -254,10 +307,11 @@ namespace NOC.ViewModels
             IsReviewerSelected = false;
             Title = "Transaction Info";
             DDSourceList.Add("Days");
+            DDSourceList.Add("Weeks");
             DDSourceList.Add("Months");
-            DDSourceList.Add("Years");
+           
             DurationValuetext = "6";
-            ValidityPickerSelectedItem = DDSourceList[1];
+            ValidityPickerSelectedItem = DDSourceList[2];
             IsReviewerAddCommentButtonVisible = true;
 
           
@@ -289,7 +343,12 @@ namespace NOC.ViewModels
                     ObjectionOptionPostModel objectionOptionPostModel = new ObjectionOptionPostModel();
                     objectionOptionPostModel.transactionid = TransactonDetail.Transaction.TransactionNumber;
                     objectionOptionPostModel.userID = TransactonDetail.Transaction.UserID;
-                    objectionOptionPostModel.expirydate = DateTime.Now.AddDays(180).ToString("dd/MMM/yyyy");
+                    objectionOptionPostModel.expirydate = CalculatedValidTillDate; //DateTime.Now.AddDays(180).ToString("dd/MMM/yyyy"); //here changes need to be add as expiry date need to pass as calculated validity date
+            
+                    objectionOptionPostModel.unit = UnitValue;
+
+
+
                     var result = await ApiService.Instance.PostNoObjection(objectionOptionPostModel);
                     await Application.Current.MainPage.DisplayToastAsync(result);
                     await NavigationService.NavigateAsync("app:///HomePage");
@@ -565,7 +624,7 @@ namespace NOC.ViewModels
           var  currentStackholder = obj as StackholderModel;
             SelectedStackholderName = currentStackholder.ERGroup;
           SelectedStackholderResponse =  AllstackHolderResponseList.FirstOrDefault(e => e.StakeholderID == currentStackholder.ERStakeHoldersID);
-          getLatestAttachmentsForStackHolder(SelectedStackholderResponse?.SthcmntID ?? 0);
+          getLatestAttachmentsForStackHolder(SelectedStackholderResponse?.TransactionID.ToString(), SelectedStackholderResponse?.UserSolutionRole.ToString());
         }
         private AllStackholderResponse _selectedStackholderResponse;
         public AllStackholderResponse SelectedStackholderResponse
@@ -660,6 +719,7 @@ namespace NOC.ViewModels
                         saveCommentModel.comments = NewComments;
                         saveCommentModel.expirydate = CalculatedValidTillDate; //DateTime.Now.AddDays(180).ToString("dd/MMM/yyyy");
                         saveCommentModel.isAvaliable = true;
+                        saveCommentModel.unit = UnitValue;
                         CommentId = await ApiService.Instance.SaveNewCommentFromReviewer(saveCommentModel);
                         await Application.Current.MainPage.DisplayToastAsync("Comment saved successfully");
                     }
@@ -672,6 +732,7 @@ namespace NOC.ViewModels
                         updateExisitingCommentModel.transactionid = TransactonDetail.Transaction.TransactionID;
                         updateExisitingCommentModel.id = ExistingComment.SthcmntID.ToString();
                         updateExisitingCommentModel.radiovalue = 1;
+                        updateExisitingCommentModel.unit = UnitValue;
                         CommentId = await ApiService.Instance.UpdateExisitingCommentFromReviewer(updateExisitingCommentModel);
                         await Application.Current.MainPage.DisplayToastAsync("Comment updated successfully");
                     }
@@ -1192,7 +1253,7 @@ namespace NOC.ViewModels
                 }
                 ExistingComment = await ApiService.Instance.GetReviewerSpecificComment(transactionID);//319
                 SpecificMessageText = ExistingComment?.Comment??"";
-                getLatestAttachmentsForStackHolder(SelectedStackholderResponse?.SthcmntID??0);
+                getLatestAttachmentsForStackHolder(SelectedStackholderResponse?.TransactionID.ToString(), SelectedStackholderResponse?.UserSolutionRole.ToString());
 
                 getLatestAttachmentsForReviewerComments(ExistingComment?.SthcmntID??0);
 
@@ -1217,18 +1278,35 @@ namespace NOC.ViewModels
 
        
 
-        public async void getLatestAttachmentsForStackHolder(int SthcmntID)
+        public async void getLatestAttachmentsForStackHolder(String transactionID,string userSolutionRole)
         {
             IsBusy = true;
-            StackholderAttachmentsModelList = new ObservableCollection<CommentsRelatedAttachmentModel>(await ApiService.Instance.GetCommentsRelatedAttachment(SthcmntID.ToString()));//376
+            try
+            {
+                 // StackholderAttachmentsModelList = new ObservableCollection<CommentsRelatedAttachmentModel>(await ApiService.Instance.GetCommentsRelatedAttachment(SthcmntID.ToString()));//376
+                StackholderAttachmentsModelList = new ObservableCollection<CommentsRelatedAttachmentModel>(await ApiService.Instance.GetCommentsRelatedAttachment(transactionID, userSolutionRole, true));//376
+
+            }
+            catch (Exception ex)
+            {
+
+            }
             IsBusy = false;
         }
 
         public async void getLatestAttachmentsForReviewerComments(int SthcmntID)
         {
             IsBusy = true;
-            AttachmentList = new ObservableCollection<CommentsRelatedAttachmentModel>( await ApiService.Instance.GetCommentsRelatedAttachment(ExistingComment?.SthcmntID.ToString()));
-            
+            try
+            {
+
+                AttachmentList = new ObservableCollection<CommentsRelatedAttachmentModel>(await ApiService.Instance.GetCommentsRelatedAttachment(ExistingComment?.TransactionID.ToString(), ExistingComment?.UserSolutionRole.ToString(), false));
+
+            }
+            catch (Exception ex)
+            {
+
+            }
             IsBusy = false;
         }
     }

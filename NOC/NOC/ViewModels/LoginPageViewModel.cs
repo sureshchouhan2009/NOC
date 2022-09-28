@@ -93,7 +93,8 @@ namespace NOC.ViewModels
                             Preferences.Set("IsLoggedIN", true);
 
                             await NavigationService.NavigateAsync("NavigationPage/HomePage");
-                        }else //if (userType == UserTypes.Officer)
+                        }
+                        else //if (userType == UserTypes.Officer)
                         {
                             Session.Instance.CurrentUserType = userType;
                             Session.Instance.Token = token;

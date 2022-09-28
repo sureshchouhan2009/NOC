@@ -152,6 +152,10 @@ namespace NOC.Models
         public DateTime LastModificationDate { get; set; }
         public int ProjectID { get; set; }
         public object ApplicationType { get; set; }
+        //ADDED LATER
+        public DateTime ValidUntil { get; set; }
+        public bool Renew { get; set; }
+        public int Unit { get; set; }
     }
 
     public class TransactionService

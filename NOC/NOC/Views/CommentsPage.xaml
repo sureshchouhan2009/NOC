@@ -84,7 +84,7 @@
                           <Button  Text="Submit" Margin="0" Padding="0" FontSize="12"  Command="{Binding SubmitNewCommentsForApplicatOnlyCommand}" HeightRequest="30" WidthRequest="80" TextColor="White" BackgroundColor="DodgerBlue" VerticalOptions="Center" HorizontalOptions="Center"/>
                      </StackLayout>
                       </StackLayout>
-                 <Grid Grid.Row="2" ColumnDefinitions="5*,5*" Margin="10,0,10,0" IsVisible="{Binding IsProcessorUser}">
+                 <Grid Grid.Row="2" ColumnDefinitions="5*,5*" Margin="10,0,10,0" IsVisible="{Binding IsProcessorUserForApplicantAndInternalCommentTabVisibility}">
                       <Frame Grid.Column="0"   Padding="0" BackgroundColor="{Binding IsToApplicantSelected, Converter={StaticResource boolToColorConverter}}" HasShadow="False" Margin="0">
                          <Label Text="To Applicant"  TextColor="White" FontSize="14" VerticalOptions="Center" Padding="5"/>
                            <Frame.GestureRecognizers>

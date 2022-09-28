@@ -21,5 +21,6 @@ namespace NOC.Models.ReviwerSpecific
         public Comments comments { get; set; }
         public string expirydate { get; set; }
         public bool isAvaliable { get; set; }
+        public int unit { get; set; }
     }
 }
