@@ -159,7 +159,7 @@
                         </Frame>
                        
                         <StackLayout Grid.Column="1" Orientation="Horizontal" Padding="0" Margin="0">
-                            <Label  Style="{StaticResource menuLabel}" Text="NOCs for Revalidation in 10 Days" />
+                            <Label  Style="{StaticResource menuLabel}" Text="NOCs for Revalidation in two Weeks" /> <!--earlier it was 10 days latest fix for 2 weeks-->
                             <Frame Style="{StaticResource counterCircleFram}">
                                 <Label Text="{Binding NocApplicationforRevalidationInTenDaysCount}" Style="{StaticResource countLabel}"></Label>
                             </Frame>
@@ -167,7 +167,7 @@
                         <Image Grid.Column="2" Style="{StaticResource rightArrow}" Source="rightArrowWhite" />
                     </Grid>
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding NavigateToMyNocApplications}" CommandParameter="6" NumberOfTapsRequired="1" />
+                        <TapGestureRecognizer Command="{Binding NavigateToMyNocApplications}" CommandParameter="4" NumberOfTapsRequired="1" />
                     </Frame.GestureRecognizers>
                 </Frame>
 

@@ -110,16 +110,16 @@ public class CommentsPageViewModel : ViewModelBase
         }
 
 
-        private int currentCommentType;
+        private int _currentCommentType;
         public int CurrentCommentType
         {
             get
             {
-                return currentCommentType;
+                return _currentCommentType;
             }
             set
             {
-                SetProperty(ref currentCommentType, value);
+                SetProperty(ref _currentCommentType, value);
             }
         }
 
@@ -218,7 +218,7 @@ public class CommentsPageViewModel : ViewModelBase
                 if (CurrentCommentType == 1)
                 {
                     SaveNewCommentFromApplicantModel ApplicantRequestModel = new SaveNewCommentFromApplicantModel();
-                    ApplicantRequestModel.CommentType = currentCommentType;
+                    ApplicantRequestModel.CommentType = CurrentCommentType;
                     ApplicantRequestModel.Comment = NewCommentText;
                     ApplicantRequestModel.UserID = Session.Instance.CurrentUserID;
                     ApplicantRequestModel.TransactionID = Session.Instance.CurrentTransaction.Transaction.TransactionID;
@@ -258,7 +258,7 @@ public class CommentsPageViewModel : ViewModelBase
                         NewCommentText = "";
                         IsNewCommentViewVisible = false;
                         await getLatestComments();
-                        CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == currentCommentType));
+                        CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == CurrentCommentType));
                         AttachmentList.Clear();
                         await Application.Current.MainPage.DisplayToastAsync("Saved successfully");// after successful call clear already posted attachments from List object
                          //   await NavigationService.NavigateAsync("/HomePage");
@@ -276,7 +276,7 @@ public class CommentsPageViewModel : ViewModelBase
                 else
                 {
                     SaveNewCommentFromApplicantModel InternalCommentRequestModel = new SaveNewCommentFromApplicantModel();
-                    InternalCommentRequestModel.CommentType = currentCommentType;
+                    InternalCommentRequestModel.CommentType = CurrentCommentType;
                     InternalCommentRequestModel.Comment = NewCommentText;
                     InternalCommentRequestModel.UserID = Session.Instance.CurrentUserID;
                     InternalCommentRequestModel.TransactionID = Session.Instance.CurrentTransaction.Transaction.TransactionID;
@@ -315,7 +315,7 @@ public class CommentsPageViewModel : ViewModelBase
                             NewCommentText = "";
                             IsNewCommentViewVisible = false;
                             await getLatestComments();
-                            CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == currentCommentType));
+                            CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == CurrentCommentType));
                             AttachmentList.Clear();
                             await Application.Current.MainPage.DisplayToastAsync("Saved successfully");// after successful call clear already posted attachments from List object
 
@@ -333,7 +333,7 @@ public class CommentsPageViewModel : ViewModelBase
                         NewCommentText = "";
                         IsNewCommentViewVisible = false;
                         await getLatestComments();
-                        CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == currentCommentType));
+                        CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == CurrentCommentType));
                         AttachmentList.Clear();
                         await Application.Current.MainPage.DisplayToastAsync("Saved successfully");
                     }
@@ -388,7 +388,7 @@ public class CommentsPageViewModel : ViewModelBase
                     submitCommentsModel.transid = Session.Instance.CurrentTransaction.Transaction.TransactionID;//3978
                     var response = await ApiService.Instance.SubmitNewCommentCommonforApplicantOnly(submitCommentsModel);
                     await getLatestComments();
-                    CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == currentCommentType));
+                    CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == CurrentCommentType));
                     await Application.Current.MainPage.DisplayToastAsync("Submitted successfully");
                     await NavigationService.NavigateAsync("/HomePage");
                 }
@@ -402,7 +402,7 @@ public class CommentsPageViewModel : ViewModelBase
                         submitCommentsModel.transid = Session.Instance.CurrentTransaction.Transaction.TransactionID;//3978
                         var response = await ApiService.Instance.SubmitNewCommentCommonforApplicantOnly(submitCommentsModel);
                         await getLatestComments();
-                        CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == currentCommentType));
+                        CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == CurrentCommentType));
                         await Application.Current.MainPage.DisplayToastAsync("Submitted successfully");
                         await NavigationService.NavigateAsync("/HomePage");
                     }
@@ -551,19 +551,44 @@ public class CommentsPageViewModel : ViewModelBase
 
     private void PickerIndexChangedCommandExecute(object obj)
     {
-            if (selectedFilter == "Select")
-            {
-                CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList);
-            }
-            else if (selectedFilter == "Replied")
-            {
-                CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.list.Count > 0));
 
-            }
-            else
-            {
-                CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.list.Count == 0));
 
+            try
+            {
+                if (CurrentCommentType == 0)
+                {
+                    if (selectedFilter == "Select")
+                    {
+                        CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(c=>c.Comments.CommentType==1));
+                    }
+                    else if (selectedFilter == "Replied")
+                    {
+                        CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.list.Count > 0).Where(c => c.Comments.CommentType == 1));
+                    }
+                    else
+                    {
+                        CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.list.Count == 0).Where(c => c.Comments.CommentType == 1));
+                    }
+                }
+                else
+                {
+                    if (selectedFilter == "Select")
+                    {
+                        CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(c => c.Comments.CommentType == CurrentCommentType));
+                    }
+                    else if (selectedFilter == "Replied")
+                    {
+                        CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.list.Count > 0).Where(c => c.Comments.CommentType == CurrentCommentType));
+                    }
+                    else
+                    {
+                        CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.list.Count == 0).Where(c => c.Comments.CommentType == CurrentCommentType));
+                    }
+                }
+               
+            }
+            catch (Exception ex)
+            {
 
             }
 
@@ -589,11 +614,20 @@ public class CommentsPageViewModel : ViewModelBase
 
         try
         {
+                if (CurrentCommentType == 0)
+                {
+                    var tempList = Session.Instance.CurerentTransactionCommentsList.OrderBy(x => x.Comments.CommentsDate).ToList();
+                    CommentsList.Clear();
+                    CommentsList = new ObservableCollection<CommentsModel>(tempList.Where(r => r.Comments.CommentType == 1));
+                }
+                else
+                {
+                    var tempList = Session.Instance.CurerentTransactionCommentsList.OrderBy(x => x.Comments.CommentsDate).ToList();
+                    CommentsList.Clear();
+                    CommentsList = new ObservableCollection<CommentsModel>(tempList.Where(r => r.Comments.CommentType == CurrentCommentType));
+                }
 
-            var tempList = Session.Instance.CurerentTransactionCommentsList.OrderBy(x => x.Comments.CommentsDate).ToList();
-
-            CommentsList.Clear();
-            CommentsList = new ObservableCollection<CommentsModel>(tempList);
+           
 
         }
         catch (Exception ex)
@@ -624,13 +658,28 @@ public class CommentsPageViewModel : ViewModelBase
         try
         {
 
-            var tempList = Session.Instance.CurerentTransactionCommentsList.OrderByDescending(x => x.Comments.CommentsDate).ToList();
+            //var tempList = Session.Instance.CurerentTransactionCommentsList.OrderByDescending(x => x.Comments.CommentsDate).ToList();
 
-            CommentsList.Clear();
-            CommentsList = new ObservableCollection<CommentsModel>(tempList);
+            //CommentsList.Clear();
+            //CommentsList = new ObservableCollection<CommentsModel>(tempList);
 
-        }
-        catch (Exception ex)
+
+                if (CurrentCommentType == 0)
+                {
+                    var tempList = Session.Instance.CurerentTransactionCommentsList.OrderByDescending(x => x.Comments.CommentsDate).ToList();
+                    CommentsList.Clear();
+                    CommentsList = new ObservableCollection<CommentsModel>(tempList.Where(r => r.Comments.CommentType == 1));
+                }
+                else
+                {
+                    var tempList = Session.Instance.CurerentTransactionCommentsList.OrderByDescending(x => x.Comments.CommentsDate).ToList();
+                    CommentsList.Clear();
+                    CommentsList = new ObservableCollection<CommentsModel>(tempList.Where(r => r.Comments.CommentType == CurrentCommentType));
+                }
+
+
+            }
+            catch (Exception ex)
         {
 
         }
@@ -691,8 +740,9 @@ public class CommentsPageViewModel : ViewModelBase
             var currentComment = obj as CommentsModel;
             int index = CommentsList.IndexOf(currentComment);
 
-            var tempList = Session.Instance.CurerentTransactionCommentsList;
+            var tempList = Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == 1).ToList();
             tempList[index].IsReplyViewVisible = !currentComment.IsReplyViewVisible;
+               
             CommentsList.Clear();
             CommentsList = new ObservableCollection<CommentsModel>(tempList);
         }

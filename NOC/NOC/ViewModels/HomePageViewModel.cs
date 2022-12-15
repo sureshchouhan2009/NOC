@@ -272,18 +272,19 @@ namespace NOC.ViewModels
             //{
             //    return "Commented NOCs";
             //}
-            //else if (inputValue == 4)
-            //{
-            //    return "Commented NOCs";
-            //}
+            else if (inputValue == 4)
+            {
+                return "NOCs for Revalidation in two weeks";
+            }
             else if (inputValue == 5)
             {
                 return "Owned NOCs";
             }
-            else if (inputValue == 6)
-            {
-                return "NOCs for Revalidation in 10 Days";
-            }
+            //else if (inputValue == 6)
+            //{
+            //  //  return "NOCs for Revalidation in 10 Days";
+            //    return "NOCs for Revalidation in two weeks";
+            //}
             //else if (inputValue == 7)
             //{
             //    return "Commented NOCs";
@@ -341,8 +342,9 @@ namespace NOC.ViewModels
                 CommentedApplicationCount = Session.Instance.MenuItemsCountModelData.CommentedApplicationsCount??"00";
                 OwnedApplicationCount = Session.Instance.MenuItemsCountModelData.OwnedApplicationsCount ?? "00";
                 CompletedNOCsCount = Session.Instance.MenuItemsCountModelData.CompletedApplication ?? "00";
-                NocApplicationforRevalidationInTenDaysCount = string.IsNullOrWhiteSpace(Session.Instance.MenuItemsCountModelData.OwnedApplicationsPendingTenDayCount) ?
-                    "00" : Session.Instance.MenuItemsCountModelData.OwnedApplicationsPendingTenDayCount;
+                //revalidation in two weeks instead 10  days
+                NocApplicationforRevalidationInTenDaysCount = string.IsNullOrWhiteSpace(Session.Instance.MenuItemsCountModelData.ForRevalidationInTwoWeeksCount) ?
+                    "00" : Session.Instance.MenuItemsCountModelData.ForRevalidationInTwoWeeksCount;
             }
             catch (Exception ex)
             {

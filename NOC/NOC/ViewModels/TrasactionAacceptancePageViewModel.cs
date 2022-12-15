@@ -244,8 +244,10 @@ namespace NOC.ViewModels
                     else if (validityPickerSelectedItem == "Weeks")
                     {
                         UnitValue = 1;
-                        int WeeksCount = int.Parse(durationValuetext);
-                        CalculatedValidTillDate = DateTime.Now.AddYears(WeeksCount * 7).ToString("dd/MMM/yyyy");
+                        int DaysCount = int.Parse(durationValuetext);
+
+                        int WeeksCount = DaysCount / 7;
+                        CalculatedValidTillDate = DateTime.Now.AddDays(WeeksCount * 7).ToString("dd/MMM/yyyy");
                     }
                     else
                     {
@@ -429,7 +431,14 @@ namespace NOC.ViewModels
 
                         if (!string.IsNullOrEmpty(attacmentSaveResponse))
                         {
-
+                            AttachmentList.Add(new CommentsRelatedAttachmentModel
+                            {
+                                
+                                uploadfilename= result.FileName,
+                                FormatedUplodedDate=DateTime.Now.ToString("dd/MMM/yyyy"),
+                                TransactionID = TransactonDetail.Transaction.TransactionID,
+                                AttachmentTypeCode = DoccumentTypeSelectedItem.AttachmentTypeCode
+                            }) ;
                             Session.Instance.SavedFilePathForReviewerPage = attacmentSaveResponse;
 
 
@@ -498,11 +507,11 @@ namespace NOC.ViewModels
         {
             if (e.FileSaved)
             {
-              Application.Current.MainPage.  DisplayAlert("XF Downloader", "File Saved Successfully", "Close");
+              Application.Current.MainPage.  DisplayAlert("Downloader", "File Saved Successfully", "Close");
             }
             else
             {
-                Application.Current.MainPage.DisplayAlert("XF Downloader", "Error while saving the file", "Close");
+                Application.Current.MainPage.DisplayAlert("Downloader", "Error while saving the file", "Close");
             }
         }
 
