@@ -6,7 +6,10 @@ namespace NOC.Service
 {
     public class Urls
     {
-        public const string BaseUrl = "https://portal.gpceast.com/er/noc/";
+       
+
+        public const string BaseUrl = "https://portal.gpceast.com/noc/";//dev latest (UAT OR Dev)
+         // public const string BaseUrl = "https://noc.etihadrail.ae/noc/";//prod (Production)
 
 
         public const string TokenURL = BaseUrl + "Token";
