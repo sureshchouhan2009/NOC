@@ -1,439 +1,1148 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <ContentPage
-	xmlns="http://xamarin.com/schemas/2014/forms"
-	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-	xmlns:Converter="clr-namespace:NOC.Converters"
-	xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
-	xmlns:components="clr-namespace:NOC.Components"
     x:Class="NOC.Views.TrasactionAacceptancePage"
-	xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:Converter="clr-namespace:NOC.Converters"
+    xmlns:components="clr-namespace:NOC.Components"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+    x:Name="ReviewerPage"
     ios:Page.UseSafeArea="true"
-    NavigationPage.HasNavigationBar="False"
-    x:Name="ReviewerPage">
-	<ContentPage.Resources>
-		<ResourceDictionary>
-			<Converter:IntToBoolConverter x:Key="intToBoolConverter" />
-			<Converter:BoolToColorConverter x:Key="boolToColorConverter"/>
-			<Converter:ConditionTypeToColorConverter x:Key="conditionTypeToColorConverter"/>
-			<xct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
-			<Converter:DecisionToStackholderTextConverter x:Key="decisionToStackholderTextConverter"/>
-			<Converter:DecisionToStackholderTextColorConverter x:Key="decisionToStackholderTextColorConverter"/>
-		</ResourceDictionary>
-		<Style x:Key="circleFram" TargetType="Frame">
-			<Setter Property="VerticalOptions" Value="Center" />
-			<Setter Property="HorizontalOptions" Value="Center" />
-			<Setter Property="BackgroundColor" Value="White" />
-			<Setter Property="CornerRadius" Value="{OnPlatform iOS=18, Android=30}" />
-			<Setter Property="Padding" Value="0" />
-		</Style>
-		<Style x:Key="menuLabel" TargetType="Label">
-			<Setter Property="VerticalOptions" Value="Center" />
-			<Setter Property="HorizontalOptions" Value="Start" />
-			<Setter Property="TextColor" Value="White" />
-			<Setter Property="FontSize" Value="16" />
-		</Style>
-		<Style x:Key="HeaderRedLabel" TargetType="Label">
-			<Setter Property="VerticalOptions" Value="Center" />
-			<Setter Property="HorizontalOptions" Value="Start" />
-			<Setter Property="HorizontalTextAlignment" Value="Start" />
-			<Setter Property="TextColor" Value="{DynamicResource BrandPrimary}" />
-			<Setter Property="FontSize" Value="16" />
-			<Setter Property="FontAttributes" Value="Bold" />
-		</Style>
-		<Style x:Key="basicInfoLabel" TargetType="Label">
-			<Setter Property="VerticalOptions" Value="Center" />
-			<Setter Property="HorizontalOptions" Value="Start" />
-			<Setter Property="HorizontalTextAlignment" Value="Start" />
-			<Setter Property="TextColor" Value="Gray" />
-			<Setter Property="FontSize" Value="16" />
-			<Setter Property="FontAttributes" Value="Bold" />
-		</Style>
-	</ContentPage.Resources>
-	<ContentPage.Content>
-		<Grid RowDefinitions="Auto,*,Auto" RowSpacing="0">
-			<Frame Grid.Row="0" Padding="0" HeightRequest="40" HasShadow="False">
-				<Grid>
-					<Image Source="BackArrowRed" HeightRequest="30" WidthRequest="30" HorizontalOptions="Start" VerticalOptions="Center">
-						<Image.GestureRecognizers>
-							<TapGestureRecognizer Command="{Binding GoBackCommand}" />
-						</Image.GestureRecognizers>
-					</Image>
-					<Label Text="{Binding Title}" FontAttributes="Bold" Style="{StaticResource TitleLabelStyle}" />
-				</Grid>
-			</Frame>
-			<ScrollView Grid.Row="1">
-				<Grid  RowDefinitions="Auto,Auto,Auto,Auto,Auto" >
-					<!--#region Static Part-->
-					<Frame Grid.Row="0" Padding="4" BackgroundColor="{DynamicResource BrandPrimary}" HeightRequest="50" VerticalOptions="Center" HasShadow="False">
-						<Grid RowDefinitions="Auto,Auto" ColumnDefinitions="2*,8*" RowSpacing="0" VerticalOptions="Center">
-							<Frame Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Style="{StaticResource circleFram}" HasShadow="False" >
-								<Image Source="doc_icon" Aspect="AspectFit" HeightRequest="35"></Image>
-							</Frame>
-							<Label Grid.Row="0" Grid.Column="1" Style="{StaticResource menuLabel}" Text="{Binding TransactonDetail.Transaction.TransactionNumber}" />
-							<Label Grid.Row="1" Grid.Column="1" Style="{StaticResource menuLabel}" Text="{Binding TransactonDetail.ProjectStage.ProjectStageCode}" FontSize="12" />
-						</Grid>
-					</Frame>
-					<Label Grid.Row="1" VerticalOptions="Center"  Style="{StaticResource menuLabel}" Text="Approve/Reject" TextColor="{DynamicResource BrandPrimary}"/>
-					<BoxView Grid.Row="2" HeightRequest="1" HorizontalOptions="FillAndExpand" Color="Gray"/>
-					<!--#endregion-->
-					<StackLayout Grid.Row="3" Orientation="Horizontal" Margin="10,5,10,5">
-						<Frame   Padding="0" BackgroundColor="{Binding IsReviewerDecisionSelected, Converter={StaticResource boolToColorConverter}}" Margin="0" HasShadow="False">
-							<Label Text="Review Decision"   FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5"/>
-							<Frame.GestureRecognizers>
-								<TapGestureRecognizer Command="{Binding ReviewDecisionTappedCommand}" />
-							</Frame.GestureRecognizers>
-						</Frame>
-						<Frame Padding="0" BackgroundColor="{Binding IsConditionSelected, Converter={StaticResource boolToColorConverter}}" Margin="0" HasShadow="False">
-							<Label Text="Condition" FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5" />
-							<Frame.GestureRecognizers>
-								<TapGestureRecognizer Command="{Binding DecisionTappedCommand}" />
-							</Frame.GestureRecognizers>
-						</Frame>
-					</StackLayout>
-					<!--#region ReviewerDecision Specific Part-->
-					<Grid Grid.Row="4" RowDefinitions="Auto,Auto,Auto,Auto,Auto" IsVisible="{Binding IsReviewerConditionFlow}">
-						<!--#stackholder List-->
-						<Frame Grid.Row="0" Margin="10,5,10,5" BackgroundColor="Gray" Padding="5" HasShadow="False" >
-							<Grid  RowDefinitions="Auto,Auto">
-								<Label Grid.Row="0" Text="Stakeholders" FontSize="14"  TextColor="Black"/>
-										
-								<ListView Grid.Row="1" Grid.Column="0" ItemsSource="{Binding StackHolderList}" HeightRequest="80" BackgroundColor="White" >
-									<ListView.ItemTemplate>
-										<DataTemplate>
-											<ViewCell>
-												<Frame Padding="5,0,0,0" Margin="0" BackgroundColor="LightGray" HasShadow="False">
-													<Label Text="{Binding ERGroup}" FontSize="14"  TextColor="Black" VerticalOptions="Center"></Label>
-													<Frame.GestureRecognizers>
-														<TapGestureRecognizer Command="{Binding Source={x:Reference ReviewerPage}, Path=BindingContext.ShowSelectedStackholderresponse}" CommandParameter="{Binding .}"/>
-													</Frame.GestureRecognizers>
-												</Frame>
-											</ViewCell>
-										</DataTemplate>
-									</ListView.ItemTemplate>
-								</ListView>
+    NavigationPage.HasNavigationBar="False">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Converter:IntToBoolConverter x:Key="intToBoolConverter" />
+            <Converter:BoolToColorConverter x:Key="boolToColorConverter" />
+            <Converter:ConditionTypeToColorConverter x:Key="conditionTypeToColorConverter" />
+            <xct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            <Converter:DecisionToStackholderTextConverter x:Key="decisionToStackholderTextConverter" />
+            <Converter:DecisionToStackholderTextColorConverter x:Key="decisionToStackholderTextColorConverter" />
+        </ResourceDictionary>
+        <Style x:Key="circleFram" TargetType="Frame">
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="HorizontalOptions" Value="Center" />
+            <Setter Property="BackgroundColor" Value="White" />
+            <Setter Property="CornerRadius" Value="{OnPlatform iOS=18, Android=30}" />
+            <Setter Property="Padding" Value="0" />
+        </Style>
+        <Style x:Key="menuLabel" TargetType="Label">
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="HorizontalOptions" Value="Start" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+        <Style x:Key="HeaderRedLabel" TargetType="Label">
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="HorizontalOptions" Value="Start" />
+            <Setter Property="HorizontalTextAlignment" Value="Start" />
+            <Setter Property="TextColor" Value="{DynamicResource BrandPrimary}" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontAttributes" Value="Bold" />
+        </Style>
+        <Style x:Key="basicInfoLabel" TargetType="Label">
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="HorizontalOptions" Value="Start" />
+            <Setter Property="HorizontalTextAlignment" Value="Start" />
+            <Setter Property="TextColor" Value="Gray" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontAttributes" Value="Bold" />
+        </Style>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid RowDefinitions="Auto,*,Auto" RowSpacing="0">
+            <Frame
+                Grid.Row="0"
+                Padding="0"
+                HasShadow="False"
+                HeightRequest="40">
+                <Grid>
+                    <Image
+                        HeightRequest="30"
+                        HorizontalOptions="Start"
+                        Source="BackArrowRed"
+                        VerticalOptions="Center"
+                        WidthRequest="30">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoBackCommand}" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Label
+                        FontAttributes="Bold"
+                        Style="{StaticResource TitleLabelStyle}"
+                        Text="{Binding Title}" />
+                </Grid>
+            </Frame>
+            <ScrollView Grid.Row="1">
+                <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+                    <!--#region Static Part-->
+                    <Frame
+                        Grid.Row="0"
+                        Padding="4"
+                        BackgroundColor="{DynamicResource BrandPrimary}"
+                        HasShadow="False"
+                        HeightRequest="50"
+                        VerticalOptions="Center">
+                        <Grid
+                            ColumnDefinitions="2*,8*"
+                            RowDefinitions="Auto,Auto"
+                            RowSpacing="0"
+                            VerticalOptions="Center">
+                            <Frame
+                                Grid.Row="0"
+                                Grid.RowSpan="2"
+                                Grid.Column="0"
+                                HasShadow="False"
+                                Style="{StaticResource circleFram}">
+                                <Image
+                                    Aspect="AspectFit"
+                                    HeightRequest="35"
+                                    Source="doc_icon" />
+                            </Frame>
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Style="{StaticResource menuLabel}"
+                                Text="{Binding TransactonDetail.Transaction.TransactionNumber}" />
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                FontSize="12"
+                                Style="{StaticResource menuLabel}"
+                                Text="{Binding TransactonDetail.ProjectStage.ProjectStageCode}" />
+                        </Grid>
+                    </Frame>
+                    <Label
+                        Grid.Row="1"
+                        Style="{StaticResource menuLabel}"
+                        Text="Approve/Reject"
+                        TextColor="{DynamicResource BrandPrimary}"
+                        VerticalOptions="Center" />
+                    <BoxView
+                        Grid.Row="2"
+                        HeightRequest="1"
+                        HorizontalOptions="FillAndExpand"
+                        Color="Gray" />
+                    <!--#endregion-->
+                    <StackLayout
+                        Grid.Row="3"
+                        Margin="10,5,10,5"
+                        Orientation="Horizontal">
+                        <Frame
+                            Margin="0"
+                            Padding="0"
+                            BackgroundColor="{Binding IsReviewerDecisionSelected, Converter={StaticResource boolToColorConverter}}"
+                            HasShadow="False">
+                            <Label
+                                Padding="5"
+                                FontSize="14"
+                                HorizontalOptions="Center"
+                                Text="Review Decision"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ReviewDecisionTappedCommand}" />
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                        <Frame
+                            Margin="0"
+                            Padding="0"
+                            BackgroundColor="{Binding IsConditionSelected, Converter={StaticResource boolToColorConverter}}"
+                            HasShadow="False">
+                            <Label
+                                Padding="5"
+                                FontSize="14"
+                                HorizontalOptions="Center"
+                                Text="Condition"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding DecisionTappedCommand}" />
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                    </StackLayout>
+                    <!--#region ReviewerDecision Specific Part-->
+                    <Grid
+                        Grid.Row="4"
+                        IsVisible="{Binding IsReviewerConditionFlow}"
+                        RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+                        <!--  #stackholder List  -->
+                        <Frame
+                            Grid.Row="0"
+                            Margin="10,5,10,5"
+                            Padding="5"
+                            BackgroundColor="Gray"
+                            HasShadow="False">
+                            <Grid RowDefinitions="Auto,Auto">
+                                <Label
+                                    Grid.Row="0"
+                                    FontSize="14"
+                                    Text="Stakeholders"
+                                    TextColor="Black" />
 
-								<Label Grid.Row="1" IsVisible="{Binding  StackHolderList.Count,Converter={StaticResource intToBoolConverter}}" Text="No Stakeholder availabe"  FontSize="16" TextColor="Black"  VerticalOptions="Center" HorizontalOptions="Center" />
-								
-							</Grid>
-						</Frame>
-						<!--#region AllStackholder-->
-						<Grid Grid.Row="1" RowDefinitions="Auto" Margin="10,5,10,5"   ColumnSpacing="0" BackgroundColor="Gray"   >
-							<Grid Grid.Row="0"  RowDefinitions="Auto,Auto" >
-								<!--<Label Grid.Row="0" Text="Stakeholders Response" FontSize="14"  TextColor="Black" FontAttributes="Bold"/>-->
-								<Grid Grid.Row="1" RowDefinitions="Auto,Auto"  >
-									<Label Grid.Row="0"     >
-										<Label.FormattedText>
-											<FormattedString>
-												<Span Text="Stakeholder: " FontSize="14" FontAttributes="Bold" TextColor="Black" />
-												<Span Text="{Binding SelectedStackholderName}" FontSize="14" FontAttributes="Bold" TextColor="{DynamicResource BrandPrimary}" />
-											</FormattedString>
-										</Label.FormattedText>
-									</Label>
-									<Label Grid.Row="1"  >
-										<Label.FormattedText>
-											<FormattedString>
-												<Span Text="Stakeholder Response: " FontSize="14" FontAttributes="Bold" TextColor="Black" />
-												<Span Text="{Binding SelectedStackholderResponse.Decision,Converter={StaticResource decisionToStackholderTextConverter}}" FontSize="14" FontAttributes="Bold" TextColor="{Binding SelectedStackholderResponse.Decision,Converter={StaticResource decisionToStackholderTextColorConverter}}" />
-											</FormattedString>
-										</Label.FormattedText>
-									</Label>
-								</Grid>
-								<Grid Grid.Row="2" BackgroundColor="LightGray"   RowDefinitions="Auto,Auto"  Padding="0" RowSpacing="0" >
-									<Frame Grid.Row="0"  HeightRequest="180" BorderColor="Gray" BackgroundColor="LightGray" Padding="5,0,5,0" Margin="0" HasShadow="False" >
-										<Grid  RowDefinitions="Auto,Auto,Auto" RowSpacing="0" >
-											<Grid Grid.Row="0" HeightRequest="40" BackgroundColor="LightGray">
-												<Label Text="Attachments" FontAttributes="Bold" Grid.Column="0" FontSize="12" HorizontalOptions="Center" VerticalOptions="Center"/>
-											</Grid>
-											<Frame Grid.Row="1" HeightRequest="40"  BorderColor="Black" HasShadow="False"  Padding="0" Margin="0" BackgroundColor="LightGray" >
-												<Grid  ColumnDefinitions="2.5*,2.5*,2.5*,2.5*" HeightRequest="40" >
-													<Label Text="File Name" Grid.Column="0" FontAttributes="Bold"  FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
-													<BoxView Grid.Column="0" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
-													<Label Text="Attachment Type" Grid.Column="1" FontAttributes="Bold"  FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
-													<BoxView Grid.Column="1" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
-													<Label Text="Upload Date" Grid.Column="2" FontAttributes="Bold"  FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
-													<BoxView Grid.Column="2" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
-													<Label Text="Download" Grid.Column="3" FontAttributes="Bold"  FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
-												</Grid>
-											</Frame>
-											<ListView Grid.Row="2" ItemsSource="{Binding StackholderAttachmentsModelList}" HeightRequest="80" Margin="0" HasUnevenRows="True" BackgroundColor="LightGray" SeparatorColor="DarkGray"  >
-												<ListView.ItemTemplate>
-													<DataTemplate>
-														<ViewCell>
-															<Grid  ColumnDefinitions="2.5*,2.5*,2.5*,2.5*" HeightRequest="35" Margin="0" Padding="0" >
-																<Label Text="{Binding uploadfilename}" Grid.Column="0"  FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
-																<BoxView Grid.Column="0" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
-																<Label Text="{Binding AttachmentTypeCode}" Grid.Column="1" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
-																<BoxView Grid.Column="1" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
-																<Label Text="{Binding FormatedUplodedDate}" Grid.Column="2" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
-																<BoxView Grid.Column="2" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
-																<StackLayout Grid.Column="3" Orientation="Horizontal" Spacing="0" HorizontalOptions="Center" VerticalOptions="Center" >
-																	<Image Source="download.png" HeightRequest="10" WidthRequest="10" />
-																	<Label Text="Download"  FontSize="10" />
-																	<StackLayout.GestureRecognizers>
-																		<TapGestureRecognizer Command="{Binding Source={x:Reference ReviewerPage}, Path=BindingContext.DownloadCommentsAttachmentsCommand}" CommandParameter="{Binding .}"/>
-																	</StackLayout.GestureRecognizers>
-																</StackLayout>
-															</Grid>
-														</ViewCell>
-													</DataTemplate>
-												</ListView.ItemTemplate>
-											</ListView>
-											<Label Grid.Row="2" IsVisible="{Binding  StackholderAttachmentsModelList.Count ,Converter={StaticResource intToBoolConverter}}" Text="No attachment availabe"  FontSize="16" VerticalOptions="Center" HorizontalOptions="Center" />
-										</Grid>
-									</Frame>
-								</Grid>
-							</Grid>
-						</Grid>
-						<!--#endregion-->
+                                <ListView
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    BackgroundColor="White"
+                                    HeightRequest="80"
+                                    ItemsSource="{Binding StackHolderList}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <ViewCell>
+                                                <Frame
+                                                    Margin="0"
+                                                    Padding="5,0,0,0"
+                                                    BackgroundColor="LightGray"
+                                                    HasShadow="False">
+                                                    <Label
+                                                        FontSize="14"
+                                                        Text="{Binding ERGroup}"
+                                                        TextColor="Black"
+                                                        VerticalOptions="Center" />
+                                                    <Frame.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding Source={x:Reference ReviewerPage}, Path=BindingContext.ShowSelectedStackholderresponse}" CommandParameter="{Binding .}" />
+                                                    </Frame.GestureRecognizers>
+                                                </Frame>
+                                            </ViewCell>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
 
-						<!--#region Middle Part Start-->
-						<Grid Grid.Row="2" BackgroundColor="LightGray"  HeightRequest="300" RowDefinitions="Auto,Auto"  Padding="0"  Margin="10,5,10,5">
-							<Frame Grid.Row="0"  HeightRequest="180" BorderColor="Gray" BackgroundColor="LightGray" Padding="0" Margin="0" HasShadow="False" >
-								<Grid  RowDefinitions="Auto,Auto,Auto" RowSpacing="0" >
-									<Grid Grid.Row="0" ColumnDefinitions="3*,7*" HeightRequest="40" BackgroundColor="LightGray">
-										<Label Text="Attachments" FontAttributes="Bold"  Grid.Column="0" FontSize="12" HorizontalOptions="Center" VerticalOptions="Center"/>
-										<BoxView Grid.Column="0" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
-										<Grid Grid.Column="1" ColumnDefinitions="8*,2*"   HeightRequest="30"  HorizontalOptions="Center" VerticalOptions="Center" >
-											<Frame Grid.Column="0" Padding="5,0,5,0" BackgroundColor="White" HasShadow="False" >
-												<components:CustomPicker IsEnabled="{Binding IsNoObjectionSaveAndObjectionButtonEnable}" ItemsSource="{Binding DoccumentTypes}" FontSize="12"  ItemDisplayBinding="{Binding AttachmentTypeCode}" Image="upload" Title="Attachment Type" Margin="0" SelectedItem="{Binding DoccumentTypeSelectedItem, Mode=TwoWay}"   />
-											</Frame>
-											<Frame IsEnabled="{Binding IsNoObjectionSaveAndObjectionButtonEnable}" Grid.Column="1" BackgroundColor="#4E738A" HasShadow="False"  CornerRadius="{OnPlatform iOS=12, Android=20}" Padding="5" Margin="0" HorizontalOptions="Center" VerticalOptions="Center">
-												<Image Source="upload.png" HeightRequest="30" WidthRequest="30" />
-												<Frame.GestureRecognizers>
-													<TapGestureRecognizer Command="{Binding UploadAttachmentCommand}"/>
-												</Frame.GestureRecognizers>
-											</Frame>
-										</Grid>
-									</Grid>
-									<Frame Grid.Row="1" HeightRequest="40" BorderColor="LightGray" HasShadow="False"  Padding="0" Margin="0" BackgroundColor="LightGray" >
-										<Grid  ColumnDefinitions="2.5*,2.5*,2.5*,2.5*" HeightRequest="40" >
-											<Label Text="File Name" FontAttributes="Bold"  Grid.Column="0"  FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
-											<BoxView Grid.Column="0" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
-											<Label Text="Attachment Type" FontAttributes="Bold"  Grid.Column="1" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
-											<BoxView Grid.Column="1" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
-											<Label Text="Upload Date" FontAttributes="Bold"  Grid.Column="2" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
-											<BoxView Grid.Column="2" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
-											<Label Text="Download" FontAttributes="Bold"  Grid.Column="3" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
-										</Grid>
-									</Frame>
-									<ListView Grid.Row="2" ItemsSource="{Binding AttachmentList}" HeightRequest="80" Margin="0" HasUnevenRows="True" BackgroundColor="LightGray" SeparatorColor="DarkGray"  >
-										<ListView.ItemTemplate>
-											<DataTemplate>
-												<ViewCell>
-													<Grid  ColumnDefinitions="2.5*,2.5*,2.5*,2.5*" HeightRequest="35" Margin="0" Padding="0" >
-														<Label Text="{Binding uploadfilename}" Grid.Column="0"  FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
-														<BoxView Grid.Column="0" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
-														<Label Text="{Binding AttachmentTypeCode}" Grid.Column="1" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
-														<BoxView Grid.Column="1" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
-														<Label Text="{Binding FormatedUplodedDate}" Grid.Column="2" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center"/>
-														<BoxView Grid.Column="2" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
-														<StackLayout Grid.Column="3" Orientation="Horizontal" Spacing="0" HorizontalOptions="Center" VerticalOptions="Center" >
-															<Image Source="download.png" HeightRequest="10" WidthRequest="10" />
-															<Label Text="Download"  FontSize="10" />
-															<StackLayout.GestureRecognizers>
-																<TapGestureRecognizer Command="{Binding Source={x:Reference ReviewerPage}, Path=BindingContext.DownloadCommentsAttachmentsCommand}" CommandParameter="{Binding .}"/>
-															</StackLayout.GestureRecognizers>
-														</StackLayout>
-													</Grid>
-												</ViewCell>
-											</DataTemplate>
-										</ListView.ItemTemplate>
-									</ListView>
-									<Label Grid.Row="2" IsVisible="{Binding  AttachmentList.Count ,Converter={StaticResource intToBoolConverter}}" Text="No attachment availabe"  FontSize="16" VerticalOptions="Center" HorizontalOptions="Center" />
-								</Grid>
-							</Frame>
-							<Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto" >
-								<Label Grid.Row="0" Grid.Column="0" Text="Specific Comments" FontSize="12" HorizontalOptions="Start" FontAttributes="Bold" TextColor="Black"/>
-								<Frame Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HeightRequest="100"  VerticalOptions="FillAndExpand" BorderColor="DarkGray" HasShadow="True" Padding="0">
-									<components:CustomEditor IsEnabled="{Binding IsNoObjectionSaveAndObjectionButtonEnable}" Text="{Binding SpecificMessageText}" FontSize="16"  BackgroundColor="Transparent"/>
-								</Frame>
-								<!--<StackLayout Grid.Row="2" Grid.Column="1"  Margin="10"  HorizontalOptions="End" Orientation="Horizontal"><Image Source="message1.png"  /><Label Text="AddComment" FontSize="12" TextColor="Blue"/><StackLayout.GestureRecognizers><TapGestureRecognizer Command="{Binding Source={x:Reference commentsPageRef},Path=BindingContext.SendReplyToExistingCommand}" CommandParameter="{Binding .}"/></StackLayout.GestureRecognizers></StackLayout>-->
-							</Grid>
-						</Grid>
-						<!--#region  Validity Part Start-->
-						<Grid Grid.Row="3" RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,Auto" Margin="10,5,10,5" >
-							<Label Grid.Row="0" Grid.ColumnSpan="2" HorizontalOptions="Start" VerticalOptions="Center" Text="Validity Period" FontSize="14"  TextColor="Black"/>
-							<Frame Grid.Row="1" Grid.Column="0"  Margin="0" BorderColor="Gray" Padding="0" HasShadow="False">
-								<components:CustomEntry IsEnabled="{Binding IsNoObjectionSaveAndObjectionButtonEnable}" Text="{Binding DurationValuetext}" Keyboard="Numeric"  Placeholder="Validity Duration" BackgroundColor="Transparent">
-									<components:CustomEntry.Behaviors>
-										<xct:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidityCountChangedEventCommand}" CommandParameter="{Binding DurationValuetext}"/>
-									</components:CustomEntry.Behaviors>
-								</components:CustomEntry>
-							</Frame>
-							<Frame Grid.Row="1"  Grid.Column="1" Padding="5,0,5,0" BackgroundColor="White"  HasShadow="False">
-								<components:CustomPicker IsEnabled="{Binding IsNoObjectionSaveAndObjectionButtonEnable}" ItemsSource="{Binding DDSourceList}" SelectedItem="{Binding ValidityPickerSelectedItem, Mode=TwoWay}"  Image="upload" ></components:CustomPicker>
-							</Frame>
-							<Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" >
-								<Label.FormattedText>
-									<FormattedString>
-										<Span Text="Valid till - " FontSize="14" FontAttributes="Bold" TextColor="Black" />
-										<Span Text="{Binding CalculatedValidTillDate}" FontSize="14" FontAttributes="Bold" TextColor="{DynamicResource BrandPrimary}" />
-									</FormattedString>
-								</Label.FormattedText>
-							</Label>
-						</Grid>
-						<!--#endregion Validity Part End-->
-						
-						<!--Objection NoObjection Part Start-->
-						<StackLayout Grid.Row="4" Orientation="Horizontal" Margin="10,5,10,5">
-							<Frame   Padding="0" BackgroundColor="Gray" HasShadow="False" Margin="0" IsEnabled="{Binding IsNoObjectionSaveAndObjectionButtonEnable}">
-								<Label Text="No Objection"   FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5"/>
-								<Frame.GestureRecognizers>
-									<TapGestureRecognizer Command="{Binding NoObjectionCommand}" />
-								</Frame.GestureRecognizers>
-							</Frame>
-							<Frame   Padding="0" BackgroundColor="Gray" HasShadow="False" Margin="0" IsEnabled="{Binding IsNoObjectionSaveAndObjectionButtonEnable}">
-								<Label Text="Objection" FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5" />
-								<Frame.GestureRecognizers>
-									<TapGestureRecognizer Command="{Binding RaiseObjectionCommand}"/>
-								</Frame.GestureRecognizers>
-							</Frame>
-							<Frame   Padding="0" BackgroundColor="Gray" HasShadow="False" Margin="0" IsEnabled="{Binding IsNoObjectionSaveAndObjectionButtonEnable}">
-								<Label Text="Save" FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5" />
-								<Frame.GestureRecognizers>
-									<TapGestureRecognizer Command="{Binding SaveCommentAndAttachmentCommand}"/>
-								</Frame.GestureRecognizers>
-							</Frame>
-						</StackLayout>
-						<!--Objection NoObjection Part End-->
-					</Grid>
+                                <Label
+                                    Grid.Row="1"
+                                    FontSize="16"
+                                    HorizontalOptions="Center"
+                                    IsVisible="{Binding StackHolderList.Count, Converter={StaticResource intToBoolConverter}}"
+                                    Text="No Stakeholder availabe"
+                                    TextColor="Black"
+                                    VerticalOptions="Center" />
+
+                            </Grid>
+                        </Frame>
+                        <!--#region AllStackholder-->
+                        <Grid
+                            Grid.Row="1"
+                            Margin="10,5,10,5"
+                            BackgroundColor="Gray"
+                            ColumnSpacing="0"
+                            RowDefinitions="Auto">
+                            <Grid Grid.Row="0" RowDefinitions="Auto,Auto">
+                                <!--<Label Grid.Row="0" Text="Stakeholders Response" FontSize="14"  TextColor="Black" FontAttributes="Bold"/>-->
+                                <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto">
+                                    <Label Grid.Row="0">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span
+                                                    FontAttributes="Bold"
+                                                    FontSize="14"
+                                                    Text="Officer Response: "
+                                                    TextColor="Black" />
+                                                <Span
+                                                    FontAttributes="Bold"
+                                                    FontSize="14"
+                                                    Text="{Binding SelectedStackholderName}"
+                                                    TextColor="{DynamicResource BrandPrimary}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label
+                                        Grid.Row="1"
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        Text="Name: "
+                                        TextColor="Black" />
+
+                                    <Label Grid.Row="2">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span
+                                                    FontAttributes="Bold"
+                                                    FontSize="14"
+                                                    Text="Response: "
+                                                    TextColor="Black" />
+                                                <Span
+                                                    FontAttributes="Bold"
+                                                    FontSize="14"
+                                                    Text="{Binding SelectedStackholderResponse.Decision, Converter={StaticResource decisionToStackholderTextConverter}}"
+                                                    TextColor="{Binding SelectedStackholderResponse.Decision, Converter={StaticResource decisionToStackholderTextColorConverter}}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </Grid>
+                                <Grid
+                                    Grid.Row="2"
+                                    Padding="0"
+                                    BackgroundColor="LightGray"
+                                    RowDefinitions="Auto,Auto"
+                                    RowSpacing="0">
+                                    <Frame
+                                        Grid.Row="0"
+                                        Margin="0"
+                                        Padding="5,0,5,0"
+                                        BackgroundColor="LightGray"
+                                        BorderColor="Gray"
+                                        HasShadow="False"
+                                        HeightRequest="180">
+                                        <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="0">
+                                            <Grid
+                                                Grid.Row="0"
+                                                BackgroundColor="LightGray"
+                                                HeightRequest="40">
+                                                <Label
+                                                    Grid.Column="0"
+                                                    FontAttributes="Bold"
+                                                    FontSize="12"
+                                                    HorizontalOptions="Center"
+                                                    Text="Attachments"
+                                                    VerticalOptions="Center" />
+                                            </Grid>
+                                            <Frame
+                                                Grid.Row="1"
+                                                Margin="0"
+                                                Padding="0"
+                                                BackgroundColor="LightGray"
+                                                BorderColor="Black"
+                                                HasShadow="False"
+                                                HeightRequest="40">
+                                                <Grid ColumnDefinitions="2.5*,2.5*,2.5*,2.5*" HeightRequest="40">
+                                                    <Label
+                                                        Grid.Column="0"
+                                                        FontAttributes="Bold"
+                                                        FontSize="10"
+                                                        HorizontalOptions="Center"
+                                                        Text="File Name"
+                                                        VerticalOptions="Center" />
+                                                    <BoxView
+                                                        Grid.Column="0"
+                                                        HorizontalOptions="EndAndExpand"
+                                                        WidthRequest="1"
+                                                        Color="DarkGray" />
+                                                    <Label
+                                                        Grid.Column="1"
+                                                        FontAttributes="Bold"
+                                                        FontSize="10"
+                                                        HorizontalOptions="Center"
+                                                        Text="Attachment Type"
+                                                        VerticalOptions="Center" />
+                                                    <BoxView
+                                                        Grid.Column="1"
+                                                        HorizontalOptions="EndAndExpand"
+                                                        WidthRequest="1"
+                                                        Color="DarkGray" />
+                                                    <Label
+                                                        Grid.Column="2"
+                                                        FontAttributes="Bold"
+                                                        FontSize="10"
+                                                        HorizontalOptions="Center"
+                                                        Text="Upload Date"
+                                                        VerticalOptions="Center" />
+                                                    <BoxView
+                                                        Grid.Column="2"
+                                                        HorizontalOptions="EndAndExpand"
+                                                        WidthRequest="1"
+                                                        Color="DarkGray" />
+                                                    <Label
+                                                        Grid.Column="3"
+                                                        FontAttributes="Bold"
+                                                        FontSize="10"
+                                                        HorizontalOptions="Center"
+                                                        Text="Download"
+                                                        VerticalOptions="Center" />
+                                                </Grid>
+                                            </Frame>
+                                            <ListView
+                                                Grid.Row="2"
+                                                Margin="0"
+                                                BackgroundColor="LightGray"
+                                                HasUnevenRows="True"
+                                                HeightRequest="80"
+                                                ItemsSource="{Binding StackholderAttachmentsModelList}"
+                                                SeparatorColor="DarkGray">
+                                                <ListView.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <ViewCell>
+                                                            <Grid
+                                                                Margin="0"
+                                                                Padding="0"
+                                                                ColumnDefinitions="2.5*,2.5*,2.5*,2.5*"
+                                                                HeightRequest="35">
+                                                                <Label
+                                                                    Grid.Column="0"
+                                                                    FontSize="10"
+                                                                    HorizontalOptions="Center"
+                                                                    Text="{Binding uploadfilename}"
+                                                                    VerticalOptions="Center" />
+                                                                <BoxView
+                                                                    Grid.Column="0"
+                                                                    HorizontalOptions="EndAndExpand"
+                                                                    WidthRequest="1"
+                                                                    Color="DarkGray" />
+                                                                <Label
+                                                                    Grid.Column="1"
+                                                                    FontSize="10"
+                                                                    HorizontalOptions="Center"
+                                                                    Text="{Binding AttachmentTypeCode}"
+                                                                    VerticalOptions="Center" />
+                                                                <BoxView
+                                                                    Grid.Column="1"
+                                                                    HorizontalOptions="EndAndExpand"
+                                                                    WidthRequest="1"
+                                                                    Color="DarkGray" />
+                                                                <Label
+                                                                    Grid.Column="2"
+                                                                    FontSize="10"
+                                                                    HorizontalOptions="Center"
+                                                                    Text="{Binding FormatedUplodedDate}"
+                                                                    VerticalOptions="Center" />
+                                                                <BoxView
+                                                                    Grid.Column="2"
+                                                                    HorizontalOptions="EndAndExpand"
+                                                                    WidthRequest="1"
+                                                                    Color="DarkGray" />
+                                                                <StackLayout
+                                                                    Grid.Column="3"
+                                                                    HorizontalOptions="Center"
+                                                                    Orientation="Horizontal"
+                                                                    Spacing="0"
+                                                                    VerticalOptions="Center">
+                                                                    <Image
+                                                                        HeightRequest="10"
+                                                                        Source="download.png"
+                                                                        WidthRequest="10" />
+                                                                    <Label FontSize="10" Text="Download" />
+                                                                    <StackLayout.GestureRecognizers>
+                                                                        <TapGestureRecognizer Command="{Binding Source={x:Reference ReviewerPage}, Path=BindingContext.DownloadCommentsAttachmentsCommand}" CommandParameter="{Binding .}" />
+                                                                    </StackLayout.GestureRecognizers>
+                                                                </StackLayout>
+                                                            </Grid>
+                                                        </ViewCell>
+                                                    </DataTemplate>
+                                                </ListView.ItemTemplate>
+                                            </ListView>
+                                            <Label
+                                                Grid.Row="2"
+                                                FontSize="16"
+                                                HorizontalOptions="Center"
+                                                IsVisible="{Binding StackholderAttachmentsModelList.Count, Converter={StaticResource intToBoolConverter}}"
+                                                Text="No attachment availabe"
+                                                VerticalOptions="Center" />
+                                        </Grid>
+                                    </Frame>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <!--#endregion-->
+
+                        <!--#region Middle Part Start-->
+                        <Grid
+                            Grid.Row="2"
+                            Margin="10,5,10,5"
+                            Padding="0"
+                            BackgroundColor="LightGray"
+                            HeightRequest="300"
+                            RowDefinitions="Auto,Auto">
+                            <Frame
+                                Grid.Row="0"
+                                Margin="0"
+                                Padding="0"
+                                BackgroundColor="LightGray"
+                                BorderColor="Gray"
+                                HasShadow="False"
+                                HeightRequest="180">
+                                <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="0">
+                                    <Grid
+                                        Grid.Row="0"
+                                        BackgroundColor="LightGray"
+                                        ColumnDefinitions="3*,7*"
+                                        HeightRequest="40">
+                                        <Label
+                                            Grid.Column="0"
+                                            FontAttributes="Bold"
+                                            FontSize="12"
+                                            HorizontalOptions="Center"
+                                            Text="Attachments"
+                                            VerticalOptions="Center" />
+                                        <BoxView
+                                            Grid.Column="0"
+                                            HorizontalOptions="EndAndExpand"
+                                            WidthRequest="1"
+                                            Color="DarkGray" />
+                                        <Grid
+                                            Grid.Column="1"
+                                            ColumnDefinitions="8*,2*"
+                                            HeightRequest="30"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center">
+                                            <Frame
+                                                Grid.Column="0"
+                                                Padding="5,0,5,0"
+                                                BackgroundColor="White"
+                                                HasShadow="False">
+                                                <components:CustomPicker
+                                                    Title="Attachment Type"
+                                                    Margin="0"
+                                                    FontSize="12"
+                                                    Image="upload"
+                                                    IsEnabled="{Binding IsNoObjectionSaveAndObjectionButtonEnable}"
+                                                    ItemDisplayBinding="{Binding AttachmentTypeCode}"
+                                                    ItemsSource="{Binding DoccumentTypes}"
+                                                    SelectedItem="{Binding DoccumentTypeSelectedItem, Mode=TwoWay}" />
+                                            </Frame>
+                                            <Frame
+                                                Grid.Column="1"
+                                                Margin="0"
+                                                Padding="5"
+                                                BackgroundColor="#4E738A"
+                                                CornerRadius="{OnPlatform iOS=12,
+                                                                          Android=20}"
+                                                HasShadow="False"
+                                                HorizontalOptions="Center"
+                                                IsEnabled="{Binding IsNoObjectionSaveAndObjectionButtonEnable}"
+                                                VerticalOptions="Center">
+                                                <Image
+                                                    HeightRequest="30"
+                                                    Source="upload.png"
+                                                    WidthRequest="30" />
+                                                <Frame.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding UploadAttachmentCommand}" />
+                                                </Frame.GestureRecognizers>
+                                            </Frame>
+                                        </Grid>
+                                    </Grid>
+                                    <Frame
+                                        Grid.Row="1"
+                                        Margin="0"
+                                        Padding="0"
+                                        BackgroundColor="LightGray"
+                                        BorderColor="LightGray"
+                                        HasShadow="False"
+                                        HeightRequest="40">
+                                        <Grid ColumnDefinitions="2.5*,2.5*,2.5*,2.5*" HeightRequest="40">
+                                            <Label
+                                                Grid.Column="0"
+                                                FontAttributes="Bold"
+                                                FontSize="10"
+                                                HorizontalOptions="Center"
+                                                Text="File Name"
+                                                VerticalOptions="Center" />
+                                            <BoxView
+                                                Grid.Column="0"
+                                                HorizontalOptions="EndAndExpand"
+                                                WidthRequest="1"
+                                                Color="DarkGray" />
+                                            <Label
+                                                Grid.Column="1"
+                                                FontAttributes="Bold"
+                                                FontSize="10"
+                                                HorizontalOptions="Center"
+                                                Text="Attachment Type"
+                                                VerticalOptions="Center" />
+                                            <BoxView
+                                                Grid.Column="1"
+                                                HorizontalOptions="EndAndExpand"
+                                                WidthRequest="1"
+                                                Color="DarkGray" />
+                                            <Label
+                                                Grid.Column="2"
+                                                FontAttributes="Bold"
+                                                FontSize="10"
+                                                HorizontalOptions="Center"
+                                                Text="Upload Date"
+                                                VerticalOptions="Center" />
+                                            <BoxView
+                                                Grid.Column="2"
+                                                HorizontalOptions="EndAndExpand"
+                                                WidthRequest="1"
+                                                Color="DarkGray" />
+                                            <Label
+                                                Grid.Column="3"
+                                                FontAttributes="Bold"
+                                                FontSize="10"
+                                                HorizontalOptions="Center"
+                                                Text="Download"
+                                                VerticalOptions="Center" />
+                                        </Grid>
+                                    </Frame>
+                                    <ListView
+                                        Grid.Row="2"
+                                        Margin="0"
+                                        BackgroundColor="LightGray"
+                                        HasUnevenRows="True"
+                                        HeightRequest="80"
+                                        ItemsSource="{Binding AttachmentList}"
+                                        SeparatorColor="DarkGray">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <ViewCell>
+                                                    <Grid
+                                                        Margin="0"
+                                                        Padding="0"
+                                                        ColumnDefinitions="2.5*,2.5*,2.5*,2.5*"
+                                                        HeightRequest="35">
+                                                        <Label
+                                                            Grid.Column="0"
+                                                            FontSize="10"
+                                                            HorizontalOptions="Center"
+                                                            Text="{Binding uploadfilename}"
+                                                            VerticalOptions="Center" />
+                                                        <BoxView
+                                                            Grid.Column="0"
+                                                            HorizontalOptions="EndAndExpand"
+                                                            WidthRequest="1"
+                                                            Color="DarkGray" />
+                                                        <Label
+                                                            Grid.Column="1"
+                                                            FontSize="10"
+                                                            HorizontalOptions="Center"
+                                                            Text="{Binding AttachmentTypeCode}"
+                                                            VerticalOptions="Center" />
+                                                        <BoxView
+                                                            Grid.Column="1"
+                                                            HorizontalOptions="EndAndExpand"
+                                                            WidthRequest="1"
+                                                            Color="DarkGray" />
+                                                        <Label
+                                                            Grid.Column="2"
+                                                            FontSize="10"
+                                                            HorizontalOptions="Center"
+                                                            Text="{Binding FormatedUplodedDate}"
+                                                            VerticalOptions="Center" />
+                                                        <BoxView
+                                                            Grid.Column="2"
+                                                            HorizontalOptions="EndAndExpand"
+                                                            WidthRequest="1"
+                                                            Color="DarkGray" />
+                                                        <StackLayout
+                                                            Grid.Column="3"
+                                                            HorizontalOptions="Center"
+                                                            Orientation="Horizontal"
+                                                            Spacing="0"
+                                                            VerticalOptions="Center">
+                                                            <Image
+                                                                HeightRequest="10"
+                                                                Source="download.png"
+                                                                WidthRequest="10" />
+                                                            <Label FontSize="10" Text="Download" />
+                                                            <StackLayout.GestureRecognizers>
+                                                                <TapGestureRecognizer Command="{Binding Source={x:Reference ReviewerPage}, Path=BindingContext.DownloadCommentsAttachmentsCommand}" CommandParameter="{Binding .}" />
+                                                            </StackLayout.GestureRecognizers>
+                                                        </StackLayout>
+                                                    </Grid>
+                                                </ViewCell>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                    <Label
+                                        Grid.Row="2"
+                                        FontSize="16"
+                                        HorizontalOptions="Center"
+                                        IsVisible="{Binding AttachmentList.Count, Converter={StaticResource intToBoolConverter}}"
+                                        Text="No attachment availabe"
+                                        VerticalOptions="Center" />
+                                </Grid>
+                            </Frame>
+                            <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto">
+                                <Label
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    FontAttributes="Bold"
+                                    FontSize="12"
+                                    HorizontalOptions="Start"
+                                    Text="Specific Comments"
+                                    TextColor="Black" />
+                                <Frame
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2"
+                                    Padding="0"
+                                    BorderColor="DarkGray"
+                                    HasShadow="True"
+                                    HeightRequest="100"
+                                    VerticalOptions="FillAndExpand">
+                                    <components:CustomEditor
+                                        BackgroundColor="Transparent"
+                                        FontSize="16"
+                                        IsEnabled="{Binding IsNoObjectionSaveAndObjectionButtonEnable}"
+                                        Text="{Binding SpecificMessageText}" />
+                                </Frame>
+                                <!--<StackLayout Grid.Row="2" Grid.Column="1"  Margin="10"  HorizontalOptions="End" Orientation="Horizontal"><Image Source="message1.png"  /><Label Text="AddComment" FontSize="12" TextColor="Blue"/><StackLayout.GestureRecognizers><TapGestureRecognizer Command="{Binding Source={x:Reference commentsPageRef},Path=BindingContext.SendReplyToExistingCommand}" CommandParameter="{Binding .}"/></StackLayout.GestureRecognizers></StackLayout>-->
+                            </Grid>
+                        </Grid>
+                        <!--#region  Validity Part Start-->
+                        <Grid
+                            Grid.Row="3"
+                            Margin="10,5,10,5"
+                            ColumnDefinitions="Auto,Auto"
+                            RowDefinitions="Auto,Auto,Auto">
+                            <Label
+                                Grid.Row="0"
+                                Grid.ColumnSpan="2"
+                                FontSize="14"
+                                HorizontalOptions="Start"
+                                Text="Validity Period"
+                                TextColor="Black"
+                                VerticalOptions="Center" />
+                            <Frame
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Margin="0"
+                                Padding="0"
+                                BorderColor="Gray"
+                                HasShadow="False">
+                                <components:CustomEntry
+                                    BackgroundColor="Transparent"
+                                    IsEnabled="{Binding IsNoObjectionSaveAndObjectionButtonEnable}"
+                                    Keyboard="Numeric"
+                                    Placeholder="Validity Duration"
+                                    Text="{Binding DurationValuetext}">
+                                    <components:CustomEntry.Behaviors>
+                                        <xct:EventToCommandBehavior
+                                            Command="{Binding ValidityCountChangedEventCommand}"
+                                            CommandParameter="{Binding DurationValuetext}"
+                                            EventName="TextChanged" />
+                                    </components:CustomEntry.Behaviors>
+                                </components:CustomEntry>
+                            </Frame>
+                            <Frame
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Padding="5,0,5,0"
+                                BackgroundColor="White"
+                                HasShadow="False">
+                                <components:CustomPicker
+                                    Image="upload"
+                                    IsEnabled="{Binding IsNoObjectionSaveAndObjectionButtonEnable}"
+                                    ItemsSource="{Binding DDSourceList}"
+                                    SelectedItem="{Binding ValidityPickerSelectedItem, Mode=TwoWay}" />
+                            </Frame>
+                            <Label
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span
+                                            FontAttributes="Bold"
+                                            FontSize="14"
+                                            Text="Valid till - "
+                                            TextColor="Black" />
+                                        <Span
+                                            FontAttributes="Bold"
+                                            FontSize="14"
+                                            Text="{Binding CalculatedValidTillDate}"
+                                            TextColor="{DynamicResource BrandPrimary}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </Grid>
+                        <!--#endregion Validity Part End-->
+
+                        <!--  Objection NoObjection Part Start  -->
+                        <StackLayout
+                            Grid.Row="4"
+                            Margin="10,5,10,5"
+                            Orientation="Horizontal">
+                            <Frame
+                                Margin="0"
+                                Padding="0"
+                                BackgroundColor="Gray"
+                                HasShadow="False"
+                                IsEnabled="{Binding IsNoObjectionSaveAndObjectionButtonEnable}">
+                                <Label
+                                    Padding="5"
+                                    FontSize="14"
+                                    HorizontalOptions="Center"
+                                    Text="No Objection"
+                                    TextColor="White"
+                                    VerticalOptions="Center" />
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding NoObjectionCommand}" />
+                                </Frame.GestureRecognizers>
+                            </Frame>
+                            <Frame
+                                Margin="0"
+                                Padding="0"
+                                BackgroundColor="Gray"
+                                HasShadow="False"
+                                IsEnabled="{Binding IsNoObjectionSaveAndObjectionButtonEnable}">
+                                <Label
+                                    Padding="5"
+                                    FontSize="14"
+                                    HorizontalOptions="Center"
+                                    Text="Objection"
+                                    TextColor="White"
+                                    VerticalOptions="Center" />
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding RaiseObjectionCommand}" />
+                                </Frame.GestureRecognizers>
+                            </Frame>
+                            <Frame
+                                Margin="0"
+                                Padding="0"
+                                BackgroundColor="Gray"
+                                HasShadow="False"
+                                IsEnabled="{Binding IsNoObjectionSaveAndObjectionButtonEnable}">
+                                <Label
+                                    Padding="5"
+                                    FontSize="14"
+                                    HorizontalOptions="Center"
+                                    Text="Save"
+                                    TextColor="White"
+                                    VerticalOptions="Center" />
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SaveCommentAndAttachmentCommand}" />
+                                </Frame.GestureRecognizers>
+                            </Frame>
+                        </StackLayout>
+                        <!--  Objection NoObjection Part End  -->
+                    </Grid>
 
 
 
-					<!--#endregion-->
-					<!--#region Decision Specific Part-->
-					<Grid Grid.Row="4" RowDefinitions="Auto,Auto"  IsVisible="{Binding IsReviewerConditionFlow, Converter={StaticResource InvertedBoolConverter}}">
-						<StackLayout Grid.Row="0" Orientation="Horizontal" Margin="20,5,20,5">
-							<Frame   Padding="0" BackgroundColor="{Binding IsStackHolderSelected, Converter={StaticResource boolToColorConverter}}" Margin="0" HasShadow="False">
-								<Label Text="Stakeholder"   FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5"/>
-								<Frame.GestureRecognizers>
-									<TapGestureRecognizer Command="{Binding StackholdersTappedCommand}" />
-								</Frame.GestureRecognizers>
-							</Frame>
-							<Frame Padding="0"  BackgroundColor="{Binding IsReviewerSelected, Converter={StaticResource boolToColorConverter}}" Margin="0" HasShadow="False">
-								<Label Text="Reviewer" FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5" />
-								<Frame.GestureRecognizers>
-									<TapGestureRecognizer Command="{Binding ReviewerTappedCommand}" />
-								</Frame.GestureRecognizers>
-							</Frame>
-						</StackLayout>
-						<!--#region StackholderCondition-->
-						<Frame Grid.Row="1" Padding="0"  IsVisible="{Binding IsStackholderCommentsFlow}" Margin="10,5,10,5" BorderColor="LightGray" HasShadow="False">
-							<Grid   RowDefinitions="Auto,Auto" >
-								<Frame Grid.Row="0" HeightRequest="40" BorderColor="Gray" HasShadow="False"  Padding="0" Margin="0" >
-									<Grid  ColumnDefinitions="3*,.1*,6.9*" HeightRequest="40" >
-										<Label Text="Stakeholder Name" FontAttributes="Bold" Grid.Column="0"  FontSize="12" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
-										<BoxView Grid.Column="1" WidthRequest="1" Color="DarkGray" Margin="0,0,0,-10" HorizontalOptions="EndAndExpand"/>
-										<Label Text="Condition" Grid.Column="2" FontAttributes="Bold" FontSize="12" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
-									</Grid>
-								</Frame>
-								<ListView Grid.Row="1" ItemsSource="{Binding StackHolderCommentsList}" HeightRequest="250" HasUnevenRows="True" SeparatorColor="DarkGray">
-									<ListView.ItemTemplate>
-										<DataTemplate>
-											<ViewCell>
-												<!--<Grid ColumnDefinitions="3*,.1*,6.9*" >
+                    <!--#endregion-->
+                    <!--#region Decision Specific Part-->
+                    <Grid
+                        Grid.Row="4"
+                        IsVisible="{Binding IsReviewerConditionFlow, Converter={StaticResource InvertedBoolConverter}}"
+                        RowDefinitions="Auto,Auto">
+                        <StackLayout
+                            Grid.Row="0"
+                            Margin="20,5,20,5"
+                            Orientation="Horizontal">
+                            <Frame
+                                Margin="0"
+                                Padding="0"
+                                BackgroundColor="{Binding IsStackHolderSelected, Converter={StaticResource boolToColorConverter}}"
+                                HasShadow="False">
+                                <Label
+                                    Padding="5"
+                                    FontSize="14"
+                                    HorizontalOptions="Center"
+                                    Text="Stakeholder"
+                                    TextColor="White"
+                                    VerticalOptions="Center" />
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding StackholdersTappedCommand}" />
+                                </Frame.GestureRecognizers>
+                            </Frame>
+                            <Frame
+                                Margin="0"
+                                Padding="0"
+                                BackgroundColor="{Binding IsReviewerSelected, Converter={StaticResource boolToColorConverter}}"
+                                HasShadow="False">
+                                <Label
+                                    Padding="5"
+                                    FontSize="14"
+                                    HorizontalOptions="Center"
+                                    Text="Reviewer"
+                                    TextColor="White"
+                                    VerticalOptions="Center" />
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ReviewerTappedCommand}" />
+                                </Frame.GestureRecognizers>
+                            </Frame>
+                        </StackLayout>
+                        <!--#region StackholderCondition-->
+                        <Frame
+                            Grid.Row="1"
+                            Margin="10,5,10,5"
+                            Padding="0"
+                            BorderColor="LightGray"
+                            HasShadow="False"
+                            IsVisible="{Binding IsStackholderCommentsFlow}">
+                            <Grid RowDefinitions="Auto,Auto">
+                                <Frame
+                                    Grid.Row="0"
+                                    Margin="0"
+                                    Padding="0"
+                                    BorderColor="Gray"
+                                    HasShadow="False"
+                                    HeightRequest="40">
+                                    <Grid ColumnDefinitions="3*,.1*,6.9*" HeightRequest="40">
+                                        <Label
+                                            Grid.Column="0"
+                                            FontAttributes="Bold"
+                                            FontSize="12"
+                                            HorizontalOptions="Center"
+                                            HorizontalTextAlignment="Center"
+                                            Text="Stakeholder Name"
+                                            VerticalOptions="Center" />
+                                        <BoxView
+                                            Grid.Column="1"
+                                            Margin="0,0,0,-10"
+                                            HorizontalOptions="EndAndExpand"
+                                            WidthRequest="1"
+                                            Color="DarkGray" />
+                                        <Label
+                                            Grid.Column="2"
+                                            FontAttributes="Bold"
+                                            FontSize="12"
+                                            HorizontalOptions="Center"
+                                            HorizontalTextAlignment="Center"
+                                            Text="Condition"
+                                            VerticalOptions="Center" />
+                                    </Grid>
+                                </Frame>
+                                <ListView
+                                    Grid.Row="1"
+                                    HasUnevenRows="True"
+                                    HeightRequest="250"
+                                    ItemsSource="{Binding StackHolderCommentsList}"
+                                    SeparatorColor="DarkGray">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <ViewCell>
+                                                <!--<Grid ColumnDefinitions="3*,.1*,6.9*" >
 													<Label Grid.Column="0" Text="{Binding StakeholderName}" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Start" />
 													<BoxView Grid.Column="1" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
 													<Label Grid.Column="2" Text="{Binding condition}" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Start" />
 												</Grid>-->
 
 
-												<Grid ColumnDefinitions="3*,.1*,6.9*" VerticalOptions="Center" HorizontalOptions="FillAndExpand" >
-													<Label Grid.Column="0" Text="{Binding StakeholderName}" FontSize="10" />
-													<BoxView Grid.Column="1" WidthRequest="1" Color="Gray" HorizontalOptions="EndAndExpand"/>
-													<Label Grid.Column="2" Text="{Binding condition}" FontSize="10"   />
-													
-												</Grid>
+                                                <Grid
+                                                    ColumnDefinitions="3*,.1*,6.9*"
+                                                    HorizontalOptions="FillAndExpand"
+                                                    VerticalOptions="Center">
+                                                    <Label
+                                                        Grid.Column="0"
+                                                        FontSize="10"
+                                                        Text="{Binding StakeholderName}" />
+                                                    <BoxView
+                                                        Grid.Column="1"
+                                                        HorizontalOptions="EndAndExpand"
+                                                        WidthRequest="1"
+                                                        Color="Gray" />
+                                                    <Label
+                                                        Grid.Column="2"
+                                                        FontSize="10"
+                                                        Text="{Binding condition}" />
+
+                                                </Grid>
 
 
-											</ViewCell>
-										</DataTemplate>
-									</ListView.ItemTemplate>
-								</ListView>
+                                            </ViewCell>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
 
-								<Label Grid.Row="1" IsVisible="{Binding  StackHolderCommentsList.Count ,Converter={StaticResource intToBoolConverter}}" Text="Stakeholder Conditions Unavailable"  FontSize="16" VerticalOptions="Center" HorizontalOptions="Center" />
-							</Grid>
-						</Frame>
-						<!--#endregion-->
-						<!--#region ReviewerCondition-->
-						<Frame Grid.Row="1" Padding="0"  Margin="10,5,10,5" BorderColor="Black" HasShadow="False" IsVisible="{Binding IsStackholderCommentsFlow, Converter={StaticResource InvertedBoolConverter}}">
-							<Grid   RowDefinitions="Auto,Auto,Auto" >
-								<Frame Grid.Row="0" HeightRequest="40" BorderColor="DarkGray" HasShadow="False"  Padding="0" Margin="0" >
-									<Grid  ColumnDefinitions="1*,.1*,8.9*"  HeightRequest="40" >
-										<Label Text="No" FontAttributes="Bold"  Grid.Column="0"  FontSize="12" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
-										<BoxView Grid.Column="1" WidthRequest="1" Color="Black" Margin="0,0,0,-2" HorizontalOptions="EndAndExpand"/>
-										<Label Text="Condition" FontAttributes="Bold"  Grid.Column="2" FontSize="12" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
-									</Grid>
-								</Frame>
-								<ListView Grid.Row="1" ItemsSource="{Binding  ReviewerAllConditonsList}" HeightRequest="250" HasUnevenRows="True" SeparatorColor="Black">
-									<ListView.ItemTemplate>
-										<DataTemplate>
-											<ViewCell>
-												<Grid ColumnDefinitions="1*,.1*,8.9*"  >
-													<Label Grid.Column="0" Text="{Binding IndexNumber}" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
-													<BoxView Grid.Column="1" WidthRequest="1" Color="Black" HorizontalOptions="EndAndExpand"/>
-													<Label Grid.Column="2" Text="{Binding CONDITIONS}" FontSize="10" TextColor="{Binding COMMENTTYPE, Converter={StaticResource conditionTypeToColorConverter}}" HorizontalOptions="Center" VerticalOptions="Center" />
-													<Grid.GestureRecognizers >
-														<TapGestureRecognizer Command="{Binding Source={x:Reference ReviewerPage}, Path=BindingContext.SelectUserConditionCommand}"  CommandParameter="{Binding .}"/>
-													</Grid.GestureRecognizers>
-												</Grid>
-											</ViewCell>
-										</DataTemplate>
-									</ListView.ItemTemplate>
-								</ListView>
-								<Label Grid.Row="1" IsVisible="{Binding  ReviewerAllConditonsList.Count ,Converter={StaticResource intToBoolConverter}}" Text="Reviewer Condition Unavailable"  FontSize="16" VerticalOptions="Center" HorizontalOptions="Center" />
-							
-								<Grid Grid.Row="2" RowDefinitions="Auto,Auto,Auto" IsVisible="{Binding IsOwnedFlow}">
-									<Frame Grid.Row="0"  Padding="0" BackgroundColor="Gray" Margin="0" HasShadow="False" WidthRequest="60" IsVisible="{Binding IsReviewerAddCommentButtonVisible}" HorizontalOptions="Center">
-										<Label Text="Add"   FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5"/>
-										<Frame.GestureRecognizers>
-											<TapGestureRecognizer Command="{Binding AddCommand}" />
-										</Frame.GestureRecognizers>
-									</Frame>
-									<Frame Grid.Row="1" HeightRequest="80"  VerticalOptions="FillAndExpand" BorderColor="DarkGray" HasShadow="False" Margin="5,0,5,5" Padding="0" IsVisible="{Binding IsReviewerAddCommentButtonVisible, Converter={StaticResource InvertedBoolConverter}}">
-										<components:CustomEditor Text="{Binding ReviewerSpecificComment}" FontSize="16"  BackgroundColor="Transparent"/>
-									</Frame>
-									<StackLayout Grid.Row="2" Orientation="Horizontal" Margin="20,5,20,5" HorizontalOptions="Center" IsVisible="{Binding IsReviewerAddCommentButtonVisible, Converter={StaticResource InvertedBoolConverter}}">
-										<Frame   Padding="0" BackgroundColor="Gray" Margin="0" HasShadow="False">
-											<Label Text="Save"   FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5"/>
-											<Frame.GestureRecognizers>
-												<TapGestureRecognizer Command="{Binding SaveCommand}" />
-											</Frame.GestureRecognizers>
-										</Frame>
-										<Frame Padding="0" BackgroundColor="Gray" Margin="0" HasShadow="False">
-											<Label Text="Cancel" FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5" />
-											<Frame.GestureRecognizers>
-												<TapGestureRecognizer Command="{Binding CancelCommand}" />
-											</Frame.GestureRecognizers>
-										</Frame>
+                                <Label
+                                    Grid.Row="1"
+                                    FontSize="16"
+                                    HorizontalOptions="Center"
+                                    IsVisible="{Binding StackHolderCommentsList.Count, Converter={StaticResource intToBoolConverter}}"
+                                    Text="Stakeholder Conditions Unavailable"
+                                    VerticalOptions="Center" />
+                            </Grid>
+                        </Frame>
+                        <!--#endregion-->
+                        <!--#region ReviewerCondition-->
+                        <Frame
+                            Grid.Row="1"
+                            Margin="10,5,10,5"
+                            Padding="0"
+                            BorderColor="Black"
+                            HasShadow="False"
+                            IsVisible="{Binding IsStackholderCommentsFlow, Converter={StaticResource InvertedBoolConverter}}">
+                            <Grid RowDefinitions="Auto,Auto,Auto">
+                                <Frame
+                                    Grid.Row="0"
+                                    Margin="0"
+                                    Padding="0"
+                                    BorderColor="DarkGray"
+                                    HasShadow="False"
+                                    HeightRequest="40">
+                                    <Grid ColumnDefinitions="1*,.1*,8.9*" HeightRequest="40">
+                                        <Label
+                                            Grid.Column="0"
+                                            FontAttributes="Bold"
+                                            FontSize="12"
+                                            HorizontalOptions="Center"
+                                            HorizontalTextAlignment="Center"
+                                            Text="No"
+                                            VerticalOptions="Center" />
+                                        <BoxView
+                                            Grid.Column="1"
+                                            Margin="0,0,0,-2"
+                                            HorizontalOptions="EndAndExpand"
+                                            WidthRequest="1"
+                                            Color="Black" />
+                                        <Label
+                                            Grid.Column="2"
+                                            FontAttributes="Bold"
+                                            FontSize="12"
+                                            HorizontalOptions="Center"
+                                            HorizontalTextAlignment="Center"
+                                            Text="Condition"
+                                            VerticalOptions="Center" />
+                                    </Grid>
+                                </Frame>
+                                <ListView
+                                    Grid.Row="1"
+                                    HasUnevenRows="True"
+                                    HeightRequest="250"
+                                    ItemsSource="{Binding ReviewerAllConditonsList}"
+                                    SeparatorColor="Black">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <ViewCell>
+                                                <Grid ColumnDefinitions="1*,.1*,8.9*">
+                                                    <Label
+                                                        Grid.Column="0"
+                                                        FontSize="10"
+                                                        HorizontalOptions="Center"
+                                                        HorizontalTextAlignment="Center"
+                                                        Text="{Binding IndexNumber}"
+                                                        VerticalOptions="Center" />
+                                                    <BoxView
+                                                        Grid.Column="1"
+                                                        HorizontalOptions="EndAndExpand"
+                                                        WidthRequest="1"
+                                                        Color="Black" />
+                                                    <Label
+                                                        Grid.Column="2"
+                                                        FontSize="10"
+                                                        HorizontalOptions="Center"
+                                                        Text="{Binding CONDITIONS}"
+                                                        TextColor="{Binding COMMENTTYPE, Converter={StaticResource conditionTypeToColorConverter}}"
+                                                        VerticalOptions="Center" />
+                                                    <Grid.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding Source={x:Reference ReviewerPage}, Path=BindingContext.SelectUserConditionCommand}" CommandParameter="{Binding .}" />
+                                                    </Grid.GestureRecognizers>
+                                                </Grid>
+                                            </ViewCell>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                                <Label
+                                    Grid.Row="1"
+                                    FontSize="16"
+                                    HorizontalOptions="Center"
+                                    IsVisible="{Binding ReviewerAllConditonsList.Count, Converter={StaticResource intToBoolConverter}}"
+                                    Text="Reviewer Condition Unavailable"
+                                    VerticalOptions="Center" />
 
-										<Frame Padding="0" BackgroundColor="Gray" Margin="0" HasShadow="False" IsVisible="{Binding IsDeleteButtonVisible}">
-											<Label Text="Delete" FontSize="14" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Padding="5" />
-											<Frame.GestureRecognizers>
-												<TapGestureRecognizer Command="{Binding DeleteCommand}" />
-											</Frame.GestureRecognizers>
-										</Frame>
-									</StackLayout>
-								</Grid>
-							</Grid>
-						</Frame>
-						<!--#endregion-->
-					</Grid>
-					<!--#endregion-->
-				</Grid>
-			</ScrollView>
-			<Frame Grid.Row="2" Padding="10" HeightRequest="40" HasShadow="False">
-				<Grid ColumnDefinitions="5*, 5*">
-					<Image Grid.Column="0" Source="home" HorizontalOptions="Start">
-						<Image.GestureRecognizers>
-							<TapGestureRecognizer Command="{Binding GoHomeCommand}" />
-						</Image.GestureRecognizers>
-					</Image>
-					<!--<Image Grid.Column="1" Source="er_user" HorizontalOptions="End" IsVisible="{Binding IsReviewer, Converter={StaticResource InvertedBoolConverter}}">
+                                <Grid
+                                    Grid.Row="2"
+                                    IsVisible="{Binding IsOwnedFlow}"
+                                    RowDefinitions="Auto,Auto,Auto">
+                                    <Frame
+                                        Grid.Row="0"
+                                        Margin="0"
+                                        Padding="0"
+                                        BackgroundColor="Gray"
+                                        HasShadow="False"
+                                        HorizontalOptions="Center"
+                                        IsVisible="{Binding IsReviewerAddCommentButtonVisible}"
+                                        WidthRequest="60">
+                                        <Label
+                                            Padding="5"
+                                            FontSize="14"
+                                            HorizontalOptions="Center"
+                                            Text="Add"
+                                            TextColor="White"
+                                            VerticalOptions="Center" />
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding AddCommand}" />
+                                        </Frame.GestureRecognizers>
+                                    </Frame>
+                                    <Frame
+                                        Grid.Row="1"
+                                        Margin="5,0,5,5"
+                                        Padding="0"
+                                        BorderColor="DarkGray"
+                                        HasShadow="False"
+                                        HeightRequest="80"
+                                        IsVisible="{Binding IsReviewerAddCommentButtonVisible, Converter={StaticResource InvertedBoolConverter}}"
+                                        VerticalOptions="FillAndExpand">
+                                        <components:CustomEditor
+                                            BackgroundColor="Transparent"
+                                            FontSize="16"
+                                            Text="{Binding ReviewerSpecificComment}" />
+                                    </Frame>
+                                    <StackLayout
+                                        Grid.Row="2"
+                                        Margin="20,5,20,5"
+                                        HorizontalOptions="Center"
+                                        IsVisible="{Binding IsReviewerAddCommentButtonVisible, Converter={StaticResource InvertedBoolConverter}}"
+                                        Orientation="Horizontal">
+                                        <Frame
+                                            Margin="0"
+                                            Padding="0"
+                                            BackgroundColor="Gray"
+                                            HasShadow="False">
+                                            <Label
+                                                Padding="5"
+                                                FontSize="14"
+                                                HorizontalOptions="Center"
+                                                Text="Save"
+                                                TextColor="White"
+                                                VerticalOptions="Center" />
+                                            <Frame.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding SaveCommand}" />
+                                            </Frame.GestureRecognizers>
+                                        </Frame>
+                                        <Frame
+                                            Margin="0"
+                                            Padding="0"
+                                            BackgroundColor="Gray"
+                                            HasShadow="False">
+                                            <Label
+                                                Padding="5"
+                                                FontSize="14"
+                                                HorizontalOptions="Center"
+                                                Text="Cancel"
+                                                TextColor="White"
+                                                VerticalOptions="Center" />
+                                            <Frame.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding CancelCommand}" />
+                                            </Frame.GestureRecognizers>
+                                        </Frame>
+
+                                        <Frame
+                                            Margin="0"
+                                            Padding="0"
+                                            BackgroundColor="Gray"
+                                            HasShadow="False"
+                                            IsVisible="{Binding IsDeleteButtonVisible}">
+                                            <Label
+                                                Padding="5"
+                                                FontSize="14"
+                                                HorizontalOptions="Center"
+                                                Text="Delete"
+                                                TextColor="White"
+                                                VerticalOptions="Center" />
+                                            <Frame.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding DeleteCommand}" />
+                                            </Frame.GestureRecognizers>
+                                        </Frame>
+                                    </StackLayout>
+                                </Grid>
+                            </Grid>
+                        </Frame>
+                        <!--#endregion-->
+                    </Grid>
+                    <!--#endregion-->
+                </Grid>
+            </ScrollView>
+            <Frame
+                Grid.Row="2"
+                Padding="10"
+                HasShadow="False"
+                HeightRequest="40">
+                <Grid ColumnDefinitions="5*, 5*">
+                    <Image
+                        Grid.Column="0"
+                        HorizontalOptions="Start"
+                        Source="home">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoHomeCommand}" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <!--<Image Grid.Column="1" Source="er_user" HorizontalOptions="End" IsVisible="{Binding IsReviewer, Converter={StaticResource InvertedBoolConverter}}">
 						<Image.GestureRecognizers><TapGestureRecognizer Command="{Binding GoBackCommand}" /></Image.GestureRecognizers>
 					</Image>-->
-				</Grid>
-			</Frame>
-		</Grid>
-	</ContentPage.Content>
+                </Grid>
+            </Frame>
+        </Grid>
+    </ContentPage.Content>
 </ContentPage>

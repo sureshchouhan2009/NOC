@@ -23,10 +23,12 @@ namespace NOC.ViewModels
         {
             Title = "Transaction Info";
             IsCameraVisible=checkCameraOptionVisibility();
-            IsReviewer = Session.Instance.CurrentUserType == UserTypes.Reviewer;
+            IsReviewer = Session.Instance.CurrentUserType == UserTypes.Reviewer || Session.Instance.IsOfficerequalToReviewer||Session.Instance.IsStackholderequalToReviewer;
             IsNewApplication = Session.Instance.IsNewNocApplicationFlow;
             IsOwnedApplication = Session.Instance.IsOwnedApplicationFlow || Session.Instance.IsRepliedNocApplicationFlow;    
         }
+
+       
 
         private bool checkCameraOptionVisibility()
         {
@@ -171,7 +173,24 @@ namespace NOC.ViewModels
 
         private async void ReviewerAcceptancePageNavigateCommandExecute(object obj)
         {
-            await NavigationService.NavigateAsync("TrasactionAacceptancePage");
+            if(Session.Instance.CurrentUserType == UserTypes.Reviewer)
+            {
+                await NavigationService.NavigateAsync("TrasactionAacceptancePage");
+            }
+            else if (Session.Instance.IsOfficerequalToReviewer)
+            {
+                await NavigationService.NavigateAsync("OfficerResponsePage");
+                
+            }
+            else if(Session.Instance.IsStackholderequalToReviewer)
+            {
+                await NavigationService.NavigateAsync("StackholderResponsePage");
+            }
+            //else
+            //{
+            //    await NavigationService.NavigateAsync("TrasactionAacceptancePage");
+            //}
+
         }
 
         private ICommand downloadCommand;
@@ -301,7 +320,8 @@ namespace NOC.ViewModels
 
         private async void NavigateToCommentsPage(object obj)
         {
-            await NavigationService.NavigateAsync("CommentsPage");
+            //await NavigationService.NavigateAsync("CommentsPage");
+            await NavigationService.NavigateAsync("NewAddCommentPage");
         }
 
         private async void NavigateToMapView(object obj)
@@ -453,5 +473,44 @@ namespace NOC.ViewModels
             return AttachmentList.Count>0;
         }
 
+
+
+
+
+
+        private ICommand downloadTransactionDetailsPDFCommand;
+        public ICommand DownloadTransactionDetailsPDFCommand
+        {
+            get
+            {
+                if (downloadTransactionDetailsPDFCommand == null)
+                {
+                    downloadTransactionDetailsPDFCommand = new Command(downloadTransactionDetailsPDF);
+                }
+
+                return downloadTransactionDetailsPDFCommand;
+            }
+        }
+
+        private async void downloadTransactionDetailsPDF(object obj)
+        {
+            string currentTransactionID = Session.Instance.CurrentTransaction.Transaction.TransactionNumber.ToString();
+            string PDFURL = await ApiService.Instance.DownloadTransactionDetailsAsPDF(currentTransactionID);
+            if (!string.IsNullOrEmpty(PDFURL))
+            {
+              await  Launcher.OpenAsync(PDFURL);
+
+                //byte[] base64EncodedBytes = System.Convert.FromBase64String(base64str);
+                //IPdfFileDownloader downloader = DependencyService.Get<IPdfFileDownloader>();
+                //downloader.downloadLocalyStoredPdfFile(currentTransactionID + ".pdf", base64EncodedBytes);
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayToastAsync("Unable to download file from server");
+            }
+           
+        }
+
+       
     }
 }

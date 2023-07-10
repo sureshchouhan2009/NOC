@@ -15,6 +15,19 @@ namespace NOC.ViewModels
 {
     public class HomePageViewModel : ViewModelBase
     {
+        private string _inProgressNOCsCount;
+        public string InProgressNOCsCount
+        {
+            get
+            {
+                return _inProgressNOCsCount;
+            }
+            set
+            {
+                SetProperty(ref _inProgressNOCsCount, value);
+            }
+        }
+
         private bool _isProcessorFlow;
         public bool IsProcessorFlow
         {
@@ -25,6 +38,19 @@ namespace NOC.ViewModels
             set
             {
                 SetProperty(ref _isProcessorFlow, value);
+            }
+        }
+
+        private bool _isReviewerOrOfficer;
+        public bool IsReviewerOrOfficer
+        {
+            get
+            {
+                return _isReviewerOrOfficer;
+            }
+            set
+            {
+                SetProperty(ref _isReviewerOrOfficer, value);
             }
         }
 
@@ -52,7 +78,9 @@ namespace NOC.ViewModels
                 SetProperty(ref _ncompletedNOCsCount, value);
             }
         }
-        
+
+       
+
         private string _myNocApplicationCount;
         public string MyNocApplicationCount
         {
@@ -132,6 +160,8 @@ namespace NOC.ViewModels
         public HomePageViewModel(INavigationService navigationService) : base(navigationService)
         {
           IsProcessorFlow= Session.Instance.CurrentUserType != UserTypes.Applicant;
+
+            IsReviewerOrOfficer = Session.Instance.CurrentUserType == UserTypes.Reviewer || Session.Instance.CurrentUserType == UserTypes.Officer;
         }
 
         private ICommand navigateToNotificationPageCommand;
@@ -342,6 +372,7 @@ namespace NOC.ViewModels
                 CommentedApplicationCount = Session.Instance.MenuItemsCountModelData.CommentedApplicationsCount??"00";
                 OwnedApplicationCount = Session.Instance.MenuItemsCountModelData.OwnedApplicationsCount ?? "00";
                 CompletedNOCsCount = Session.Instance.MenuItemsCountModelData.CompletedApplication ?? "00";
+                InProgressNOCsCount= Session.Instance.MenuItemsCountModelData.InProgressApplicationsCount ?? "00";
                 //revalidation in two weeks instead 10  days
                 NocApplicationforRevalidationInTenDaysCount = string.IsNullOrWhiteSpace(Session.Instance.MenuItemsCountModelData.ForRevalidationInTwoWeeksCount) ?
                     "00" : Session.Instance.MenuItemsCountModelData.ForRevalidationInTwoWeeksCount;

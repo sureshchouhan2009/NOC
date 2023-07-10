@@ -10,6 +10,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using NOC.Models.ReviwerSpecific;
+using System.IO;
+using Xamarin.Essentials;
+using Xamarin.Forms;
+using NOC.Interfaces;
+using System.Diagnostics;
+using Xamarin.CommunityToolkit.Extensions;
 
 namespace NOC.Service
 {
@@ -193,7 +199,7 @@ namespace NOC.Service
             return responsedata;
         }
 
-        private string CheckAndReturnUserSpecificUrlForSearchCount(bool IsSearchCountFlow)
+        private string CheckAndReturnUserSpecificUrlForSearchCount(bool IsSearchCountFlow, int filterID=0)
         {
             if (IsSearchCountFlow)
             {
@@ -218,7 +224,15 @@ namespace NOC.Service
             {
                 if (Session.Instance.CurrentUserType == UserTypes.Officer)
                 {
-                    return Urls.OfficerGetTransactionList;
+                    if (filterID == 17)//for inprogress application and officer user
+                    {
+                        return Urls.InProgressOfficerGetTransactionList;
+                    }
+                    else
+                    {
+                        return Urls.OfficerGetTransactionList;
+                    }
+                    
                 }
                 else if (Session.Instance.CurrentUserType == UserTypes.Reviewer)
                 {
@@ -516,7 +530,7 @@ namespace NOC.Service
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
-                    responsedata = JsonConvert.DeserializeObject<List<NotificationsModel>>(result,  ServiceUtility.GetJsonSerializationSettings());
+                    responsedata = JsonConvert.DeserializeObject<List<NotificationsModel>>(result,  ServiceUtility.GetJsonSerializationSettings()).OrderByDescending(x=>x.CreationDate).ToList();
                 }
             }
             catch (Exception ex)
@@ -543,7 +557,7 @@ namespace NOC.Service
                 var client = ServiceUtility.CreateNewHttpClient();
                 var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
                 client.DefaultRequestHeaders.Authorization = authHeader;
-                String RequestUrl = CheckAndReturnUserSpecificUrlForSearchCount(false)+filterID.ToString();
+                String RequestUrl = CheckAndReturnUserSpecificUrlForSearchCount(false,filterID)+filterID.ToString();
                 var response = await client.GetAsync(RequestUrl);
                 if (response.IsSuccessStatusCode)
                 {
@@ -1088,6 +1102,185 @@ namespace NOC.Service
             }
             return SuccessResult;
         }
+
+        //Phase II
+        public async Task<bool> ChangeReadStatusForNotifications(int TransactionID)
+        {
+            bool SuccessResult = false;
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.ChangeIsReadStatusForNotifications;
+                var payload = ServiceUtility.BuildRequest(new List<int> { TransactionID });
+                var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
+                var response = await client.SendAsync(req);
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    SuccessResult = JsonConvert.DeserializeObject<bool>(result, ServiceUtility.GetJsonSerializationSettings());
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            return SuccessResult;
+        }
+
+        public async Task<string> DownloadTransactionDetailsAsPDF(string TransactionNumber)
+        {
+            string SuccessResult = "";
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.downloadPdfURL + TransactionNumber;//17 digit
+                var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { };
+                var response = await client.SendAsync(req);
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    SuccessResult = JsonConvert.DeserializeObject<string>(result, ServiceUtility.GetJsonSerializationSettings());
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            return SuccessResult;
+        }
+
+
+
+
+        public async Task<StackholderUserCheckModel> checkStackholderdetails1(string TransactionID, string userID, string WorkFlow)
+        {
+            StackholderUserCheckModel stackholderResponse1 = new StackholderUserCheckModel();
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.checkStatckholder1+WorkFlow+ "?tranid=" + TransactionID + "&Userid="+ userID;
+               // String RequestUrl = Urls.checkStatckholder1 + "15811" + "&Userid=" + "02c4dcb1-fdee-485b-80da-327b3e313f2";
+
+                var response = await client.GetAsync(RequestUrl);
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    stackholderResponse1 = JsonConvert.DeserializeObject<StackholderUserCheckModel>(result, ServiceUtility.GetJsonSerializationSettings());
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            return stackholderResponse1;
+        }
+
+        public async Task<StackholderTypeCheckModel> checkStackholderdetails2( string userID)
+        {
+            StackholderTypeCheckModel stackholderResponse2 = new StackholderTypeCheckModel();
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.checkStatckholder2+ userID;
+                var response = await client.GetAsync(RequestUrl);
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    stackholderResponse2 = JsonConvert.DeserializeObject<StackholderTypeCheckModel>(result, ServiceUtility.GetJsonSerializationSettings());
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            return stackholderResponse2;
+        }
+
+        /// <summary>
+        /// Get Stackholder Response Page Data{response Tab } 
+        /// </summary>
+        /// <param name="TransactionNumber"></param>
+        /// <returns></returns>
+        public async Task<StackholderResponsePageAttachmentModel> GetStackholderResponsePageData(string SthcmntID)
+        {
+            StackholderResponsePageAttachmentModel SuccessResult = new StackholderResponsePageAttachmentModel();
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.getStackholderResponsepageData + SthcmntID;
+                var response = await client.GetAsync(RequestUrl);
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    SuccessResult = JsonConvert.DeserializeObject<StackholderResponsePageAttachmentModel>(result, ServiceUtility.GetJsonSerializationSettings());
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            return SuccessResult;
+        }
+
+
+        public async Task<List<StackHolderAndOfficerSpecifcConditions>> GetStackholderResponseCondition(string transactionID, string workFlow)
+        {
+            List<StackHolderAndOfficerSpecifcConditions> responseData = new List<StackHolderAndOfficerSpecifcConditions>();
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.getStackholderResponsepageConditions + transactionID + "/" + workFlow;
+                //var payload = ServiceUtility.BuildRequest(RequestModel);
+                var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = null };
+                var response = await client.SendAsync(req);
+                if (response?.IsSuccessStatusCode ?? false)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    responseData = JsonConvert.DeserializeObject<List<StackHolderAndOfficerSpecifcConditions>>(result);
+                }
+            }
+            catch (Exception ex)
+            {
+               
+
+            }
+            return responseData;
+        }
+
+
+         public async Task<List<StackHolderAndOfficerSpecifcConditions>> GetOffficerResponseCondition(string transactionID)
+        {
+            List<StackHolderAndOfficerSpecifcConditions> responseData = new List<StackHolderAndOfficerSpecifcConditions>();
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.getOfficerResponsepageConditions + transactionID + "/" + "officerreviewer";
+                //var payload = ServiceUtility.BuildRequest(RequestModel);
+                var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = null };
+                var response = await client.SendAsync(req);
+                if (response?.IsSuccessStatusCode ?? false)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    responseData = JsonConvert.DeserializeObject<List<StackHolderAndOfficerSpecifcConditions>>(result);
+                }
+            }
+            catch (Exception ex)
+            {
+               
+
+            }
+            return responseData;
+        }
+
 
     }
 }

@@ -32,7 +32,7 @@ public class CommentsPageViewModel : ViewModelBase
             CurrentUserTypeValue = getUsertypeStringValue();
             IsProcessorUser = getUsertypeStringValue() != "Applicant"&&Session.Instance.IsOwnedApplicationFlow;//Add comments will be there only for owned applications. and user type processor
             IsProcessorUserForApplicantAndInternalCommentTabVisibility = getUsertypeStringValue() != "Applicant";
-        }
+    }
 
         private bool checkAndValidateApplicantFlowSubmitButtonVisibility()
         {

@@ -61,7 +61,7 @@
                 </Grid>
             </Frame>
             <ScrollView Grid.Row="1">
-                <Grid  RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" >
+                <Grid  RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" >
                     <Frame Grid.Row="0" Padding="4" BackgroundColor="{DynamicResource BrandPrimary}" HeightRequest="50" VerticalOptions="Center" HasShadow="False">
                         <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="2*,8*" RowSpacing="0" VerticalOptions="Center">
                             <Frame Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Style="{StaticResource circleFram}" >
@@ -162,6 +162,7 @@
 
                         
                  </Grid>
+                    <Button Grid.Row="11" Text="Download" Command="{Binding DownloadTransactionDetailsPDFCommand}" BackgroundColor="{DynamicResource BrandPrimary}" FontAttributes="Bold" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center"/> 
                 </Grid>
                
             </ScrollView>

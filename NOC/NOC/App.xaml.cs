@@ -98,7 +98,11 @@ namespace NOC
             containerRegistry.RegisterForNavigation<MapPage, MapPageViewModel>();
             containerRegistry.RegisterForNavigation<CommentsPage, CommentsPageViewModel>();
             containerRegistry.RegisterForNavigation<TrasactionAacceptancePage, TrasactionAacceptancePageViewModel>();
-            
+            containerRegistry.RegisterForNavigation<NewAddCommentPage, NewAddCommentPageViewModel>();
+            containerRegistry.RegisterForNavigation<StackholderResponsePage, StackholderResponsePageViewModel>();
+            containerRegistry.RegisterForNavigation<OfficerResponsePage, OfficerResponsePageViewModel>();
+
+
         }
     }
 }

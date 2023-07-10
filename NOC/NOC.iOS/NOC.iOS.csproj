@@ -117,6 +117,7 @@
     <Compile Include="Renderers\CustomEditorRenderer.cs" />
     <Compile Include="Renderers\CustomPickerRenderer.cs" />
     <Compile Include="Implementation\IosDownloader.cs" />
+    <Compile Include="Implementation\IOSPdfFileDownloader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\Contents.json">

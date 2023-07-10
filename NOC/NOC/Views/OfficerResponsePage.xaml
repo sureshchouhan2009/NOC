@@ -1,9 +1,531 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <ContentPage
+    x:Class="NOC.Views.OfficerResponsePage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="NOC.Views.OfficerResponsePage">
+    xmlns:Converter="clr-namespace:NOC.Converters"
+    xmlns:components="clr-namespace:NOC.Components"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+    x:Name="ReviewerPage"
+    ios:Page.UseSafeArea="true"
+    NavigationPage.HasNavigationBar="False">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Converter:IntToBoolConverter x:Key="intToBoolConverter" />
+            <Converter:BoolToColorConverter x:Key="boolToColorConverter" />
+            <Converter:ConditionTypeToColorConverter x:Key="conditionTypeToColorConverter" />
+            <xct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            <Converter:DecisionToStackholderTextConverter x:Key="decisionToStackholderTextConverter" />
+            <Converter:DecisionToStackholderTextColorConverter x:Key="decisionToStackholderTextColorConverter" />
+        </ResourceDictionary>
+        <Style x:Key="circleFram" TargetType="Frame">
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="HorizontalOptions" Value="Center" />
+            <Setter Property="BackgroundColor" Value="White" />
+            <Setter Property="CornerRadius" Value="{OnPlatform iOS=18, Android=30}" />
+            <Setter Property="Padding" Value="0" />
+        </Style>
+        <Style x:Key="menuLabel" TargetType="Label">
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="HorizontalOptions" Value="Start" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+        <Style x:Key="HeaderRedLabel" TargetType="Label">
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="HorizontalOptions" Value="Start" />
+            <Setter Property="HorizontalTextAlignment" Value="Start" />
+            <Setter Property="TextColor" Value="{DynamicResource BrandPrimary}" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontAttributes" Value="Bold" />
+        </Style>
+        <Style x:Key="basicInfoLabel" TargetType="Label">
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="HorizontalOptions" Value="Start" />
+            <Setter Property="HorizontalTextAlignment" Value="Start" />
+            <Setter Property="TextColor" Value="Gray" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontAttributes" Value="Bold" />
+        </Style>
+    </ContentPage.Resources>
     <ContentPage.Content>
-        
+        <Grid RowDefinitions="Auto,*,Auto" RowSpacing="0">
+            <Frame
+                Grid.Row="0"
+                Padding="0"
+                HasShadow="False"
+                HeightRequest="40">
+                <Grid>
+                    <Image
+                        HeightRequest="30"
+                        HorizontalOptions="Start"
+                        Source="BackArrowRed"
+                        VerticalOptions="Center"
+                        WidthRequest="30">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoBackCommand}" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Label
+                        FontAttributes="Bold"
+                        Style="{StaticResource TitleLabelStyle}"
+                        Text="{Binding Title}" />
+                </Grid>
+            </Frame>
+            <ScrollView Grid.Row="1">
+                <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+
+                    <Frame
+                        Grid.Row="0"
+                        Padding="4"
+                        BackgroundColor="{DynamicResource BrandPrimary}"
+                        HasShadow="False"
+                        HeightRequest="50"
+                        VerticalOptions="Center">
+                        <Grid
+                            ColumnDefinitions="2*,8*"
+                            RowDefinitions="Auto,Auto"
+                            RowSpacing="0"
+                            VerticalOptions="Center">
+                            <Frame
+                                Grid.Row="0"
+                                Grid.RowSpan="2"
+                                Grid.Column="0"
+                                HasShadow="False"
+                                Style="{StaticResource circleFram}">
+                                <Image
+                                    Aspect="AspectFit"
+                                    HeightRequest="35"
+                                    Source="doc_icon" />
+                            </Frame>
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Style="{StaticResource menuLabel}"
+                                Text="{Binding TransactonDetail.Transaction.TransactionNumber}" />
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                FontSize="12"
+                                Style="{StaticResource menuLabel}"
+                                Text="{Binding TransactonDetail.ProjectStage.ProjectStageCode}" />
+                        </Grid>
+                    </Frame>
+
+                    <StackLayout
+                        Grid.Row="1"
+                        Margin="10,5,10,5"
+                        Orientation="Horizontal">
+                        <Frame
+                            Margin="0"
+                            Padding="0"
+                            BackgroundColor="{Binding IsOfficerResponseSelected, Converter={StaticResource boolToColorConverter}}"
+                            HasShadow="False">
+                            <Label
+                                Padding="5"
+                                FontSize="14"
+                                HorizontalOptions="Center"
+                                Text="Review Decision"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding OfficerResponseTappedCommand}" />
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                        <Frame
+                            Margin="0"
+                            Padding="0"
+                            BackgroundColor="{Binding IsConditionSelected, Converter={StaticResource boolToColorConverter}}"
+                            HasShadow="False">
+                            <Label
+                                Padding="5"
+                                FontSize="14"
+                                HorizontalOptions="Center"
+                                Text="Condition"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ConditionTappedCommand}" />
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                    </StackLayout>
+
+                    <Grid
+                        Grid.Row="2"
+                        Padding="5,0,5,0"
+                        ColumnSpacing="0"
+                        IsVisible="{Binding IsOfficerResponseSelected}"
+                        RowDefinitions="Auto,Auto">
+
+                        <Frame
+                            Grid.Row="0"
+                            Padding="5"
+                            BackgroundColor="Gray"
+                            HasShadow="False">
+                            <Grid RowDefinitions="Auto,Auto">
+                                <Label
+                                    Grid.Row="0"
+                                    FontSize="14"
+                                    Text="Stakeholders"
+                                    TextColor="Black" />
+
+                                <ListView
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    BackgroundColor="White"
+                                    HeightRequest="80"
+                                    ItemsSource="{Binding StackHolderList}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <ViewCell>
+                                                <Frame
+                                                    Margin="0"
+                                                    Padding="5,0,0,0"
+                                                    BackgroundColor="LightGray"
+                                                    HasShadow="False">
+                                                    <Label
+                                                        FontSize="14"
+                                                        Text="{Binding ERGroup}"
+                                                        TextColor="Black"
+                                                        VerticalOptions="Center" />
+                                                    <Frame.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding Source={x:Reference ReviewerPage}, Path=BindingContext.ShowSelectedStackholderresponse}" CommandParameter="{Binding .}" />
+                                                    </Frame.GestureRecognizers>
+                                                </Frame>
+                                            </ViewCell>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+
+                                <Label
+                                    Grid.Row="1"
+                                    FontSize="16"
+                                    HorizontalOptions="Center"
+                                    IsVisible="{Binding StackHolderList.Count, Converter={StaticResource intToBoolConverter}}"
+                                    Text="No Stakeholder availabe"
+                                    TextColor="Black"
+                                    VerticalOptions="Center" />
+
+                            </Grid>
+                        </Frame>
+
+                        <Grid
+                            Grid.Row="1"
+                            Padding="0"
+                            BackgroundColor="LightGray"
+                            RowDefinitions="Auto,Auto"
+                            RowSpacing="0">
+                            <Frame
+                                Grid.Row="0"
+                                Margin="0"
+                                Padding="5,0,5,0"
+                                BackgroundColor="LightGray"
+                                BorderColor="Gray"
+                                HasShadow="False"
+                                HeightRequest="180">
+                                <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="0">
+                                    <Grid
+                                        Grid.Row="0"
+                                        BackgroundColor="LightGray"
+                                        HeightRequest="40">
+                                        <Label
+                                            Grid.Column="0"
+                                            FontAttributes="Bold"
+                                            FontSize="12"
+                                            HorizontalOptions="Center"
+                                            Text="Attachments"
+                                            VerticalOptions="Center" />
+                                    </Grid>
+                                    <Frame
+                                        Grid.Row="1"
+                                        Margin="0"
+                                        Padding="0"
+                                        BackgroundColor="LightGray"
+                                        BorderColor="Black"
+                                        HasShadow="False"
+                                        HeightRequest="40">
+                                        <Grid ColumnDefinitions="2.5*,2.5*,2.5*,2.5*" HeightRequest="40">
+                                            <Label
+                                                Grid.Column="0"
+                                                FontAttributes="Bold"
+                                                FontSize="10"
+                                                HorizontalOptions="Center"
+                                                Text="File Name"
+                                                VerticalOptions="Center" />
+                                            <BoxView
+                                                Grid.Column="0"
+                                                HorizontalOptions="EndAndExpand"
+                                                WidthRequest="1"
+                                                Color="DarkGray" />
+                                            <Label
+                                                Grid.Column="1"
+                                                FontAttributes="Bold"
+                                                FontSize="10"
+                                                HorizontalOptions="Center"
+                                                Text="Attachment Type"
+                                                VerticalOptions="Center" />
+                                            <BoxView
+                                                Grid.Column="1"
+                                                HorizontalOptions="EndAndExpand"
+                                                WidthRequest="1"
+                                                Color="DarkGray" />
+                                            <Label
+                                                Grid.Column="2"
+                                                FontAttributes="Bold"
+                                                FontSize="10"
+                                                HorizontalOptions="Center"
+                                                Text="Upload Date"
+                                                VerticalOptions="Center" />
+                                            <BoxView
+                                                Grid.Column="2"
+                                                HorizontalOptions="EndAndExpand"
+                                                WidthRequest="1"
+                                                Color="DarkGray" />
+                                            <Label
+                                                Grid.Column="3"
+                                                FontAttributes="Bold"
+                                                FontSize="10"
+                                                HorizontalOptions="Center"
+                                                Text="Download"
+                                                VerticalOptions="Center" />
+                                        </Grid>
+                                    </Frame>
+                                    <ListView
+                                        Grid.Row="2"
+                                        Margin="0"
+                                        BackgroundColor="LightGray"
+                                        HasUnevenRows="True"
+                                        HeightRequest="120"
+                                        ItemsSource="{Binding StackholderAttachmentsModelList}"
+                                        SeparatorColor="DarkGray">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <ViewCell>
+                                                    <Grid
+                                                        Margin="0"
+                                                        Padding="0"
+                                                        ColumnDefinitions="2.5*,2.5*,2.5*,2.5*"
+                                                        HeightRequest="35">
+                                                        <Label
+                                                            Grid.Column="0"
+                                                            FontSize="10"
+                                                            HorizontalOptions="Center"
+                                                            Text="{Binding uploadfilename}"
+                                                            VerticalOptions="Center" />
+                                                        <BoxView
+                                                            Grid.Column="0"
+                                                            HorizontalOptions="EndAndExpand"
+                                                            WidthRequest="1"
+                                                            Color="DarkGray" />
+                                                        <Label
+                                                            Grid.Column="1"
+                                                            FontSize="10"
+                                                            HorizontalOptions="Center"
+                                                            Text="{Binding AttachmentTypeCode}"
+                                                            VerticalOptions="Center" />
+                                                        <BoxView
+                                                            Grid.Column="1"
+                                                            HorizontalOptions="EndAndExpand"
+                                                            WidthRequest="1"
+                                                            Color="DarkGray" />
+                                                        <Label
+                                                            Grid.Column="2"
+                                                            FontSize="10"
+                                                            HorizontalOptions="Center"
+                                                            Text="{Binding FormatedUplodedDate}"
+                                                            VerticalOptions="Center" />
+                                                        <BoxView
+                                                            Grid.Column="2"
+                                                            HorizontalOptions="EndAndExpand"
+                                                            WidthRequest="1"
+                                                            Color="DarkGray" />
+                                                        <StackLayout
+                                                            Grid.Column="3"
+                                                            HorizontalOptions="Center"
+                                                            Orientation="Horizontal"
+                                                            Spacing="0"
+                                                            VerticalOptions="Center">
+                                                            <Image
+                                                                HeightRequest="10"
+                                                                Source="download.png"
+                                                                WidthRequest="10" />
+                                                            <Label FontSize="10" Text="Download" />
+                                                            <StackLayout.GestureRecognizers>
+                                                                <TapGestureRecognizer Command="{Binding Source={x:Reference ReviewerPage}, Path=BindingContext.DownloadCommentsAttachmentsCommand}" CommandParameter="{Binding .}" />
+                                                            </StackLayout.GestureRecognizers>
+                                                        </StackLayout>
+                                                    </Grid>
+                                                </ViewCell>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                    <Label
+                                        Grid.Row="2"
+                                        FontSize="16"
+                                        HorizontalOptions="Center"
+                                        IsVisible="{Binding StackholderAttachmentsModelList.Count, Converter={StaticResource intToBoolConverter}}"
+                                        Text="No attachment availabe"
+                                        VerticalOptions="Center" />
+                                </Grid>
+                            </Frame>
+                        </Grid>
+                    </Grid>
+
+
+
+
+                    <!--#endregion-->
+
+
+
+                    <Frame
+                        Grid.Row="2"
+                        Margin="10,5,10,5"
+                        Padding="0"
+                        BorderColor="LightGray"
+                        HasShadow="False"
+                        IsVisible="{Binding IsConditionSelected}">
+                        <Grid RowDefinitions="Auto,Auto">
+                            <Frame
+                                Grid.Row="0"
+                                Margin="0"
+                                Padding="0"
+                                BorderColor="Gray"
+                                HasShadow="False"
+                                HeightRequest="40">
+                                <Grid ColumnDefinitions="1*,.1*,3*,.1*,5.8*" HeightRequest="40">
+                                    <Label
+                                        Grid.Column="0"
+                                        FontAttributes="Bold"
+                                        FontSize="12"
+                                        HorizontalOptions="Center"
+                                        HorizontalTextAlignment="Center"
+                                        Text="No"
+                                        VerticalOptions="Center" />
+                                    <BoxView
+                                        Grid.Column="1"
+                                        Margin="0,0,0,-10"
+                                        HorizontalOptions="EndAndExpand"
+                                        WidthRequest="1"
+                                        Color="DarkGray" />
+                                    <Label
+                                        Grid.Column="2"
+                                        FontAttributes="Bold"
+                                        FontSize="12"
+                                        HorizontalOptions="Center"
+                                        HorizontalTextAlignment="Center"
+                                        Text="Stakeholder"
+                                        VerticalOptions="Center" />
+                                    <BoxView
+                                        Grid.Column="3"
+                                        Margin="0,0,0,-10"
+                                        HorizontalOptions="EndAndExpand"
+                                        WidthRequest="1"
+                                        Color="DarkGray" />
+                                    <Label
+                                        Grid.Column="4"
+                                        FontAttributes="Bold"
+                                        FontSize="12"
+                                        HorizontalOptions="Center"
+                                        HorizontalTextAlignment="Center"
+                                        Text="Condition"
+                                        VerticalOptions="Center" />
+                                </Grid>
+                            </Frame>
+                            <ListView
+                                Grid.Row="1"
+                                HasUnevenRows="True"
+                                HeightRequest="250"
+                                ItemsSource="{Binding OfficerConditionsList}"
+                                SeparatorColor="DarkGray">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <!--<Grid ColumnDefinitions="3*,.1*,6.9*" >
+													<Label Grid.Column="0" Text="{Binding StakeholderName}" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Start" />
+													<BoxView Grid.Column="1" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
+													<Label Grid.Column="2" Text="{Binding condition}" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Start" />
+												</Grid>-->
+
+
+                                            <Grid
+                                                ColumnDefinitions="1*,.1*,3*,.1*,5.8*"
+                                                HorizontalOptions="FillAndExpand"
+                                                VerticalOptions="Center">
+                                                <Label
+                                                    Grid.Column="0"
+                                                    Padding="2,0,0,0"
+                                                    FontSize="10"
+                                                    HorizontalOptions="Center"
+                                                    Text="{Binding Order}"
+                                                    VerticalOptions="Center" />
+                                                <BoxView
+                                                    Grid.Column="1"
+                                                    HorizontalOptions="EndAndExpand"
+                                                    WidthRequest="1"
+                                                    Color="Gray" />
+                                                <Label
+                                                    Grid.Column="2"
+                                                    Padding="2,0,0,0"
+                                                    FontSize="10"
+                                                    Text="{Binding StakeholderName}"
+                                                    VerticalOptions="CenterAndExpand" />
+                                                <BoxView
+                                                    Grid.Column="3"
+                                                    HorizontalOptions="EndAndExpand"
+                                                    WidthRequest="1"
+                                                    Color="Gray" />
+                                                <Label
+                                                    Grid.Column="4"
+                                                    Padding="2,0,0,0"
+                                                    FontSize="10"
+                                                    Text="{Binding condition}"
+                                                    VerticalOptions="CenterAndExpand" />
+
+                                            </Grid>
+
+
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+
+                            <Label
+                                Grid.Row="1"
+                                FontSize="16"
+                                HorizontalOptions="Center"
+                                IsVisible="{Binding OfficerConditionsList.Count, Converter={StaticResource intToBoolConverter}}"
+                                Text="Stakeholder Conditions Unavailable"
+                                VerticalOptions="Center" />
+                        </Grid>
+                    </Frame>
+
+
+                </Grid>
+            </ScrollView>
+
+
+
+            <Frame
+                Grid.Row="2"
+                Padding="10"
+                HasShadow="False"
+                HeightRequest="40">
+                <Grid ColumnDefinitions="5*, 5*">
+                    <Image
+                        Grid.Column="0"
+                        HorizontalOptions="Start"
+                        Source="home">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoHomeCommand}" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <!--<Image Grid.Column="1" Source="er_user" HorizontalOptions="End" IsVisible="{Binding IsReviewer, Converter={StaticResource InvertedBoolConverter}}">
+						<Image.GestureRecognizers><TapGestureRecognizer Command="{Binding GoBackCommand}" /></Image.GestureRecognizers>
+					</Image>-->
+                </Grid>
+            </Frame>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

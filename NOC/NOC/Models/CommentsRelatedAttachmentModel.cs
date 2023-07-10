@@ -21,4 +21,6 @@ namespace NOC.Models
         public int SolutionRoleID { get; set; }
         public bool Issubmitted { get; set; }
     }
+
+  
 }

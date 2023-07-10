@@ -20,5 +20,12 @@ namespace NOC.Models
         public int SLA { get; set; }
         public string STATUS { get; set; }
         public string EmirateCode { get; set; }
+
+        public string ReplyUserName { get; set; }
+        public string WorkFlow { get; set; }
+        public int REPLY_SEQ_ID { get; set; }
+        public string ER_OUTCOME_CODE { get; set; }
+        public int STEP_CODE { get; set; }
+
     }
 }

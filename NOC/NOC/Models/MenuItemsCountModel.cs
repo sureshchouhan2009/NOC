@@ -20,5 +20,12 @@ namespace NOC.Models
         public string NewNOCApplicationsCount { get; set; }
         public string NotificationCount { get; set; }
         public string CompletedApplication { get; set; }
+        public string SentBack { get; set; }
+        public string received { get; set; }
+        public string Transferapplication { get; set; }
+        public string Reaject { get; set; }
+        public string InProgressApplicationsCount { get; set; }
+        public string ApplicationExpiredTenDays { get; set; }
+
     }
 }

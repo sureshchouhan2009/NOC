@@ -104,8 +104,49 @@ namespace NOC.ViewModels
             try
             {
                 TransactionModel selectedTransaction = (TransactionModel)obj;
+                if (Session.Instance.CurrentUserType == Enums.UserTypes.Officer)
+                {
+                    var argum = selectedTransaction.ER_OUTCOME_CODE;
+                    if (argum == "ER_OFFREV_APPROVE" || argum == "ER_OFFREV_REV_REPLIED" || argum == "ER_OWNERSHIPTRANSFER_APPROVE_OFFREV" || argum == "ER_APP_OFFREV_REPLIED")
+                    {
+                        Session.Instance.IsOfficerequalToReviewer = true;
+                        // var officerSthcmntIDData = await ApiService.Instance.checkStackholderdetails1(selectedTransaction.TransactionID.ToString(), Session.Instance.CurrentUserID, selectedTransaction.WorkFlow);
+                        var officerSthcmntIDData = await ApiService.Instance.checkStackholderdetails1("15823", Session.Instance.CurrentUserID, "UnderConstruction");
+                        Session.Instance.SthcmntID = officerSthcmntIDData.Stakeholder_Comments.SthcmntID;
+                    }
+                    else
+                    {
+                        Session.Instance.IsOfficerequalToReviewer = true;
+                        var officerSthcmntIDData = await ApiService.Instance.checkStackholderdetails1("15823", Session.Instance.CurrentUserID, "UnderConstruction");
+                        Session.Instance.SthcmntID = officerSthcmntIDData.Stakeholder_Comments.SthcmntID;
+                    }
+                }
+                else if (Session.Instance.CurrentUserType == Enums.UserTypes.Stackholder)
+                {
+                 // var stackholder1 = await ApiService.Instance.checkStackholderdetails1(selectedTransaction.TransactionID.ToString(), Session.Instance.CurrentUserID, selectedTransaction.WorkFlow);
+                  var stackholder1 = await ApiService.Instance.checkStackholderdetails1("15823", Session.Instance.CurrentUserID, "UnderConstruction");
+                  var stackholder2 = await ApiService.Instance.checkStackholderdetails2(Session.Instance.CurrentUserID);
+                    if(stackholder1!=null&& stackholder2 != null)
+                    {
+
+                        Session.Instance.IsStackholderequalToReviewer = stackholder1.SolutionRoleUser == stackholder2.SolutionRoleID ? false : true;
+                        if (Session.Instance.IsStackholderequalToReviewer)
+                        {
+                            Session.Instance.SthcmntID = stackholder1.Stakeholder_Comments.SthcmntID;
+                        }
+                    }
+                    else
+                    {
+                        Session.Instance.IsStackholderequalToReviewer = true;//for testing/dev  purpose added this block
+                        Session.Instance.SthcmntID = stackholder1.Stakeholder_Comments.SthcmntID;
+                    }
+                   
+                }
+
                 Session.Instance.CurrentTransaction = await ApiService.Instance.GetTransactionDetails(selectedTransaction.ApplicationNumber);
                 await NavigationService.NavigateAsync("TransactionInfoPage");
+
+               
             }
             catch (Exception ex)
             {

@@ -39,5 +39,9 @@ namespace NOC.Utility
         public bool IsRepliedNocApplicationFlow { get; set; }
         public bool IsCompletedApplicationFlow { get; set; }
         public string ApplicationListPageTitle { get; set; }
+
+        public bool IsOfficerequalToReviewer { get; set; }
+        public bool IsStackholderequalToReviewer { get; set; }
+        public int SthcmntID { get; set; }//for stackholder and officer response page data{Attachment}
     }
 }

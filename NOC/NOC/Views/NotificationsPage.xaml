@@ -4,10 +4,14 @@
              x:Class="NOC.Views.NotificationsPage"
               NavigationPage.HasNavigationBar="False"
              x:Name="notificationpage"
-             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" xmlns:Converter="clr-namespace:NOC.Converters"
              ios:Page.UseSafeArea="true"
              BackgroundColor="LightGray">
     <ContentPage.Resources>
+         <ResourceDictionary>
+            <Converter:ReadStatusToColorConverter x:Key="readStatusToColorConverter"/>
+              <Converter:BoolToFontAttributeConverter x:Key="boolToFontAttributeConverter"/>
+        </ResourceDictionary>
         <Style x:Key="circleFram" TargetType="Frame">
             <Setter Property="VerticalOptions" Value="Center" />
             <Setter Property="HorizontalOptions" Value="Center" />
@@ -49,10 +53,13 @@
                                         <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="35"></Image>
                                     </Frame>
                                    
-                                    <Label Grid.Column="1" Style="{StaticResource menuLabel}" Text="{Binding Message}" FontSize="14" />
+                                    <Label Grid.Column="1" Style="{StaticResource menuLabel}" Text="{Binding Message}" FontSize="14" TextColor="{Binding IsRead, Converter={StaticResource readStatusToColorConverter}}" FontAttributes="{Binding IsRead, Converter={StaticResource boolToFontAttributeConverter}}" />
                                     <Label Grid.Column="2" Text="{Binding CreationDate,StringFormat='{0:dd-MM-yyyy}'}" TextColor="{DynamicResource BrandPrimary}" FontSize="12" HorizontalOptions="End" VerticalOptions="Center" />
-
+                                     <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={x:Reference notificationpage},Path=BindingContext.NavigateNotificationPageToTrasactionDetailsCommand}" CommandParameter="{Binding .}" NumberOfTapsRequired="1" />
+                                    </Grid.GestureRecognizers>
                                 </Grid>
+                               
                             </Frame>
                         </ViewCell>
                     </DataTemplate>

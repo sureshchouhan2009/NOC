@@ -26,6 +26,7 @@ namespace NOC.Service
         #region UserSpecific SearchCount 
         public const string GetSearchCountApplicant = BaseUrl + "api/Search/GetSearchCount/applicant";
         public const string GetSearchCountOfficer = BaseUrl + "api/Search/GetSearchCount/processor";
+       
         public const string GetSearchCountStackHolder = BaseUrl + "api/Search/GetSearchCount/stakeholder";
         public const string GetSearchCountReviewer = BaseUrl + "api/Search/GetSearchCount/reviewer";
         #endregion
@@ -33,6 +34,7 @@ namespace NOC.Service
         #region UserSpecific ApplicationLists 
         public const string applicantGetTransactionList = BaseUrl + "api/Search/GetTransactionList/applicant/";
         public const string OfficerGetTransactionList = BaseUrl + "api/Search/GetTransactionList/processor/";
+        public const string InProgressOfficerGetTransactionList = BaseUrl + "api/Search/GetTransactionList/officer/"; //newly added inprogess application for Officer user
         public const string stakeholderTransactionList = BaseUrl + "api/Search/GetTransactionList/stakeholder/";
         public const string reviewerGetTransactionList = BaseUrl + "api/Search/GetTransactionList/reviewer/";
         #endregion
@@ -98,6 +100,20 @@ namespace NOC.Service
 
         //to save fresh new comments from Internal Comments{methods post}
         public const string SaveNewCommentForInternal = BaseUrl + "api/search/commentsaveing";//just save enough
+
+
+        //Phase2
+       // public const string downloadPdfBase64String = BaseUrl + "api/NOCTemplate/GenerateNOCpdf/";//api/NOCTemplate/GenerateNOCpdf/{transid}
+        public const string downloadPdfURL = BaseUrl + "api/NOCTemplate/GenerateNOCReportForMobile/";//api/NOCTemplate/GenerateNOCpdf/{transid}
+
+        public const string ChangeIsReadStatusForNotifications = BaseUrl + "api/Search/SetNotificationAsRead";
+
+        public const string checkStatckholder1 = BaseUrl + "api/search/spcificcommentstogetdata/";//Operations?tranid=";
+        public const string checkStatckholder2 = BaseUrl + "api/SolutionRoles/GetUserSolutionRoleID/";
+
+        public const string getStackholderResponsepageData = BaseUrl + "api/search/SpecificCommentstoview/";
+        public const string getStackholderResponsepageConditions = BaseUrl + "api/SpecificCondition/GetconditionwithWorkflow/";//15767/Operations
+        public const string getOfficerResponsepageConditions = BaseUrl + "api/SpecificCondition/GetAllStakeHolderResponse/";
 
 
     }

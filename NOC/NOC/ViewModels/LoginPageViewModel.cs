@@ -18,6 +18,7 @@ namespace NOC.ViewModels
     {
         public LoginPageViewModel(INavigationService navigationService) : base(navigationService)
         {
+
         }
 
         private ICommand loginComand;
@@ -48,6 +49,19 @@ namespace NOC.ViewModels
 
         private async void PerformLoginComand(object obj)
         {
+            #region Credentials New
+            //            USERID                               UserName           Password      Role                 Role Type
+
+            //af3c6b7b - 84b2 - 4317 - bafe - 6f0fa2fab083    Erengineering_uat   User@123    Engineering            3
+            //c6d2a521 - cd9c - 402a - a83d - b11e7d36e2bd    Eroperator_uat      User@123    Operators(ER Infra)    7
+            //018ad094 - ef5f - 4b19 - 9017 - f4173f28c11f    Eroperations_uat    User@123    Operation              4
+            //37d715a8 - 02e5 - 4d8a - 9b02 - c2917e8e1684    Applicant_uat       User@123    Applicant              1
+            //c2d82d6c - b585 - 49ba - adba - e7fa2552b953    Officer_uat         User@123    officer                2
+            //70a0f3ba - c038 - 468d - abc4 - 9698ef4ca0a3    Reviwer_uat         User@123    Reviewer               12
+            //48e6acb5 - 4688 - 4614 - b782 - b51fb0798df7    eradmin_test        User@123    Admin                  14
+
+
+            //OLD
             //EmailText = "applicant_test";
             //PasswordText = "U$er123";
 
@@ -62,10 +76,14 @@ namespace NOC.ViewModels
             //for Reviewer
             //EmailText = "reviwer_test";
             //PasswordText = "user123";
+            #endregion
 
+           
             IsBusy = true;
             try
             {
+                EmailText = "Reviwer_uat";
+                PasswordText = "User@123";
                 if (String.IsNullOrEmpty(EmailText) || String.IsNullOrEmpty(PasswordText))
                 {
                     await Application.Current.MainPage.DisplayToastAsync("Please enter the valid Username and Password", 10000);

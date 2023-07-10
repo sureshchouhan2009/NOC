@@ -1,10 +1,11 @@
 ﻿using System;
+using NOC.Models;
+
 namespace NOC.Interfaces
 {
-    public class PdfFileDownloader
+    public interface IPdfFileDownloader
     {
-        public PdfFileDownloader()
-        {
-        }
+       void downloadLocalyStoredPdfFile(string fileName, byte[] data);
+       // event EventHandler<DownloadEventArgs> OnFileDownloaded;
     }
 }

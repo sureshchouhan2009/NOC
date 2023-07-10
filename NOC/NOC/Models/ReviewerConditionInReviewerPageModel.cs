@@ -37,6 +37,7 @@ namespace NOC.Models
         public object LastModifiedBy { get; set; }
         public object LastModificationDate { get; set; }
     }
+    
 
     public class SystemAndUserSpCondition
     {
