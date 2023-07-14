@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Newtonsoft.Json;
 using NOC.Interfaces;
 using NOC.Models;
 using NOC.Models.ReviwerSpecific;
@@ -305,8 +306,8 @@ namespace NOC.ViewModels
 
             IsReviewerConditionFlow = true;
             IsStackholderCommentsFlow = true;
-            IsStackHolderSelected = true;
-            IsReviewerSelected = false;
+            IsStackHolderSelected = false;
+            IsReviewerSelected = true;
             Title = "Transaction Info";
             DDSourceList.Add("Days");
             DDSourceList.Add("Weeks");
@@ -342,6 +343,18 @@ namespace NOC.ViewModels
             {
                 if(DateTime.Parse(CalculatedValidTillDate) > DateTime.Now.Date.AddDays(7))
                 {
+                    #region Phase 2 Implementation for agregate Attachments //Submit Button equavallent  to No Objection
+
+                    List<String> AttachmentIds = new List<string>();
+                    foreach (var attachment in OfficerResponseAttachmentsInReviewerResponseList)
+                    {
+                        AttachmentIds.Add(attachment.IsCheckedForAgreeget ? attachment.AttachmentID.ToString() : "a" + attachment.AttachmentID.ToString());
+                    }
+                    string responseData = await ApiService.Instance.GenericPostApiCall(Urls.AgreGateSubmitInReviewerResponse, AttachmentIds);
+
+                    #endregion
+
+
                     ObjectionOptionPostModel objectionOptionPostModel = new ObjectionOptionPostModel();
                     objectionOptionPostModel.transactionid = TransactonDetail.Transaction.TransactionNumber;
                     objectionOptionPostModel.userID = TransactonDetail.Transaction.UserID;
@@ -493,14 +506,37 @@ namespace NOC.ViewModels
             
         }
 
+        //private async void DownloadCommentsAttachmentsCommandExecute(object obj)
+        //{
+        //    IsBusy = true;
+        //    var currentModel=  obj as CommentsRelatedAttachmentModel;
+        //    IDownloader downloader = DependencyService.Get<IDownloader>();
+        //    downloader.OnFileDownloaded += OnFileDownloaded;
+        //    downloader.DownloadFile(currentModel.UrlPath, "XF_Downloads");
+        //    IsBusy = false;
+        //}
+
         private async void DownloadCommentsAttachmentsCommandExecute(object obj)
         {
-            IsBusy = true;
-            var currentModel=  obj as CommentsRelatedAttachmentModel;
-            IDownloader downloader = DependencyService.Get<IDownloader>();
-            downloader.OnFileDownloaded += OnFileDownloaded;
-            downloader.DownloadFile(currentModel.UrlPath, "XF_Downloads");
-            IsBusy = false;
+            if (OfficerResponseAttachmentsInReviewerResponseList.Any(i => i.IsSelected))
+            {
+                IsBusy = true;
+                foreach (var item in OfficerResponseAttachmentsInReviewerResponseList)
+                {
+                    if (item.IsSelected)
+                    {
+                        IDownloader downloader = DependencyService.Get<IDownloader>();
+                        downloader.OnFileDownloaded += OnFileDownloaded;
+                        downloader.DownloadFile(item.UrlPath, "XF_Downloads");
+                    }
+
+                }
+                IsBusy = false;
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayToastAsync("Please select any attachment");
+            }
         }
 
         private void OnFileDownloaded(object sender, DownloadEventArgs e)
@@ -532,19 +568,65 @@ namespace NOC.ViewModels
 
 
 
+        //private async void RaiseObjectionCommandExecute(object obj)
+        //{
+        //    try
+        //    {
+        //        IsBusy = true;
+
+
+        //        ObjectionOptionPostModel objectionOptionPostModel = new ObjectionOptionPostModel();
+        //        objectionOptionPostModel.transactionid = TransactonDetail.Transaction.TransactionNumber;
+        //        objectionOptionPostModel.userID = TransactonDetail.Transaction.UserID;
+        //        objectionOptionPostModel.expirydate = CalculatedValidTillDate;
+        //        var result = await ApiService.Instance.PostObjection(objectionOptionPostModel);
+        //        await Application.Current.MainPage.DisplayToastAsync(result);
+        //        await NavigationService.NavigateAsync("app:///HomePage");
+        //        IsBusy = false;
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        IsBusy = false;
+        //    }
+
+        //}
+
         private async void RaiseObjectionCommandExecute(object obj)
         {
             try
             {
-                IsBusy = true;
-                ObjectionOptionPostModel objectionOptionPostModel = new ObjectionOptionPostModel();
-                objectionOptionPostModel.transactionid = TransactonDetail.Transaction.TransactionNumber;
-                objectionOptionPostModel.userID = TransactonDetail.Transaction.UserID;
-                objectionOptionPostModel.expirydate = CalculatedValidTillDate;
-                var result = await ApiService.Instance.PostObjection(objectionOptionPostModel);
-                await Application.Current.MainPage.DisplayToastAsync(result);
-                await NavigationService.NavigateAsync("app:///HomePage");
-                IsBusy =false;
+               
+
+
+                //ObjectionOptionPostModel objectionOptionPostModel = new ObjectionOptionPostModel();
+                //objectionOptionPostModel.transactionid = TransactonDetail.Transaction.TransactionNumber;
+                //objectionOptionPostModel.userID = TransactonDetail.Transaction.UserID;
+                //objectionOptionPostModel.expirydate = CalculatedValidTillDate;
+                //var result = await ApiService.Instance.PostObjection(objectionOptionPostModel);
+                //await Application.Current.MainPage.DisplayToastAsync(result);
+                //await NavigationService.NavigateAsync("app:///HomePage");
+
+
+
+                if(!string.IsNullOrEmpty(SpecificMessageText))
+                {
+                    IsBusy = true;
+                    SentBackApplicationModel sentBackApplicationModel = new SentBackApplicationModel();
+                    sentBackApplicationModel.sentiduserid = TransactonDetail.Transaction.UserID;
+                    sentBackApplicationModel.StakeHoldersCodeDisplay = SpecificMessageText;
+                    sentBackApplicationModel.sentbacktranID = TransactonDetail.Transaction.TransactionID;
+                    sentBackApplicationModel.stepcode = 110021;
+                    var result=  await ApiService.Instance.GenericPostApiCall(Urls.SentbackAPICallInReviewerResponse, sentBackApplicationModel);
+                    IsBusy = false;
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayToastAsync("Comment is required");
+                }
+              
+
+               
 
             }
             catch (Exception ex)
@@ -1000,6 +1082,7 @@ namespace NOC.ViewModels
             }
         }
 
+       
         private void AddCommandExecute(object obj)
         {
             IsReviewerAddCommentButtonVisible = false;
@@ -1247,6 +1330,8 @@ namespace NOC.ViewModels
             {
 
                 var transactionID = TransactonDetail.Transaction.TransactionID.ToString();//correct
+
+
                 DoccumentTypes = await ApiService.Instance.GetAttachmentsTypesForDD();
 
                 StackHolderList = new ObservableCollection<StackholderModel>(await ApiService.Instance.GetStackHolderList(transactionID));//319
@@ -1268,6 +1353,14 @@ namespace NOC.ViewModels
 
 
                bool success= await GetAndFillConditionSpecificPart(transactionID);
+
+
+                //Phase 2 Changes
+
+             bool successStatus= await  GetAllDetails(transactionID);
+
+
+
             }
             catch (Exception ex)
             {
@@ -1276,12 +1369,32 @@ namespace NOC.ViewModels
             IsBusy = false;
         }
 
+        private async Task<bool> GetAllDetails(string transactionID)
+        {
+            string officerResponseDetails = await ApiService.Instance.GenericGetApiCall(Urls.OfficerResponseDetails + transactionID);
+            OfficerResponseDetails = JsonConvert.DeserializeObject<OfficerResponseDetailsModel>(officerResponseDetails);
+
+            string officerResponseAttachments = await ApiService.Instance.GenericGetApiCall(Urls.OfficerResponseBlockAttachments + "15823");
+            OfficerResponseAttachmentsInReviewerResponseList =new ObservableCollection<OfficerResponseAttachmentsInReviewerResponse>( JsonConvert.DeserializeObject<List<OfficerResponseAttachmentsInReviewerResponse>>(officerResponseAttachments));
+
+            var res = GetAndFillConditionSpecificPart(transactionID);
+
+
+            return true;
+        }
+
         private async Task<bool> GetAndFillConditionSpecificPart(string transactionID)
         {
-            StackHolderCommentsList = new ObservableCollection<StackholderConditionInReviewerPageModel>(await ApiService.Instance.StackHolderCommentsForCondition(transactionID));//319
-            ReviewerAllConditonsList = new ObservableCollection<SystemAndUserSpCondition>(await ApiService.Instance.GetReviewerConditons(TransactonDetail.Transaction.TransactionNumber));
+            //StackHolderCommentsList = new ObservableCollection<StackholderConditionInReviewerPageModel>(await ApiService.Instance.StackHolderCommentsForCondition(transactionID));//319
+            //ReviewerAllConditonsList = new ObservableCollection<SystemAndUserSpCondition>(await ApiService.Instance.GetReviewerConditons(TransactonDetail.Transaction.TransactionNumber));
 
-            return StackHolderCommentsList.Count > 0;
+            //return StackHolderCommentsList.Count > 0;
+
+
+            //New
+            var conditions = await ApiService.Instance.GetReviewerConditions(transactionID);
+            StackHolderAndOfficerSpecifcConditionsList = new ObservableCollection<StackHolderAndOfficerSpecifcConditions>(conditions);
+            return StackHolderAndOfficerSpecifcConditionsList.Count > 0;
         }
 
 
@@ -1318,5 +1431,154 @@ namespace NOC.ViewModels
             }
             IsBusy = false;
         }
+
+
+        //Phase 2 Properties
+
+        private bool isChecked;
+        public bool IsChecked
+        {
+            get
+            {
+                ObservableCollection<OfficerResponseAttachmentsInReviewerResponse> _StackholderAttachmentsModelList = new ObservableCollection<OfficerResponseAttachmentsInReviewerResponse>();
+                foreach (var item in OfficerResponseAttachmentsInReviewerResponseList)
+                {
+                    item.IsSelected = isChecked;
+                    _StackholderAttachmentsModelList.Add(item);
+                }
+                OfficerResponseAttachmentsInReviewerResponseList.Clear();
+                OfficerResponseAttachmentsInReviewerResponseList = _StackholderAttachmentsModelList;
+                return isChecked;
+            }
+            set
+            {
+                SetProperty(ref isChecked, value);
+            }
+        }
+
+        private bool isCheckedForAgreeget;
+        public bool IsCheckedForAgreeget
+        {
+            get
+            {
+                ObservableCollection<OfficerResponseAttachmentsInReviewerResponse> _StackholderAttachmentsModelList = new ObservableCollection<OfficerResponseAttachmentsInReviewerResponse>();
+                foreach (var item in OfficerResponseAttachmentsInReviewerResponseList)
+                {
+                    item.IsCheckedForAgreeget = isCheckedForAgreeget;
+                    _StackholderAttachmentsModelList.Add(item);
+                }
+                OfficerResponseAttachmentsInReviewerResponseList.Clear();
+                OfficerResponseAttachmentsInReviewerResponseList = _StackholderAttachmentsModelList;
+                return isCheckedForAgreeget;
+            }
+            set
+            {
+                SetProperty(ref isCheckedForAgreeget, value);
+            }
+        }
+         private bool _isCheckedForConditionAgreeget;
+        public bool IsCheckedForConditionAgreeget
+        {
+            get
+            {
+                ObservableCollection<StackHolderAndOfficerSpecifcConditions> TempStackHolderAndOfficerSpecifcConditionsList = new ObservableCollection<StackHolderAndOfficerSpecifcConditions>();
+                foreach (var item in StackHolderAndOfficerSpecifcConditionsList)
+                {
+                    item.IsCheckedForConditionAgreeget = _isCheckedForConditionAgreeget;
+                    TempStackHolderAndOfficerSpecifcConditionsList.Add(item);
+                }
+                StackHolderAndOfficerSpecifcConditionsList.Clear();
+                StackHolderAndOfficerSpecifcConditionsList = TempStackHolderAndOfficerSpecifcConditionsList;
+                return _isCheckedForConditionAgreeget;
+            }
+            set
+            {
+                SetProperty(ref _isCheckedForConditionAgreeget, value);
+            }
+        }
+
+        private OfficerResponseDetailsModel _officerResponseDetails;
+        public OfficerResponseDetailsModel OfficerResponseDetails
+        {
+            get
+            {
+                return _officerResponseDetails;
+            }
+            set
+            {
+                SetProperty(ref _officerResponseDetails, value);
+            }
+        }
+        
+
+        private ObservableCollection<OfficerResponseAttachmentsInReviewerResponse> _officerResponseAttachmentsInReviewerResponseList = new ObservableCollection<OfficerResponseAttachmentsInReviewerResponse>();
+
+        public ObservableCollection<OfficerResponseAttachmentsInReviewerResponse> OfficerResponseAttachmentsInReviewerResponseList
+        {
+            get
+            {
+
+                return _officerResponseAttachmentsInReviewerResponseList;
+            }
+            set
+            {
+                SetProperty(ref _officerResponseAttachmentsInReviewerResponseList, value);
+            }
+        }
+
+
+
+         private ObservableCollection<StackHolderAndOfficerSpecifcConditions> _stackHolderAndOfficerSpecifcConditionsList = new ObservableCollection<StackHolderAndOfficerSpecifcConditions>();
+
+        public ObservableCollection<StackHolderAndOfficerSpecifcConditions> StackHolderAndOfficerSpecifcConditionsList
+        {
+            get
+            {
+
+                return _stackHolderAndOfficerSpecifcConditionsList;
+            }
+            set
+            {
+                SetProperty(ref _stackHolderAndOfficerSpecifcConditionsList, value);
+            }
+        }
+
+
+        private ICommand _aggregateCondtionCommand;
+
+        public ICommand AggregateCondtionCommand
+        {
+            get
+            {
+                if (_aggregateCondtionCommand == null)
+                {
+                    _aggregateCondtionCommand = new Command(AggregateCondtionCommandExecute);
+                }
+
+                return _aggregateCondtionCommand;
+            }
+        }
+
+        private async void AggregateCondtionCommandExecute(object obj)
+        {
+            #region Phase 2 Implementation for agregate Conditions 
+
+            List<String> conditiionIDs = new List<string>();
+            foreach (var con in StackHolderAndOfficerSpecifcConditionsList)
+            {
+                conditiionIDs.Add(con.IsCheckedForConditionAgreeget ? con.TRA_SPECCOND_ID.ToString() : "a" + con.TRA_SPECCOND_ID.ToString());
+            }
+            string responseData = await ApiService.Instance.GenericPostApiCall(Urls.AgreGateReviewerConditions, conditiionIDs);
+            if(!string.IsNullOrEmpty(responseData))
+            {
+                await Application.Current.MainPage.DisplayToastAsync("Conditions Aggregated successfuly");
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayToastAsync("responseData");
+            }
+            #endregion
+        }
+
     }
 }

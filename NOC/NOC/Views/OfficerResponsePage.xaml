@@ -170,29 +170,61 @@
                                     Text="Stakeholders"
                                     TextColor="Black" />
 
+                                <Grid
+                                    Grid.Row="0"
+                                    Margin="0"
+                                    Padding="5,0,5,0"
+                                    BackgroundColor="LightGray"
+                                    ColumnDefinitions="5*,5*">
+                                    <Label
+                                        Grid.Column="0"
+                                        FontSize="14"
+                                        HorizontalOptions="Start"
+                                        Text="Stakeholders"
+                                        TextColor="Black"
+                                        VerticalOptions="Center" />
+
+                                    <Label
+                                        Grid.Column="1"
+                                        FontSize="14"
+                                        HorizontalOptions="Center"
+                                        Text="Response"
+                                        TextColor="Black"
+                                        VerticalOptions="Center" />
+
+                                </Grid>
+
                                 <ListView
                                     Grid.Row="1"
                                     Grid.Column="0"
                                     BackgroundColor="White"
                                     HeightRequest="80"
-                                    ItemsSource="{Binding StackHolderList}">
+                                    ItemsSource="{Binding StackholderDisplayList}">
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
                                             <ViewCell>
-                                                <Frame
+                                                <Grid
                                                     Margin="0"
-                                                    Padding="5,0,0,0"
+                                                    Padding="5,0,5,0"
                                                     BackgroundColor="LightGray"
-                                                    HasShadow="False">
+                                                    ColumnDefinitions="5*,5*">
                                                     <Label
+                                                        Grid.Column="0"
                                                         FontSize="14"
-                                                        Text="{Binding ERGroup}"
+                                                        HorizontalOptions="Start"
+                                                        Text="{Binding ERStakeHoldersCode}"
                                                         TextColor="Black"
                                                         VerticalOptions="Center" />
-                                                    <Frame.GestureRecognizers>
-                                                        <TapGestureRecognizer Command="{Binding Source={x:Reference ReviewerPage}, Path=BindingContext.ShowSelectedStackholderresponse}" CommandParameter="{Binding .}" />
-                                                    </Frame.GestureRecognizers>
-                                                </Frame>
+
+                                                    <Label
+                                                        Grid.Column="1"
+                                                        FontSize="14"
+                                                        HorizontalOptions="Center"
+                                                        Text="{Binding Decision, Converter={StaticResource decisionToStackholderTextConverter}}"
+                                                        TextColor="{Binding Decision, Converter={StaticResource decisionToStackholderTextColorConverter}}"
+                                                        VerticalOptions="Center" />
+
+                                                </Grid>
                                             </ViewCell>
                                         </DataTemplate>
                                     </ListView.ItemTemplate>
@@ -202,7 +234,7 @@
                                     Grid.Row="1"
                                     FontSize="16"
                                     HorizontalOptions="Center"
-                                    IsVisible="{Binding StackHolderList.Count, Converter={StaticResource intToBoolConverter}}"
+                                    IsVisible="{Binding StackholderDisplayList.Count, Converter={StaticResource intToBoolConverter}}"
                                     Text="No Stakeholder availabe"
                                     TextColor="Black"
                                     VerticalOptions="Center" />
@@ -227,15 +259,29 @@
                                 <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="0">
                                     <Grid
                                         Grid.Row="0"
+                                        Padding="10"
                                         BackgroundColor="LightGray"
+                                        ColumnDefinitions="5*,5*"
                                         HeightRequest="40">
                                         <Label
                                             Grid.Column="0"
                                             FontAttributes="Bold"
                                             FontSize="12"
-                                            HorizontalOptions="Center"
+                                            HorizontalOptions="Start"
                                             Text="Attachments"
                                             VerticalOptions="Center" />
+                                        <Label
+                                            Grid.Column="1"
+                                            FontAttributes="Bold"
+                                            FontSize="14"
+                                            HorizontalOptions="End"
+                                            Text="Download"
+                                            VerticalOptions="Center">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={x:Reference ReviewerPage}, Path=BindingContext.DownloadCommentsAttachmentsCommand}" />
+                                            </Label.GestureRecognizers>
+
+                                        </Label>
                                     </Grid>
                                     <Frame
                                         Grid.Row="1"
@@ -282,12 +328,19 @@
                                                 HorizontalOptions="EndAndExpand"
                                                 WidthRequest="1"
                                                 Color="DarkGray" />
-                                            <Label
+                                            <!--<Label
                                                 Grid.Column="3"
                                                 FontAttributes="Bold"
                                                 FontSize="10"
                                                 HorizontalOptions="Center"
                                                 Text="Download"
+                                                VerticalOptions="Center" />-->
+
+                                            <components:CustomCheckBox
+                                                Grid.Column="3"
+                                                Margin="10"
+                                                Checked="{Binding IsChecked}"
+                                                HorizontalOptions="Center"
                                                 VerticalOptions="Center" />
                                         </Grid>
                                     </Frame>
@@ -340,7 +393,7 @@
                                                             HorizontalOptions="EndAndExpand"
                                                             WidthRequest="1"
                                                             Color="DarkGray" />
-                                                        <StackLayout
+                                                        <!--<StackLayout
                                                             Grid.Column="3"
                                                             HorizontalOptions="Center"
                                                             Orientation="Horizontal"
@@ -354,7 +407,14 @@
                                                             <StackLayout.GestureRecognizers>
                                                                 <TapGestureRecognizer Command="{Binding Source={x:Reference ReviewerPage}, Path=BindingContext.DownloadCommentsAttachmentsCommand}" CommandParameter="{Binding .}" />
                                                             </StackLayout.GestureRecognizers>
-                                                        </StackLayout>
+                                                        </StackLayout>-->
+
+                                                        <components:CustomCheckBox
+                                                            Grid.Column="3"
+                                                            Margin="10"
+                                                            Checked="{Binding IsSelected}"
+                                                            HorizontalOptions="Center"
+                                                            VerticalOptions="Center" />
                                                     </Grid>
                                                 </ViewCell>
                                             </DataTemplate>

@@ -167,7 +167,7 @@
                         IsVisible="{Binding IsReviewerConditionFlow}"
                         RowDefinitions="Auto,Auto,Auto,Auto,Auto">
                         <!--  #stackholder List  -->
-                        <Frame
+                        <!--<Frame
                             Grid.Row="0"
                             Margin="10,5,10,5"
                             Padding="5"
@@ -218,7 +218,7 @@
                                     VerticalOptions="Center" />
 
                             </Grid>
-                        </Frame>
+                        </Frame>-->
                         <!--#region AllStackholder-->
                         <Grid
                             Grid.Row="1"
@@ -228,29 +228,36 @@
                             RowDefinitions="Auto">
                             <Grid Grid.Row="0" RowDefinitions="Auto,Auto">
                                 <!--<Label Grid.Row="0" Text="Stakeholders Response" FontSize="14"  TextColor="Black" FontAttributes="Bold"/>-->
-                                <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto">
-                                    <Label Grid.Row="0">
+                                <Grid
+                                    Grid.Row="1"
+                                    Padding="5"
+                                    RowDefinitions="Auto,Auto,Auto">
+
+                                    <Label
+                                        Grid.Row="0"
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        Text="Officer Response"
+                                        TextColor="Black" />
+
+
+                                    <Label Grid.Row="1">
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <Span
                                                     FontAttributes="Bold"
                                                     FontSize="14"
-                                                    Text="Officer Response: "
+                                                    Text="Name: "
                                                     TextColor="Black" />
                                                 <Span
                                                     FontAttributes="Bold"
                                                     FontSize="14"
-                                                    Text="{Binding SelectedStackholderName}"
+                                                    Text="{Binding OfficerResponseDetails.CreatedBy}"
                                                     TextColor="{DynamicResource BrandPrimary}" />
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
-                                    <Label
-                                        Grid.Row="1"
-                                        FontAttributes="Bold"
-                                        FontSize="14"
-                                        Text="Name: "
-                                        TextColor="Black" />
+
 
                                     <Label Grid.Row="2">
                                         <Label.FormattedText>
@@ -263,8 +270,8 @@
                                                 <Span
                                                     FontAttributes="Bold"
                                                     FontSize="14"
-                                                    Text="{Binding SelectedStackholderResponse.Decision, Converter={StaticResource decisionToStackholderTextConverter}}"
-                                                    TextColor="{Binding SelectedStackholderResponse.Decision, Converter={StaticResource decisionToStackholderTextColorConverter}}" />
+                                                    Text="{Binding OfficerResponseDetails.Decision, Converter={StaticResource decisionToStackholderTextConverter}}"
+                                                    TextColor="{Binding OfficerResponseDetails.Decision, Converter={StaticResource decisionToStackholderTextColorConverter}}" />
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
@@ -286,15 +293,29 @@
                                         <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="0">
                                             <Grid
                                                 Grid.Row="0"
+                                                Padding="10"
                                                 BackgroundColor="LightGray"
+                                                ColumnDefinitions="5*,5*"
                                                 HeightRequest="40">
                                                 <Label
                                                     Grid.Column="0"
                                                     FontAttributes="Bold"
                                                     FontSize="12"
-                                                    HorizontalOptions="Center"
+                                                    HorizontalOptions="Start"
                                                     Text="Attachments"
                                                     VerticalOptions="Center" />
+                                                <Label
+                                                    Grid.Column="1"
+                                                    FontAttributes="Bold"
+                                                    FontSize="14"
+                                                    HorizontalOptions="End"
+                                                    Text="Download"
+                                                    VerticalOptions="Center">
+                                                    <Label.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding Source={x:Reference ReviewerPage}, Path=BindingContext.DownloadCommentsAttachmentsCommand}" />
+                                                    </Label.GestureRecognizers>
+
+                                                </Label>
                                             </Grid>
                                             <Frame
                                                 Grid.Row="1"
@@ -305,12 +326,11 @@
                                                 HasShadow="False"
                                                 HeightRequest="40">
                                                 <Grid ColumnDefinitions="2.5*,2.5*,2.5*,2.5*" HeightRequest="40">
-                                                    <Label
+                                                    <components:CustomCheckBox
                                                         Grid.Column="0"
-                                                        FontAttributes="Bold"
-                                                        FontSize="10"
+                                                        Margin="10"
+                                                        Checked="{Binding IsCheckedForAgreeget}"
                                                         HorizontalOptions="Center"
-                                                        Text="File Name"
                                                         VerticalOptions="Center" />
                                                     <BoxView
                                                         Grid.Column="0"
@@ -318,6 +338,18 @@
                                                         WidthRequest="1"
                                                         Color="DarkGray" />
                                                     <Label
+                                                        Grid.Column="1"
+                                                        FontAttributes="Bold"
+                                                        FontSize="10"
+                                                        HorizontalOptions="Center"
+                                                        Text="File Name"
+                                                        VerticalOptions="Center" />
+                                                    <BoxView
+                                                        Grid.Column="1"
+                                                        HorizontalOptions="EndAndExpand"
+                                                        WidthRequest="1"
+                                                        Color="DarkGray" />
+                                                    <!--<Label
                                                         Grid.Column="1"
                                                         FontAttributes="Bold"
                                                         FontSize="10"
@@ -328,7 +360,7 @@
                                                         Grid.Column="1"
                                                         HorizontalOptions="EndAndExpand"
                                                         WidthRequest="1"
-                                                        Color="DarkGray" />
+                                                        Color="DarkGray" />-->
                                                     <Label
                                                         Grid.Column="2"
                                                         FontAttributes="Bold"
@@ -341,12 +373,19 @@
                                                         HorizontalOptions="EndAndExpand"
                                                         WidthRequest="1"
                                                         Color="DarkGray" />
-                                                    <Label
+                                                    <!--<Label
                                                         Grid.Column="3"
                                                         FontAttributes="Bold"
                                                         FontSize="10"
                                                         HorizontalOptions="Center"
                                                         Text="Download"
+                                                        VerticalOptions="Center" />-->
+
+                                                    <components:CustomCheckBox
+                                                        Grid.Column="3"
+                                                        Margin="10"
+                                                        Checked="{Binding IsChecked}"
+                                                        HorizontalOptions="Center"
                                                         VerticalOptions="Center" />
                                                 </Grid>
                                             </Frame>
@@ -356,7 +395,7 @@
                                                 BackgroundColor="LightGray"
                                                 HasUnevenRows="True"
                                                 HeightRequest="80"
-                                                ItemsSource="{Binding StackholderAttachmentsModelList}"
+                                                ItemsSource="{Binding OfficerResponseAttachmentsInReviewerResponseList}"
                                                 SeparatorColor="DarkGray">
                                                 <ListView.ItemTemplate>
                                                     <DataTemplate>
@@ -366,18 +405,30 @@
                                                                 Padding="0"
                                                                 ColumnDefinitions="2.5*,2.5*,2.5*,2.5*"
                                                                 HeightRequest="35">
-                                                                <Label
+                                                                <components:CustomCheckBox
                                                                     Grid.Column="0"
+                                                                    Margin="10"
+                                                                    Checked="{Binding IsCheckedForAgreeget}"
+                                                                    HorizontalOptions="Center"
+                                                                    VerticalOptions="Center" />
+                                                                <BoxView
+                                                                    Grid.Column="1"
+                                                                    HorizontalOptions="EndAndExpand"
+                                                                    WidthRequest="1"
+                                                                    Color="DarkGray" />
+
+                                                                <Label
+                                                                    Grid.Column="1"
                                                                     FontSize="10"
                                                                     HorizontalOptions="Center"
                                                                     Text="{Binding uploadfilename}"
                                                                     VerticalOptions="Center" />
                                                                 <BoxView
-                                                                    Grid.Column="0"
+                                                                    Grid.Column="1"
                                                                     HorizontalOptions="EndAndExpand"
                                                                     WidthRequest="1"
                                                                     Color="DarkGray" />
-                                                                <Label
+                                                                <!--<Label
                                                                     Grid.Column="1"
                                                                     FontSize="10"
                                                                     HorizontalOptions="Center"
@@ -387,7 +438,7 @@
                                                                     Grid.Column="1"
                                                                     HorizontalOptions="EndAndExpand"
                                                                     WidthRequest="1"
-                                                                    Color="DarkGray" />
+                                                                    Color="DarkGray" />-->
                                                                 <Label
                                                                     Grid.Column="2"
                                                                     FontSize="10"
@@ -399,7 +450,7 @@
                                                                     HorizontalOptions="EndAndExpand"
                                                                     WidthRequest="1"
                                                                     Color="DarkGray" />
-                                                                <StackLayout
+                                                                <!--<StackLayout
                                                                     Grid.Column="3"
                                                                     HorizontalOptions="Center"
                                                                     Orientation="Horizontal"
@@ -413,7 +464,14 @@
                                                                     <StackLayout.GestureRecognizers>
                                                                         <TapGestureRecognizer Command="{Binding Source={x:Reference ReviewerPage}, Path=BindingContext.DownloadCommentsAttachmentsCommand}" CommandParameter="{Binding .}" />
                                                                     </StackLayout.GestureRecognizers>
-                                                                </StackLayout>
+                                                                </StackLayout>-->
+
+                                                                <components:CustomCheckBox
+                                                                    Grid.Column="3"
+                                                                    Margin="10"
+                                                                    Checked="{Binding IsSelected}"
+                                                                    HorizontalOptions="Center"
+                                                                    VerticalOptions="Center" />
                                                             </Grid>
                                                         </ViewCell>
                                                     </DataTemplate>
@@ -423,7 +481,7 @@
                                                 Grid.Row="2"
                                                 FontSize="16"
                                                 HorizontalOptions="Center"
-                                                IsVisible="{Binding StackholderAttachmentsModelList.Count, Converter={StaticResource intToBoolConverter}}"
+                                                IsVisible="{Binding OfficerResponseAttachmentsInReviewerResponseList.Count, Converter={StaticResource intToBoolConverter}}"
                                                 Text="No attachment availabe"
                                                 VerticalOptions="Center" />
                                         </Grid>
@@ -752,7 +810,7 @@
                                     Padding="5"
                                     FontSize="14"
                                     HorizontalOptions="Center"
-                                    Text="No Objection"
+                                    Text="Submit"
                                     TextColor="White"
                                     VerticalOptions="Center" />
                                 <Frame.GestureRecognizers>
@@ -769,7 +827,7 @@
                                     Padding="5"
                                     FontSize="14"
                                     HorizontalOptions="Center"
-                                    Text="Objection"
+                                    Text="Send Back"
                                     TextColor="White"
                                     VerticalOptions="Center" />
                                 <Frame.GestureRecognizers>
@@ -805,7 +863,7 @@
                         Grid.Row="4"
                         IsVisible="{Binding IsReviewerConditionFlow, Converter={StaticResource InvertedBoolConverter}}"
                         RowDefinitions="Auto,Auto">
-                        <StackLayout
+                        <!--<StackLayout
                             Grid.Row="0"
                             Margin="20,5,20,5"
                             Orientation="Horizontal">
@@ -841,9 +899,9 @@
                                     <TapGestureRecognizer Command="{Binding ReviewerTappedCommand}" />
                                 </Frame.GestureRecognizers>
                             </Frame>
-                        </StackLayout>
+                        </StackLayout>-->
                         <!--#region StackholderCondition-->
-                        <Frame
+                        <!--<Frame
                             Grid.Row="1"
                             Margin="10,5,10,5"
                             Padding="0"
@@ -887,16 +945,16 @@
                                     Grid.Row="1"
                                     HasUnevenRows="True"
                                     HeightRequest="250"
-                                    ItemsSource="{Binding StackHolderCommentsList}"
+                                    ItemsSource="{Binding StackHolderAndOfficerSpecifcConditionsList}"
                                     SeparatorColor="DarkGray">
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
                                             <ViewCell>
-                                                <!--<Grid ColumnDefinitions="3*,.1*,6.9*" >
+                                                <Grid ColumnDefinitions="3*,.1*,6.9*" >
 													<Label Grid.Column="0" Text="{Binding StakeholderName}" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Start" />
 													<BoxView Grid.Column="1" WidthRequest="1" Color="DarkGray" HorizontalOptions="EndAndExpand"/>
 													<Label Grid.Column="2" Text="{Binding condition}" FontSize="10" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Start" />
-												</Grid>-->
+												</Grid>
 
 
                                                 <Grid
@@ -929,11 +987,11 @@
                                     Grid.Row="1"
                                     FontSize="16"
                                     HorizontalOptions="Center"
-                                    IsVisible="{Binding StackHolderCommentsList.Count, Converter={StaticResource intToBoolConverter}}"
+                                    IsVisible="{Binding StackHolderAndOfficerSpecifcConditionsList.Count, Converter={StaticResource intToBoolConverter}}"
                                     Text="Stakeholder Conditions Unavailable"
                                     VerticalOptions="Center" />
                             </Grid>
-                        </Frame>
+                        </Frame>-->
                         <!--#endregion-->
                         <!--#region ReviewerCondition-->
                         <Frame
@@ -941,9 +999,9 @@
                             Margin="10,5,10,5"
                             Padding="0"
                             BorderColor="Black"
-                            HasShadow="False"
-                            IsVisible="{Binding IsStackholderCommentsFlow, Converter={StaticResource InvertedBoolConverter}}">
-                            <Grid RowDefinitions="Auto,Auto,Auto">
+                            HasShadow="False">
+                            <!--  IsVisible="{Binding IsStackholderCommentsFlow, Converter={StaticResource InvertedBoolConverter}}"  -->
+                            <Grid RowDefinitions="Auto,Auto,Auto,Auto">
                                 <Frame
                                     Grid.Row="0"
                                     Margin="0"
@@ -951,9 +1009,20 @@
                                     BorderColor="DarkGray"
                                     HasShadow="False"
                                     HeightRequest="40">
-                                    <Grid ColumnDefinitions="1*,.1*,8.9*" HeightRequest="40">
-                                        <Label
+                                    <Grid ColumnDefinitions="1.8*,.1*,1*,.1*,7*" HeightRequest="40">
+                                        <components:CustomCheckBox
                                             Grid.Column="0"
+                                            Margin="10"
+                                            Checked="{Binding IsCheckedForConditionAgreeget}"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center" />
+                                        <BoxView
+                                            Grid.Column="1"
+                                            HorizontalOptions="EndAndExpand"
+                                            WidthRequest="1"
+                                            Color="Black" />
+                                        <Label
+                                            Grid.Column="2"
                                             FontAttributes="Bold"
                                             FontSize="12"
                                             HorizontalOptions="Center"
@@ -961,13 +1030,13 @@
                                             Text="No"
                                             VerticalOptions="Center" />
                                         <BoxView
-                                            Grid.Column="1"
+                                            Grid.Column="3"
                                             Margin="0,0,0,-2"
                                             HorizontalOptions="EndAndExpand"
                                             WidthRequest="1"
                                             Color="Black" />
                                         <Label
-                                            Grid.Column="2"
+                                            Grid.Column="4"
                                             FontAttributes="Bold"
                                             FontSize="12"
                                             HorizontalOptions="Center"
@@ -980,30 +1049,45 @@
                                     Grid.Row="1"
                                     HasUnevenRows="True"
                                     HeightRequest="250"
-                                    ItemsSource="{Binding ReviewerAllConditonsList}"
+                                    ItemsSource="{Binding StackHolderAndOfficerSpecifcConditionsList}"
                                     SeparatorColor="Black">
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
                                             <ViewCell>
-                                                <Grid ColumnDefinitions="1*,.1*,8.9*">
-                                                    <Label
+                                                <Grid ColumnDefinitions="1.8*,.1*,1*,.1*,7*">
+
+                                                    <components:CustomCheckBox
                                                         Grid.Column="0"
+                                                        Checked="{Binding IsCheckedForConditionAgreeget}"
+                                                        HeightRequest="12"
+                                                        HorizontalOptions="Center"
+                                                        VerticalOptions="Center"
+                                                        WidthRequest="12" />
+                                                    <BoxView
+                                                        Grid.Column="1"
+                                                        HorizontalOptions="EndAndExpand"
+                                                        WidthRequest="1"
+                                                        Color="Black" />
+
+
+                                                    <Label
+                                                        Grid.Column="2"
                                                         FontSize="10"
                                                         HorizontalOptions="Center"
                                                         HorizontalTextAlignment="Center"
                                                         Text="{Binding IndexNumber}"
                                                         VerticalOptions="Center" />
                                                     <BoxView
-                                                        Grid.Column="1"
+                                                        Grid.Column="3"
                                                         HorizontalOptions="EndAndExpand"
                                                         WidthRequest="1"
                                                         Color="Black" />
                                                     <Label
-                                                        Grid.Column="2"
+                                                        Grid.Column="4"
                                                         FontSize="10"
                                                         HorizontalOptions="Center"
-                                                        Text="{Binding CONDITIONS}"
-                                                        TextColor="{Binding COMMENTTYPE, Converter={StaticResource conditionTypeToColorConverter}}"
+                                                        Text="{Binding condition}"
+                                                        TextColor="{Binding CommentType, Converter={StaticResource conditionTypeToColorConverter}}"
                                                         VerticalOptions="Center" />
                                                     <Grid.GestureRecognizers>
                                                         <TapGestureRecognizer Command="{Binding Source={x:Reference ReviewerPage}, Path=BindingContext.SelectUserConditionCommand}" CommandParameter="{Binding .}" />
@@ -1017,12 +1101,30 @@
                                     Grid.Row="1"
                                     FontSize="16"
                                     HorizontalOptions="Center"
-                                    IsVisible="{Binding ReviewerAllConditonsList.Count, Converter={StaticResource intToBoolConverter}}"
+                                    IsVisible="{Binding StackHolderAndOfficerSpecifcConditionsList.Count, Converter={StaticResource intToBoolConverter}}"
                                     Text="Reviewer Condition Unavailable"
                                     VerticalOptions="Center" />
-
-                                <Grid
+                                <Frame
                                     Grid.Row="2"
+                                    Margin="5"
+                                    Padding="0"
+                                    BackgroundColor="Gray"
+                                    HasShadow="False"
+                                    HorizontalOptions="Center"
+                                    WidthRequest="80">
+                                    <Label
+                                        Padding="5"
+                                        FontSize="14"
+                                        HorizontalOptions="Center"
+                                        Text="Aggregate"
+                                        TextColor="White"
+                                        VerticalOptions="Center" />
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding AggregateCondtionCommand}" />
+                                    </Frame.GestureRecognizers>
+                                </Frame>
+                                <Grid
+                                    Grid.Row="3"
                                     IsVisible="{Binding IsOwnedFlow}"
                                     RowDefinitions="Auto,Auto,Auto">
                                     <Frame

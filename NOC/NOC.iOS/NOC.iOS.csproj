@@ -737,6 +737,10 @@
     <BundleResource Include="Resources\Camera.png" />
     <BundleResource Include="Resources\download.png" />
     <BundleResource Include="Resources\upload.png" />
+    <BundleResource Include="Resources\Image_Checked.png" />
+    <BundleResource Include="Resources\Image_Unchecked.png" />
+    <BundleResource Include="Resources\selectedRadioButton.png" />
+    <BundleResource Include="Resources\UnSelectedRadioButton.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

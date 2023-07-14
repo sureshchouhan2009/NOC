@@ -116,5 +116,18 @@ namespace NOC.Service
         public const string getOfficerResponsepageConditions = BaseUrl + "api/SpecificCondition/GetAllStakeHolderResponse/";
 
 
+        public const string getOfficerResponsepageStackholderList = BaseUrl + "api/search/togetcountpageloadcomntsforReview/";//15842
+        public const string getOfficerResponsepageStackholderListForFilter = BaseUrl + "api/search/GetAssociatedStakeholder/";//15842
+
+
+        //reviewer Response Page Retated URLs
+        public const string OfficerResponseDetails = BaseUrl + "api/search/officerreviewresponce/";//15823
+        public const string OfficerResponseBlockAttachments = BaseUrl + "api/search/OnlyReviwerview/";//15823
+
+        public const string AgreGateSubmitInReviewerResponse = BaseUrl + "api/Attachments/UpdatetoView/Reviwer";
+        public const string AgreGateReviewerConditions = BaseUrl + "api/SpecificCondition/ConditionsUpdatetoView/Reviwer";
+        public const string SentbackAPICallInReviewerResponse = BaseUrl + "api/Sentback/SentbacktoAll";
+
+
     }
 }

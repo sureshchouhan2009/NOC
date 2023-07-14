@@ -1,37 +1,34 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
-             ios:Page.UseSafeArea="true"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
-             x:Class="NOC.Views.HomePage"
-             NavigationPage.HasNavigationBar="False" >
+<ContentPage
+    x:Class="NOC.Views.HomePage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+    ios:Page.UseSafeArea="true"
+    NavigationPage.HasNavigationBar="False">
     <ContentPage.Resources>
-         <ResourceDictionary>
+        <ResourceDictionary>
             <xct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
         </ResourceDictionary>
         <Style x:Key="circleFram" TargetType="Frame">
             <Setter Property="VerticalOptions" Value="Center" />
             <Setter Property="HorizontalOptions" Value="Center" />
             <Setter Property="BackgroundColor" Value="White" />
-             <Setter Property="HasShadow" Value="False"/>
-            <Setter Property="BorderColor" Value="{DynamicResource DarkGray}"/>
-             <Setter Property="CornerRadius" 
-      Value="{OnPlatform iOS=20, Android=40}" />  
+            <Setter Property="HasShadow" Value="False" />
+            <Setter Property="BorderColor" Value="{DynamicResource DarkGray}" />
+            <Setter Property="CornerRadius" Value="{OnPlatform iOS=20, Android=40}" />
             <Setter Property="Padding" Value="3" />
         </Style>
 
-         <Style x:Key="counterCircleFram" TargetType="Frame">
+        <Style x:Key="counterCircleFram" TargetType="Frame">
             <Setter Property="VerticalOptions" Value="Center" />
             <Setter Property="HorizontalOptions" Value="Center" />
             <Setter Property="BackgroundColor" Value="{DynamicResource DarkGray}" />
-            <Setter Property="HasShadow" Value="False"/>
+            <Setter Property="HasShadow" Value="False" />
             <Setter Property="Padding" Value="3" />
             <Setter Property="CornerRadius" Value="12" />
-            <Setter Property="CornerRadius" 
-            Value="{OnPlatform iOS=12, Android=30}" />  
-                          
-                        
-            
+            <Setter Property="CornerRadius" Value="{OnPlatform iOS=12, Android=30}" />
         </Style>
 
 
@@ -52,7 +49,7 @@
             <Setter Property="HeightRequest" Value="20" />
             <Setter Property="WidthRequest" Value="20" />
         </Style>
-        
+
         <Style x:Key="rightArrow" TargetType="Image">
             <Setter Property="VerticalOptions" Value="Center" />
             <Setter Property="HorizontalOptions" Value="End" />
@@ -61,216 +58,455 @@
         </Style>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid RowDefinitions="Auto,*,Auto"  RowSpacing="0" >
-           
-            <Frame Grid.Row="0" Padding="10" HeightRequest="40" HasShadow="False">
-                <Label Grid.Column="1" Text="Menu" FontAttributes="Bold" Style="{StaticResource TitleLabelStyle}" Padding="0" Margin="0" />
+        <Grid RowDefinitions="Auto,*,Auto" RowSpacing="0">
+
+            <Frame
+                Grid.Row="0"
+                Padding="10"
+                HasShadow="False"
+                HeightRequest="40">
+                <Label
+                    Grid.Column="1"
+                    Margin="0"
+                    Padding="0"
+                    FontAttributes="Bold"
+                    Style="{StaticResource TitleLabelStyle}"
+                    Text="Menu" />
             </Frame>
-            <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="3"   >
-               <!--My Noc/New Noc-->
-                <Frame Grid.Row="0" Padding="0" Margin="0" BackgroundColor="{DynamicResource AppBackgroundGray}" HasShadow="False" HeightRequest="60" IsVisible="{Binding IsProcessorFlow, Converter={StaticResource InvertedBoolConverter}}">
-                    <Grid  ColumnDefinitions="2*,8*,2*" Margin="10"  >
+            <Grid
+                Grid.Row="1"
+                RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+                RowSpacing="3">
+                <!--  My Noc/New Noc  -->
+                <Frame
+                    Grid.Row="0"
+                    Margin="0"
+                    Padding="0"
+                    BackgroundColor="{DynamicResource AppBackgroundGray}"
+                    HasShadow="False"
+                    HeightRequest="60"
+                    IsVisible="{Binding IsProcessorFlow, Converter={StaticResource InvertedBoolConverter}}">
+                    <Grid Margin="10" ColumnDefinitions="2*,8*,2*">
                         <Frame Grid.Column="0" Style="{StaticResource circleFram}">
-                            <Image  Source="doc_icon" Aspect="AspectFit" HeightRequest="40" ></Image>
+                            <Image
+                                Aspect="AspectFit"
+                                HeightRequest="40"
+                                Source="doc_icon" />
                         </Frame>
-                        <StackLayout Grid.Column="1" Orientation="Horizontal" Padding="0" Margin="0">
-                            <Label Style="{StaticResource menuLabel}" Text="In progress NOCs"  />
-                            <Frame Style="{StaticResource counterCircleFram}"  >
-                                <Label Text="{Binding MyNocApplicationCount}" Style="{StaticResource countLabel}"  ></Label>
-                            </Frame>
-                        </StackLayout>
-                        
-                        <Image Grid.Column="2" Style="{StaticResource rightArrow}"  Source="rightArrowWhite" />
-                    </Grid>
-                    <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding NavigateToMyNocApplications}" CommandParameter="2" NumberOfTapsRequired="1" />
-                    </Frame.GestureRecognizers> 
-                    
-                </Frame>
-                <Frame Grid.Row="0" Padding="0" Margin="0" BackgroundColor="{DynamicResource AppBackgroundGray}" HasShadow="False" HeightRequest="60" IsVisible="{Binding IsProcessorFlow}">
-                    <Grid  ColumnDefinitions="2*,8*,2*" Margin="10"  >
-                        <Frame Grid.Column="0" Style="{StaticResource circleFram}">
-                            <Image  Source="doc_icon" Aspect="AspectFit" HeightRequest="40" ></Image>
-                        </Frame>
-                        <StackLayout Grid.Column="1" Orientation="Horizontal" Padding="0" Margin="0">
-                            <Label Style="{StaticResource menuLabel}" Text="New NOC Applications"  />
-                            <Frame Style="{StaticResource counterCircleFram}" >
-                                <Label Text="{Binding NewNocApplicationCount}" Style="{StaticResource countLabel}"  ></Label>
-                            </Frame>
-                        </StackLayout>
-                        
-                        <Image Grid.Column="2" Style="{StaticResource rightArrow}"  Source="rightArrowWhite" />
-                    </Grid>
-                    <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding NavigateToMyNocApplications}" CommandParameter="10" NumberOfTapsRequired="1" />
-                    </Frame.GestureRecognizers> 
-                    
-                </Frame>
-
-
-                  <!--Owned Noc for reviewer-->
-                <Frame Grid.Row="1" Padding="0" BackgroundColor="{DynamicResource AppBackgroundGray}" HasShadow="False" Margin="0" HeightRequest="60" IsVisible="{Binding IsProcessorFlow}">
-                    <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
-                        <Frame Grid.Column="0" Style="{StaticResource circleFram}">
-                            <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="40"></Image>
-                        </Frame>
-                       
-                        <StackLayout Grid.Column="1" Orientation="Horizontal" Padding="0" Margin="0">
-                            <Label  Style="{StaticResource menuLabel}" Text="Owned NOCs" />
+                        <StackLayout
+                            Grid.Column="1"
+                            Margin="0"
+                            Padding="0"
+                            Orientation="Horizontal">
+                            <Label Style="{StaticResource menuLabel}" Text="In progress NOCs" />
                             <Frame Style="{StaticResource counterCircleFram}">
-                                <Label Text="{Binding OwnedApplicationCount}" Style="{StaticResource countLabel}"></Label>
+                                <Label Style="{StaticResource countLabel}" Text="{Binding MyNocApplicationCount}" />
                             </Frame>
                         </StackLayout>
-                        <Image Grid.Column="2" Style="{StaticResource rightArrow}" Source="rightArrowWhite" />
-                    </Grid>
-                    <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding NavigateToMyNocApplications}" CommandParameter="5" NumberOfTapsRequired="1" />
-                    </Frame.GestureRecognizers>
-                </Frame>
 
-                 <!--Commented Noc-->
-                <Frame Grid.Row="2" Padding="0" BackgroundColor="{DynamicResource AppBackgroundGray}" HasShadow="False" Margin="0" HeightRequest="60">
-                    <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
-                        <Frame Grid.Column="0" Style="{StaticResource circleFram}">
-                            <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="40"></Image>
-                        </Frame>
-                       
-                        <StackLayout Grid.Column="1" Orientation="Horizontal" Padding="0" Margin="0">
-                            <Label  Style="{StaticResource menuLabel}" Text="Commented NOCs" />
-                            <Frame Style="{StaticResource counterCircleFram}">
-                                <Label Text="{Binding CommentedApplicationCount}" Style="{StaticResource countLabel}"></Label>
-                            </Frame>
-                        </StackLayout>
-                        <Image Grid.Column="2" Style="{StaticResource rightArrow}" Source="rightArrowWhite" />
+                        <Image
+                            Grid.Column="2"
+                            Source="rightArrowWhite"
+                            Style="{StaticResource rightArrow}" />
                     </Grid>
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding NavigateToMyNocApplications}" CommandParameter="1" NumberOfTapsRequired="1" />
+                        <TapGestureRecognizer
+                            Command="{Binding NavigateToMyNocApplications}"
+                            CommandParameter="2"
+                            NumberOfTapsRequired="1" />
                     </Frame.GestureRecognizers>
                 </Frame>
 
 
-
-
-                <!--Revalidation in 10 Days Noc Or Replied Noc for Processor flow-->
-                <Frame Grid.Row="3" Padding="0" BackgroundColor="{DynamicResource AppBackgroundGray}" HasShadow="False" Margin="0" HeightRequest="60" IsVisible="{Binding IsProcessorFlow, Converter={StaticResource InvertedBoolConverter}}">
-                    <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
+                <Frame
+                    Grid.Row="0"
+                    Margin="0"
+                    Padding="0"
+                    BackgroundColor="{DynamicResource AppBackgroundGray}"
+                    HasShadow="False"
+                    HeightRequest="60"
+                    IsVisible="{Binding IsProcessorFlow}">
+                    <Grid Margin="10" ColumnDefinitions="2*,8*,2*">
                         <Frame Grid.Column="0" Style="{StaticResource circleFram}">
-                            <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="40"></Image>
+                            <Image
+                                Aspect="AspectFit"
+                                HeightRequest="40"
+                                Source="doc_icon" />
                         </Frame>
-                       
-                        <StackLayout Grid.Column="1" Orientation="Horizontal" Padding="0" Margin="0">
-                            <Label  Style="{StaticResource menuLabel}" Text="NOCs for Revalidation in two Weeks" /> <!--earlier it was 10 days latest fix for 2 weeks-->
+                        <StackLayout
+                            Grid.Column="1"
+                            Margin="0"
+                            Padding="0"
+                            Orientation="Horizontal">
+                            <Label Style="{StaticResource menuLabel}" Text="New NOC Applications" />
                             <Frame Style="{StaticResource counterCircleFram}">
-                                <Label Text="{Binding NocApplicationforRevalidationInTenDaysCount}" Style="{StaticResource countLabel}"></Label>
+                                <Label Style="{StaticResource countLabel}" Text="{Binding NewNocApplicationCount}" />
                             </Frame>
                         </StackLayout>
-                        <Image Grid.Column="2" Style="{StaticResource rightArrow}" Source="rightArrowWhite" />
+
+                        <Image
+                            Grid.Column="2"
+                            Source="rightArrowWhite"
+                            Style="{StaticResource rightArrow}" />
                     </Grid>
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding NavigateToMyNocApplications}" CommandParameter="4" NumberOfTapsRequired="1" />
+                        <TapGestureRecognizer
+                            Command="{Binding NavigateToMyNocApplications}"
+                            CommandParameter="10"
+                            NumberOfTapsRequired="1" />
+                    </Frame.GestureRecognizers>
+
+                </Frame>
+
+
+                <!--  Owned Noc for reviewer  -->
+                <Frame
+                    Grid.Row="1"
+                    Margin="0"
+                    Padding="0"
+                    BackgroundColor="{DynamicResource AppBackgroundGray}"
+                    HasShadow="False"
+                    HeightRequest="60"
+                    IsVisible="{Binding IsProcessorFlow}">
+                    <Grid Margin="10" ColumnDefinitions="2*,8*,2*">
+                        <Frame Grid.Column="0" Style="{StaticResource circleFram}">
+                            <Image
+                                Aspect="AspectFit"
+                                HeightRequest="40"
+                                Source="doc_icon" />
+                        </Frame>
+
+                        <StackLayout
+                            Grid.Column="1"
+                            Margin="0"
+                            Padding="0"
+                            Orientation="Horizontal">
+                            <Label Style="{StaticResource menuLabel}" Text="Owned NOCs" />
+                            <Frame Style="{StaticResource counterCircleFram}">
+                                <Label Style="{StaticResource countLabel}" Text="{Binding OwnedApplicationCount}" />
+                            </Frame>
+                        </StackLayout>
+                        <Image
+                            Grid.Column="2"
+                            Source="rightArrowWhite"
+                            Style="{StaticResource rightArrow}" />
+                    </Grid>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding NavigateToMyNocApplications}"
+                            CommandParameter="5"
+                            NumberOfTapsRequired="1" />
                     </Frame.GestureRecognizers>
                 </Frame>
 
-                 <!--Replied NOCs|OR| Comment Reply flow-->
-                 <Frame Grid.Row="3" Padding="0" BackgroundColor="{DynamicResource AppBackgroundGray}" HasShadow="False" Margin="0" HeightRequest="60" IsVisible="{Binding IsProcessorFlow}">
-                    <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
+                <!--  Commented Noc  -->
+                <Frame
+                    Grid.Row="2"
+                    Margin="0"
+                    Padding="0"
+                    BackgroundColor="{DynamicResource AppBackgroundGray}"
+                    HasShadow="False"
+                    HeightRequest="60">
+                    <Grid Margin="10" ColumnDefinitions="2*,8*,2*">
                         <Frame Grid.Column="0" Style="{StaticResource circleFram}">
-                            <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="40"></Image>
+                            <Image
+                                Aspect="AspectFit"
+                                HeightRequest="40"
+                                Source="doc_icon" />
                         </Frame>
-                       
-                        <StackLayout Grid.Column="1" Orientation="Horizontal" Padding="0" Margin="0">
-                            <Label  Style="{StaticResource menuLabel}" Text="Comment Reply" />
+
+                        <StackLayout
+                            Grid.Column="1"
+                            Margin="0"
+                            Padding="0"
+                            Orientation="Horizontal">
+                            <Label Style="{StaticResource menuLabel}" Text="Commented NOCs" />
                             <Frame Style="{StaticResource counterCircleFram}">
-                                <Label Text="{Binding RepliedNOCsCount}" Style="{StaticResource countLabel}"></Label>
+                                <Label Style="{StaticResource countLabel}" Text="{Binding CommentedApplicationCount}" />
                             </Frame>
                         </StackLayout>
-                        <Image Grid.Column="2" Style="{StaticResource rightArrow}" Source="rightArrowWhite" />
+                        <Image
+                            Grid.Column="2"
+                            Source="rightArrowWhite"
+                            Style="{StaticResource rightArrow}" />
                     </Grid>
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding NavigateToMyNocApplications}" CommandParameter="9" NumberOfTapsRequired="1" />
+                        <TapGestureRecognizer
+                            Command="{Binding NavigateToMyNocApplications}"
+                            CommandParameter="1"
+                            NumberOfTapsRequired="1" />
                     </Frame.GestureRecognizers>
                 </Frame>
-                
 
-                 <!--Completed Nocs-->
-                <Frame Grid.Row="4" Padding="0" BackgroundColor="{DynamicResource AppBackgroundGray}" HasShadow="False" Margin="0" HeightRequest="60" >
-                    <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
+
+
+
+                <!--  Revalidation in 10 Days Noc Or Replied Noc for Processor flow  -->
+                <Frame
+                    Grid.Row="3"
+                    Margin="0"
+                    Padding="0"
+                    BackgroundColor="{DynamicResource AppBackgroundGray}"
+                    HasShadow="False"
+                    HeightRequest="60"
+                    IsVisible="{Binding IsProcessorFlow, Converter={StaticResource InvertedBoolConverter}}">
+                    <Grid Margin="10" ColumnDefinitions="2*,8*,2*">
                         <Frame Grid.Column="0" Style="{StaticResource circleFram}">
-                            <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="40"></Image>
+                            <Image
+                                Aspect="AspectFit"
+                                HeightRequest="40"
+                                Source="doc_icon" />
                         </Frame>
-                       
-                        <StackLayout Grid.Column="1" Orientation="Horizontal" Padding="0" Margin="0">
-                            <Label  Style="{StaticResource menuLabel}" Text="Completed NOCs" />
+
+                        <StackLayout
+                            Grid.Column="1"
+                            Margin="0"
+                            Padding="0"
+                            Orientation="Horizontal">
+                            <Label Style="{StaticResource menuLabel}" Text="NOCs for Revalidation in two Weeks" />
+                            <!--  earlier it was 10 days latest fix for 2 weeks  -->
                             <Frame Style="{StaticResource counterCircleFram}">
-                                <Label Text="{Binding CompletedNOCsCount}" Style="{StaticResource countLabel}"></Label>
+                                <Label Style="{StaticResource countLabel}" Text="{Binding NocApplicationforRevalidationInTenDaysCount}" />
                             </Frame>
                         </StackLayout>
-                        <Image Grid.Column="2" Style="{StaticResource rightArrow}" Source="rightArrowWhite" />
+                        <Image
+                            Grid.Column="2"
+                            Source="rightArrowWhite"
+                            Style="{StaticResource rightArrow}" />
                     </Grid>
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding NavigateToMyNocApplications}" CommandParameter="11" NumberOfTapsRequired="1" />
+                        <TapGestureRecognizer
+                            Command="{Binding NavigateToMyNocApplications}"
+                            CommandParameter="4"
+                            NumberOfTapsRequired="1" />
                     </Frame.GestureRecognizers>
                 </Frame>
 
-                 <!--Inprogress Nocs {Phase-2 Recently added for Reviewer and Officer June-2023}-->
-                <Frame Grid.Row="5" Padding="0" BackgroundColor="{DynamicResource AppBackgroundGray}" HasShadow="False" Margin="0" HeightRequest="60" IsVisible="{Binding IsReviewerOrOfficer}" >
-                    <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
+                <!--  Replied NOCs|OR| Comment Reply flow  -->
+                <Frame
+                    Grid.Row="3"
+                    Margin="0"
+                    Padding="0"
+                    BackgroundColor="{DynamicResource AppBackgroundGray}"
+                    HasShadow="False"
+                    HeightRequest="60"
+                    IsVisible="{Binding IsProcessorFlow}">
+                    <Grid Margin="10" ColumnDefinitions="2*,8*,2*">
                         <Frame Grid.Column="0" Style="{StaticResource circleFram}">
-                            <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="40"></Image>
+                            <Image
+                                Aspect="AspectFit"
+                                HeightRequest="40"
+                                Source="doc_icon" />
                         </Frame>
-                       
-                        <StackLayout Grid.Column="1" Orientation="Horizontal" Padding="0" Margin="0">
-                            <Label  Style="{StaticResource menuLabel}" Text="In progress NOCs" />
+
+                        <StackLayout
+                            Grid.Column="1"
+                            Margin="0"
+                            Padding="0"
+                            Orientation="Horizontal">
+                            <Label Style="{StaticResource menuLabel}" Text="Comment Reply" />
                             <Frame Style="{StaticResource counterCircleFram}">
-                                <Label Text="{Binding InProgressNOCsCount}" Style="{StaticResource countLabel}"></Label>
+                                <Label Style="{StaticResource countLabel}" Text="{Binding RepliedNOCsCount}" />
                             </Frame>
                         </StackLayout>
-                        <Image Grid.Column="2" Style="{StaticResource rightArrow}" Source="rightArrowWhite" />
+                        <Image
+                            Grid.Column="2"
+                            Source="rightArrowWhite"
+                            Style="{StaticResource rightArrow}" />
                     </Grid>
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding NavigateToMyNocApplications}" CommandParameter="17" NumberOfTapsRequired="1" />
+                        <TapGestureRecognizer
+                            Command="{Binding NavigateToMyNocApplications}"
+                            CommandParameter="9"
+                            NumberOfTapsRequired="1" />
                     </Frame.GestureRecognizers>
                 </Frame>
-                
 
 
-               <!--Notifications-->
-                <Frame Grid.Row="6" Padding="0" BackgroundColor="{DynamicResource AppBackgroundGray}" HasShadow="False" Margin="0" HeightRequest="60">
-                    <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
+                <!--  Completed Nocs  -->
+                <Frame
+                    Grid.Row="4"
+                    Margin="0"
+                    Padding="0"
+                    BackgroundColor="{DynamicResource AppBackgroundGray}"
+                    HasShadow="False"
+                    HeightRequest="60">
+                    <Grid Margin="10" ColumnDefinitions="2*,8*,2*">
                         <Frame Grid.Column="0" Style="{StaticResource circleFram}">
-                            <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="40"></Image>
+                            <Image
+                                Aspect="AspectFit"
+                                HeightRequest="40"
+                                Source="doc_icon" />
                         </Frame>
-                      
-                        <StackLayout Grid.Column="1" Orientation="Horizontal" Padding="0" Margin="0">
+
+                        <StackLayout
+                            Grid.Column="1"
+                            Margin="0"
+                            Padding="0"
+                            Orientation="Horizontal">
+                            <Label Style="{StaticResource menuLabel}" Text="Completed NOCs" />
+                            <Frame Style="{StaticResource counterCircleFram}">
+                                <Label Style="{StaticResource countLabel}" Text="{Binding CompletedNOCsCount}" />
+                            </Frame>
+                        </StackLayout>
+                        <Image
+                            Grid.Column="2"
+                            Source="rightArrowWhite"
+                            Style="{StaticResource rightArrow}" />
+                    </Grid>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding NavigateToMyNocApplications}"
+                            CommandParameter="11"
+                            NumberOfTapsRequired="1" />
+                    </Frame.GestureRecognizers>
+                </Frame>
+
+                <!--  Inprogress Nocs {Phase-2 Recently added for Reviewer and Officer June-2023}  -->
+                <Frame
+                    Grid.Row="5"
+                    Margin="0"
+                    Padding="0"
+                    BackgroundColor="{DynamicResource AppBackgroundGray}"
+                    HasShadow="False"
+                    HeightRequest="60"
+                    IsVisible="{Binding IsReviewerOrOfficer}">
+                    <Grid Margin="10" ColumnDefinitions="2*,8*,2*">
+                        <Frame Grid.Column="0" Style="{StaticResource circleFram}">
+                            <Image
+                                Aspect="AspectFit"
+                                HeightRequest="40"
+                                Source="doc_icon" />
+                        </Frame>
+
+                        <StackLayout
+                            Grid.Column="1"
+                            Margin="0"
+                            Padding="0"
+                            Orientation="Horizontal">
+                            <Label Style="{StaticResource menuLabel}" Text="In progress NOCs" />
+                            <Frame Style="{StaticResource counterCircleFram}">
+                                <Label Style="{StaticResource countLabel}" Text="{Binding InProgressNOCsCount}" />
+                            </Frame>
+                        </StackLayout>
+                        <Image
+                            Grid.Column="2"
+                            Source="rightArrowWhite"
+                            Style="{StaticResource rightArrow}" />
+                    </Grid>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding NavigateToMyNocApplications}"
+                            CommandParameter="17"
+                            NumberOfTapsRequired="1" />
+                    </Frame.GestureRecognizers>
+                </Frame>
+
+                <!--  Notifications  -->
+                <Frame
+                    Grid.Row="6"
+                    Margin="0"
+                    Padding="0"
+                    BackgroundColor="{DynamicResource AppBackgroundGray}"
+                    HasShadow="False"
+                    HeightRequest="60">
+                    <Grid Margin="10" ColumnDefinitions="2*,8*,2*">
+                        <Frame Grid.Column="0" Style="{StaticResource circleFram}">
+                            <Image
+                                Aspect="AspectFit"
+                                HeightRequest="40"
+                                Source="doc_icon" />
+                        </Frame>
+
+                        <StackLayout
+                            Grid.Column="1"
+                            Margin="0"
+                            Padding="0"
+                            Orientation="Horizontal">
                             <Label Style="{StaticResource menuLabel}" Text="Notifications" />
                             <Frame Style="{StaticResource counterCircleFram}">
-                                <Label Text="{Binding NotificationCount}" Style="{StaticResource countLabel}"></Label>
+                                <Label Style="{StaticResource countLabel}" Text="{Binding NotificationCount}" />
                             </Frame>
                         </StackLayout>
-                        <Image Grid.Column="2" Style="{StaticResource rightArrow}" Source="rightArrowWhite" />
+                        <Image
+                            Grid.Column="2"
+                            Source="rightArrowWhite"
+                            Style="{StaticResource rightArrow}" />
                     </Grid>
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding NavigateToNotificationPageCommand}" NumberOfTapsRequired="1" />
                     </Frame.GestureRecognizers>
                 </Frame>
-                 <!--Logout-->
-                <Frame Grid.Row="7" Padding="0" BackgroundColor="{DynamicResource AppBackgroundGray}" HasShadow="False" Margin="0" HeightRequest="60">
-                    <Grid ColumnDefinitions="2*,8*,2*" Margin="10">
+
+                <!--  Dashboard  -->
+                <Frame
+                    Grid.Row="7"
+                    Margin="0"
+                    Padding="0"
+                    BackgroundColor="{DynamicResource AppBackgroundGray}"
+                    HasShadow="False"
+                    HeightRequest="60">
+                    <Grid Margin="10" ColumnDefinitions="2*,8*,2*">
                         <Frame Grid.Column="0" Style="{StaticResource circleFram}">
-                            <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="40"></Image>
+                            <Image
+                                Aspect="AspectFit"
+                                HeightRequest="40"
+                                Source="doc_icon" />
                         </Frame>
-                        <Label Grid.Column="1" Style="{StaticResource menuLabel}" Text="Log Out" />
-                        <Image Grid.Column="2" Style="{StaticResource rightArrow}" Source="rightArrowWhite" />
+                        <Label
+                            Grid.Column="1"
+                            Style="{StaticResource menuLabel}"
+                            Text="Dashboard" />
+                        <Image
+                            Grid.Column="2"
+                            Source="rightArrowWhite"
+                            Style="{StaticResource rightArrow}" />
+                    </Grid>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding PerformDashboardCommand}" NumberOfTapsRequired="1" />
+                    </Frame.GestureRecognizers>
+                </Frame>
+
+                <!--  Logout  -->
+                <Frame
+                    Grid.Row="8"
+                    Margin="0"
+                    Padding="0"
+                    BackgroundColor="{DynamicResource AppBackgroundGray}"
+                    HasShadow="False"
+                    HeightRequest="60">
+                    <Grid Margin="10" ColumnDefinitions="2*,8*,2*">
+                        <Frame Grid.Column="0" Style="{StaticResource circleFram}">
+                            <Image
+                                Aspect="AspectFit"
+                                HeightRequest="40"
+                                Source="doc_icon" />
+                        </Frame>
+                        <Label
+                            Grid.Column="1"
+                            Style="{StaticResource menuLabel}"
+                            Text="Log Out" />
+                        <Image
+                            Grid.Column="2"
+                            Source="rightArrowWhite"
+                            Style="{StaticResource rightArrow}" />
                     </Grid>
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding PerformLogOutCommand}" NumberOfTapsRequired="1" />
                     </Frame.GestureRecognizers>
                 </Frame>
-               
+
             </Grid>
-            <Frame Grid.Row="2"   Padding="10" HeightRequest="40" HasShadow="False">
+            <Frame
+                Grid.Row="2"
+                Padding="10"
+                HasShadow="False"
+                HeightRequest="40">
                 <Grid ColumnDefinitions="5*, 5*">
-                    <Image Grid.Column="0" Source="home" HorizontalOptions="Start">
+                    <Image
+                        Grid.Column="0"
+                        HorizontalOptions="Start"
+                        Source="home">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding GoHomeCommand}" />
                         </Image.GestureRecognizers>

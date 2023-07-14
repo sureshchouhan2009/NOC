@@ -202,6 +202,37 @@ namespace NOC.ViewModels
             IsBusy = false;
         }
 
+        private ICommand performDashboardCommand;
+
+        public ICommand PerformDashboardCommand
+        {
+            get
+            {
+                if (performDashboardCommand == null)
+                {
+                    performDashboardCommand = new Command(performDashboardCommandExecute);
+                }
+
+                return performDashboardCommand;
+            }
+        }
+
+        private async void performDashboardCommandExecute(object obj)
+        {
+            try
+            {
+
+                await Launcher.OpenAsync("https://play.google.com/store/apps/details?id=com.microsoft.powerbim&hl=en-IN");
+                //await Launcher.OpenAsync("https://apps.apple.com/in/app/microsoft-power-bi/id929738808#:~:text=and%20Apple%C2%A0Watch.-,Microsoft,-Power%20BI");
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+       
+
         private ICommand navigateToMyNocApplications;
 
         public ICommand NavigateToMyNocApplications

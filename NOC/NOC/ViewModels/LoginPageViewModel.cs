@@ -82,7 +82,7 @@ namespace NOC.ViewModels
             IsBusy = true;
             try
             {
-                EmailText = "Reviwer_uat";
+                EmailText = "Eroperator_uat";
                 PasswordText = "User@123";
                 if (String.IsNullOrEmpty(EmailText) || String.IsNullOrEmpty(PasswordText))
                 {

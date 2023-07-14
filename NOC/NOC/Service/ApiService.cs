@@ -1281,6 +1281,99 @@ namespace NOC.Service
             return responseData;
         }
 
+       
 
+        public async Task<string> GenericGetApiCall(String RequestUrl)
+        {
+            string result = "";
+            try
+            {
+                
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                var response = await client.GetAsync(RequestUrl);
+                if (response.IsSuccessStatusCode)
+                {
+                     result = await response.Content.ReadAsStringAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            return result;
+        }
+
+        public async Task<string> GenericPostApiCall(string RequestUrl,object RequestModel=null)
+        {
+            string Result = "";
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                
+                var payload = ServiceUtility.BuildRequest(RequestModel);
+                var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
+                var response = await client.SendAsync(req);
+                if (response?.IsSuccessStatusCode ?? false)
+                {
+                    Result = await response.Content.ReadAsStringAsync();
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+                
+
+            }
+            return Result;
+        }
+
+        public async Task<List<StackHolderAndOfficerSpecifcConditions>> GetReviewerConditions(string transactionID)
+        {
+            List<StackHolderAndOfficerSpecifcConditions> Result = new List<StackHolderAndOfficerSpecifcConditions>();
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                string RequestUrl = Urls.getOfficerResponsepageConditions + transactionID + "/" + "reviewer";//15837
+                object RequestModel = null;
+                var payload = ServiceUtility.BuildRequest(RequestModel);
+                var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
+                var response = await client.SendAsync(req);
+                if (response?.IsSuccessStatusCode ?? false)
+                {
+                    var condition = await response.Content.ReadAsStringAsync();
+                    var deserialData=   JsonConvert.DeserializeObject<List<StackHolderAndOfficerSpecifcConditions>>(condition);
+                    int index = 1;
+                    foreach (var CItem in deserialData)
+                    {
+                        Result.Add(new StackHolderAndOfficerSpecifcConditions
+                        {
+                            IndexNumber=index++,
+                             CommentType =CItem.CommentType,
+                              condition=CItem.condition,
+                               Order=CItem.Order,
+                                StakeholderName=CItem.StakeholderName,
+                                 SubSortOrder=CItem.SubSortOrder,
+                                  TRA_SPECCOND_ID=CItem.TRA_SPECCOND_ID,
+                                   viewReview=CItem.viewReview,
+                                    ViewDoc=CItem.ViewDoc
+
+                        });
+                    }
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+                
+
+            }
+            return Result;
+        }
     }
 }

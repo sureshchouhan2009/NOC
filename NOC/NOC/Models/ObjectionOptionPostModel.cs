@@ -7,10 +7,19 @@ namespace NOC.Models
         public string transactionid { get; set; }
         public string expirydate { get; set; }
         public int unit { get; set; }
+
+
+       
     }
 
 
-
+    public class SentBackApplicationModel
+    {
+        public string sentiduserid { get; set; }
+        public string StakeHoldersCodeDisplay { get; set; }
+        public int sentbacktranID { get; set; }
+        public int stepcode { get; set; }
+    }
 
 
 

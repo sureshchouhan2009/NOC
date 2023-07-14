@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
+using Newtonsoft.Json;
 using NOC.Interfaces;
 using NOC.Models;
 using NOC.Service;
@@ -114,6 +117,18 @@ namespace NOC.ViewModels
                 SetProperty(ref _StackholderAttachmentsModelList, value);
             }
         }
+        private ObservableCollection<StackHolderAndResponseDisplayModel> _stackholderDisplayList = new ObservableCollection<StackHolderAndResponseDisplayModel>();
+        public ObservableCollection<StackHolderAndResponseDisplayModel> StackholderDisplayList
+        {
+            get
+            {
+                return _stackholderDisplayList;
+            }
+            set
+            {
+                SetProperty(ref _stackholderDisplayList, value);
+            }
+        }
         private ICommand _downloadCommentsAttachmentsCommand;
 
         public ICommand DownloadCommentsAttachmentsCommand
@@ -135,8 +150,17 @@ namespace NOC.ViewModels
             base.OnNavigatedTo(parameters);
             try
             {
-                OfficerConditionsList = new ObservableCollection<StackHolderAndOfficerSpecifcConditions>( await ApiService.Instance.GetOffficerResponseCondition(Session.Instance.CurrentTransaction.Transaction.TransactionID.ToString()));
+                var applicationNumber = Session.Instance.CurrentTransaction.Transaction.TransactionID.ToString();
+
+                OfficerConditionsList = new ObservableCollection<StackHolderAndOfficerSpecifcConditions>( await ApiService.Instance.GetOffficerResponseCondition(applicationNumber));
                 // OfficerConditionsList = new ObservableCollection<StackHolderAndOfficerSpecifcConditions>( await ApiService.Instance.GetOffficerResponseCondition("15837"));
+
+                //middle part data fetching for Stackholders List
+
+                //fetchAndConstructStackholderAndDecisionList(applicationNumber);
+                fetchAndConstructStackholderAndDecisionList("15842");
+
+            
 
                 //thhis is for review desition tab data
                 var data = await ApiService.Instance.GetStackholderResponsePageData(Session.Instance.SthcmntID.ToString());//"2287"
@@ -148,13 +172,52 @@ namespace NOC.ViewModels
             }
             IsBusy = false;
         }
+
+        private async void fetchAndConstructStackholderAndDecisionList(string applicationNumber)
+        {
+            string ResponseSTK = await ApiService.Instance.GenericGetApiCall(Urls.getOfficerResponsepageStackholderList + applicationNumber);
+            List<StackHolderListModel> StackHoldersList = JsonConvert.DeserializeObject<List<StackHolderListModel>>(ResponseSTK);
+
+            string Response = await ApiService.Instance.GenericGetApiCall(Urls.getOfficerResponsepageStackholderListForFilter + applicationNumber);
+            List<StackHolderFilterModel> StackHoldersListModelForFilter = JsonConvert.DeserializeObject<List<StackHolderFilterModel>>(Response);
+            foreach(var stk in StackHoldersList)
+            {
+              var matchedItem=  StackHoldersListModelForFilter.FirstOrDefault(st => st.ERStakeHoldersID == stk.StakeholderID);
+                if (matchedItem != null)
+                {
+                    StackholderDisplayList.Add(new StackHolderAndResponseDisplayModel { Decision = stk.Decision, ERStakeHoldersCode = matchedItem.ERStakeHoldersCode });
+                }
+               
+
+            }
+
+        }
+
+        //private async void DownloadCommentsAttachmentsCommandExecute(object obj)
+        //{
+        //    IsBusy = true;
+        //    var currentModel = obj as StakeHolderAttachment;
+        //    IDownloader downloader = DependencyService.Get<IDownloader>();
+        //    downloader.OnFileDownloaded += OnFileDownloaded;
+        //    downloader.DownloadFile(currentModel.UrlPath, "XF_Downloads");
+        //    IsBusy = false;
+        //}
+
         private async void DownloadCommentsAttachmentsCommandExecute(object obj)
         {
             IsBusy = true;
-            var currentModel = obj as StakeHolderAttachment;
-            IDownloader downloader = DependencyService.Get<IDownloader>();
-            downloader.OnFileDownloaded += OnFileDownloaded;
-            downloader.DownloadFile(currentModel.UrlPath, "XF_Downloads");
+            foreach(var item in StackholderAttachmentsModelList)
+            {
+                if (item.IsSelected)
+                {
+                    IDownloader downloader = DependencyService.Get<IDownloader>();
+                    downloader.OnFileDownloaded += OnFileDownloaded;
+                    downloader.DownloadFile(item.UrlPath, "XF_Downloads");
+                }
+               
+            }
+            
+           
             IsBusy = false;
         }
 
@@ -167,6 +230,27 @@ namespace NOC.ViewModels
             else
             {
                 Application.Current.MainPage.DisplayAlert("Downloader", "Error while saving the file", "Close");
+            }
+        }
+
+        private bool isChecked;
+        public bool IsChecked
+        {
+            get
+            {
+                ObservableCollection<StakeHolderAttachment> _StackholderAttachmentsModelList = new ObservableCollection<StakeHolderAttachment>();
+                foreach (var item in StackholderAttachmentsModelList)
+                {
+                    item.IsSelected = isChecked;
+                    _StackholderAttachmentsModelList.Add(item);
+                }
+                StackholderAttachmentsModelList.Clear();
+                StackholderAttachmentsModelList = _StackholderAttachmentsModelList;
+                return isChecked;
+            }
+            set
+            {
+                SetProperty(ref isChecked, value);
             }
         }
 
