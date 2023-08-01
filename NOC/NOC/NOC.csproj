@@ -13,6 +13,7 @@
     <PackageReference Include="Xamarin.Essentials.Interfaces" Version="1.5.3.2" />
     <PackageReference Include="Prism.DryIoc.Forms" Version="8.0.0.1909" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.3" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.54.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,10 +40,13 @@
     <None Remove="Mono.Android" />
     <None Remove="Xamarin.Essentials" />
     <None Remove="Enums\" />
+    <None Remove="Microsoft.Identity.Client" />
+    <None Remove="Constants\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interfaces\" />
     <Folder Include="Converters\" />
     <Folder Include="Enums\" />
+    <Folder Include="Constants\" />
   </ItemGroup>
 </Project>

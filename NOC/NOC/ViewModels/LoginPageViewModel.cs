@@ -82,8 +82,13 @@ namespace NOC.ViewModels
             IsBusy = true;
             try
             {
-                EmailText = "Eroperator_uat";
+                EmailText = "Officer_uat";
                 PasswordText = "User@123";
+
+                //for new stackholder
+
+                //EmailText = "dcc_test";
+                //PasswordText = "user123";
                 if (String.IsNullOrEmpty(EmailText) || String.IsNullOrEmpty(PasswordText))
                 {
                     await Application.Current.MainPage.DisplayToastAsync("Please enter the valid Username and Password", 10000);

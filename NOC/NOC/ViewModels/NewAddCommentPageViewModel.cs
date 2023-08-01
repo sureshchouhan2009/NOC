@@ -373,7 +373,7 @@ namespace NOC.ViewModels
             }
         }
 
-        private async void SubmitNewCommentsForApplicatOnlyCommandExecute(object obj)
+        private async void SubmitNewCommentsForApplicatOnlyCommandExecute()
         {
             IsBusy = true;
             try
@@ -518,6 +518,7 @@ namespace NOC.ViewModels
         private void ToInternalTappedCommandExecute(object obj)
         {
             int inputValue = Convert.ToInt32(obj);
+            CurrentCommentType = inputValue;
             CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == inputValue));
 
             if (inputValue == 2)
@@ -1096,7 +1097,7 @@ namespace NOC.ViewModels
                         await Application.Current.MainPage.DisplayToastAsync("Failed please try again later");
                     }
                 }
-                else
+                else if(responsecommentID!="")
                 {
                     NewCommentTextForInternal = "";
                     IsNewCommentViewVisible = false;
@@ -1105,6 +1106,10 @@ namespace NOC.ViewModels
                     AttachmentListForInternal.Clear();
                     await Application.Current.MainPage.DisplayToastAsync("Saved successfully");
                     await NavigationService.NavigateAsync("CommentsPage");
+                }
+                else if (responsecommentID == "")
+                {
+                    await Application.Current.MainPage.DisplayToastAsync("Failed please try again later");
                 }
             }
             catch (Exception ex)
@@ -1229,7 +1234,7 @@ namespace NOC.ViewModels
             IsBusy = true;
             try
             {
-                //save applicat comment
+                //save applicant comment
                     SaveNewCommentFromApplicantModel ApplicantRequestModel = new SaveNewCommentFromApplicantModel();
                 ApplicantRequestModel.CommentType = 1; // CurrentCommentType;
                     ApplicantRequestModel.Comment = NewCommentTextForApplicant;
@@ -1261,8 +1266,10 @@ namespace NOC.ViewModels
                             await getLatestComments();
                             CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == CurrentCommentType));
                             AttachmentListForApplicant.Clear();
-                            await Application.Current.MainPage.DisplayToastAsync("Saved successfully");// after successful call clear already posted attachments from List object
-                            await NavigationService.NavigateAsync("/HomePage");
+
+                        //await Application.Current.MainPage.DisplayToastAsync("Saved successfully");// after successful call clear already posted attachments from List object
+                     await  SubmitNewCommentsForApplicat();
+                    await NavigationService.NavigateAsync("/HomePage");
                         }
                         else
                         {
@@ -1272,9 +1279,14 @@ namespace NOC.ViewModels
                     }
                 else if(commentID != "")
                 {
+                  await  SubmitNewCommentsForApplicat();
                     AttachmentListForApplicant.Clear();
                     await Application.Current.MainPage.DisplayToastAsync("Saved successfully");// after successful call clear already posted attachments from List object
                     await NavigationService.NavigateAsync("/HomePage");
+                }
+                else if(commentID=="")
+                {
+                    await Application.Current.MainPage.DisplayToastAsync("Failed please try again later");
                 }
 
                 
@@ -1284,6 +1296,19 @@ namespace NOC.ViewModels
 
             }
             IsBusy = false;
+        }
+
+        private async Task<bool> SubmitNewCommentsForApplicat()
+        {
+            IsBusy = true;
+            SubmitApplicantCommentsModel submitCommentsModel = new SubmitApplicantCommentsModel();
+            submitCommentsModel.transactionid = Session.Instance.CurrentTransaction.Transaction.TransactionNumber;//AUH-20220728-1001
+            submitCommentsModel.userID = Session.Instance.CurrentUserID;
+            submitCommentsModel.transid = Session.Instance.CurrentTransaction.Transaction.TransactionID;//3978
+            var response = await ApiService.Instance.SubmitNewCommentCommonforApplicantOnly(submitCommentsModel);
+            await Application.Current.MainPage.DisplayToastAsync(response);
+            IsBusy = false;
+            return true;
         }
 
 

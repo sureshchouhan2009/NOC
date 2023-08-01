@@ -465,7 +465,7 @@ namespace NOC.ViewModels
         public async Task<bool> getLatestAttachments()
         {
          var  Attachments = await ApiService.Instance.GetTransactionAttachment(Session.Instance.CurrentTransaction.Transaction.TransactionID.ToString());
-            if (Attachments.Count > 0)
+            if (Attachments?.Count > 0)
             {
                 AttachmentList = Attachments.Where(e => e.CommentsID == 0).ToList();
             }

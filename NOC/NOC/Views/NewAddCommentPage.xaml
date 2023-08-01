@@ -193,11 +193,13 @@
                     HeightRequest="80"
                     HorizontalOptions="Center"
                     VerticalOptions="Center">
+                    <!--  IsVisible="false" {Made visible false as per Phase 2 requrement}  -->
                     <Label
                         Grid.Column="0"
                         FontAttributes="Bold"
                         FontSize="12"
                         HorizontalOptions="Center"
+                        IsVisible="false"
                         Text="Filter by:"
                         VerticalOptions="Center" />
                     <components:CustomPicker
@@ -206,6 +208,7 @@
                         FontSize="12"
                         HorizontalOptions="Center"
                         Image="dropdownicon"
+                        IsVisible="false"
                         ItemsSource="{Binding PickerSource}"
                         SelectedIndex="0"
                         SelectedItem="{Binding SelectedFilter}"
@@ -308,7 +311,7 @@
                             TextColor="Black"
                             VerticalOptions="Center">
                             <Label.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding Source={x:Reference commentsPageRef}, Path=BindingContext.AddAttachmentForInternalCommentCommand}" CommandParameter="{Binding .}" />
+                                <TapGestureRecognizer Command="{Binding Source={x:Reference commentsPageRef}, Path=BindingContext.AddAttachmentForApplicantCommentCommand}" CommandParameter="{Binding .}" />
                             </Label.GestureRecognizers>
                         </Label>
 

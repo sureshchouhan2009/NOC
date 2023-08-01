@@ -33,6 +33,7 @@ namespace NOC.Utility
         public MenuItemsCountModel MenuItemsCountModelData { get; set; }
         public List<CommentsModel> CurerentTransactionCommentsList = new List<CommentsModel>();
         public bool IsNewNocApplicationFlow { get; set; }
+        public bool IsInProgressNocsFlow { get; set; }
        public string SavedFilePathForReviewerPage { get; set; }
         public bool IsOwnedApplicationFlow { get; set; }
         public bool IsCommentedApplicationFlow { get; set; }
@@ -43,5 +44,6 @@ namespace NOC.Utility
         public bool IsOfficerequalToReviewer { get; set; }
         public bool IsStackholderequalToReviewer { get; set; }
         public int SthcmntID { get; set; }//for stackholder and officer response page data{Attachment}
+        public string CurrentTransactionWorkFlow { get;  set; }
     }
 }

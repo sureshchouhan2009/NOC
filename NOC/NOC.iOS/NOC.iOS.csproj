@@ -118,6 +118,7 @@
     <Compile Include="Renderers\CustomPickerRenderer.cs" />
     <Compile Include="Implementation\IosDownloader.cs" />
     <Compile Include="Implementation\IOSPdfFileDownloader.cs" />
+    <Compile Include="Renderers\CheckboxRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\Contents.json">
@@ -760,6 +761,12 @@
     <PackageReference Include="Prism.DryIoc.Forms" Version="8.0.0.1909" />
     <PackageReference Include="Xamarin.Essentials">
       <Version>1.7.3</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Identity.Client">
+      <Version>4.54.1</Version>
+    </PackageReference>
+    <PackageReference Include="SaturdayMP.XPlugins.iOS.BEMCheckBox">
+      <Version>1.4.3</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

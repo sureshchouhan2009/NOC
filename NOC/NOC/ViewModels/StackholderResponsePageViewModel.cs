@@ -180,8 +180,7 @@ namespace NOC.ViewModels
             base.OnNavigatedTo(parameters);
             try
             {
-                //OfficerConditionsList = new ObservableCollection<StackHolderAndOfficerSpecifcConditions>( await ApiService.Instance.GetOffficerResponseCondition(Session.Instance.CurrentTransaction.Transaction.TransactionID.ToString()));
-                StackholderConditionsList = new ObservableCollection<StackHolderAndOfficerSpecifcConditions>(await ApiService.Instance.GetStackholderResponseCondition(Session.Instance.CurrentTransaction.Transaction.TransactionID.ToString(), "Operations"));
+                StackholderConditionsList = new ObservableCollection<StackHolderAndOfficerSpecifcConditions>(await ApiService.Instance.GetStackholderResponseCondition(Session.Instance.CurrentTransaction.Transaction.TransactionID.ToString(), Session.Instance.CurrentTransactionWorkFlow));
                 var data = await ApiService.Instance.GetStackholderResponsePageData(Session.Instance.SthcmntID.ToString());
                 StackholderAttachmentsModelList = new ObservableCollection<StakeHolderAttachment>(data.StakeHolderAttachments);//376
 

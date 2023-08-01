@@ -336,12 +336,28 @@
                                                 Text="Download"
                                                 VerticalOptions="Center" />-->
 
-                                            <components:CustomCheckBox
+                                            <!--<components:CustomCheckBox
                                                 Grid.Column="3"
                                                 Margin="10"
                                                 Checked="{Binding IsChecked}"
+                                                HeightRequest="15"
                                                 HorizontalOptions="Center"
-                                                VerticalOptions="Center" />
+                                                VerticalOptions="Center"
+                                                WidthRequest="15" />-->
+
+                                            <components:Checkbox
+                                                Grid.Column="3"
+                                                CheckColor="Green"
+                                                CheckedOutlineColor="Orange"
+                                                HeightRequest="15"
+                                                HorizontalOptions="Center"
+                                                IsChecked="{Binding IsChecked}"
+                                                OutlineColor="Black"
+                                                VerticalOptions="Center"
+                                                WidthRequest="30" />
+
+
+
                                         </Grid>
                                     </Frame>
                                     <ListView
@@ -409,12 +425,24 @@
                                                             </StackLayout.GestureRecognizers>
                                                         </StackLayout>-->
 
-                                                        <components:CustomCheckBox
+                                                        <!--<components:CustomCheckBox
                                                             Grid.Column="3"
                                                             Margin="10"
                                                             Checked="{Binding IsSelected}"
                                                             HorizontalOptions="Center"
-                                                            VerticalOptions="Center" />
+                                                            VerticalOptions="Center" />-->
+                                                        <components:Checkbox
+                                                            Grid.Column="3"
+                                                            CheckColor="Green"
+                                                            CheckedOutlineColor="Orange"
+                                                            HeightRequest="15"
+                                                            HorizontalOptions="Center"
+                                                            IsChecked="{Binding IsSelected}"
+                                                            OutlineColor="Black"
+                                                            VerticalOptions="Center"
+                                                            WidthRequest="30" />
+
+
                                                     </Grid>
                                                 </ViewCell>
                                             </DataTemplate>

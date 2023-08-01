@@ -16,6 +16,7 @@ using Xamarin.Forms;
 using NOC.Interfaces;
 using System.Diagnostics;
 using Xamarin.CommunityToolkit.Extensions;
+using Newtonsoft.Json.Linq;
 
 namespace NOC.Service
 {
@@ -280,6 +281,39 @@ namespace NOC.Service
             }
             return responsedata;
         }
+
+
+        /// <summary>
+        /// To get the detailed information of particular transaction 
+        /// </summary>
+        /// <param name="applicationNumber"></param>
+        /// <returns></returns>
+        public async Task<Transaction> GetTransactionDetailsOldOne(string applicationNumber)
+        {
+            Transaction responsedata = new Transaction();
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+                String RequestUrl = Urls.GetTransactionDetails + applicationNumber;
+                var response = await client.GetAsync(RequestUrl);
+                if (response.IsSuccessStatusCode)
+                {
+                  var  result = await response.Content.ReadAsStringAsync();
+                    responsedata = JsonConvert.DeserializeObject<TrasactionDetailsOld>(result, ServiceUtility.GetJsonSerializationSettings()).Transaction;
+
+                   
+                }
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+            return responsedata;
+        }
+
 
         /// <summary>
         /// To get list of attachments of Trasaction
@@ -627,11 +661,11 @@ namespace NOC.Service
                 var payload = ServiceUtility.BuildRequest(NoObjectionRequestModel);
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
                 var response = await client.SendAsync(req);
-                //if (response?.IsSuccessStatusCode ?? false)
-                //{
-                    string result = await response.Content.ReadAsStringAsync();
-                    SuccessResult = JsonConvert.DeserializeObject<String>(result);
-               // }
+                if (response?.IsSuccessStatusCode ?? false)
+                {
+                  string result = await response.Content.ReadAsStringAsync();
+                  SuccessResult = JsonConvert.DeserializeObject<String>(result);
+                }
             }
             catch (Exception ex)
             {
@@ -922,7 +956,7 @@ namespace NOC.Service
                 var client = ServiceUtility.CreateNewHttpClient();
                 var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
                 client.DefaultRequestHeaders.Authorization = authHeader;
-                String RequestUrl = Urls.SaveSpecificCondition+ IsReviewer.ToString().ToLower();
+                String RequestUrl = Urls.SaveSpecificCondition+ IsReviewer.ToString().ToLower()+"/"+ usaveCondition.TRANSACTIONID;
                 var payload = ServiceUtility.BuildRequest(usaveCondition);
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
                 var response = await client.SendAsync(req);
@@ -1245,6 +1279,34 @@ namespace NOC.Service
                     string result = await response.Content.ReadAsStringAsync();
                     responseData = JsonConvert.DeserializeObject<List<StackHolderAndOfficerSpecifcConditions>>(result);
                 }
+                var client1 = ServiceUtility.CreateNewHttpClient();
+                var authHeader1 = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
+                client1.DefaultRequestHeaders.Authorization = authHeader1;
+                String RequestUrl1 = Urls.getStackholderResponsepageConditionsAsLoggedInPersons  + workFlow;
+                var trasaction = await GetTransactionDetailsOldOne(Session.Instance.CurrentTransaction.Transaction.TransactionNumber);
+                var payload = ServiceUtility.BuildRequest(trasaction);
+                var req1 = new HttpRequestMessage(HttpMethod.Post, RequestUrl1) { Content = payload };
+                var response1 = await client1.SendAsync(req1);
+                if (response1?.IsSuccessStatusCode ?? false)
+                {
+                    string result = await response1.Content.ReadAsStringAsync();
+                    var OldCommentModelList = JsonConvert.DeserializeObject<ReviewerConditionInReviewerPageModel>(result);
+                    int index = 1;
+                    foreach (var CItem in OldCommentModelList.UserSpCondition)
+                    {
+                        responseData.Add(new StackHolderAndOfficerSpecifcConditions
+                        {
+                           
+                            IndexNumber = index++,
+                            CommentType = CItem.COMMENTTYPE,
+                            condition = CItem.CONDITIONS,
+                            TRA_SPECCOND_ID = CItem.TRA_SPECCOND_ID,
+                        }
+                        ) ;
+                    }
+                    
+                }
+
             }
             catch (Exception ex)
             {
@@ -1367,6 +1429,33 @@ namespace NOC.Service
 
 
                 }
+
+                string transactionNumber = Session.Instance.CurrentTransaction.Transaction.TransactionNumber;
+                var useraddedConditions = await ApiService.Instance.GenericPostApiCall(Urls.getOfficerResponsepageConditionsForReviewerUserConditions + transactionNumber + "/" + "reviewer");
+                if (!string.IsNullOrEmpty(useraddedConditions))
+                {
+                    ReviewerConditionInReviewerPageModel uCondition = JsonConvert.DeserializeObject<ReviewerConditionInReviewerPageModel>(useraddedConditions);
+                    int index = 1;
+                    foreach (var CItem in uCondition.UserSpCondition)
+                    {
+                        Result.Add(new StackHolderAndOfficerSpecifcConditions
+                        {
+                            IndexNumber = index++,
+                            CommentType = CItem.COMMENTTYPE,
+                            condition = CItem.CONDITIONS,
+
+                            //StakeholderName = CItem.StakeholderName,
+                            // SubSortOrder = CItem.SubSortOrder,
+                            TRA_SPECCOND_ID = CItem.TRA_SPECCOND_ID,
+                            //   viewReview = CItem.viewReview,
+                            //  ViewDoc = CItem.ViewDoc
+
+                        });
+                    }
+
+                }
+                
+
             }
             catch (Exception ex)
             {

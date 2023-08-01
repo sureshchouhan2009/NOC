@@ -5,6 +5,7 @@ using NOC.Utility;
 using Prism.Navigation;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -221,15 +222,26 @@ namespace NOC.ViewModels
         {
             try
             {
+                string url = string.Empty;
+                string location = RegionInfo.CurrentRegion.Name.ToLower();
+                if (Device.RuntimePlatform == Device.Android)
+                {
+                    //await Launcher.OpenAsync("https://play.google.com/store/apps/details?id=com.microsoft.powerbim&hl=en-IN");
+                    url = "https://play.google.com/store/apps/details?id=com.microsoft.powerbim&hl=en-IN";
+                }
+                else
+                {
+                    url = "https://apps.apple.com/" + location + "/app/microsoft-power-bi/id929738808";
+                }
 
-                await Launcher.OpenAsync("https://play.google.com/store/apps/details?id=com.microsoft.powerbim&hl=en-IN");
-                //await Launcher.OpenAsync("https://apps.apple.com/in/app/microsoft-power-bi/id929738808#:~:text=and%20Apple%C2%A0Watch.-,Microsoft,-Power%20BI");
+                await Browser.OpenAsync(url, BrowserLaunchMode.External);
+
             }
             catch (Exception ex)
             {
 
             }
-        }
+        } 
 
        
 
@@ -271,6 +283,17 @@ namespace NOC.ViewModels
                 else
                 {
                     Session.Instance.IsNewNocApplicationFlow = false;
+                }
+
+                //checking for InProgress Nocs Flow
+                if (inputValue == 2)
+                {
+                    Session.Instance.IsInProgressNocsFlow = true;
+                    
+                }
+                else
+                {
+                    Session.Instance.IsInProgressNocsFlow = false;
                 }
                 //checking for owned application
                 if (inputValue == 5)
@@ -325,9 +348,13 @@ namespace NOC.ViewModels
             {
                 return "Commented NOCs";
             }
-            else if(inputValue==2)
+            //else if(inputValue==2)
+            //{
+            //    return "My NOCs";
+            //}
+            else if (inputValue == 2)
             {
-                return "My NOCs";
+                return "In Progress NOCs";
             }
             //else if (inputValue == 3)
             //{

@@ -34,7 +34,7 @@ namespace NOC.Service
         #region UserSpecific ApplicationLists 
         public const string applicantGetTransactionList = BaseUrl + "api/Search/GetTransactionList/applicant/";
         public const string OfficerGetTransactionList = BaseUrl + "api/Search/GetTransactionList/processor/";
-        public const string InProgressOfficerGetTransactionList = BaseUrl + "api/Search/GetTransactionList/officer/"; //newly added inprogess application for Officer user
+        public const string InProgressOfficerGetTransactionList = BaseUrl + "api/Search/GetTransactionList/processor/"; //newly added inprogess application for Officer user
         public const string stakeholderTransactionList = BaseUrl + "api/Search/GetTransactionList/stakeholder/";
         public const string reviewerGetTransactionList = BaseUrl + "api/Search/GetTransactionList/reviewer/";
         #endregion
@@ -112,8 +112,11 @@ namespace NOC.Service
         public const string checkStatckholder2 = BaseUrl + "api/SolutionRoles/GetUserSolutionRoleID/";
 
         public const string getStackholderResponsepageData = BaseUrl + "api/search/SpecificCommentstoview/";
+
+        public const string getStackholderResponsepageConditionsAsLoggedInPersons = BaseUrl + "api/SpecificCondition/SpecificConditionstakholder/";// workflow
         public const string getStackholderResponsepageConditions = BaseUrl + "api/SpecificCondition/GetconditionwithWorkflow/";//15767/Operations
         public const string getOfficerResponsepageConditions = BaseUrl + "api/SpecificCondition/GetAllStakeHolderResponse/";
+        public const string getOfficerResponsepageConditionsForReviewerUserConditions = BaseUrl + "api/SpecificCondition/GetReviewerConditons/";
 
 
         public const string getOfficerResponsepageStackholderList = BaseUrl + "api/search/togetcountpageloadcomntsforReview/";//15842
@@ -127,6 +130,7 @@ namespace NOC.Service
         public const string AgreGateSubmitInReviewerResponse = BaseUrl + "api/Attachments/UpdatetoView/Reviwer";
         public const string AgreGateReviewerConditions = BaseUrl + "api/SpecificCondition/ConditionsUpdatetoView/Reviwer";
         public const string SentbackAPICallInReviewerResponse = BaseUrl + "api/Sentback/SentbacktoAll";
+        public const string DownloadMultipleAttachments = BaseUrl + "api/Attachments/CreateZipFileAllattachment";
 
 
     }

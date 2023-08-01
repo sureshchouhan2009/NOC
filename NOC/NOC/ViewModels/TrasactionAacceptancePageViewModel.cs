@@ -518,25 +518,54 @@ namespace NOC.ViewModels
 
         private async void DownloadCommentsAttachmentsCommandExecute(object obj)
         {
-            if (OfficerResponseAttachmentsInReviewerResponseList.Any(i => i.IsSelected))
+            try
             {
-                IsBusy = true;
+
+
+                List<int> AIds = new List<int>();
                 foreach (var item in OfficerResponseAttachmentsInReviewerResponseList)
                 {
                     if (item.IsSelected)
                     {
-                        IDownloader downloader = DependencyService.Get<IDownloader>();
-                        downloader.OnFileDownloaded += OnFileDownloaded;
-                        downloader.DownloadFile(item.UrlPath, "XF_Downloads");
+                        AIds.Add(item.AttachmentID);
                     }
 
                 }
-                IsBusy = false;
+
+                string responseUrlJson = await ApiService.Instance.GenericPostApiCall(Urls.DownloadMultipleAttachments, AIds);
+                string AllAttachmentUrl= JsonConvert.DeserializeObject<string>(responseUrlJson);
+                if (!string.IsNullOrEmpty(AllAttachmentUrl))
+                {
+                    await Launcher.OpenAsync(AllAttachmentUrl);
+                }
+
             }
-            else
+            catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayToastAsync("Please select any attachment");
+
             }
+
+
+
+            //if (OfficerResponseAttachmentsInReviewerResponseList.Any(i => i.IsSelected))
+            //{
+            //    IsBusy = true;
+            //    foreach (var item in OfficerResponseAttachmentsInReviewerResponseList)
+            //    {
+            //        if (item.IsSelected)
+            //        {
+            //            IDownloader downloader = DependencyService.Get<IDownloader>();
+            //            downloader.OnFileDownloaded += OnFileDownloaded;
+            //            downloader.DownloadFile(item.UrlPath, "XF_Downloads");
+            //        }
+
+            //    }
+            //    IsBusy = false;
+            //}
+            //else
+            //{
+            //    await Application.Current.MainPage.DisplayToastAsync("Please select any attachment");
+            //}
         }
 
         private void OnFileDownloaded(object sender, DownloadEventArgs e)
@@ -1374,7 +1403,7 @@ namespace NOC.ViewModels
             string officerResponseDetails = await ApiService.Instance.GenericGetApiCall(Urls.OfficerResponseDetails + transactionID);
             OfficerResponseDetails = JsonConvert.DeserializeObject<OfficerResponseDetailsModel>(officerResponseDetails);
 
-            string officerResponseAttachments = await ApiService.Instance.GenericGetApiCall(Urls.OfficerResponseBlockAttachments + "15823");
+            string officerResponseAttachments = await ApiService.Instance.GenericGetApiCall(Urls.OfficerResponseBlockAttachments + transactionID);
             OfficerResponseAttachmentsInReviewerResponseList =new ObservableCollection<OfficerResponseAttachmentsInReviewerResponse>( JsonConvert.DeserializeObject<List<OfficerResponseAttachmentsInReviewerResponse>>(officerResponseAttachments));
 
             var res = GetAndFillConditionSpecificPart(transactionID);

@@ -518,6 +518,7 @@ public class CommentsPageViewModel : ViewModelBase
         private void ToInternalTappedCommandExecute(object obj)
         {
             int inputValue=  Convert.ToInt32( obj);
+            CurrentCommentType = inputValue;
             CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == inputValue));
 
             if (inputValue == 2)

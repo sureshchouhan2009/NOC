@@ -1,3 +1,4 @@
+using Microsoft.Identity.Client;
 using NOC.Enums;
 using NOC.Models;
 using NOC.Service;
@@ -16,10 +17,23 @@ namespace NOC
 {
     public partial class App
     {
+        public static IPublicClientApplication IdentityClient { get; set; }
+        // public IPlatform PlatformService { get; }
+
         public App(IPlatformInitializer initializer)
             : base(initializer)
         {
         }
+        //public App(IPlatform platformService)
+        //{
+        //    InitializeComponent();
+
+        //    var PlatformService = platformService;
+        //    //TodoService = new RemoteTodoService(GetAuthenticationToken);
+        //    //MainPage = new NavigationPage(new MainPage(this, TodoService));
+        //}
+
+
         private bool CheckIfLoggedIn()
         {
             // this one check if needed this data
@@ -47,11 +61,45 @@ namespace NOC
             #endregion
             return Preferences.Get("IsLoggedIN", false);
         }
+        //protected override async void OnInitialized()
+        //{
+        //    try
+        //    {
+
+        //        InitializeComponent();
+        //        if (CheckIfLoggedIn())
+        //        {
+        //            Session.Instance.Token = Preferences.Get("Token", "");
+        //            Session.Instance.CurrentUserID = Preferences.Get("CurrentUserID", "");
+        //            // also need to check for User Type and accordingly navigate
+
+        //            if (Session.Instance.Token != "" && Session.Instance.CurrentUserID != "")
+        //            {
+
+        //                await NavigationService.NavigateAsync("/MainPage");
+
+        //            }
+        //            else
+        //            {
+        //                await NavigationService.NavigateAsync("/MainPage");
+        //            }
+
+        //        }
+        //        else
+        //        {
+        //            await NavigationService.NavigateAsync("/MainPage");
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //    }
+        //}
+
+
         protected override async void OnInitialized()
         {
             try
             {
-
                 InitializeComponent();
                 if (CheckIfLoggedIn())
                 {
@@ -59,11 +107,11 @@ namespace NOC
                     Session.Instance.CurrentUserID = Preferences.Get("CurrentUserID", "");
                     // also need to check for User Type and accordingly navigate
 
-                    if (Session.Instance.Token != "" && Session.Instance.CurrentUserID!="")
+                    if (Session.Instance.Token != "" && Session.Instance.CurrentUserID != "")
                     {
-                       
+
                         await NavigationService.NavigateAsync("/HomePage");
-                       
+
                     }
                     else
                     {
@@ -78,10 +126,7 @@ namespace NOC
             }
             catch (Exception ex)
             {
-
-               
             }
-            
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)

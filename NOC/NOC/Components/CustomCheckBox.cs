@@ -9,7 +9,14 @@ namespace NOC.Components
     {
         public CustomCheckBox()
         {
-            base.Image = "Image_Unchecked.png";
+            //""
+
+
+
+            base.HeightRequest = 15;
+            base.WidthRequest = 15;
+            base.Padding = 30;
+            base.ImageSource = ImageSource.FromFile("Image_Unchecked.png");
             base.Clicked += new EventHandler(OnClicked);
             base.SizeChanged += new EventHandler(OnSizeChanged);
             base.BackgroundColor = Color.Transparent;
@@ -54,11 +61,12 @@ namespace NOC.Components
         {
             if (newValue != null && (Boolean)newValue == true)
             {
-                ((CustomCheckBox)bindable).Image = "Image_Checked.png";
+                ((CustomCheckBox)bindable).ImageSource = ImageSource.FromFile("Image_Checked.png.png");
+                
             }
             else
             {
-                ((CustomCheckBox)bindable).Image = "Image_Unchecked.png";
+                ((CustomCheckBox)bindable).ImageSource = ImageSource.FromFile("Image_Unchecked.png");
             }
         }
 

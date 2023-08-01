@@ -9,6 +9,8 @@ using NOC.Models;
 using NOC.Service;
 using NOC.Utility;
 using Prism.Navigation;
+using Xamarin.CommunityToolkit.Extensions;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace NOC.ViewModels
@@ -206,19 +208,53 @@ namespace NOC.ViewModels
         private async void DownloadCommentsAttachmentsCommandExecute(object obj)
         {
             IsBusy = true;
-            foreach(var item in StackholderAttachmentsModelList)
+            try
             {
-                if (item.IsSelected)
+
+
+                List<int> AIds = new List<int>();
+                foreach (var item in StackholderAttachmentsModelList)
                 {
-                    IDownloader downloader = DependencyService.Get<IDownloader>();
-                    downloader.OnFileDownloaded += OnFileDownloaded;
-                    downloader.DownloadFile(item.UrlPath, "XF_Downloads");
+                    if (item.IsSelected)
+                    {
+                        AIds.Add(item.AttachmentID);
+                    }
+
                 }
-               
+
+                string responseUrl = await ApiService.Instance.GenericPostApiCall(Urls.DownloadMultipleAttachments, AIds);
+                if (!string.IsNullOrEmpty(responseUrl))
+                {
+                    await Launcher.OpenAsync(responseUrl);
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayToastAsync(responseUrl);
+                }
+
             }
-            
-           
+            catch (Exception ex)
+            {
+
+            }
             IsBusy = false;
+
+
+
+            //IsBusy = true;
+            //foreach(var item in StackholderAttachmentsModelList)
+            //{
+            //    if (item.IsSelected)
+            //    {
+            //        IDownloader downloader = DependencyService.Get<IDownloader>();
+            //        downloader.OnFileDownloaded += OnFileDownloaded;
+            //        downloader.DownloadFile(item.UrlPath, "XF_Downloads");
+            //    }
+
+            //}
+
+
+            //IsBusy = false;
         }
 
         private void OnFileDownloaded(object sender, DownloadEventArgs e)
