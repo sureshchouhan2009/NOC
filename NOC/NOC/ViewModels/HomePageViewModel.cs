@@ -1,4 +1,6 @@
-﻿using NOC.Enums;
+﻿using Microsoft.Identity.Client;
+using NOC.Constants;
+using NOC.Enums;
 using NOC.Models;
 using NOC.Service;
 using NOC.Utility;
@@ -6,9 +8,11 @@ using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.CommunityToolkit.Extensions;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -16,6 +20,8 @@ namespace NOC.ViewModels
 {
     public class HomePageViewModel : ViewModelBase
     {
+
+        public IPublicClientApplication IdentityClient { get; set; }
         private string _inProgressNOCsCount;
         public string InProgressNOCsCount
         {
@@ -198,9 +204,45 @@ namespace NOC.ViewModels
         private async void PerformLogOutExecute(object obj)
         {
             IsBusy = true;
-            Preferences.Clear();
-            await NavigationService.NavigateAsync("/LoginPage");
+           if(!await logOutFromMSAL())
+            {
+                await Application.Current.MainPage.DisplayToastAsync("There is some problem with logout", 10000);
+            }
+            else
+            {
+                Preferences.Clear();
+                await NavigationService.NavigateAsync("/LoginPage");
+            }
+           
             IsBusy = false;
+        }
+
+        private async Task< bool> logOutFromMSAL()
+        {
+            try
+            {
+
+                if (IdentityClient == null)
+                {
+                    IdentityClient = App.PlatformService.GetIdentityClient(Constant.ApplicationId);
+                }
+                var accounts = await IdentityClient.GetAccountsAsync();
+
+                // Go through all accounts and remove them.
+                while (accounts.Any())
+                {
+                    await IdentityClient.RemoveAsync(accounts.FirstOrDefault());
+                    accounts = await IdentityClient.GetAccountsAsync();
+                }
+                return true;
+               
+            }
+            catch (Exception ex)
+            {
+               
+
+                return false;
+            }
         }
 
         private ICommand performDashboardCommand;

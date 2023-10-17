@@ -219,7 +219,7 @@
                         Grid.Column="2"
                         Margin="0"
                         BackgroundColor="Transparent"
-                        Content="Accending"
+                        Content="Ascending"
                         FontSize="14"
                         HorizontalOptions="Center"
                         VerticalOptions="Center">

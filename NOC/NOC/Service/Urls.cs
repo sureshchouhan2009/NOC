@@ -131,6 +131,7 @@ namespace NOC.Service
         public const string AgreGateReviewerConditions = BaseUrl + "api/SpecificCondition/ConditionsUpdatetoView/Reviwer";
         public const string SentbackAPICallInReviewerResponse = BaseUrl + "api/Sentback/SentbacktoAll";
         public const string DownloadMultipleAttachments = BaseUrl + "api/Attachments/CreateZipFileAllattachment";
+        public const string GetUserIDFromToken = BaseUrl + "api/User/UserInfo";
 
 
     }

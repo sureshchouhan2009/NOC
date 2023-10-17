@@ -1,7 +1,5 @@
-using Microsoft.Identity.Client;
+
 using NOC.Enums;
-using NOC.Models;
-using NOC.Service;
 using NOC.Utility;
 using NOC.ViewModels;
 using NOC.Views;
@@ -17,21 +15,21 @@ namespace NOC
 {
     public partial class App
     {
-        public static IPublicClientApplication IdentityClient { get; set; }
-        // public IPlatform PlatformService { get; }
+       
+        public static NOC.Interfaces.IPlatform PlatformService { get; set; }
 
-        public App(IPlatformInitializer initializer)
-            : base(initializer)
+        public App(NOC.Interfaces.IPlatform platformService)
         {
+            PlatformService = platformService;
+            //InitializeComponent();
         }
-        //public App(IPlatform platformService)
-        //{
-        //    InitializeComponent();
 
-        //    var PlatformService = platformService;
-        //    //TodoService = new RemoteTodoService(GetAuthenticationToken);
-        //    //MainPage = new NavigationPage(new MainPage(this, TodoService));
+        //public App(IPlatformInitializer initializer) : base(initializer)
+
+        //{
         //}
+
+
 
 
         private bool CheckIfLoggedIn()

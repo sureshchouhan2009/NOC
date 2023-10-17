@@ -177,19 +177,25 @@ namespace NOC.ViewModels
 
         private async void fetchAndConstructStackholderAndDecisionList(string applicationNumber)
         {
-            string ResponseSTK = await ApiService.Instance.GenericGetApiCall(Urls.getOfficerResponsepageStackholderList + applicationNumber);
-            List<StackHolderListModel> StackHoldersList = JsonConvert.DeserializeObject<List<StackHolderListModel>>(ResponseSTK);
-
-            string Response = await ApiService.Instance.GenericGetApiCall(Urls.getOfficerResponsepageStackholderListForFilter + applicationNumber);
-            List<StackHolderFilterModel> StackHoldersListModelForFilter = JsonConvert.DeserializeObject<List<StackHolderFilterModel>>(Response);
-            foreach(var stk in StackHoldersList)
+            try
             {
-              var matchedItem=  StackHoldersListModelForFilter.FirstOrDefault(st => st.ERStakeHoldersID == stk.StakeholderID);
-                if (matchedItem != null)
+                List<StackHolderListModel> StackHoldersList = new List<StackHolderListModel>();
+                string ResponseSTK = await ApiService.Instance.GenericGetApiCall(Urls.getOfficerResponsepageStackholderList + applicationNumber);
+                StackHoldersList = JsonConvert.DeserializeObject<List<StackHolderListModel>>(ResponseSTK);
+
+                string Response = await ApiService.Instance.GenericGetApiCall(Urls.getOfficerResponsepageStackholderListForFilter + applicationNumber);
+                List<StackHolderFilterModel> StackHoldersListModelForFilter = JsonConvert.DeserializeObject<List<StackHolderFilterModel>>(Response);
+                foreach (var stk in StackHoldersList)
                 {
-                    StackholderDisplayList.Add(new StackHolderAndResponseDisplayModel { Decision = stk.Decision, ERStakeHoldersCode = matchedItem.ERStakeHoldersCode });
+                    var matchedItem = StackHoldersListModelForFilter.FirstOrDefault(st => st.ERStakeHoldersID == stk.StakeholderID);
+                    if (matchedItem != null)
+                    {
+                        StackholderDisplayList.Add(new StackHolderAndResponseDisplayModel { Decision = stk.Decision, ERStakeHoldersCode = matchedItem.ERStakeHoldersCode });
+                    }
                 }
-               
+            }
+            catch (Exception ex)
+            {
 
             }
 

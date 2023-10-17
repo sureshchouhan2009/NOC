@@ -325,7 +325,7 @@
                                                 BorderColor="Black"
                                                 HasShadow="False"
                                                 HeightRequest="40">
-                                                <Grid ColumnDefinitions="2.5*,2.5*,2.5*,2.5*" HeightRequest="40">
+                                                <Grid ColumnDefinitions="1.5*,4.5*,2.5*,1.5*" HeightRequest="40">
                                                     <!--<components:CustomCheckBox
                                                         Grid.Column="0"
                                                         Margin="10"
@@ -428,7 +428,7 @@
                                                             <Grid
                                                                 Margin="0"
                                                                 Padding="0"
-                                                                ColumnDefinitions="2.5*,2.5*,2.5*,2.5*"
+                                                                ColumnDefinitions="1.5*,4.5*,2.5*,1.5*"
                                                                 HeightRequest="35">
                                                                 <!--<components:CustomCheckBox
                                                                     Grid.Column="0"
@@ -449,7 +449,7 @@
                                                                     WidthRequest="30" />
 
                                                                 <BoxView
-                                                                    Grid.Column="1"
+                                                                    Grid.Column="0"
                                                                     HorizontalOptions="EndAndExpand"
                                                                     WidthRequest="1"
                                                                     Color="DarkGray" />
@@ -1044,7 +1044,7 @@
                         <!--#region ReviewerCondition-->
                         <Frame
                             Grid.Row="1"
-                            Margin="10,5,10,5"
+                            Margin="10,5,10,0"
                             Padding="0"
                             BorderColor="Black"
                             HasShadow="False">
@@ -1057,13 +1057,11 @@
                                     BorderColor="DarkGray"
                                     HasShadow="False"
                                     HeightRequest="40">
-                                    <Grid ColumnDefinitions="1.8*,.1*,1*,.1*,7*" HeightRequest="40">
-                                        <!--<components:CustomCheckBox
-                                            Grid.Column="0"
-                                            Margin="10"
-                                            Checked="{Binding IsCheckedForConditionAgreeget}"
-                                            HorizontalOptions="Center"
-                                            VerticalOptions="Center" />-->
+                                    <Grid
+                                        Margin="0"
+                                        Padding="0"
+                                        ColumnDefinitions="1*,.1*,1*,.1*,7.8*"
+                                        HeightRequest="40">
                                         <components:Checkbox
                                             Grid.Column="0"
                                             CheckColor="Green"
@@ -1076,7 +1074,9 @@
                                             WidthRequest="30" />
                                         <BoxView
                                             Grid.Column="1"
+                                            Margin="0"
                                             HorizontalOptions="EndAndExpand"
+                                            VerticalOptions="FillAndExpand"
                                             WidthRequest="1"
                                             Color="Black" />
                                         <Label
@@ -1089,8 +1089,9 @@
                                             VerticalOptions="Center" />
                                         <BoxView
                                             Grid.Column="3"
-                                            Margin="0,0,0,-2"
+                                            Margin="0,0,0,0"
                                             HorizontalOptions="EndAndExpand"
+                                            VerticalOptions="FillAndExpand"
                                             WidthRequest="1"
                                             Color="Black" />
                                         <Label
@@ -1105,6 +1106,7 @@
                                 </Frame>
                                 <ListView
                                     Grid.Row="1"
+                                    Margin="0"
                                     HasUnevenRows="True"
                                     HeightRequest="250"
                                     ItemsSource="{Binding StackHolderAndOfficerSpecifcConditionsList}"
@@ -1112,7 +1114,7 @@
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
                                             <ViewCell>
-                                                <Grid ColumnDefinitions="1.8*,.1*,1*,.1*,7*">
+                                                <Grid ColumnDefinitions="1*,.1*,1*,.1*,7.8*">
 
                                                     <!--<components:CustomCheckBox
                                                         Grid.Column="0"
@@ -1134,7 +1136,9 @@
                                                         WidthRequest="30" />
                                                     <BoxView
                                                         Grid.Column="1"
+                                                        Margin="0"
                                                         HorizontalOptions="EndAndExpand"
+                                                        VerticalOptions="FillAndExpand"
                                                         WidthRequest="1"
                                                         Color="Black" />
 
@@ -1149,6 +1153,7 @@
                                                     <BoxView
                                                         Grid.Column="3"
                                                         HorizontalOptions="EndAndExpand"
+                                                        VerticalOptions="FillAndExpand"
                                                         WidthRequest="1"
                                                         Color="Black" />
                                                     <Label

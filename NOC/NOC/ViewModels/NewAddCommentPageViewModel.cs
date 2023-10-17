@@ -959,6 +959,7 @@ namespace NOC.ViewModels
             var transactionDetails = Session.Instance.CurrentTransaction;
             Session.Instance.CurerentTransactionCommentsList = await ApiService.Instance.GetTransactionComents(transactionDetails.Transaction.TransactionNumber);
             //CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList);
+            
             CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == 1));
             IsApplicantFlowAndValidations = checkAndValidateApplicantFlowSubmitButtonVisibility();
             IsBusy = false;
@@ -1057,60 +1058,84 @@ namespace NOC.ViewModels
 
             try
             {
-
-                SaveNewCommentFromApplicantModel InternalCommentRequestModel = new SaveNewCommentFromApplicantModel();
-                InternalCommentRequestModel.CommentType = 2;//CurrentCommentType;//hardcoded for internal no more selection option in UI
-                InternalCommentRequestModel.Comment = NewCommentTextForInternal;
-                InternalCommentRequestModel.UserID = Session.Instance.CurrentUserID;
-                InternalCommentRequestModel.TransactionID = Session.Instance.CurrentTransaction.Transaction.TransactionID;
-                InternalCommentRequestModel.CommentsDate = DateTime.Now;
-                string responsecommentID = await ApiService.Instance.SaveNewCommentCommonforApplicantAndInternal(InternalCommentRequestModel);
-                if (responsecommentID != "" && AttachmentListForInternal.Count > 0)
+                if (string.IsNullOrWhiteSpace(NewCommentTextForInternal))
                 {
-                    MediaAttachmentModel AttModel = new MediaAttachmentModel();
-                    foreach (var listitem in AttachmentListForInternal)
+                    await Application.Current.MainPage.DisplayToastAsync("please input some comment");
+                }
+                else
+                {
+                    SaveNewCommentFromApplicantModel InternalCommentRequestModel = new SaveNewCommentFromApplicantModel();
+                    InternalCommentRequestModel.CommentType = 2;//CurrentCommentType;//hardcoded for internal no more selection option in UI
+                    InternalCommentRequestModel.Comment = NewCommentTextForInternal;
+                    InternalCommentRequestModel.UserID = Session.Instance.CurrentUserID;
+                    InternalCommentRequestModel.TransactionID = Session.Instance.CurrentTransaction.Transaction.TransactionID;
+                    InternalCommentRequestModel.CommentsDate = DateTime.Now;
+                    string responsecommentID = await ApiService.Instance.SaveNewCommentCommonforApplicantAndInternal(InternalCommentRequestModel);
+                    if (responsecommentID != "" && AttachmentListForInternal.Count > 0)
                     {
-                        listitem.commentID = int.Parse(responsecommentID);
+                        MediaAttachmentModel AttModel = new MediaAttachmentModel();
+                        foreach (var listitem in AttachmentListForInternal)
+                        {
+                            listitem.commentID = int.Parse(responsecommentID);
+                        }
+                        AttModel.attchtypeandfilepath = AttachmentListForInternal;
+                        AttModel.attachments = new Attachments
+                        {
+                            TransactionID = Session.Instance.CurrentTransaction.Transaction.TransactionID, //trasactionID,
+                            UserID = Session.Instance.CurrentUserID,
+                        };
+                        AttModel.RandomID = "";
+                        AttModel.TransactionNumber = Session.Instance.CurrentTransaction.Transaction.TransactionNumber;
+                        var attacmentSaveResponse = await ApiService.Instance.SaveCommentAttachmentToDB(AttModel);
+                        await Application.Current.MainPage.DisplayToastAsync(attacmentSaveResponse);
+                        if (responsecommentID != "")
+                        {
+                            NewCommentTextForInternal = "";
+                            IsNewCommentViewVisible = false;
+                            await getLatestComments();
+                            CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == CurrentCommentType));
+                            AttachmentListForInternal.Clear();
+                            await Application.Current.MainPage.DisplayToastAsync("Saved successfully");// after successful call clear already posted attachments from List object
+                                                                                                       // await NavigationService.NavigateAsync("CommentsPage");//as per new requirement no need to navigate to another Page, 
+
+                            //handle here visibility (text boxes for internal and applicant)
+                           
+
+                            IsNewCommentViewVisible = false;
+                            await getLatestComments();
+                            ToInternalTappedCommandExecute(2);
+                             
+
+
+                        }
+                        else
+                        {
+                            await Application.Current.MainPage.DisplayToastAsync("Failed please try again later");
+                        }
                     }
-                    AttModel.attchtypeandfilepath = AttachmentListForInternal;
-                    AttModel.attachments = new Attachments
-                    {
-                        TransactionID = Session.Instance.CurrentTransaction.Transaction.TransactionID, //trasactionID,
-                        UserID = Session.Instance.CurrentUserID,
-                    };
-                    AttModel.RandomID = "";
-                    AttModel.TransactionNumber = Session.Instance.CurrentTransaction.Transaction.TransactionNumber;
-                    var attacmentSaveResponse = await ApiService.Instance.SaveCommentAttachmentToDB(AttModel);
-                    await Application.Current.MainPage.DisplayToastAsync(attacmentSaveResponse);
-                    if (responsecommentID != "")
+                    else if (responsecommentID != "")
                     {
                         NewCommentTextForInternal = "";
                         IsNewCommentViewVisible = false;
                         await getLatestComments();
                         CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == CurrentCommentType));
                         AttachmentListForInternal.Clear();
-                        await Application.Current.MainPage.DisplayToastAsync("Saved successfully");// after successful call clear already posted attachments from List object
-                        await NavigationService.NavigateAsync("CommentsPage");
+                        await Application.Current.MainPage.DisplayToastAsync("Saved successfully");
+                        // await NavigationService.NavigateAsync("CommentsPage");//as per new requirement no need to navigate to another Page, 
+
+                        //handle here visibility (text boxes for internal and applicant)
+
+                        
+                        IsNewCommentViewVisible = false;
+                        await getLatestComments();
+                        ToInternalTappedCommandExecute(2);
                     }
-                    else
+                    else if (responsecommentID == "")
                     {
                         await Application.Current.MainPage.DisplayToastAsync("Failed please try again later");
                     }
                 }
-                else if(responsecommentID!="")
-                {
-                    NewCommentTextForInternal = "";
-                    IsNewCommentViewVisible = false;
-                    await getLatestComments();
-                    CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == CurrentCommentType));
-                    AttachmentListForInternal.Clear();
-                    await Application.Current.MainPage.DisplayToastAsync("Saved successfully");
-                    await NavigationService.NavigateAsync("CommentsPage");
-                }
-                else if (responsecommentID == "")
-                {
-                    await Application.Current.MainPage.DisplayToastAsync("Failed please try again later");
-                }
+               
             }
             catch (Exception ex)
             {
@@ -1234,9 +1259,15 @@ namespace NOC.ViewModels
             IsBusy = true;
             try
             {
-                //save applicant comment
+                if (string.IsNullOrWhiteSpace(NewCommentTextForApplicant))
+                {
+                    await Application.Current.MainPage.DisplayToastAsync("please input some comment");
+                }
+                else
+                {
+                    //save applicant comment
                     SaveNewCommentFromApplicantModel ApplicantRequestModel = new SaveNewCommentFromApplicantModel();
-                ApplicantRequestModel.CommentType = 1; // CurrentCommentType;
+                    ApplicantRequestModel.CommentType = 1; // CurrentCommentType;
                     ApplicantRequestModel.Comment = NewCommentTextForApplicant;
                     ApplicantRequestModel.UserID = Session.Instance.CurrentUserID;
                     ApplicantRequestModel.TransactionID = Session.Instance.CurrentTransaction.Transaction.TransactionID;
@@ -1261,15 +1292,15 @@ namespace NOC.ViewModels
                         await Application.Current.MainPage.DisplayToastAsync(attacmentSaveResponse);
                         if (commentID != "")
                         {
-                        NewCommentTextForApplicant = "";
+                            NewCommentTextForApplicant = "";
                             IsNewCommentViewVisible = false;
                             await getLatestComments();
                             CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == CurrentCommentType));
                             AttachmentListForApplicant.Clear();
 
-                        //await Application.Current.MainPage.DisplayToastAsync("Saved successfully");// after successful call clear already posted attachments from List object
-                     await  SubmitNewCommentsForApplicat();
-                    await NavigationService.NavigateAsync("/HomePage");
+                            //await Application.Current.MainPage.DisplayToastAsync("Saved successfully");// after successful call clear already posted attachments from List object
+                            await SubmitNewCommentsForApplicat();
+                            await NavigationService.NavigateAsync("/HomePage");
                         }
                         else
                         {
@@ -1277,19 +1308,21 @@ namespace NOC.ViewModels
                         }
 
                     }
-                else if(commentID != "")
-                {
-                  await  SubmitNewCommentsForApplicat();
-                    AttachmentListForApplicant.Clear();
-                    await Application.Current.MainPage.DisplayToastAsync("Saved successfully");// after successful call clear already posted attachments from List object
-                    await NavigationService.NavigateAsync("/HomePage");
-                }
-                else if(commentID=="")
-                {
-                    await Application.Current.MainPage.DisplayToastAsync("Failed please try again later");
+                    else if (commentID != "")
+                    {
+                        await SubmitNewCommentsForApplicat();
+                        AttachmentListForApplicant.Clear();
+                        await Application.Current.MainPage.DisplayToastAsync("Saved successfully");// after successful call clear already posted attachments from List object
+                        await NavigationService.NavigateAsync("/HomePage");
+                    }
+                    else if (commentID == "")
+                    {
+                        await Application.Current.MainPage.DisplayToastAsync("Failed please try again later");
+                    }
+
                 }
 
-                
+
             }
             catch(Exception ex)
             {

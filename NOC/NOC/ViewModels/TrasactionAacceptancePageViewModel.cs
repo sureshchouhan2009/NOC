@@ -341,8 +341,8 @@ namespace NOC.ViewModels
             IsBusy = true;
             try
             {
-                if(DateTime.Parse(CalculatedValidTillDate) > DateTime.Now.Date.AddDays(7))
-                {
+                //if(DateTime.Parse(CalculatedValidTillDate) > DateTime.Now.Date.AddDays(7))    // as discussed there isno lower linit//12-10-2023
+                //{
                     #region Phase 2 Implementation for agregate Attachments //Submit Button equavallent  to No Objection
 
                     List<String> AttachmentIds = new List<string>();
@@ -367,11 +367,11 @@ namespace NOC.ViewModels
                     var result = await ApiService.Instance.PostNoObjection(objectionOptionPostModel);
                     await Application.Current.MainPage.DisplayToastAsync(result);
                     await NavigationService.NavigateAsync("app:///HomePage");
-                }
-                else
-                {
-                    await Application.Current.MainPage.DisplayToastAsync("Please enter a validity Duration");
-                }
+                //}
+                //else
+                //{
+                //    await Application.Current.MainPage.DisplayToastAsync("Please enter a validity Duration");
+                //}
 
 
             }
@@ -518,10 +518,10 @@ namespace NOC.ViewModels
 
         private async void DownloadCommentsAttachmentsCommandExecute(object obj)
         {
+            IsBusy = true;
+            string AllAttachmentUrl = "";
             try
             {
-
-
                 List<int> AIds = new List<int>();
                 foreach (var item in OfficerResponseAttachmentsInReviewerResponseList)
                 {
@@ -533,7 +533,7 @@ namespace NOC.ViewModels
                 }
 
                 string responseUrlJson = await ApiService.Instance.GenericPostApiCall(Urls.DownloadMultipleAttachments, AIds);
-                string AllAttachmentUrl= JsonConvert.DeserializeObject<string>(responseUrlJson);
+                 AllAttachmentUrl= JsonConvert.DeserializeObject<string>(responseUrlJson);
                 if (!string.IsNullOrEmpty(AllAttachmentUrl))
                 {
                     await Launcher.OpenAsync(AllAttachmentUrl);
@@ -542,9 +542,9 @@ namespace NOC.ViewModels
             }
             catch (Exception ex)
             {
-
+                await Application.Current.MainPage.DisplayToastAsync(AllAttachmentUrl);
             }
-
+            IsBusy = false;
 
 
             //if (OfficerResponseAttachmentsInReviewerResponseList.Any(i => i.IsSelected))

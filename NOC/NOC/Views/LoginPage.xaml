@@ -1,12 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:components="clr-namespace:NOC.Components"
-             xmlns:local="clr-namespace:NOC.Behaviors"
-             xmlns:viewmodels="clr-namespace:NOC.ViewModels"
-             x:DataType="viewmodels:LoginPageViewModel"
-              NavigationPage.HasNavigationBar="False"
-             x:Class="NOC.Views.LoginPage" BackgroundImageSource="backgroundImage.jpg">
+<ContentPage
+    x:Class="NOC.Views.LoginPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:components="clr-namespace:NOC.Components"
+    xmlns:local="clr-namespace:NOC.Behaviors"
+    xmlns:viewmodels="clr-namespace:NOC.ViewModels"
+    x:DataType="viewmodels:LoginPageViewModel"
+    BackgroundImageSource="backgroundImage.jpg"
+    NavigationPage.HasNavigationBar="False">
     <ContentPage.Resources>
         <Style TargetType="components:CustomEntry">
             <Setter Property="TextColor" Value="White" />
@@ -27,40 +29,60 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <ScrollView>
-            <Grid RowDefinitions="Auto,Auto,Auto,Auto, Auto, Auto,Auto" Margin="15,10,15,10">
-                <Image Source="Logo_Horizontal.png" HeightRequest="30"  Margin="0,150,0,0"  Grid.Row="0" VerticalOptions="End" HorizontalOptions="Center"  />
+            <Grid Margin="15,10,15,10" RowDefinitions="2*,2*,4*">
+                <Image
+                    Grid.Row="0"
+                    Margin="0,150,0,0"
+                    HeightRequest="30"
+                    HorizontalOptions="Center"
+                    Source="Logo_Horizontal.png"
+                    VerticalOptions="End" />
 
 
-                <components:CustomLabel Grid.Row="1" 
-                                        Text="Electronic No Objection Certificate(eNOC)" 
-                                        FontAttributes="Bold" TextColor="Black" FontSize="16"
-                                        HorizontalOptions="CenterAndExpand" />
+                <components:CustomLabel
+                    Grid.Row="1"
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    HorizontalOptions="CenterAndExpand"
+                    Text="Electronic No Objection Certificate(eNOC)"
+                    TextColor="Black" />
 
-                <Frame Grid.Row="2" CornerRadius="28" Margin="20,120,20,10" >
+                <!--<Frame Grid.Row="2" CornerRadius="28" Margin="20,120,20,10" >
                     <components:CustomEntry x:Name="EmailEntry"  Text="{Binding EmailText}"  Placeholder="ER User Name" BackgroundColor="Transparent">
-                        <!--<components:CustomEntry.Behaviors>
+                        <components:CustomEntry.Behaviors>
                         <local:EmailValidatorBehavior />
-                    </components:CustomEntry.Behaviors>-->
+                    </components:CustomEntry.Behaviors>
                     </components:CustomEntry>
 
                 </Frame>
 
                 <Frame Grid.Row="4" CornerRadius="28" Margin="20,0,20,40" >
                     <components:CustomEntry x:Name="PasswordEntry"  IsPassword="True" Text="{Binding PasswordText}" Placeholder="Password" BackgroundColor="Transparent">
-                        <!--<components:CustomEntry.Behaviors>
+                        <components:CustomEntry.Behaviors>
                         <local:PasswordValidationBehavior />
-                    </components:CustomEntry.Behaviors>-->
+                    </components:CustomEntry.Behaviors>
                     </components:CustomEntry>
-                </Frame>
+                </Frame>-->
+
+
+
                 <!--<Grid Grid.Row="5" RowDefinitions="*" ColumnDefinitions="3*,6*" VerticalOptions="Center">
                     <components:CustomLabel Grid.Column="0" Text="Remember me" TextColor="Gray" FontSize="18" />
                     <Switch Grid.Row="0" IsToggled="{Binding RememberMe}" HorizontalOptions="Start" VerticalOptions="Start" HeightRequest="30" WidthRequest="50" Grid.Column="1" ThumbColor="White" OnColor="#66cc33" />
                 </Grid>-->
-                <Button x:Name="loginButton" Grid.Row="6" Command="{Binding LoginComand }" VerticalOptions="Start"  Margin="20"
-                        HorizontalOptions="FillAndExpand" CornerRadius="40" HeightRequest="50"
-                        TextColor="{DynamicResource BrandPrimary}" Background="white" Text="SIGN IN" FontAttributes="Bold">
-
-                </Button>
+                <Button
+                    x:Name="loginButton"
+                    Grid.Row="2"
+                    Margin="20"
+                    Background="white"
+                    Command="{Binding LoginComand}"
+                    CornerRadius="40"
+                    FontAttributes="Bold"
+                    HeightRequest="50"
+                    HorizontalOptions="FillAndExpand"
+                    Text="SIGN IN"
+                    TextColor="{DynamicResource BrandPrimary}"
+                    VerticalOptions="Start" />
             </Grid>
         </ScrollView>
     </ContentPage.Content>

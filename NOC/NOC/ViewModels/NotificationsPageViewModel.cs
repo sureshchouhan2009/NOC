@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
+using Xamarin.CommunityToolkit.Extensions;
 using Xamarin.Forms;
 
 namespace NOC.ViewModels
@@ -60,7 +61,12 @@ namespace NOC.ViewModels
                     Session.Instance.CurrentTransaction = await ApiService.Instance.GetTransactionDetails(selectedTransaction.TransactionNumber);
                     await NavigationService.NavigateAsync("TransactionInfoPage");
                 }
-               
+                else
+                {
+                    await Application.Current.MainPage.DisplayToastAsync("Missing Application Number", 10000);
+
+                }
+
 
             }
             catch (Exception ex)

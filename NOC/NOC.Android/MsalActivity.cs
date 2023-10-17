@@ -5,11 +5,11 @@ using Microsoft.Identity.Client;
 
 namespace NOC.Droid
 {
-    [Activity]
+    [Activity(Exported = true)]
     [IntentFilter(new[] { Intent.ActionView },
-        Categories = new[] { Intent.CategoryBrowsable, Intent.CategoryDefault },
-        DataHost = "auth",
-        DataScheme = "msalc81f8d46-d18d-4b36-8cf7-23f0b5a4397e")]
+         Categories = new[] { Intent.CategoryBrowsable, Intent.CategoryDefault },
+         DataHost = "auth",
+         DataScheme = "msald0c5284a-d006-4950-bdd4-1598d14219d6")]
     public class MsalActivity : BrowserTabActivity
     {
     }

@@ -31,6 +31,7 @@
     <MtouchEnableSGenConc>true</MtouchEnableSGenConc>
     <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
     <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -742,6 +743,8 @@
     <BundleResource Include="Resources\Image_Unchecked.png" />
     <BundleResource Include="Resources\selectedRadioButton.png" />
     <BundleResource Include="Resources\UnSelectedRadioButton.png" />
+    <BundleResource Include="Resources\static\ETR_config_ar.js" />
+    <BundleResource Include="Resources\static\ETR_config_en.js" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

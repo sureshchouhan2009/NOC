@@ -33,37 +33,37 @@ namespace NOC.ViewModels
         private bool checkCameraOptionVisibility()
         {
             bool isCamera = false;
-            try
-            {
+            //try
+            //{
                
-                if (Session.Instance.IsCompletedApplicationFlow || Session.Instance.CurrentUserType == UserTypes.Reviewer)
-                {
-                     isCamera = false;
-                }
-                else if (Session.Instance.CurrentUserType == UserTypes.Applicant)
-                {
-                     isCamera = true;
-                }
-                else if (Session.Instance.CurrentUserType == UserTypes.Stackholder || Session.Instance.CurrentUserType == UserTypes.Officer)
-                {
-                    if (Session.Instance.IsOwnedApplicationFlow || Session.Instance.IsRepliedNocApplicationFlow)
-                    {
-                         isCamera = true;
-                    }
-                    else
-                    {
-                         isCamera = false;
-                    }
-                }
-                else
-                {
-                     isCamera = false;
-                }
-            }
-            catch (Exception ex)
-            {
-                 isCamera = false;
-            }
+            //    if (Session.Instance.IsCompletedApplicationFlow || Session.Instance.CurrentUserType == UserTypes.Reviewer)
+            //    {
+            //         isCamera = false;
+            //    }
+            //    else if (Session.Instance.CurrentUserType == UserTypes.Applicant)
+            //    {
+            //         isCamera = false;
+            //    }
+            //    else if (Session.Instance.CurrentUserType == UserTypes.Stackholder || Session.Instance.CurrentUserType == UserTypes.Officer)
+            //    {
+            //        if (Session.Instance.IsOwnedApplicationFlow || Session.Instance.IsRepliedNocApplicationFlow)
+            //        {
+            //             isCamera = true;
+            //        }
+            //        else
+            //        {
+            //             isCamera = false;
+            //        }
+            //    }
+            //    else
+            //    {
+            //         isCamera = false;
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //     isCamera = false;
+            //}
             return isCamera;
 
         }
@@ -300,6 +300,8 @@ namespace NOC.ViewModels
                     TransferNocRequestModel transferNocModel = new TransferNocRequestModel();
                     transferNocModel.transNumber = TransactonDetail.Transaction.TransactionNumber;
                     transferNocModel.transferUserId = SelectedEligibleUserforTransferNOcs.UserId;//TransactonDetail.Transaction.UserID;
+                    transferNocModel.Type = "Transfer";
+                    transferNocModel.REPLYSEQID = Session.Instance.reply_Seq_ID;
                     var result = await ApiService.Instance.PostTransferNocApiCall(transferNocModel);
                     await Application.Current.MainPage.DisplayToastAsync(result);
                     await NavigationService.NavigateAsync("app:///HomePage");

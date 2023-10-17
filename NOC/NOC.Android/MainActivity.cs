@@ -1,12 +1,15 @@
-﻿using Acr.UserDialogs;
+﻿using System;
+using Acr.UserDialogs;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Runtime;
 using Microsoft.Identity.Client;
 using NOC.Service;
 using Plugin.CurrentActivity;
 using Prism;
+using Prism.AppModel;
 using Prism.Ioc;
 using Xamarin.Forms;
 
@@ -14,8 +17,10 @@ namespace NOC.Droid
 {
     [Activity(Theme = "@style/MainTheme",
               ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.Portrait)]
-    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
+    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity   ,Interfaces.IPlatform
     {
+       
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
@@ -28,7 +33,8 @@ namespace NOC.Droid
             base.OnCreate(savedInstanceState);
 
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
-            LoadApplication(new App(new AndroidInitializer()));
+            LoadApplication(new App(this));
+           
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
@@ -38,11 +44,31 @@ namespace NOC.Droid
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
-        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        public IPublicClientApplication GetIdentityClient(string applicationId) //.WithRedirectUri($"msauth://ae.etihadrail.enoc/VzSiQcXRmi2kyjzcA%2BmYLEtbGVs%3D")
+        {
+            //var identityClient = PublicClientApplicationBuilder.Create(applicationId)
+            //    .WithRedirectUri($"msal{applicationId}://auth")
+            //     .WithAuthority(AzureCloudInstance.AzurePublic, "common")
+            //     .WithParentActivityOrWindow(() => this)
+            //.Build();
+
+            var identityClient=   PublicClientApplicationBuilder
+        .Create(applicationId)
+        .WithRedirectUri($"msal{applicationId}://auth")// Replace with actual redirect URI
+        .WithParentActivityOrWindow(() => this)
+        .Build();
+
+            return identityClient;
+        }
+
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
+            // Return control to MSAL
             AuthenticationContinuationHelper.SetAuthenticationContinuationEventArgs(requestCode, resultCode, data);
         }
+
+
     }
 
     public class AndroidInitializer : IPlatformInitializer

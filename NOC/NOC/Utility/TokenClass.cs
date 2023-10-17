@@ -74,7 +74,70 @@ namespace NOC.Utility
                 return userID;
             }
 
-
+        public static async Task<string> PostApiCallForUserID(string Token)
+        {
+            string result = "";
+            try
+            {
+                var client = ServiceUtility.CreateNewHttpClient();
+                string cookiesValue = "MobileToken=" + Token + ";Ismobile=true";
+                client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+                var req = new HttpRequestMessage(HttpMethod.Post, Urls.GetUserIDFromToken) { Content = { } };
+                var response = await client.SendAsync(req);
+                if (response.IsSuccessStatusCode)
+                {
+                   var resultJson = await response.Content.ReadAsStringAsync();
+                   result=   JsonConvert.DeserializeObject<string>(resultJson, ServiceUtility.GetJsonSerializationSettings());
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            return result;
         }
-    }
 
+        public static async Task<UserAuthorizationModel> GetTokenAzureTokenDetails(string Token)
+        {
+            UserAuthorizationModel userAuthorizationModel = new UserAuthorizationModel();
+            try
+            {
+             string cookiesValue= "MobileToken=" + Token+ ";Ismobile=true";
+                var client = ServiceUtility.CreateNewHttpClient();
+               // var authHeader = new AuthenticationHeaderValue("bearer", Token);
+               // var authHeaderCookies = new AuthenticationHeaderValue("Cookie", cookiesValue);
+                
+               // client.DefaultRequestHeaders.Authorization = authHeader;
+                client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+                String RequestUrl = "https://portal.gpceast.com/NOC/api/Users/checkAuthorieduser";
+                var payload = ServiceUtility.BuildRequest(new AzureClassTest { StringOne="" });
+                var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
+                var response = await client.SendAsync(req);
+                if (response?.IsSuccessStatusCode ?? false)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    userAuthorizationModel = JsonConvert.DeserializeObject<UserAuthorizationModel>(result);
+                }
+                else
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    userAuthorizationModel = JsonConvert.DeserializeObject<UserAuthorizationModel>(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                userAuthorizationModel = new UserAuthorizationModel();
+
+            }
+            return userAuthorizationModel;
+        }
+
+
+       
+
+    }
+}
+
+public class AzureClassTest
+{
+    public string StringOne { get; set; }
+}

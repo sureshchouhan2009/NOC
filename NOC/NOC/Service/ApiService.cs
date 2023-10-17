@@ -45,8 +45,11 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";
+                client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+
+
+               
                 String RequestUrl = Urls.GetAttachmentsTypesForDD;
                 var response = await client.GetAsync(RequestUrl);
                 if (response.IsSuccessStatusCode)
@@ -70,8 +73,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer",  Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                   string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.CommentSaveing;
                 var payload = ServiceUtility.BuildRequest(RequestModel);
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
@@ -97,8 +100,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer",  Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                   string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.deleteReviewerSpecificCustomConditions+ commentID;
                 //var payload = ServiceUtility.BuildRequest(RequestModel);
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = null };
@@ -125,8 +128,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.UploadAttachmentToServer;
                 var payload = ServiceUtility.BuildRequest(attachmentRequestModel);
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
@@ -152,8 +155,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.SaveAttachmentToDatabase;
                 var payload = ServiceUtility.BuildRequest(RequestModel);
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
@@ -182,8 +185,9 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";
+                client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = CheckAndReturnUserSpecificUrlForSearchCount(true);
                 var response = await client.GetAsync(RequestUrl);
                 if (response.IsSuccessStatusCode)
@@ -264,8 +268,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.GetTransactionDetailsNew + applicationNumber;
                 var response = await client.GetAsync(RequestUrl);
                 if (response.IsSuccessStatusCode)
@@ -294,8 +298,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.GetTransactionDetails + applicationNumber;
                 var response = await client.GetAsync(RequestUrl);
                 if (response.IsSuccessStatusCode)
@@ -326,8 +330,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.GetTransactionAttachment + transactionID;
                 var response = await client.GetAsync(RequestUrl);
                 if (response.IsSuccessStatusCode)
@@ -355,8 +359,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.GetCommentsRelatedAttachment + TransactionID+"/"+ StackHolderOrReviewerSolutionRoleID+"/"+ IsStackholder;
                 var response = await client.GetAsync(RequestUrl);
                 if (response.IsSuccessStatusCode)
@@ -387,8 +391,8 @@ namespace NOC.Service
             {
                 String RequestUrl = "";
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
 
                 RequestUrl = Session.Instance.CurrentUserType == UserTypes.Applicant?Urls.GetTransactionComents + applicationNumber: Urls.GetTransactionCommentsForProcessor + applicationNumber;
 
@@ -422,8 +426,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.PostDecisionCommentsave;
                 var payload = ServiceUtility.BuildRequest(saveCommentModel);
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
@@ -448,8 +452,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.PostDecisionCommentUpdate;
                 var payload = ServiceUtility.BuildRequest(updateCommentModel);
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
@@ -527,8 +531,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.SaveStakeholderResponseAttachment;
                 var payload = ServiceUtility.BuildRequest(uploadModel);
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
@@ -557,8 +561,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.GetNotifications;
                 var response = await client.GetAsync(RequestUrl);
                 if (response.IsSuccessStatusCode)
@@ -589,8 +593,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = CheckAndReturnUserSpecificUrlForSearchCount(false,filterID)+filterID.ToString();
                 var response = await client.GetAsync(RequestUrl);
                 if (response.IsSuccessStatusCode)
@@ -618,8 +622,9 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";
+                client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+
                 var response = await client.GetAsync(RequestUrl);
                 if (response.IsSuccessStatusCode)
                 {
@@ -655,8 +660,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.PostNoObjection;
                 var payload = ServiceUtility.BuildRequest(NoObjectionRequestModel);
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
@@ -682,8 +687,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.PostObjectionRaised;
                 var payload = ServiceUtility.BuildRequest(RaiseObjectionRequestModel);
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
@@ -709,8 +714,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.PostOwnNocs;
                 var payload = ServiceUtility.BuildRequest(requestModel);
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
@@ -735,8 +740,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.TransferOwnership;
 
                 var payload = ServiceUtility.BuildRequest(TransferRequestModel);
@@ -770,8 +775,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.GetStackholderList + transactionID;
                 var response = await client.GetAsync(RequestUrl);
                 if (response.IsSuccessStatusCode)
@@ -797,8 +802,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.GetAllStackholderResponsedata + transactionID;
                 var response = await client.GetAsync(RequestUrl);
                 if (response.IsSuccessStatusCode)
@@ -825,8 +830,8 @@ namespace NOC.Service
         //    try
         //    {
         //        var client = ServiceUtility.CreateNewHttpClient();
-        //        var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-        //        client.DefaultRequestHeaders.Authorization = authHeader;
+        //         string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+        //       
         //        String RequestUrl = Urls.GetStackholderRelatedAttachment + transactionID;
         //        var response = await client.GetAsync(RequestUrl);
         //        if (response.IsSuccessStatusCode)
@@ -854,8 +859,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.SpecificConditionGetAllStakeHolderResponse+transactionID;
                 //var payload = ServiceUtility.BuildRequest(RequestModel);
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = null };
@@ -886,8 +891,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.GetReviewerConditons + ApplicationNumber;
                 //var payload = ServiceUtility.BuildRequest(RequestModel);
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = null };
@@ -954,8 +959,8 @@ namespace NOC.Service
             {
                 bool IsReviewer = Session.Instance.CurrentUserType == UserTypes.Reviewer;
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.SaveSpecificCondition+ IsReviewer.ToString().ToLower()+"/"+ usaveCondition.TRANSACTIONID;
                 var payload = ServiceUtility.BuildRequest(usaveCondition);
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
@@ -990,8 +995,8 @@ namespace NOC.Service
             {
                 bool IsReviewer = Session.Instance.CurrentUserType == UserTypes.Reviewer;
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.UpdatepecificCondition ;
                 var payload = ServiceUtility.BuildRequest(updatedCondition);
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
@@ -1029,8 +1034,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.GetReviewerSpecificComment + transactionID;
                 var response = await client.GetAsync(RequestUrl);
                 if (response.IsSuccessStatusCode)
@@ -1057,8 +1062,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.transferOwnerUserList;
                 var response = await client.GetAsync(RequestUrl);
                 if (response.IsSuccessStatusCode)
@@ -1083,8 +1088,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.SaveApplicatNewComment;// save url is same for internal and applicant
                 var payload = ServiceUtility.BuildRequest(SaveNewCommentModel);
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
@@ -1108,8 +1113,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = "";
                 if (Session.Instance.CurrentUserType == UserTypes.Applicant)
                 {
@@ -1144,8 +1149,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.ChangeIsReadStatusForNotifications;
                 var payload = ServiceUtility.BuildRequest(new List<int> { TransactionID });
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
@@ -1168,8 +1173,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.downloadPdfURL + TransactionNumber;//17 digit
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { };
                 var response = await client.SendAsync(req);
@@ -1194,8 +1199,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.checkStatckholder1+WorkFlow+ "?tranid=" + TransactionID + "&Userid="+ userID;
                // String RequestUrl = Urls.checkStatckholder1 + "15811" + "&Userid=" + "02c4dcb1-fdee-485b-80da-327b3e313f2";
 
@@ -1218,8 +1223,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.checkStatckholder2+ userID;
                 var response = await client.GetAsync(RequestUrl);
                 if (response.IsSuccessStatusCode)
@@ -1245,8 +1250,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.getStackholderResponsepageData + SthcmntID;
                 var response = await client.GetAsync(RequestUrl);
                 if (response.IsSuccessStatusCode)
@@ -1268,8 +1273,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.getStackholderResponsepageConditions + transactionID + "/" + workFlow;
                 //var payload = ServiceUtility.BuildRequest(RequestModel);
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = null };
@@ -1323,8 +1328,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 String RequestUrl = Urls.getOfficerResponsepageConditions + transactionID + "/" + "officerreviewer";
                 //var payload = ServiceUtility.BuildRequest(RequestModel);
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = null };
@@ -1352,8 +1357,8 @@ namespace NOC.Service
             {
                 
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 var response = await client.GetAsync(RequestUrl);
                 if (response.IsSuccessStatusCode)
                 {
@@ -1372,8 +1377,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 
                 var payload = ServiceUtility.BuildRequest(RequestModel);
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
@@ -1398,8 +1403,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                var authHeader = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
-                client.DefaultRequestHeaders.Authorization = authHeader;
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+               
                 string RequestUrl = Urls.getOfficerResponsepageConditions + transactionID + "/" + "reviewer";//15837
                 object RequestModel = null;
                 var payload = ServiceUtility.BuildRequest(RequestModel);

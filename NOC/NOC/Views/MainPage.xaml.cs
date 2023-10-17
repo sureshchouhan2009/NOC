@@ -1,6 +1,11 @@
-﻿
+﻿using Microsoft.Identity.Client;
+using Newtonsoft.Json.Linq;
 using System;
-using NOC.Service;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace NOC.Views
 {
@@ -11,12 +16,6 @@ namespace NOC.Views
             InitializeComponent();
         }
 
-       async void Button_Clicked(System.Object sender, System.EventArgs e)
-        {
-            var userContext = await B2CAuthenticationService.Instance.SignInAsync();
-          
-        }
-
-       
+      
     }
 }

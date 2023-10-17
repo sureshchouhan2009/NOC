@@ -95,6 +95,7 @@
     <Compile Include="MsalActivity.cs" />
     <Compile Include="AndroidParentWindowLocatorService.cs" />
     <Compile Include="Renderers\CheckboxRenderer.cs" />
+    <Compile Include="Renderers\MainPageRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

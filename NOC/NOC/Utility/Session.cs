@@ -45,5 +45,6 @@ namespace NOC.Utility
         public bool IsStackholderequalToReviewer { get; set; }
         public int SthcmntID { get; set; }//for stackholder and officer response page data{Attachment}
         public string CurrentTransactionWorkFlow { get;  set; }
+        public int reply_Seq_ID { get;  set; }
     }
 }

@@ -32,94 +32,95 @@
         </Style>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid RowDefinitions="Auto,Auto,*,Auto" RowSpacing="0">
-            <Frame
-                Grid.Row="0"
-                Padding="0"
-                HasShadow="False"
-                HeightRequest="60">
-                <Grid>
-                    <Image
-                        HeightRequest="30"
-                        HorizontalOptions="Start"
-                        Source="BackArrowRed"
-                        VerticalOptions="Center"
-                        WidthRequest="30">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding GoBackCommand}" />
-                        </Image.GestureRecognizers>
-                    </Image>
-                    <Label
-                        FontAttributes="Bold"
-                        Style="{StaticResource TitleLabelStyle}"
-                        Text="Comments" />
-
-                </Grid>
-
-
-            </Frame>
-            <Grid
-                Grid.Row="1"
-                Padding="0"
-                RowDefinitions="Auto,Auto,Auto">
+        <ScrollView>
+            <Grid RowDefinitions="Auto,Auto,*,Auto" RowSpacing="0">
                 <Frame
                     Grid.Row="0"
-                    Padding="4"
-                    BackgroundColor="{DynamicResource BrandPrimary}"
+                    Padding="0"
                     HasShadow="False"
-                    HeightRequest="50"
-                    VerticalOptions="Center">
-                    <Grid
-                        ColumnDefinitions="2*,8*"
-                        RowDefinitions="Auto,Auto"
-                        RowSpacing="0"
-                        VerticalOptions="Center">
-                        <Frame
-                            Grid.Row="0"
-                            Grid.RowSpan="2"
-                            Grid.Column="0"
-                            Style="{StaticResource circleFram}">
-                            <Image
-                                Aspect="AspectFit"
-                                HeightRequest="35"
-                                Source="doc_icon" />
-                        </Frame>
+                    HeightRequest="60">
+                    <Grid>
+                        <Image
+                            HeightRequest="30"
+                            HorizontalOptions="Start"
+                            Source="BackArrowRed"
+                            VerticalOptions="Center"
+                            WidthRequest="30">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding GoBackCommand}" />
+                            </Image.GestureRecognizers>
+                        </Image>
                         <Label
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            Style="{StaticResource menuLabel}"
-                            Text="{Binding TransactonDetail.Transaction.TransactionNumber}" />
-                        <Label
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            FontSize="12"
-                            Style="{StaticResource menuLabel}"
-                            Text="{Binding TransactonDetail.ProjectStage.ProjectStageCode}" />
+                            FontAttributes="Bold"
+                            Style="{StaticResource TitleLabelStyle}"
+                            Text="Comments" />
 
                     </Grid>
+
+
                 </Frame>
-                <StackLayout
+                <Grid
                     Grid.Row="1"
-                    Padding="10"
-                    HorizontalOptions="End"
-                    IsVisible="{Binding IsProcessorUser}"
-                    Orientation="Horizontal">
-
-                    <Label
-                        FontAttributes="Bold"
-                        FontSize="15"
-                        HorizontalOptions="End"
-                        Text="Add Comment"
-                        TextColor="DodgerBlue"
+                    Padding="0"
+                    RowDefinitions="Auto,Auto,Auto">
+                    <Frame
+                        Grid.Row="0"
+                        Padding="4"
+                        BackgroundColor="{DynamicResource BrandPrimary}"
+                        HasShadow="False"
+                        HeightRequest="50"
                         VerticalOptions="Center">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding NewAddNewComment}" CommandParameter="1" />
-                        </Label.GestureRecognizers>
-                    </Label>
+                        <Grid
+                            ColumnDefinitions="2*,8*"
+                            RowDefinitions="Auto,Auto"
+                            RowSpacing="0"
+                            VerticalOptions="Center">
+                            <Frame
+                                Grid.Row="0"
+                                Grid.RowSpan="2"
+                                Grid.Column="0"
+                                Style="{StaticResource circleFram}">
+                                <Image
+                                    Aspect="AspectFit"
+                                    HeightRequest="35"
+                                    Source="doc_icon" />
+                            </Frame>
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Style="{StaticResource menuLabel}"
+                                Text="{Binding TransactonDetail.Transaction.TransactionNumber}" />
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                FontSize="12"
+                                Style="{StaticResource menuLabel}"
+                                Text="{Binding TransactonDetail.ProjectStage.ProjectStageCode}" />
 
-                </StackLayout>
+                        </Grid>
+                    </Frame>
+                    <StackLayout
+                        Grid.Row="1"
+                        Padding="10"
+                        HorizontalOptions="End"
+                        IsVisible="{Binding IsProcessorUser}"
+                        Orientation="Horizontal">
 
-                <!-- <StackLayout Grid.Row="1"  Padding="10" Orientation="Vertical" >
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="15"
+                            HorizontalOptions="End"
+                            Text="Add Comment"
+                            TextColor="DodgerBlue"
+                            VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding NewAddNewComment}" CommandParameter="1" />
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                    </StackLayout>
+
+                    <!-- <StackLayout Grid.Row="1"  Padding="10" Orientation="Vertical" >
                      <Label   Text="Comments" TextColor="{DynamicResource BrandPrimary}"  FontAttributes="Bold" FontSize="16" />
                      <BoxView  Color="Gray" HeightRequest="1" Margin="0,0,0,5"/>
                     IsVisible="{Binding IsProcessorUser}"
@@ -144,522 +145,525 @@
                      </StackLayout>
                       </StackLayout>-->
 
+                    <Grid
+                        Grid.Row="2"
+                        Margin="10,0,10,0"
+                        ColumnDefinitions="5*,5*"
+                        IsVisible="{Binding IsProcessorUserForApplicantAndInternalCommentTabVisibility}">
+                        <Frame
+                            Grid.Column="0"
+                            Margin="0"
+                            Padding="0"
+                            BackgroundColor="{Binding IsToApplicantSelected, Converter={StaticResource boolToColorConverter}}"
+                            HasShadow="False">
+                            <Label
+                                Padding="5"
+                                FontSize="14"
+                                Text="To Applicant"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ToInternalTapped}" CommandParameter="1" />
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                        <Frame
+                            Grid.Column="1"
+                            Margin="0"
+                            Padding="0"
+                            BackgroundColor="{Binding IsToInternalSelected, Converter={StaticResource boolToColorConverter}}">
+                            <Label
+                                Padding="5"
+                                FontSize="14"
+                                Text="To Internal"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ToInternalTapped}" CommandParameter="2" />
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                    </Grid>
+                </Grid>
                 <Grid
                     Grid.Row="2"
-                    Margin="10,0,10,0"
-                    ColumnDefinitions="5*,5*"
-                    IsVisible="{Binding IsProcessorUserForApplicantAndInternalCommentTabVisibility}">
-                    <Frame
-                        Grid.Column="0"
-                        Margin="0"
-                        Padding="0"
-                        BackgroundColor="{Binding IsToApplicantSelected, Converter={StaticResource boolToColorConverter}}"
-                        HasShadow="False">
-                        <Label
-                            Padding="5"
-                            FontSize="14"
-                            Text="To Applicant"
-                            TextColor="White"
-                            VerticalOptions="Center" />
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ToInternalTapped}" CommandParameter="1" />
-                        </Frame.GestureRecognizers>
-                    </Frame>
-                    <Frame
-                        Grid.Column="1"
-                        Margin="0"
-                        Padding="0"
-                        BackgroundColor="{Binding IsToInternalSelected, Converter={StaticResource boolToColorConverter}}">
-                        <Label
-                            Padding="5"
-                            FontSize="14"
-                            Text="To Internal"
-                            TextColor="White"
-                            VerticalOptions="Center" />
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ToInternalTapped}" CommandParameter="2" />
-                        </Frame.GestureRecognizers>
-                    </Frame>
-                </Grid>
-            </Grid>
-            <Grid
-                Grid.Row="2"
-                Margin="0,10,0,10"
-                RowDefinitions="Auto,Auto,Auto,Auto">
-                <Grid
-                    Grid.Row="0"
-                    ColumnDefinitions="Auto,Auto,Auto,Auto"
-                    ColumnSpacing="1"
-                    HeightRequest="80"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center">
-                    <!--  IsVisible="false" {Made visible false as per Phase 2 requrement}  -->
-                    <Label
-                        Grid.Column="0"
-                        FontAttributes="Bold"
-                        FontSize="12"
-                        HorizontalOptions="Center"
-                        IsVisible="false"
-                        Text="Filter by:"
-                        VerticalOptions="Center" />
-                    <components:CustomPicker
-                        Title="Select"
-                        Grid.Column="1"
-                        FontSize="12"
-                        HorizontalOptions="Center"
-                        Image="dropdownicon"
-                        IsVisible="false"
-                        ItemsSource="{Binding PickerSource}"
-                        SelectedIndex="0"
-                        SelectedItem="{Binding SelectedFilter}"
-                        TitleColor="Black"
-                        VerticalOptions="Center"
-                        WidthRequest="90">
-                        <components:CustomPicker.Behaviors>
-                            <xct:EventToCommandBehavior
-                                Command="{Binding PickerIndexChangedCommand}"
-                                CommandParameter="{Binding SelectedItem}"
-                                EventName="SelectedIndexChanged" />
-                        </components:CustomPicker.Behaviors>
-                    </components:CustomPicker>
-                    <RadioButton
-                        Grid.Column="2"
-                        Margin="0"
-                        BackgroundColor="Transparent"
-                        Content="Accending"
-                        FontSize="14"
+                    Margin="0,10,0,10"
+                    RowDefinitions="Auto,Auto,Auto,Auto">
+                    <Grid
+                        Grid.Row="0"
+                        ColumnDefinitions="Auto,Auto,Auto,Auto"
+                        ColumnSpacing="1"
+                        HeightRequest="80"
                         HorizontalOptions="Center"
                         VerticalOptions="Center">
-                        <RadioButton.Behaviors>
-                            <xct:EventToCommandBehavior
-                                Command="{Binding AccendingTappedCommand}"
-                                CommandParameter="{Binding IsChecked}"
-                                EventName="CheckedChanged" />
-                        </RadioButton.Behaviors>
-                    </RadioButton>
-                    <RadioButton
-                        Grid.Column="3"
-                        Margin="0"
-                        BackgroundColor="Transparent"
-                        Content="Decending"
-                        FontSize="14"
-                        HorizontalOptions="Center"
-                        VerticalOptions="Center">
-                        <RadioButton.Behaviors>
-                            <xct:EventToCommandBehavior
-                                Command="{Binding DecendingTappedCommand}"
-                                CommandParameter="{Binding IsChecked}"
-                                EventName="CheckedChanged" />
-                        </RadioButton.Behaviors>
-                    </RadioButton>
-                </Grid>
-
-
-
-
-                <!--#region Add new comment UI two text boxes-->
-
-                <Frame
-                    Grid.Row="1"
-                    Margin="10"
-                    Padding="5"
-                    BackgroundColor="LightGray"
-                    IsVisible="{Binding IsNewCommentViewVisible}">
-                    <Grid ColumnDefinitions="5*,5*" RowDefinitions="Auto,Auto,Auto,Auto">
+                        <!--  IsVisible="false" {Made visible false as per Phase 2 requrement}  -->
                         <Label
-                            Grid.Row="0"
                             Grid.Column="0"
-                            HorizontalOptions="Start"
-                            Text="Applicant Comment"
-                            VerticalOptions="Center" />
-                        <Label
-                            Grid.Row="0"
-                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            FontSize="12"
                             HorizontalOptions="Center"
-                            Text="{Binding CurrentCommentsDate, StringFormat='{0:dd/MM/yyyy}'}"
+                            IsVisible="false"
+                            Text="Filter by:"
                             VerticalOptions="Center" />
-
-
-
-
-                        <BoxView
-                            Grid.Row="1"
-                            Grid.ColumnSpan="2"
-                            HeightRequest="1"
-                            Color="LightGray" />
-                        <Frame
-                            Grid.Row="2"
-                            Grid.ColumnSpan="2"
-                            Padding="0"
-                            BorderColor="DarkGray"
-                            HasShadow="True"
-                            HeightRequest="120"
-                            VerticalOptions="FillAndExpand">
-                            <components:CustomEditor
-                                BackgroundColor="Transparent"
-                                FontSize="16"
-                                Text="{Binding NewCommentTextForApplicant}" />
-                        </Frame>
-
-
-                        <!--  hiding for time being later once get the api details than implement this  -->
-                        <Label
-                            Grid.Row="3"
-                            Grid.Column="0"
-                            FontSize="14"
-                            Text="Add Attachment"
-                            TextColor="Black"
-                            VerticalOptions="Center">
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding Source={x:Reference commentsPageRef}, Path=BindingContext.AddAttachmentForApplicantCommentCommand}" CommandParameter="{Binding .}" />
-                            </Label.GestureRecognizers>
-                        </Label>
-
-
-                        <StackLayout
-                            Grid.Row="3"
+                        <components:CustomPicker
+                            Title="Select"
                             Grid.Column="1"
-                            Margin="10"
-                            Padding="0"
-                            HeightRequest="20"
-                            HorizontalOptions="End"
-                            Orientation="Horizontal">
-                            <!--<Image Source="message1.png"  VerticalOptions="Center"/>-->
-                            <Label
-                                FontSize="14"
-                                Text="Send Comment"
-                                TextColor="Black"
-                                VerticalOptions="Center" />
-                            <StackLayout.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding SaveCommentAndAttachmentForApplicantComment}" />
-                            </StackLayout.GestureRecognizers>
-                        </StackLayout>
-
+                            FontSize="12"
+                            HorizontalOptions="Center"
+                            Image="dropdownicon"
+                            IsVisible="false"
+                            ItemsSource="{Binding PickerSource}"
+                            SelectedIndex="0"
+                            SelectedItem="{Binding SelectedFilter}"
+                            TitleColor="Black"
+                            VerticalOptions="Center"
+                            WidthRequest="90">
+                            <components:CustomPicker.Behaviors>
+                                <xct:EventToCommandBehavior
+                                    Command="{Binding PickerIndexChangedCommand}"
+                                    CommandParameter="{Binding SelectedItem}"
+                                    EventName="SelectedIndexChanged" />
+                            </components:CustomPicker.Behaviors>
+                        </components:CustomPicker>
+                        <RadioButton
+                            Grid.Column="2"
+                            Margin="0"
+                            BackgroundColor="Transparent"
+                            Content="Ascending"
+                            FontSize="14"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center">
+                            <RadioButton.Behaviors>
+                                <xct:EventToCommandBehavior
+                                    Command="{Binding AccendingTappedCommand}"
+                                    CommandParameter="{Binding IsChecked}"
+                                    EventName="CheckedChanged" />
+                            </RadioButton.Behaviors>
+                        </RadioButton>
+                        <RadioButton
+                            Grid.Column="3"
+                            Margin="0"
+                            BackgroundColor="Transparent"
+                            Content="Decending"
+                            FontSize="14"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center">
+                            <RadioButton.Behaviors>
+                                <xct:EventToCommandBehavior
+                                    Command="{Binding DecendingTappedCommand}"
+                                    CommandParameter="{Binding IsChecked}"
+                                    EventName="CheckedChanged" />
+                            </RadioButton.Behaviors>
+                        </RadioButton>
                     </Grid>
 
 
-                </Frame>
-
-                <Frame
-                    Grid.Row="2"
-                    Margin="10"
-                    Padding="5"
-                    BackgroundColor="LightGray"
-                    IsVisible="{Binding IsNewCommentViewVisible}">
-                    <Grid ColumnDefinitions="5*,5*" RowDefinitions="Auto,Auto,Auto,Auto">
-                        <Label
-                            Grid.Row="0"
-                            Grid.Column="0"
-                            HorizontalOptions="Start"
-                            Text="Internal Comment"
-                            VerticalOptions="Center" />
-                        <Label
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            HorizontalOptions="Center"
-                            Text="{Binding CurrentCommentsDate, StringFormat='{0:dd/MM/yyyy}'}"
-                            VerticalOptions="Center" />
 
 
+                    <!--#region Add new comment UI two text boxes-->
 
-
-                        <BoxView
-                            Grid.Row="1"
-                            Grid.ColumnSpan="2"
-                            HeightRequest="1"
-                            Color="LightGray" />
-                        <Frame
-                            Grid.Row="2"
-                            Grid.ColumnSpan="2"
-                            Padding="0"
-                            BorderColor="DarkGray"
-                            HasShadow="True"
-                            HeightRequest="120"
-                            VerticalOptions="FillAndExpand">
-                            <components:CustomEditor
-                                BackgroundColor="Transparent"
-                                FontSize="16"
-                                Text="{Binding NewCommentTextForInternal}" />
-                        </Frame>
-
-
-                        <!--  hiding for time being later once get the api details than implement this  -->
-                        <Label
-                            Grid.Row="3"
-                            Grid.Column="0"
-                            FontSize="14"
-                            Text="Add Attachment"
-                            TextColor="Black"
-                            VerticalOptions="Center">
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding Source={x:Reference commentsPageRef}, Path=BindingContext.AddAttachmentForInternalCommentCommand}" CommandParameter="{Binding .}" />
-                            </Label.GestureRecognizers>
-                        </Label>
-
-
-                        <StackLayout
-                            Grid.Row="3"
-                            Grid.Column="1"
-                            Margin="10"
-                            Padding="0"
-                            HeightRequest="20"
-                            HorizontalOptions="End"
-                            Orientation="Horizontal">
-                            <!--<Image Source="message1.png"  VerticalOptions="Center"/>-->
+                    <Frame
+                        Grid.Row="1"
+                        Margin="10"
+                        Padding="5"
+                        BackgroundColor="LightGray"
+                        IsVisible="{Binding IsNewCommentViewVisible}">
+                        <Grid ColumnDefinitions="5*,5*" RowDefinitions="Auto,Auto,Auto,Auto">
                             <Label
-                                FontSize="14"
-                                Text="Save Comment"
-                                TextColor="Black"
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                HorizontalOptions="Start"
+                                Text="Applicant Comment"
                                 VerticalOptions="Center" />
-                            <StackLayout.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding SaveCommentAndAttachmentForInternalComment}" />
-                            </StackLayout.GestureRecognizers>
-                        </StackLayout>
-
-                    </Grid>
-
-
-                </Frame>
-
-
-                <!--#endregion-->
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                HorizontalOptions="Center"
+                                Text="{Binding CurrentCommentsDate, StringFormat='{0:dd/MM/yyyy}'}"
+                                VerticalOptions="Center" />
 
 
 
 
+                            <BoxView
+                                Grid.Row="1"
+                                Grid.ColumnSpan="2"
+                                HeightRequest="1"
+                                Color="LightGray" />
+                            <Frame
+                                Grid.Row="2"
+                                Grid.ColumnSpan="2"
+                                Padding="0"
+                                BorderColor="DarkGray"
+                                HasShadow="True"
+                                HeightRequest="120"
+                                VerticalOptions="FillAndExpand">
+                                <components:CustomEditor
+                                    BackgroundColor="Transparent"
+                                    FontSize="16"
+                                    Text="{Binding NewCommentTextForApplicant}" />
+                            </Frame>
+
+
+                            <!--  hiding for time being later once get the api details than implement this  -->
+                            <Label
+                                Grid.Row="3"
+                                Grid.Column="0"
+                                FontSize="14"
+                                Text="Add Attachment"
+                                TextColor="Black"
+                                VerticalOptions="Center">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={x:Reference commentsPageRef}, Path=BindingContext.AddAttachmentForApplicantCommentCommand}" CommandParameter="{Binding .}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+
+
+                            <StackLayout
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                Margin="10"
+                                Padding="0"
+                                HeightRequest="20"
+                                HorizontalOptions="End"
+                                Orientation="Horizontal">
+                                <!--<Image Source="message1.png"  VerticalOptions="Center"/>-->
+                                <Label
+                                    FontSize="14"
+                                    Text="Send Comment"
+                                    TextColor="Black"
+                                    VerticalOptions="Center" />
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SaveCommentAndAttachmentForApplicantComment}" />
+                                </StackLayout.GestureRecognizers>
+                            </StackLayout>
+
+                        </Grid>
+
+
+                    </Frame>
+
+                    <Frame
+                        Grid.Row="2"
+                        Margin="10"
+                        Padding="5"
+                        BackgroundColor="LightGray"
+                        IsVisible="{Binding IsNewCommentViewVisible}">
+                        <Grid ColumnDefinitions="5*,5*" RowDefinitions="Auto,Auto,Auto,Auto">
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                HorizontalOptions="Start"
+                                Text="Internal Comment"
+                                VerticalOptions="Center" />
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                HorizontalOptions="Center"
+                                Text="{Binding CurrentCommentsDate, StringFormat='{0:dd/MM/yyyy}'}"
+                                VerticalOptions="Center" />
+
+
+
+
+                            <BoxView
+                                Grid.Row="1"
+                                Grid.ColumnSpan="2"
+                                HeightRequest="1"
+                                Color="LightGray" />
+                            <Frame
+                                Grid.Row="2"
+                                Grid.ColumnSpan="2"
+                                Padding="0"
+                                BorderColor="DarkGray"
+                                HasShadow="True"
+                                HeightRequest="120"
+                                VerticalOptions="FillAndExpand">
+                                <components:CustomEditor
+                                    BackgroundColor="Transparent"
+                                    FontSize="16"
+                                    Text="{Binding NewCommentTextForInternal}" />
+                            </Frame>
+
+
+                            <!--  hiding for time being later once get the api details than implement this  -->
+                            <Label
+                                Grid.Row="3"
+                                Grid.Column="0"
+                                FontSize="14"
+                                Text="Add Attachment"
+                                TextColor="Black"
+                                VerticalOptions="Center">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={x:Reference commentsPageRef}, Path=BindingContext.AddAttachmentForInternalCommentCommand}" CommandParameter="{Binding .}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+
+
+                            <StackLayout
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                Margin="10"
+                                Padding="0"
+                                HeightRequest="20"
+                                HorizontalOptions="End"
+                                Orientation="Horizontal">
+                                <!--<Image Source="message1.png"  VerticalOptions="Center"/>-->
+                                <Label
+                                    FontSize="14"
+                                    Text="Save Comment"
+                                    TextColor="Black"
+                                    VerticalOptions="Center" />
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SaveCommentAndAttachmentForInternalComment}" />
+                                </StackLayout.GestureRecognizers>
+                            </StackLayout>
+
+                        </Grid>
+
+
+                    </Frame>
+
+
+                    <!--#endregion-->
 
 
 
 
 
-                <ListView
-                    Grid.Row="3"
-                    HasUnevenRows="True"
-                    ItemsSource="{Binding CommentsList}"
-                    SelectionMode="None"
-                    SeparatorColor="Black">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <Grid Padding="20,0,20,0" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
-                                    <Grid
-                                        Grid.Row="0"
-                                        ColumnDefinitions="5*,5*"
-                                        RowDefinitions="Auto,Auto">
-                                        <Label
+
+
+
+
+                    <ListView
+                        Grid.Row="3"
+                        HasUnevenRows="True"
+                        HeightRequest="400"
+                        ItemsSource="{Binding CommentsList}"
+                        SelectionMode="None"
+                        SeparatorColor="Black">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Grid Padding="20,0,20,0" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                                        <Grid
                                             Grid.Row="0"
-                                            Grid.Column="0"
-                                            HorizontalOptions="Start"
-                                            Text="{Binding Users.UserType.UserTypeValue}"
-                                            VerticalOptions="Center" />
+                                            ColumnDefinitions="5*,5*"
+                                            RowDefinitions="Auto,Auto">
+                                            <Label
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                HorizontalOptions="Start"
+                                                Text="{Binding Users.UserType.UserTypeValue}"
+                                                VerticalOptions="Center" />
+                                            <Label
+                                                Grid.Row="0"
+                                                Grid.Column="1"
+                                                HorizontalOptions="Center"
+                                                Text="{Binding Comments.CommentsDate, StringFormat='{0:dd/MM/yyyy}'}"
+                                                VerticalOptions="Center" />
+                                            <BoxView
+                                                Grid.Row="1"
+                                                Grid.ColumnSpan="2"
+                                                HeightRequest="1"
+                                                Color="LightGray" />
+                                        </Grid>
+                                        <StackLayout Grid.Row="1" Spacing="0">
+                                            <Label FontSize="12" Text="{Binding Users.ContactEmail, StringFormat='Entered by: {0}'}" />
+                                            <Label FontSize="12" Text="{Binding Users.ContactEmail, StringFormat='Person email: {0}'}" />
+                                            <Label FontSize="12" Text="{Binding Users.ContactMobile, StringFormat='Person office phone no: {0}'}" />
+
+
+                                        </StackLayout>
                                         <Label
-                                            Grid.Row="0"
-                                            Grid.Column="1"
-                                            HorizontalOptions="Center"
-                                            Text="{Binding Comments.CommentsDate, StringFormat='{0:dd/MM/yyyy}'}"
-                                            VerticalOptions="Center" />
-                                        <BoxView
-                                            Grid.Row="1"
-                                            Grid.ColumnSpan="2"
-                                            HeightRequest="1"
-                                            Color="LightGray" />
-                                    </Grid>
-                                    <StackLayout Grid.Row="1" Spacing="0">
-                                        <Label FontSize="12" Text="{Binding Users.ContactEmail, StringFormat='Entered by: {0}'}" />
-                                        <Label FontSize="12" Text="{Binding Users.ContactEmail, StringFormat='Person email: {0}'}" />
-                                        <Label FontSize="12" Text="{Binding Users.ContactMobile, StringFormat='Person office phone no: {0}'}" />
-
-
-                                    </StackLayout>
-                                    <Label
-                                        Grid.Row="2"
-                                        Margin="0,10,0,10"
-                                        FontSize="12"
-                                        Text="{Binding Comments.Comment, StringFormat='Comment: {0}'}"
-                                        TextColor="Black" />
-                                    <StackLayout
-                                        Grid.Row="3"
-                                        Padding="0"
-                                        HeightRequest="20"
-                                        HorizontalOptions="End"
-                                        IsVisible="{Binding IsApplicatUser}"
-                                        Orientation="Horizontal">
-                                        <Image BackgroundColor="Blue" Source="message1.png" />
-                                        <Label
-                                            FontSize="14"
-                                            Text="Add Reply"
-                                            TextColor="Black" />
-                                        <StackLayout.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding Source={x:Reference commentsPageRef}, Path=BindingContext.AddReplyCommand}" CommandParameter="{Binding .}" />
-                                        </StackLayout.GestureRecognizers>
-                                    </StackLayout>
-                                    <BoxView
-                                        Grid.Row="4"
-                                        Margin="0,10,0,10"
-                                        HeightRequest="1"
-                                        Color="LightGray" />
-                                    <ListView
-                                        Grid.Row="5"
-                                        HasUnevenRows="True"
-                                        HeightRequest="100"
-                                        IsVisible="{Binding list.Count, Converter={StaticResource intToBoolConverter}}"
-                                        ItemsSource="{Binding list}">
-                                        <ListView.ItemTemplate>
-                                            <DataTemplate>
-                                                <ViewCell>
-                                                    <Grid RowDefinitions="Auto">
-                                                        <Label
-                                                            Grid.Row="0"
-                                                            Margin="0,10,0,10"
-                                                            FontSize="12"
-                                                            Text="{Binding ., StringFormat='Replied: {0}'}"
-                                                            TextColor="Black" />
-                                                    </Grid>
-                                                </ViewCell>
-                                            </DataTemplate>
-                                        </ListView.ItemTemplate>
-
-                                    </ListView>
-
-                                    <ListView
-                                        Grid.Row="6"
-                                        Margin="0,0,0,10"
-                                        HasUnevenRows="True"
-                                        Header=""
-                                        HeightRequest="100"
-                                        IsVisible="{Binding Attachments.Count, Converter={StaticResource intToBoolConverter}}"
-                                        ItemsSource="{Binding Attachments}">
-                                        <ListView.HeaderTemplate>
-                                            <DataTemplate>
-                                                <Label
-                                                    Margin="0,10,0,10"
-                                                    FontAttributes="Bold"
-                                                    FontSize="14"
-                                                    Text="Attachments"
-                                                    TextColor="Black" />
-                                            </DataTemplate>
-                                        </ListView.HeaderTemplate>
-                                        <ListView.ItemTemplate>
-                                            <DataTemplate>
-                                                <ViewCell>
-
-                                                    <Label
-                                                        Margin="0,10,0,10"
-                                                        FontAttributes="Italic"
-                                                        FontSize="12"
-                                                        Text="{Binding FileName}"
-                                                        TextColor="Blue">
-                                                        <Label.GestureRecognizers>
-                                                            <TapGestureRecognizer Command="{Binding Source={x:Reference commentsPageRef}, Path=BindingContext.CommentPageAttachmentShow}" CommandParameter="{Binding .}" />
-                                                        </Label.GestureRecognizers>
-                                                    </Label>
-
-                                                </ViewCell>
-                                            </DataTemplate>
-                                        </ListView.ItemTemplate>
-
-                                    </ListView>
-
-
-                                    <Grid
-                                        Grid.Row="7"
-                                        ColumnDefinitions="5*,5*"
-                                        IsVisible="{Binding IsReplyViewVisible}"
-                                        RowDefinitions="Auto,Auto,Auto,Auto">
-                                        <Label
-                                            Grid.Row="0"
-                                            Grid.Column="0"
-                                            HorizontalOptions="Start"
-                                            Text="{Binding Users.UserType.UserTypeValue}"
-                                            VerticalOptions="Center" />
-                                        <Label
-                                            Grid.Row="0"
-                                            Grid.Column="1"
-                                            HorizontalOptions="Center"
-                                            Text="{Binding Comments.CommentsDate, StringFormat='{0:dd/MM/yyyy}'}"
-                                            VerticalOptions="Center" />
-
-
-
-
-                                        <BoxView
-                                            Grid.Row="1"
-                                            Grid.ColumnSpan="2"
-                                            HeightRequest="1"
-                                            Color="LightGray" />
-                                        <Frame
                                             Grid.Row="2"
-                                            Grid.ColumnSpan="2"
-                                            Padding="0"
-                                            BorderColor="DarkGray"
-                                            HasShadow="True"
-                                            HeightRequest="120"
-                                            VerticalOptions="FillAndExpand">
-                                            <components:CustomEditor
-                                                BackgroundColor="Transparent"
-                                                FontSize="16"
-                                                Text="{Binding ReplyMessageText}" />
-                                        </Frame>
-
-                                        <Label
-                                            Grid.Row="3"
-                                            Grid.Column="0"
+                                            Margin="0,10,0,10"
                                             FontSize="12"
-                                            Text="Attachment: pdf,doc,xls"
-                                            VerticalOptions="Center">
-                                            <Label.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding Source={x:Reference commentsPageRef}, Path=BindingContext.AddAttachmentForReplyCommentCommand}" CommandParameter="{Binding .}" />
-                                            </Label.GestureRecognizers>
-                                        </Label>
+                                            Text="{Binding Comments.Comment, StringFormat='Comment: {0}'}"
+                                            TextColor="Black" />
                                         <StackLayout
                                             Grid.Row="3"
-                                            Grid.Column="1"
-                                            Margin="10"
                                             Padding="0"
                                             HeightRequest="20"
                                             HorizontalOptions="End"
+                                            IsVisible="{Binding IsApplicatUser}"
                                             Orientation="Horizontal">
-                                            <Image Source="message1.png" VerticalOptions="Center" />
+                                            <Image BackgroundColor="Blue" Source="message1.png" />
                                             <Label
                                                 FontSize="14"
-                                                Text=" Reply"
-                                                TextColor="Black"
-                                                VerticalOptions="Center" />
+                                                Text="Add Reply"
+                                                TextColor="Black" />
                                             <StackLayout.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding Source={x:Reference commentsPageRef}, Path=BindingContext.SendReplyToExistingCommand}" CommandParameter="{Binding .}" />
+                                                <TapGestureRecognizer Command="{Binding Source={x:Reference commentsPageRef}, Path=BindingContext.AddReplyCommand}" CommandParameter="{Binding .}" />
                                             </StackLayout.GestureRecognizers>
                                         </StackLayout>
+                                        <BoxView
+                                            Grid.Row="4"
+                                            Margin="0,10,0,10"
+                                            HeightRequest="1"
+                                            Color="LightGray" />
+                                        <ListView
+                                            Grid.Row="5"
+                                            HasUnevenRows="True"
+                                            HeightRequest="100"
+                                            IsVisible="{Binding list.Count, Converter={StaticResource intToBoolConverter}}"
+                                            ItemsSource="{Binding list}">
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <ViewCell>
+                                                        <Grid RowDefinitions="Auto">
+                                                            <Label
+                                                                Grid.Row="0"
+                                                                Margin="0,10,0,10"
+                                                                FontSize="12"
+                                                                Text="{Binding ., StringFormat='Replied: {0}'}"
+                                                                TextColor="Black" />
+                                                        </Grid>
+                                                    </ViewCell>
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
+
+                                        </ListView>
+
+                                        <ListView
+                                            Grid.Row="6"
+                                            Margin="0,0,0,10"
+                                            HasUnevenRows="True"
+                                            Header=""
+                                            HeightRequest="100"
+                                            IsVisible="{Binding Attachments.Count, Converter={StaticResource intToBoolConverter}}"
+                                            ItemsSource="{Binding Attachments}">
+                                            <ListView.HeaderTemplate>
+                                                <DataTemplate>
+                                                    <Label
+                                                        Margin="0,10,0,10"
+                                                        FontAttributes="Bold"
+                                                        FontSize="14"
+                                                        Text="Attachments"
+                                                        TextColor="Black" />
+                                                </DataTemplate>
+                                            </ListView.HeaderTemplate>
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <ViewCell>
+
+                                                        <Label
+                                                            Margin="0,10,0,10"
+                                                            FontAttributes="Italic"
+                                                            FontSize="12"
+                                                            Text="{Binding FileName}"
+                                                            TextColor="Blue">
+                                                            <Label.GestureRecognizers>
+                                                                <TapGestureRecognizer Command="{Binding Source={x:Reference commentsPageRef}, Path=BindingContext.CommentPageAttachmentShow}" CommandParameter="{Binding .}" />
+                                                            </Label.GestureRecognizers>
+                                                        </Label>
+
+                                                    </ViewCell>
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
+
+                                        </ListView>
+
+
+                                        <Grid
+                                            Grid.Row="7"
+                                            ColumnDefinitions="5*,5*"
+                                            IsVisible="{Binding IsReplyViewVisible}"
+                                            RowDefinitions="Auto,Auto,Auto,Auto">
+                                            <Label
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                HorizontalOptions="Start"
+                                                Text="{Binding Users.UserType.UserTypeValue}"
+                                                VerticalOptions="Center" />
+                                            <Label
+                                                Grid.Row="0"
+                                                Grid.Column="1"
+                                                HorizontalOptions="Center"
+                                                Text="{Binding Comments.CommentsDate, StringFormat='{0:dd/MM/yyyy}'}"
+                                                VerticalOptions="Center" />
+
+
+
+
+                                            <BoxView
+                                                Grid.Row="1"
+                                                Grid.ColumnSpan="2"
+                                                HeightRequest="1"
+                                                Color="LightGray" />
+                                            <Frame
+                                                Grid.Row="2"
+                                                Grid.ColumnSpan="2"
+                                                Padding="0"
+                                                BorderColor="DarkGray"
+                                                HasShadow="True"
+                                                HeightRequest="120"
+                                                VerticalOptions="FillAndExpand">
+                                                <components:CustomEditor
+                                                    BackgroundColor="Transparent"
+                                                    FontSize="16"
+                                                    Text="{Binding ReplyMessageText}" />
+                                            </Frame>
+
+                                            <Label
+                                                Grid.Row="3"
+                                                Grid.Column="0"
+                                                FontSize="12"
+                                                Text="Attachment: pdf,doc,xls"
+                                                VerticalOptions="Center">
+                                                <Label.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Source={x:Reference commentsPageRef}, Path=BindingContext.AddAttachmentForReplyCommentCommand}" CommandParameter="{Binding .}" />
+                                                </Label.GestureRecognizers>
+                                            </Label>
+                                            <StackLayout
+                                                Grid.Row="3"
+                                                Grid.Column="1"
+                                                Margin="10"
+                                                Padding="0"
+                                                HeightRequest="20"
+                                                HorizontalOptions="End"
+                                                Orientation="Horizontal">
+                                                <Image Source="message1.png" VerticalOptions="Center" />
+                                                <Label
+                                                    FontSize="14"
+                                                    Text=" Reply"
+                                                    TextColor="Black"
+                                                    VerticalOptions="Center" />
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Source={x:Reference commentsPageRef}, Path=BindingContext.SendReplyToExistingCommand}" CommandParameter="{Binding .}" />
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+
+                                        </Grid>
 
                                     </Grid>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
 
-                                </Grid>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </Grid>
-
-            <Frame
-                Grid.Row="3"
-                Padding="0"
-                HasShadow="False"
-                HeightRequest="40">
-                <Grid ColumnDefinitions="5*, 5*">
-                    <Image
-                        Grid.Column="0"
-                        HorizontalOptions="Start"
-                        Source="home">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding GoHomeCommand}" />
-                        </Image.GestureRecognizers>
-                    </Image>
-                    <!--<Image Grid.Column="1" Source="er_user" HorizontalOptions="End">
+                <Frame
+                    Grid.Row="3"
+                    Padding="0"
+                    HasShadow="False"
+                    HeightRequest="40">
+                    <Grid ColumnDefinitions="5*, 5*">
+                        <Image
+                            Grid.Column="0"
+                            HorizontalOptions="Start"
+                            Source="home">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding GoHomeCommand}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <!--<Image Grid.Column="1" Source="er_user" HorizontalOptions="End">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding GoBackCommand}" />
                         </Image.GestureRecognizers>
                     </Image>-->
-                </Grid>
-            </Frame>
-        </Grid>
+                    </Grid>
+                </Frame>
+            </Grid>
+        </ScrollView>
+
     </ContentPage.Content>
 </ContentPage>

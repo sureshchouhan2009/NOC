@@ -5,8 +5,63 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="{Binding Title}">
 
-    <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
-        <Button Clicked="Button_Clicked" Text="Welcome to Xamarin Forms and Prism!" />
-    </StackLayout>
+    <!--<ContentPage.Resources>
+        <Style TargetType="Label">
+            <Setter Property="TextColor" Value="Black" />
+        </Style>
+    </ContentPage.Resources>-->
+
+
+    <!--<ContentPage.Content>
+        <StackLayout Background="White">
+            <Label
+                HorizontalOptions="FillAndExpand"
+                HorizontalTextAlignment="Center"
+                Text="MSAL Xamarin Forms Sample"
+                VerticalOptions="Start" />
+            <BoxView
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand"
+                Color="Transparent" />
+            <StackLayout
+                x:Name="slUser"
+                Padding="5,10"
+                IsVisible="False">
+                <StackLayout Orientation="Horizontal">
+                    <Label FontAttributes="Bold" Text="DisplayName " />
+                    <Label x:Name="lblDisplayName" />
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label FontAttributes="Bold" Text="GivenName " />
+                    <Label x:Name="lblGivenName" />
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label FontAttributes="Bold" Text="Surname " />
+                    <Label x:Name="lblSurname" />
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label FontAttributes="Bold" Text="Id " />
+                    <Label x:Name="lblId" />
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label FontAttributes="Bold" Text="UserPrincipalName " />
+                    <Label x:Name="lblUserPrincipalName" />
+                </StackLayout>
+            </StackLayout>
+            <BoxView
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand"
+                Color="Transparent" />
+            <Button
+                x:Name="btnSignInSignOut"
+                Margin="20"
+                Clicked="OnSignInSignOut"
+                FontSize="Medium"
+                HorizontalOptions="FillAndExpand"
+                Text="Sign in"
+                VerticalOptions="End" />
+        </StackLayout>
+    </ContentPage.Content>-->
+
 
 </ContentPage>

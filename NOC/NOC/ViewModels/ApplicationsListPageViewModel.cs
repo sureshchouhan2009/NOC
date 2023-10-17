@@ -113,7 +113,7 @@ namespace NOC.ViewModels
                         Session.Instance.IsOfficerequalToReviewer = true;
                         // var officerSthcmntIDData = await ApiService.Instance.checkStackholderdetails1(selectedTransaction.TransactionID.ToString(), Session.Instance.CurrentUserID, selectedTransaction.WorkFlow);
                         var officerSthcmntIDData = await ApiService.Instance.checkStackholderdetails1(selectedTransaction.TransactionID.ToString(), Session.Instance.CurrentUserID, "Officer2");
-                        Session.Instance.SthcmntID = officerSthcmntIDData.Stakeholder_Comments.SthcmntID;
+                        Session.Instance.SthcmntID = officerSthcmntIDData?.Stakeholder_Comments?.SthcmntID??0;
                         Session.Instance.CurrentTransactionWorkFlow = selectedTransaction.WorkFlow;
                     }
                     else
@@ -150,6 +150,7 @@ namespace NOC.ViewModels
                 }
 
                 Session.Instance.CurrentTransaction = await ApiService.Instance.GetTransactionDetails(selectedTransaction.ApplicationNumber);
+                Session.Instance.reply_Seq_ID = selectedTransaction.REPLY_SEQ_ID;
                 await NavigationService.NavigateAsync("TransactionInfoPage");
 
                

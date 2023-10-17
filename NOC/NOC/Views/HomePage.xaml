@@ -445,7 +445,8 @@
                     Padding="0"
                     BackgroundColor="{DynamicResource AppBackgroundGray}"
                     HasShadow="False"
-                    HeightRequest="60">
+                    HeightRequest="60"
+                    IsVisible="{Binding IsReviewerOrOfficer}">
                     <Grid Margin="10" ColumnDefinitions="2*,8*,2*">
                         <Frame Grid.Column="0" Style="{StaticResource circleFram}">
                             <Image

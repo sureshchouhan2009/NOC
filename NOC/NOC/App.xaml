@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<prism:PrismApplication xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:prism="http://prismlibrary.com"
-             x:Class="NOC.App">
-  <Application.Resources>
+<prism:PrismApplication
+    x:Class="NOC.App"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:prism="http://prismlibrary.com">
+    <Application.Resources>
 
-    <!-- Application resource dictionary -->
+        <!--  Application resource dictionary  -->
 
         <Style x:Key="TitleLabelStyle" TargetType="Label">
             <Setter Property="VerticalOptions" Value="Center" />
@@ -14,17 +15,17 @@
             <Setter Property="FontSize" Value="18" />
         </Style>
 
-       <!-- Application resource Colors -->
-            <!--<Color x:Key="BrandPrimary">#aa182c</Color>-->
-            <Color x:Key="BrandPrimary">#e9003f</Color>
-            <Color x:Key="BrandSecondary">#595959</Color>
-            <Color x:Key="BrandTertiary">#F5D563</Color>
-            <Color x:Key="PageBackground">#F0F5F8</Color>
-            <Color x:Key="SectionBackground">#FFFFFF</Color>
+        <!--  Application resource Colors  -->
+        <!--<Color x:Key="BrandPrimary">#aa182c</Color>-->
+        <Color x:Key="BrandPrimary">#e9003f</Color>
+        <Color x:Key="BrandSecondary">#595959</Color>
+        <Color x:Key="BrandTertiary">#F5D563</Color>
+        <Color x:Key="PageBackground">#F0F5F8</Color>
+        <Color x:Key="SectionBackground">#FFFFFF</Color>
 
 
-       <Color x:Key="AppBackgroundGray">#f2f2f2</Color>
-       <Color x:Key="DarkGray">#4d4d4d</Color>
-       
+        <Color x:Key="AppBackgroundGray">#f2f2f2</Color>
+        <Color x:Key="DarkGray">#4d4d4d</Color>
+
     </Application.Resources>
 </prism:PrismApplication>
