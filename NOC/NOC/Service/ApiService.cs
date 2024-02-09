@@ -138,6 +138,7 @@ namespace NOC.Service
                 {
                     string result = await response.Content.ReadAsStringAsync();
                     SuccessMessage = JsonConvert.DeserializeObject<string>(result);
+                    SuccessMessage.Replace(@"\\", @"\");
                 }
             }
             catch (Exception ex)
@@ -359,9 +360,11 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";
+                client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
                
                 String RequestUrl = Urls.GetCommentsRelatedAttachment + TransactionID+"/"+ StackHolderOrReviewerSolutionRoleID+"/"+ IsStackholder;
+
                 var response = await client.GetAsync(RequestUrl);
                 if (response.IsSuccessStatusCode)
                 {
@@ -391,7 +394,8 @@ namespace NOC.Service
             {
                 String RequestUrl = "";
                 var client = ServiceUtility.CreateNewHttpClient();
-                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";
+                client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
                
 
                 RequestUrl = Session.Instance.CurrentUserType == UserTypes.Applicant?Urls.GetTransactionComents + applicationNumber: Urls.GetTransactionCommentsForProcessor + applicationNumber;
@@ -426,13 +430,19 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";
+                client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
                
                 String RequestUrl = Urls.PostDecisionCommentsave;
                 var payload = ServiceUtility.BuildRequest(saveCommentModel);
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
                 var response = await client.SendAsync(req);
                 if (response?.IsSuccessStatusCode ?? false)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    SuccessResult = JsonConvert.DeserializeObject<String>(result);
+                }
+                else
                 {
                     string result = await response.Content.ReadAsStringAsync();
                     SuccessResult = JsonConvert.DeserializeObject<String>(result);
@@ -459,6 +469,11 @@ namespace NOC.Service
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
                 var response = await client.SendAsync(req);
                 if (response?.IsSuccessStatusCode ?? false)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    SuccessResult = JsonConvert.DeserializeObject<String>(result);
+                }
+                else
                 {
                     string result = await response.Content.ReadAsStringAsync();
                     SuccessResult = JsonConvert.DeserializeObject<String>(result);
@@ -531,7 +546,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";
+                client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
                
                 String RequestUrl = Urls.SaveStakeholderResponseAttachment;
                 var payload = ServiceUtility.BuildRequest(uploadModel);
@@ -714,8 +730,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
-               
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";
+                client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
                 String RequestUrl = Urls.PostOwnNocs;
                 var payload = ServiceUtility.BuildRequest(requestModel);
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
@@ -952,9 +968,9 @@ namespace NOC.Service
             return responsedata;
         }
 
-        internal async Task<String> PostreviewerSpecificComment(PostReviewerSpecificComment usaveCondition)
+        internal async Task<CustomeConditionResponseModel> PostreviewerSpecificComment(PostReviewerSpecificComment usaveCondition)
         {
-            string responsedata = "";
+            CustomeConditionResponseModel responsedata = new CustomeConditionResponseModel();
             try
             {
                 bool IsReviewer = Session.Instance.CurrentUserType == UserTypes.Reviewer;
@@ -968,12 +984,12 @@ namespace NOC.Service
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
-                    responsedata = JsonConvert.DeserializeObject<string>(result, ServiceUtility.GetJsonSerializationSettings());
+                    responsedata = JsonConvert.DeserializeObject<CustomeConditionResponseModel>(result, ServiceUtility.GetJsonSerializationSettings());
                 }
                 else
                 {
                     string result = await response.Content.ReadAsStringAsync();
-                    responsedata = JsonConvert.DeserializeObject<string>(result, ServiceUtility.GetJsonSerializationSettings());
+                    responsedata = JsonConvert.DeserializeObject<CustomeConditionResponseModel>(result, ServiceUtility.GetJsonSerializationSettings());
                 }
             }
             catch (Exception ex)
@@ -1122,7 +1138,15 @@ namespace NOC.Service
                 }
                 else
                 {
-                    RequestUrl = Urls.SubmitCommentsForProcessor;
+                    if (Session.Instance.IsOfficerequalToReviewer)
+                    {
+                        RequestUrl = Urls.SubmitCommentOfficer2;  //thsi is for officer 2
+                    }
+                    else
+                    {
+                        RequestUrl = Urls.SubmitCommentsForProcessor;
+                    }
+                 
                 }
 
                // String RequestUrl = Urls.SubmitCommentsForApplicant;// save url is same for internal and applicant
@@ -1274,7 +1298,7 @@ namespace NOC.Service
             {
                 var client = ServiceUtility.CreateNewHttpClient();
                  string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
-               
+                int index = 1;
                 String RequestUrl = Urls.getStackholderResponsepageConditions + transactionID + "/" + workFlow;
                 //var payload = ServiceUtility.BuildRequest(RequestModel);
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = null };
@@ -1282,7 +1306,20 @@ namespace NOC.Service
                 if (response?.IsSuccessStatusCode ?? false)
                 {
                     string result = await response.Content.ReadAsStringAsync();
-                    responseData = JsonConvert.DeserializeObject<List<StackHolderAndOfficerSpecifcConditions>>(result);
+                    var RawConditions = JsonConvert.DeserializeObject<List<StackHolderAndOfficerSpecifcConditions>>(result);
+                    foreach (var condition in RawConditions)
+                    {
+                        responseData.Add(new StackHolderAndOfficerSpecifcConditions
+                        {
+
+                            IndexNumber = index++,
+                            CommentType = condition.CommentType,
+                            condition = condition.condition,
+                            TRA_SPECCOND_ID = condition.TRA_SPECCOND_ID,
+                            StakeholderName=condition.StakeholderName
+                        }
+                        );
+                    }
                 }
                 var client1 = ServiceUtility.CreateNewHttpClient();
                 var authHeader1 = new AuthenticationHeaderValue("bearer", Session.Instance.Token);
@@ -1296,7 +1333,7 @@ namespace NOC.Service
                 {
                     string result = await response1.Content.ReadAsStringAsync();
                     var OldCommentModelList = JsonConvert.DeserializeObject<ReviewerConditionInReviewerPageModel>(result);
-                    int index = 1;
+                    
                     foreach (var CItem in OldCommentModelList.UserSpCondition)
                     {
                         responseData.Add(new StackHolderAndOfficerSpecifcConditions
@@ -1306,6 +1343,7 @@ namespace NOC.Service
                             CommentType = CItem.COMMENTTYPE,
                             condition = CItem.CONDITIONS,
                             TRA_SPECCOND_ID = CItem.TRA_SPECCOND_ID,
+                           // StakeholderName = CItem.
                         }
                         ) ;
                     }
@@ -1334,10 +1372,29 @@ namespace NOC.Service
                 //var payload = ServiceUtility.BuildRequest(RequestModel);
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = null };
                 var response = await client.SendAsync(req);
+                int index = 1;
                 if (response?.IsSuccessStatusCode ?? false)
                 {
                     string result = await response.Content.ReadAsStringAsync();
-                    responseData = JsonConvert.DeserializeObject<List<StackHolderAndOfficerSpecifcConditions>>(result);
+                  var  responseDataRaw = JsonConvert.DeserializeObject<List<StackHolderAndOfficerSpecifcConditions>>(result);
+
+                    foreach (var CItem in responseDataRaw)
+                    {
+                        responseData.Add(new StackHolderAndOfficerSpecifcConditions
+                        {
+                            IndexNumber = index++,
+                            CommentType = CItem.CommentType,
+                            condition = CItem.condition,
+                            Order = CItem.Order,
+                            StakeholderName = CItem.StakeholderName,
+                            SubSortOrder = CItem.SubSortOrder,
+                            TRA_SPECCOND_ID = CItem.TRA_SPECCOND_ID,
+                            viewReview = CItem.viewReview,
+                            ViewDoc = CItem.ViewDoc
+
+                        });
+                    }
+
                 }
             }
             catch (Exception ex)
@@ -1357,7 +1414,8 @@ namespace NOC.Service
             {
                 
                 var client = ServiceUtility.CreateNewHttpClient();
-                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";
+                client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
                
                 var response = await client.GetAsync(RequestUrl);
                 if (response.IsSuccessStatusCode)
@@ -1377,7 +1435,8 @@ namespace NOC.Service
             try
             {
                 var client = ServiceUtility.CreateNewHttpClient();
-                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
+                 string cookiesValue = "MobileToken=" + Session.Instance.Token + ";Ismobile=true";
+                client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
                
                 
                 var payload = ServiceUtility.BuildRequest(RequestModel);
@@ -1410,11 +1469,12 @@ namespace NOC.Service
                 var payload = ServiceUtility.BuildRequest(RequestModel);
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
                 var response = await client.SendAsync(req);
+                int index = 1;
                 if (response?.IsSuccessStatusCode ?? false)
                 {
                     var condition = await response.Content.ReadAsStringAsync();
                     var deserialData=   JsonConvert.DeserializeObject<List<StackHolderAndOfficerSpecifcConditions>>(condition);
-                    int index = 1;
+                   
                     foreach (var CItem in deserialData)
                     {
                         Result.Add(new StackHolderAndOfficerSpecifcConditions
@@ -1440,7 +1500,7 @@ namespace NOC.Service
                 if (!string.IsNullOrEmpty(useraddedConditions))
                 {
                     ReviewerConditionInReviewerPageModel uCondition = JsonConvert.DeserializeObject<ReviewerConditionInReviewerPageModel>(useraddedConditions);
-                    int index = 1;
+                    //int index = 1;
                     foreach (var CItem in uCondition.UserSpCondition)
                     {
                         Result.Add(new StackHolderAndOfficerSpecifcConditions

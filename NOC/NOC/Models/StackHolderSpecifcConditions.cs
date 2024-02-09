@@ -16,8 +16,8 @@ namespace NOC.Models
             public int Order { get; set; }
             public bool viewReview { get; set; }
 
-        public int IndexNumber { get; set; }
-        public bool IsCheckedForConditionAgreeget { get; set; }
+            public int IndexNumber { get; set; }
+            public bool IsCheckedForConditionAgreeget { get; set; }
 
     }
 

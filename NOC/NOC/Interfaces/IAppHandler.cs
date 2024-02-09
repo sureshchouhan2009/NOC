@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Threading.Tasks;
+
 namespace NOC.Interfaces
 {
-    public class EmptyClass
+    public interface IAppHandler
     {
-        public EmptyClass()
-        {
-        }
+        Task<bool> LaunchApp(string packageName);
     }
 }

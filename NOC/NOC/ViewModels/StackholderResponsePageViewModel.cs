@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using Newtonsoft.Json;
 using NOC.Interfaces;
 using NOC.Models;
 using NOC.Service;
 using NOC.Utility;
 using Prism.Navigation;
 using Xamarin.CommunityToolkit.Extensions;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace NOC.ViewModels
@@ -214,25 +217,69 @@ namespace NOC.ViewModels
 
         private async void DownloadCommentsAttachmentsCommandExecute(object obj)
         {
-            if (StackholderAttachmentsModelList.Any(i => i.IsSelected))
+            IsBusy = true;
+            try
             {
-                IsBusy = true;
+
+
+                List<int> AIds = new List<int>();
                 foreach (var item in StackholderAttachmentsModelList)
                 {
                     if (item.IsSelected)
                     {
-                        IDownloader downloader = DependencyService.Get<IDownloader>();
-                        downloader.OnFileDownloaded += OnFileDownloaded;
-                        downloader.DownloadFile(item.UrlPath, "XF_Downloads");
+                        AIds.Add(item.AttachmentID);
                     }
 
                 }
-                IsBusy = false;
+
+                if (AIds.Count > 0)
+                {
+                    string responseUrl = await ApiService.Instance.GenericPostApiCall(Urls.DownloadMultipleAttachments, AIds);
+                    string Url = JsonConvert.DeserializeObject<string>(responseUrl);
+                    if (!string.IsNullOrEmpty(Url))
+                    {
+                        await Launcher.OpenAsync(Url);
+                    }
+                    else
+                    {
+                        await Application.Current.MainPage.DisplayToastAsync(Url);
+                    }
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayToastAsync("Please select attachment");
+                }
+
             }
-            else
+            catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayToastAsync("Please select any attachment");
+                await Application.Current.MainPage.DisplayToastAsync(ex.ToString());
             }
+            IsBusy = false;
+
+
+
+            #region Old Code
+             //if (StackholderAttachmentsModelList.Any(i => i.IsSelected))
+                 //{
+                 //    IsBusy = true;
+                 //    foreach (var item in StackholderAttachmentsModelList)
+                 //    {
+                 //        if (item.IsSelected)
+                 //        {
+                 //            IDownloader downloader = DependencyService.Get<IDownloader>();
+                 //            downloader.OnFileDownloaded += OnFileDownloaded;
+                 //            downloader.DownloadFile(item.UrlPath, "XF_Downloads");
+                 //        }
+
+            //    }
+            //    IsBusy = false;
+            //}
+            //else
+            //{
+            //    await Application.Current.MainPage.DisplayToastAsync("Please select any attachment");
+            //}
+            #endregion
         }
 
         private void OnFileDownloaded(object sender, DownloadEventArgs e)

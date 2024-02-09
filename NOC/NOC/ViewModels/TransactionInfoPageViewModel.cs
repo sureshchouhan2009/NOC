@@ -262,7 +262,12 @@ namespace NOC.ViewModels
                 OwnNocPostModel objectionOptionPostModel = new OwnNocPostModel();
                 objectionOptionPostModel.transactionid = TransactonDetail.Transaction.TransactionNumber;
                 objectionOptionPostModel.userID = Session.Instance.CurrentUserID;//"faa81574-c437-4d58-85e4-f115f1e22d12"; //TransactonDetail.Transaction.UserID;
-                var str = JsonConvert.SerializeObject(objectionOptionPostModel);
+                if (Session.Instance.CurrentUserType==UserTypes.Stackholder)
+                {
+                    objectionOptionPostModel.workflow = Session.Instance.CurrentTransactionWorkFlow;
+                }
+               
+                   
                 var result = await ApiService.Instance.PostOwnNoc(objectionOptionPostModel);
                 await Application.Current.MainPage.DisplayToastAsync(result);
                 await NavigationService.NavigateAsync("app:///HomePage");
@@ -466,13 +471,21 @@ namespace NOC.ViewModels
 
         public async Task<bool> getLatestAttachments()
         {
-         var  Attachments = await ApiService.Instance.GetTransactionAttachment(Session.Instance.CurrentTransaction.Transaction.TransactionID.ToString());
-            if (Attachments?.Count > 0)
+            try
             {
-                AttachmentList = Attachments.Where(e => e.CommentsID == 0).ToList();
+
+                var Attachments = await ApiService.Instance.GetTransactionAttachment(Session.Instance.CurrentTransaction.Transaction.TransactionID.ToString());
+                if (Attachments?.Count > 0)
+                {
+                    AttachmentList = Attachments.Where(e => e.CommentsID == 0).ToList();
+                }
+
+                return AttachmentList.Count > 0;
             }
-           
-            return AttachmentList.Count>0;
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
 

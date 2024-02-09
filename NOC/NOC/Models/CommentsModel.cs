@@ -4,11 +4,22 @@ using NOC.Utility;
 
 namespace NOC.Models
 {
-   
+    public class SolutionRoles
+    {
+        public int SolutionRoleID { get; set; }
+        public string SolutionRoleName { get; set; }
+        public string SolutionRoleDescription { get; set; }
+        public string SolutionRoleARName { get; set; }
+        public string SolutionRoleENABBRV { get; set; }
+        public string SolutionRoleARABBR { get; set; }
+        public bool IsDefaultUser { get; set; }
+        public object CreatedBy { get; set; }
+        public DateTime CreationDate { get; set; }
+        public object LastModifiedBy { get; set; }
+        public DateTime LastModificationDate { get; set; }
+        public int RoleType { get; set; }
+    }
 
-
-
-    // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
     public class UserType
     {
         public int UserTypeID { get; set; }
@@ -105,7 +116,7 @@ namespace NOC.Models
         public object TTransactionStepReply { get; set; }
         public object Authentication { get; set; }
         public object LkTransStepsReply { get; set; }
-        public object SolutionRoles { get; set; }
+        public SolutionRoles SolutionRoles { get; set; }
         public object SolutionRoleUser { get; set; }
         public List<AttachmentModel> Attachments { get; set; } = new List<AttachmentModel>();
         public object Stakeholder_Comments { get; set; }

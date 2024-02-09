@@ -15,6 +15,7 @@
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
 				<data android:scheme="msalc81f8d46-d18d-4b36-8cf7-23f0b5a4397e" android:host="auth" />
+				<data android:scheme="@string/app_name" />
 			</intent-filter>
 		</activity>
 	</application>

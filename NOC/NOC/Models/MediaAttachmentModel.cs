@@ -20,6 +20,7 @@ namespace NOC.Models
         public int Attachmenttype { get; set; }
         public string filepath { get; set; }
         public int commentID { get; set; }
+        public string typeofsave { get; set; }
     }
 
     public class MediaAttachmentModel

@@ -365,7 +365,7 @@
                                                         FontAttributes="Bold"
                                                         FontSize="10"
                                                         HorizontalOptions="Center"
-                                                        Text="Attachment Type"
+                                                        Text="TypeAttachment "
                                                         VerticalOptions="Center" />
                                                     <BoxView
                                                         Grid.Column="1"
@@ -568,11 +568,11 @@
                                             HorizontalOptions="Center"
                                             Text="Attachments"
                                             VerticalOptions="Center" />
-                                        <BoxView
+                                        <!--<BoxView
                                             Grid.Column="0"
                                             HorizontalOptions="EndAndExpand"
                                             WidthRequest="1"
-                                            Color="DarkGray" />
+                                            Color="DarkGray" />-->
                                         <Grid
                                             Grid.Column="1"
                                             ColumnDefinitions="8*,2*"
@@ -623,7 +623,7 @@
                                         BorderColor="LightGray"
                                         HasShadow="False"
                                         HeightRequest="40">
-                                        <Grid ColumnDefinitions="2.5*,2.5*,2.5*,2.5*" HeightRequest="40">
+                                        <Grid ColumnDefinitions=".3*,.4*,.3*" HeightRequest="40">
                                             <Label
                                                 Grid.Column="0"
                                                 FontAttributes="Bold"
@@ -655,7 +655,7 @@
                                                 HorizontalOptions="Center"
                                                 Text="Upload Date"
                                                 VerticalOptions="Center" />
-                                            <BoxView
+                                            <!--<BoxView
                                                 Grid.Column="2"
                                                 HorizontalOptions="EndAndExpand"
                                                 WidthRequest="1"
@@ -666,7 +666,7 @@
                                                 FontSize="10"
                                                 HorizontalOptions="Center"
                                                 Text="Download"
-                                                VerticalOptions="Center" />
+                                                VerticalOptions="Center" />-->
                                         </Grid>
                                     </Frame>
                                     <ListView
@@ -683,7 +683,7 @@
                                                     <Grid
                                                         Margin="0"
                                                         Padding="0"
-                                                        ColumnDefinitions="2.5*,2.5*,2.5*,2.5*"
+                                                        ColumnDefinitions=".3*,.4*,.3*"
                                                         HeightRequest="35">
                                                         <Label
                                                             Grid.Column="0"
@@ -713,12 +713,12 @@
                                                             HorizontalOptions="Center"
                                                             Text="{Binding FormatedUplodedDate}"
                                                             VerticalOptions="Center" />
-                                                        <BoxView
+                                                        <!--<BoxView
                                                             Grid.Column="2"
                                                             HorizontalOptions="EndAndExpand"
                                                             WidthRequest="1"
-                                                            Color="DarkGray" />
-                                                        <StackLayout
+                                                            Color="DarkGray" />-->
+                                                        <!--<StackLayout
                                                             Grid.Column="3"
                                                             HorizontalOptions="Center"
                                                             Orientation="Horizontal"
@@ -730,9 +730,9 @@
                                                                 WidthRequest="10" />
                                                             <Label FontSize="10" Text="Download" />
                                                             <StackLayout.GestureRecognizers>
-                                                                <TapGestureRecognizer Command="{Binding Source={x:Reference ReviewerPage}, Path=BindingContext.DownloadCommentsAttachmentsCommand}" CommandParameter="{Binding .}" />
+                                                                <TapGestureRecognizer Command="{Binding Source={x:Reference ReviewerPage}, Path=BindingContext.DownloadCommandForCommentAttachment}" CommandParameter="{Binding .}" />
                                                             </StackLayout.GestureRecognizers>
-                                                        </StackLayout>
+                                                        </StackLayout>-->
                                                     </Grid>
                                                 </ViewCell>
                                             </DataTemplate>
@@ -1106,7 +1106,7 @@
                                 </Frame>
                                 <ListView
                                     Grid.Row="1"
-                                    Margin="0"
+                                    Margin="0,0,0,-1"
                                     HasUnevenRows="True"
                                     HeightRequest="250"
                                     ItemsSource="{Binding StackHolderAndOfficerSpecifcConditionsList}"
@@ -1185,7 +1185,7 @@
                                     BackgroundColor="Gray"
                                     HasShadow="False"
                                     HorizontalOptions="Center"
-                                    WidthRequest="80">
+                                    WidthRequest="100">
                                     <Label
                                         Padding="5"
                                         FontSize="14"

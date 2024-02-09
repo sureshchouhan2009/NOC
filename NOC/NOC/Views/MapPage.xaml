@@ -1,19 +1,18 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <ContentPage
+    x:Class="NOC.Views.MapPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-     NavigationPage.HasNavigationBar="False"
     xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
-             ios:Page.UseSafeArea="true"
-    x:Class="NOC.Views.MapPage">
-     <ContentPage.Resources>
+    ios:Page.UseSafeArea="true"
+    NavigationPage.HasNavigationBar="False">
+    <ContentPage.Resources>
         <Style x:Key="circleFram" TargetType="Frame">
             <Setter Property="VerticalOptions" Value="Center" />
             <Setter Property="HorizontalOptions" Value="Center" />
             <Setter Property="BackgroundColor" Value="White" />
-            <Setter Property="HasShadow" Value="False"/>
-            <Setter Property="CornerRadius" 
-      Value="{OnPlatform iOS=18, Android=30}" />  
+            <Setter Property="HasShadow" Value="False" />
+            <Setter Property="CornerRadius" Value="{OnPlatform iOS=18, Android=30}" />
             <Setter Property="Padding" Value="0" />
         </Style>
         <Style x:Key="menuLabel" TargetType="Label">
@@ -25,42 +24,92 @@
     </ContentPage.Resources>
     <ContentPage.Content>
 
-        <Grid RowDefinitions=".8*,.8*,8.4*,.8*" RowSpacing="0" >
-            <Frame Grid.Row="0" Padding="0" HasShadow="False">
+        <Grid RowDefinitions=".8*,.8*,8.4*,.8*" RowSpacing="0">
+            <Frame
+                Grid.Row="0"
+                Padding="0"
+                HasShadow="False">
                 <Grid>
-                    <Image Source="BackArrowRed" HeightRequest="30" WidthRequest="30" HorizontalOptions="Start" VerticalOptions="Center">
+                    <Image
+                        HeightRequest="30"
+                        HorizontalOptions="Start"
+                        Source="BackArrowRed"
+                        VerticalOptions="Center"
+                        WidthRequest="30">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding GoBackCommand}" />
                         </Image.GestureRecognizers>
                     </Image>
-                    <Label Text="Project Location" FontAttributes="Bold" Style="{StaticResource TitleLabelStyle}" />
+                    <Label
+                        FontAttributes="Bold"
+                        Style="{StaticResource TitleLabelStyle}"
+                        Text="Project Location" />
 
                 </Grid>
 
-               
+
             </Frame>
-             <Grid Grid.Row="1" ColumnDefinitions="1.5*,8.5*" Padding="10,10,10,10" BackgroundColor="{DynamicResource BrandPrimary}">
-                                        <Frame Grid.Column="0" Style="{StaticResource circleFram}">
-                                            <Image Source="doc_icon" Aspect="AspectFit" HeightRequest="35"></Image>
-                                        </Frame><Label Grid.Column="1" VerticalOptions="Center"  Style="{StaticResource menuLabel}" Text="{Binding TransactonDetail.Transaction.TransactionNumber}" />
-                                         
-                                    
-                                        
-                                </Grid>
-            <!--Source="{Binding HtmlWebViewSource}"-->
-            <StackLayout Grid.Row="2" Padding="0" Margin="0"   >
-                 <WebView   x:Name="webView"   WidthRequest="100" VerticalOptions="FillAndExpand" />
+            <Grid
+                Grid.Row="1"
+                Padding="10,10,10,10"
+                BackgroundColor="{DynamicResource BrandPrimary}"
+                ColumnDefinitions="1.5*,8.5*">
+                <Frame Grid.Column="0" Style="{StaticResource circleFram}">
+                    <Image
+                        Aspect="AspectFit"
+                        HeightRequest="35"
+                        Source="doc_icon" />
+                </Frame>
+                <Label
+                    Grid.Column="1"
+                    Style="{StaticResource menuLabel}"
+                    Text="{Binding TransactonDetail.Transaction.TransactionNumber}"
+                    VerticalOptions="Center" />
+
+
+
+            </Grid>
+            <!--  Source="{Binding HtmlWebViewSource}"  -->
+            <StackLayout
+                Grid.Row="2"
+                Margin="0"
+                Padding="0">
+                <WebView
+                    x:Name="webView"
+                    VerticalOptions="FillAndExpand"
+                    WidthRequest="100" />
             </StackLayout>
-           
-           
-            <Frame Grid.Row="3" Padding="10" HasShadow="False" >
+
+
+            <Frame
+                Grid.Row="3"
+                Padding="10"
+                HasShadow="False">
                 <Grid ColumnDefinitions="5*, 5*">
-                    <Image Grid.Column="0" Source="home" HorizontalOptions="Start">
+                    <Image
+                        Grid.Column="0"
+                        HorizontalOptions="Start"
+                        Source="home">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding GoHomeCommand}" />
                         </Image.GestureRecognizers>
                     </Image>
-                    <!--<Image Grid.Column="1" Source="er_user" HorizontalOptions="End">
+
+                    <Image
+                        Grid.Column="1"
+                        HeightRequest="30"
+                        HorizontalOptions="End"
+                        IsVisible="{Binding IsReviewer}"
+                        Source="ForwardArrow.png"
+                        WidthRequest="30">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding NavigateToComments}" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <!--<Image
+                        Grid.Column="1"
+                        HorizontalOptions="End"
+                        Source="er_user">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding GoBackCommand}" />
                         </Image.GestureRecognizers>
@@ -68,6 +117,6 @@
                 </Grid>
             </Frame>
         </Grid>
-        
+
     </ContentPage.Content>
 </ContentPage>

@@ -96,6 +96,7 @@
     <Compile Include="AndroidParentWindowLocatorService.cs" />
     <Compile Include="Renderers\CheckboxRenderer.cs" />
     <Compile Include="Renderers\MainPageRenderer.cs" />
+    <Compile Include="Implementation\OpenAppAndroid.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

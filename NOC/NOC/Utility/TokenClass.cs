@@ -108,7 +108,8 @@ namespace NOC.Utility
                 
                // client.DefaultRequestHeaders.Authorization = authHeader;
                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
-                String RequestUrl = "https://portal.gpceast.com/NOC/api/Users/checkAuthorieduser";
+                //  String RequestUrl = "https://portal.gpceast.com/NOC/api/Users/checkAuthorieduser";
+                String RequestUrl = Urls.checkAuthorieduser; ;
                 var payload = ServiceUtility.BuildRequest(new AzureClassTest { StringOne="" });
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
                 var response = await client.SendAsync(req);

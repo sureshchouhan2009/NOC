@@ -1,6 +1,7 @@
 ﻿using Microsoft.Identity.Client;
 using NOC.Constants;
 using NOC.Enums;
+using NOC.Interfaces;
 using NOC.Models;
 using NOC.Service;
 using NOC.Utility;
@@ -259,30 +260,45 @@ namespace NOC.ViewModels
                 return performDashboardCommand;
             }
         }
-
+        /// <summary>
+        /// Navigates DashBoard to App{PowerBI}
+        /// </summary>
+        /// <param name="obj"></param>
         private async void performDashboardCommandExecute(object obj)
         {
+            //try
+            //{
+            //    string url = string.Empty;
+            //    string location = RegionInfo.CurrentRegion.Name.ToLower();
+            //    if (Device.RuntimePlatform == Device.Android)
+            //    {
+            //        //await Launcher.OpenAsync("https://play.google.com/store/apps/details?id=com.microsoft.powerbim&hl=en-IN");
+            //        url = "https://play.google.com/store/apps/details?id=com.microsoft.powerbim&hl=en-IN";
+            //    }
+            //    else
+            //    {
+            //        url = "https://apps.apple.com/" + location + "/app/microsoft-power-bi/id929738808";
+            //    }
+
+            //    await Browser.OpenAsync(url, BrowserLaunchMode.External);
+
+            //}
+            //catch (Exception ex)
+            //{
+
+            //}
+
             try
             {
-                string url = string.Empty;
-                string location = RegionInfo.CurrentRegion.Name.ToLower();
-                if (Device.RuntimePlatform == Device.Android)
-                {
-                    //await Launcher.OpenAsync("https://play.google.com/store/apps/details?id=com.microsoft.powerbim&hl=en-IN");
-                    url = "https://play.google.com/store/apps/details?id=com.microsoft.powerbim&hl=en-IN";
-                }
-                else
-                {
-                    url = "https://apps.apple.com/" + location + "/app/microsoft-power-bi/id929738808";
-                }
-
-                await Browser.OpenAsync(url, BrowserLaunchMode.External);
-
+                //https://stackoverflow.com/questions/63594273/xamarin-forms-how-to-open-an-app-from-another-app
+                DependencyService.Register<IAppHandler>();
+                await DependencyService.Get<IAppHandler>().LaunchApp("com.microsoft.powerbim");
             }
             catch (Exception ex)
             {
 
             }
+
         } 
 
        

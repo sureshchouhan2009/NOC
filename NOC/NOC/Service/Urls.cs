@@ -6,10 +6,29 @@ namespace NOC.Service
 {
     public class Urls
     {
-       
 
-        public const string BaseUrl = "https://portal.gpceast.com/noc/";//dev latest (UAT OR Dev)
-         // public const string BaseUrl = "https://noc.etihadrail.ae/noc/";//prod (Production)
+
+
+        /// <summary>
+        /// Token URl for Generating the Token
+        /// </summary>
+
+        public const string TokenBaseUrl = "https://portal.gpceast.com/er/noc/";  //Dev
+        //public const string TokenBaseUrl = "https://gisstg.etihadrail.ae/portal/sharing/rest/generateToken?"; //Stage
+
+
+
+
+
+        /// <summary>
+        /// Development API Url Using in Dev environment
+        /// </summary>
+        public const string BaseUrl = "https://portal.gpceast.com/noc/"; //Dev
+        //public const string BaseUrl = "https://nocstg.etihadrail.ae/NOC/";//Stage
+
+
+
+       
 
 
         public const string TokenURL = BaseUrl + "Token";
@@ -97,6 +116,7 @@ namespace NOC.Service
         public const string SaveApplicatNewComment = BaseUrl + "api/search/commentsaveing";//its just saves to server yet to submit
         public const string SubmitCommentsForApplicant = BaseUrl + "api/SearchOfficer/SubmitCommentApplicant";//submit anather call we need to perform for applicat
         public const string SubmitCommentsForProcessor = BaseUrl + "api/SearchOfficer/SubmitCommentProcessor";//submit anather call we need to perform for applicat
+        public const string SubmitCommentOfficer2 = BaseUrl + "api/SearchOfficer/SubmitCommentOfficer2";
 
         //to save fresh new comments from Internal Comments{methods post}
         public const string SaveNewCommentForInternal = BaseUrl + "api/search/commentsaveing";//just save enough
@@ -132,7 +152,8 @@ namespace NOC.Service
         public const string SentbackAPICallInReviewerResponse = BaseUrl + "api/Sentback/SentbacktoAll";
         public const string DownloadMultipleAttachments = BaseUrl + "api/Attachments/CreateZipFileAllattachment";
         public const string GetUserIDFromToken = BaseUrl + "api/User/UserInfo";
-
+        public const string GetERStachholders = BaseUrl + "api/ERStakeHolders/GetERStakeHolders";
+        public const string checkAuthorieduser = BaseUrl + "api/Users/checkAuthorieduser";
 
     }
 }

@@ -160,7 +160,7 @@ namespace NOC.ViewModels
                 //middle part data fetching for Stackholders List
 
                 //fetchAndConstructStackholderAndDecisionList(applicationNumber);
-                fetchAndConstructStackholderAndDecisionList("15842");
+                fetchAndConstructStackholderAndDecisionList(applicationNumber);
 
             
 
@@ -216,8 +216,6 @@ namespace NOC.ViewModels
             IsBusy = true;
             try
             {
-
-
                 List<int> AIds = new List<int>();
                 foreach (var item in StackholderAttachmentsModelList)
                 {
@@ -225,42 +223,52 @@ namespace NOC.ViewModels
                     {
                         AIds.Add(item.AttachmentID);
                     }
-
                 }
 
-                string responseUrl = await ApiService.Instance.GenericPostApiCall(Urls.DownloadMultipleAttachments, AIds);
-                if (!string.IsNullOrEmpty(responseUrl))
+                if (AIds.Count > 0)
                 {
-                    await Launcher.OpenAsync(responseUrl);
+                    string responseUrl = await ApiService.Instance.GenericPostApiCall(Urls.DownloadMultipleAttachments, AIds);
+                    string  Url = JsonConvert.DeserializeObject<string>(responseUrl);
+                    if (!string.IsNullOrEmpty(Url))
+                    {
+                        await Launcher.OpenAsync(Url);
+                    }
+                    else
+                    {
+                        await Application.Current.MainPage.DisplayToastAsync(Url);
+                    }
                 }
                 else
                 {
-                    await Application.Current.MainPage.DisplayToastAsync(responseUrl);
+                    await Application.Current.MainPage.DisplayToastAsync("Please select attachment");
                 }
-
             }
             catch (Exception ex)
             {
-
+                await Application.Current.MainPage.DisplayToastAsync(ex.ToString());
             }
             IsBusy = false;
-
-
-
-            //IsBusy = true;
-            //foreach(var item in StackholderAttachmentsModelList)
+            #region Old Code
+            //if (StackholderAttachmentsModelList.Any(i => i.IsSelected))
             //{
-            //    if (item.IsSelected)
+            //    IsBusy = true;
+            //    foreach (var item in StackholderAttachmentsModelList)
             //    {
-            //        IDownloader downloader = DependencyService.Get<IDownloader>();
-            //        downloader.OnFileDownloaded += OnFileDownloaded;
-            //        downloader.DownloadFile(item.UrlPath, "XF_Downloads");
+            //        if (item.IsSelected)
+            //        {
+            //            IDownloader downloader = DependencyService.Get<IDownloader>();
+            //            downloader.OnFileDownloaded += OnFileDownloaded;
+            //            downloader.DownloadFile(item.UrlPath, "XF_Downloads");
+            //        }
+
             //    }
-
+            //    IsBusy = false;
             //}
-
-
-            //IsBusy = false;
+            //else
+            //{
+            //    await Application.Current.MainPage.DisplayToastAsync("Please select any attachment");
+            //}
+            #endregion
         }
 
         private void OnFileDownloaded(object sender, DownloadEventArgs e)

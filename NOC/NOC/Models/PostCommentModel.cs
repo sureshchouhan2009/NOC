@@ -6,6 +6,7 @@ namespace NOC.Models.ReviwerSpecific
     public class Comments
     {
         public string Comment { get; set; }
+        public string WorkFlow { get; set; }
         public int Decision { get; set; }
         public string UserID { get; set; }
         public int TransactionID { get; set; }
@@ -22,5 +23,6 @@ namespace NOC.Models.ReviwerSpecific
         public string expirydate { get; set; }
         public bool isAvaliable { get; set; }
         public int unit { get; set; }
+
     }
 }

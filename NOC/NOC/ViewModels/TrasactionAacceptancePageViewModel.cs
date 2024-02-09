@@ -341,16 +341,25 @@ namespace NOC.ViewModels
             IsBusy = true;
             try
             {
+                //first save command we need to execute.
+              var success= await AwaitableSaveCommentAndAttachmentCommandExecute(obj);
+
+
                 //if(DateTime.Parse(CalculatedValidTillDate) > DateTime.Now.Date.AddDays(7))    // as discussed there isno lower linit//12-10-2023
                 //{
-                    #region Phase 2 Implementation for agregate Attachments //Submit Button equavallent  to No Objection
+                #region Phase 2 Implementation for agregate Attachments //Submit Button equavallent  to No Objection
 
-                    List<String> AttachmentIds = new List<string>();
+                List<String> AttachmentIds = new List<string>();
                     foreach (var attachment in OfficerResponseAttachmentsInReviewerResponseList)
                     {
                         AttachmentIds.Add(attachment.IsCheckedForAgreeget ? attachment.AttachmentID.ToString() : "a" + attachment.AttachmentID.ToString());
                     }
-                    string responseData = await ApiService.Instance.GenericPostApiCall(Urls.AgreGateSubmitInReviewerResponse, AttachmentIds);
+                foreach (var attachment in AttachmentList)
+                {
+                    AttachmentIds.Add(attachment.AttachmentID.ToString());
+                }
+
+                string responseData = await ApiService.Instance.GenericPostApiCall(Urls.AgreGateSubmitInReviewerResponse, AttachmentIds);
 
                     #endregion
 
@@ -396,6 +405,55 @@ namespace NOC.ViewModels
                 return _downloadCommentsAttachmentsCommand;
             }
         }
+
+
+        //thhis downloads attachments from comment related attachments
+        private ICommand _downloadCommandForCommentAttachment;
+
+        public ICommand DownloadCommandForCommentAttachment
+        {
+            get
+            {
+                if (_downloadCommandForCommentAttachment == null)
+                {
+                    _downloadCommandForCommentAttachment = new Command(DownloadCommandForCommentAttachmentExecute);
+                }
+
+                return _downloadCommandForCommentAttachment;
+            }
+        }
+
+        private async void DownloadCommandForCommentAttachmentExecute(object obj)
+        {
+            IsBusy = true;
+            string AllAttachmentUrl = "";
+            try
+            {
+                List<int> AIds = new List<int>();
+                foreach (var item in AttachmentList)
+                {
+                    
+                        AIds.Add(item.AttachmentID);
+                 
+
+                }
+
+                string responseUrlJson = await ApiService.Instance.GenericPostApiCall(Urls.DownloadMultipleAttachments, AIds);
+                AllAttachmentUrl = JsonConvert.DeserializeObject<string>(responseUrlJson);
+                if (!string.IsNullOrEmpty(AllAttachmentUrl))
+                {
+                    await Launcher.OpenAsync(AllAttachmentUrl);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayToastAsync(ex.ToString());
+            }
+            IsBusy = false;
+
+        }
+
         //UploadAttachmentCommand
 
         private ICommand _uploadAttachmentCommand;
@@ -413,13 +471,18 @@ namespace NOC.ViewModels
             }
         }
 
+
+
+
         private async void UploadAttachmentCommandExecute(object obj)
         {
-            
+
+            IsBusy = true;
             try
             {
                 if(!string.IsNullOrEmpty(DoccumentTypeSelectedItem.AttachmentTypeCode))
                 {
+                  
                     NewAttachmentModel requestModel = new NewAttachmentModel();
                     var options = new PickOptions
                     {
@@ -438,7 +501,7 @@ namespace NOC.ViewModels
                             transactionid = TransactonDetail.Transaction.TransactionID
                         };
                         IsBusy = true;
-                        string attacmentSaveResponse = await ApiService.Instance.SaveCommentAttachment(requestModel);
+                        string  attacmentSaveResponse = await ApiService.Instance.SaveCommentAttachment(requestModel);
                         await Application.Current.MainPage.DisplayToastAsync(attacmentSaveResponse);
                         IsBusy = false;
 
@@ -503,7 +566,7 @@ namespace NOC.ViewModels
             {
                 // The user cancelledcanceled or something went wrong
             }
-            
+            IsBusy = false;
         }
 
         //private async void DownloadCommentsAttachmentsCommandExecute(object obj)
@@ -542,7 +605,7 @@ namespace NOC.ViewModels
             }
             catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayToastAsync(AllAttachmentUrl);
+                await Application.Current.MainPage.DisplayToastAsync(ex.ToString());
             }
             IsBusy = false;
 
@@ -623,6 +686,7 @@ namespace NOC.ViewModels
 
         private async void RaiseObjectionCommandExecute(object obj)
         {
+            IsBusy = true;
             try
             {
                
@@ -640,29 +704,35 @@ namespace NOC.ViewModels
 
                 if(!string.IsNullOrEmpty(SpecificMessageText))
                 {
-                    IsBusy = true;
+                    List<SentBackApplicationModel> sentBackApplicationModelList = new List<SentBackApplicationModel>();
                     SentBackApplicationModel sentBackApplicationModel = new SentBackApplicationModel();
                     sentBackApplicationModel.sentiduserid = TransactonDetail.Transaction.UserID;
                     sentBackApplicationModel.StakeHoldersCodeDisplay = SpecificMessageText;
                     sentBackApplicationModel.sentbacktranID = TransactonDetail.Transaction.TransactionID;
                     sentBackApplicationModel.stepcode = 110021;
-                    var result=  await ApiService.Instance.GenericPostApiCall(Urls.SentbackAPICallInReviewerResponse, sentBackApplicationModel);
-                    IsBusy = false;
+                    sentBackApplicationModelList.Add(sentBackApplicationModel);
+                    var result=  await ApiService.Instance.GenericPostApiCall(Urls.SentbackAPICallInReviewerResponse, sentBackApplicationModelList);
+                    if (!string.IsNullOrEmpty(result))
+                    {
+                        await Application.Current.MainPage.DisplayToastAsync(result);
+                        await NavigationService.NavigateAsync("app:///HomePage");
+                    }
+                    else
+                    {
+                        await Application.Current.MainPage.DisplayToastAsync("Failed");
+                    }
                 }
                 else
                 {
                     await Application.Current.MainPage.DisplayToastAsync("Comment is required");
                 }
-              
-
-               
-
             }
             catch (Exception ex)
             {
+                await Application.Current.MainPage.DisplayToastAsync(ex.ToString());
                 IsBusy = false;
             }
-
+            IsBusy = false;
         }
 
 
@@ -744,7 +814,7 @@ namespace NOC.ViewModels
           var  currentStackholder = obj as StackholderModel;
             SelectedStackholderName = currentStackholder.ERGroup;
           SelectedStackholderResponse =  AllstackHolderResponseList.FirstOrDefault(e => e.StakeholderID == currentStackholder.ERStakeHoldersID);
-          getLatestAttachmentsForStackHolder(SelectedStackholderResponse?.TransactionID.ToString(), SelectedStackholderResponse?.UserSolutionRole.ToString());
+         // getLatestAttachmentsForStackHolder(SelectedStackholderResponse?.TransactionID.ToString(), SelectedStackholderResponse?.UserSolutionRole.ToString());
         }
         private AllStackholderResponse _selectedStackholderResponse;
         public AllStackholderResponse SelectedStackholderResponse
@@ -817,11 +887,11 @@ namespace NOC.ViewModels
         private async void SaveCommentAndAttachmentCommandExecute(object obj)
         {
             IsBusy = true;
-            String CommentId = "";
+            String CommentId = "0";
             try
             {
-                if (!string.IsNullOrEmpty(CalculatedValidTillDate))
-                {
+                //if (!string.IsNullOrEmpty(CalculatedValidTillDate))
+                //{
                     if (ExistingComment == null)
                     {
                         //new Save
@@ -840,6 +910,7 @@ namespace NOC.ViewModels
                         saveCommentModel.expirydate = CalculatedValidTillDate; //DateTime.Now.AddDays(180).ToString("dd/MMM/yyyy");
                         saveCommentModel.isAvaliable = true;
                         saveCommentModel.unit = UnitValue;
+                        saveCommentModel.comments.WorkFlow = Session.Instance.CurrentTransactionWorkFlow??"";
                         CommentId = await ApiService.Instance.SaveNewCommentFromReviewer(saveCommentModel);
                         await Application.Current.MainPage.DisplayToastAsync("Comment saved successfully");
                     }
@@ -853,6 +924,7 @@ namespace NOC.ViewModels
                         updateExisitingCommentModel.id = ExistingComment.SthcmntID.ToString();
                         updateExisitingCommentModel.radiovalue = 1;
                         updateExisitingCommentModel.unit = UnitValue;
+                    
                         CommentId = await ApiService.Instance.UpdateExisitingCommentFromReviewer(updateExisitingCommentModel);
                         await Application.Current.MainPage.DisplayToastAsync("Comment updated successfully");
                     }
@@ -864,10 +936,13 @@ namespace NOC.ViewModels
                         uploadModel.attachments = new Models.ReviwerSpecific.Attachments { TransactionID = TransactonDetail.Transaction.TransactionID };
                         uploadModel.attchtypeandfilepath.Add(new Attchtypeandfilepath
                         {
+                            typeofsave= "Save",
                             Attachmenttype = DoccumentTypeSelectedItem.AttachmentTypeID,
                             commentID = int.Parse(CommentId),
                             filepath = Session.Instance.SavedFilePathForReviewerPage
-                        });
+
+                        }) ;
+                      
                         uploadModel.RandomID = "1";
                         uploadModel.TransactionNumber = TransactonDetail.Transaction.TransactionNumber;
                         string successMessage = await ApiService.Instance.UploadFileAgainstReviewerComment(uploadModel);
@@ -880,17 +955,102 @@ namespace NOC.ViewModels
 
                  var updatedUI=  await CheckAndUpdateTheLatestCommentsAndAttachment();
                     
-                }
-                else
-                {
-                    await Application.Current.MainPage.DisplayToastAsync("Please enter the valid validity duration.");
-                }
+                //}
+                //else
+                //{
+                //    await Application.Current.MainPage.DisplayToastAsync("Please enter the valid validity duration.");
+                //}
             }
             catch (Exception ex)
             {
 
             }
             IsBusy = false;
+        }
+
+        private async Task<bool> AwaitableSaveCommentAndAttachmentCommandExecute(object obj)
+        {
+            IsBusy = true;
+            String CommentId = "0";
+            try
+            {
+                //if (!string.IsNullOrEmpty(CalculatedValidTillDate))
+                //{
+                if (ExistingComment == null)
+                {
+                    //new Save
+                    PostCommentModel saveCommentModel = new PostCommentModel();
+                    Models.ReviwerSpecific.Comments NewComments = new Models.ReviwerSpecific.Comments();
+                    NewComments.Comment = SpecificMessageText;
+                    NewComments.Decision = 1;
+                    NewComments.DecisionID = 1;
+                    NewComments.StakeholderID = 1;
+                    NewComments.TransactionID = TransactonDetail.Transaction.TransactionID;
+                    NewComments.CreatedBy = TransactonDetail.Transaction.CreatedBy;
+                    NewComments.CreationDate = DateTime.Now;
+                    NewComments.DecisionDate = DateTime.Now;
+                    NewComments.UserID = TransactonDetail.Transaction.UserID;
+                    saveCommentModel.comments = NewComments;
+                    saveCommentModel.expirydate = CalculatedValidTillDate; //DateTime.Now.AddDays(180).ToString("dd/MMM/yyyy");
+                    saveCommentModel.isAvaliable = true;
+                    saveCommentModel.unit = UnitValue;
+                    saveCommentModel.comments.WorkFlow = Session.Instance.CurrentTransactionWorkFlow ?? "";
+                    CommentId = await ApiService.Instance.SaveNewCommentFromReviewer(saveCommentModel);
+                    await Application.Current.MainPage.DisplayToastAsync("Comment saved successfully");
+                }
+                else
+                {
+                    //update existing
+                    UpdateExisitingCommentModel updateExisitingCommentModel = new UpdateExisitingCommentModel();
+                    updateExisitingCommentModel.expirydate = CalculatedValidTillDate;// DateTime.Now.AddDays(180).ToString("dd/MMM/yyyy");
+                    updateExisitingCommentModel.text = SpecificMessageText;
+                    updateExisitingCommentModel.transactionid = TransactonDetail.Transaction.TransactionID;
+                    updateExisitingCommentModel.id = ExistingComment.SthcmntID.ToString();
+                    updateExisitingCommentModel.radiovalue = 1;
+                    updateExisitingCommentModel.unit = UnitValue;
+
+                    CommentId = await ApiService.Instance.UpdateExisitingCommentFromReviewer(updateExisitingCommentModel);
+                    await Application.Current.MainPage.DisplayToastAsync("Comment updated successfully");
+                }
+
+                //here actualy we are saving the attachment to DB
+                if (!string.IsNullOrEmpty(CommentId) && Session.Instance.SavedFilePathForReviewerPage != "")
+                {
+                    ReviewerAttachmentUploadModel uploadModel = new ReviewerAttachmentUploadModel();
+                    uploadModel.attachments = new Models.ReviwerSpecific.Attachments { TransactionID = TransactonDetail.Transaction.TransactionID };
+                    uploadModel.attchtypeandfilepath.Add(new Attchtypeandfilepath
+                    {
+                        typeofsave = "Save",
+                        Attachmenttype = DoccumentTypeSelectedItem.AttachmentTypeID,
+                        commentID = int.Parse(CommentId),
+                        filepath = Session.Instance.SavedFilePathForReviewerPage
+
+                    });
+
+                    uploadModel.RandomID = "1";
+                    uploadModel.TransactionNumber = TransactonDetail.Transaction.TransactionNumber;
+                    string successMessage = await ApiService.Instance.UploadFileAgainstReviewerComment(uploadModel);
+                    await Application.Current.MainPage.DisplayToastAsync(successMessage);
+                    Session.Instance.SavedFilePathForReviewerPage = "";
+                    DoccumentTypeSelectedItem = new AttachmentsTypesResourceModel();
+                }
+
+                //check here  latest comment and latest attachment update in UI
+
+                var updatedUI = await CheckAndUpdateTheLatestCommentsAndAttachment();
+
+                //}
+                //else
+                //{
+                //    await Application.Current.MainPage.DisplayToastAsync("Please enter the valid validity duration.");
+                //}
+            }
+            catch (Exception ex)
+            {
+
+            }
+            IsBusy = false;
+            return true;
         }
 
         private async Task<bool> CheckAndUpdateTheLatestCommentsAndAttachment()
@@ -900,7 +1060,7 @@ namespace NOC.ViewModels
                 var transactionID = TransactonDetail.Transaction.TransactionID.ToString();//correct
                 ExistingComment = await ApiService.Instance.GetReviewerSpecificComment(transactionID);//319
                 SpecificMessageText = ExistingComment.Comment;
-                getLatestAttachmentsForReviewerComments(ExistingComment?.SthcmntID ?? 0);
+               await getLatestAttachmentsForReviewerComments(ExistingComment?.SthcmntID ?? 0);
                 return true;
             }
             catch (Exception ex)
@@ -1206,7 +1366,7 @@ namespace NOC.ViewModels
                     PostReviewerSpecificComment saveCondition = new PostReviewerSpecificComment();
                     saveCondition.CONDITIONS = ReviewerSpecificComment;
                     saveCondition.TRANSACTIONID = TransactonDetail.Transaction.TransactionID;
-                    string result = await ApiService.Instance.PostreviewerSpecificComment(saveCondition);
+                    CustomeConditionResponseModel result = await ApiService.Instance.PostreviewerSpecificComment(saveCondition);
                     ReviewerSpecificComment = "";
                     IsReviewerAddCommentButtonVisible = true;
                     IsDeleteButtonVisible = false;
@@ -1322,14 +1482,22 @@ namespace NOC.ViewModels
             }
         }
 
-        private void SelectUserConditionCommandExecute(object obj)
+        private async void SelectUserConditionCommandExecute(object obj)
         {
-            SelectedReviewerSpecificComment= obj as SystemAndUserSpCondition;
-            if (SelectedReviewerSpecificComment.COMMENTTYPE == "User")
+            try
             {
-                IsReviewerAddCommentButtonVisible = false;
-                IsDeleteButtonVisible = true;
-                ReviewerSpecificComment = SelectedReviewerSpecificComment.CONDITIONS;
+
+                SelectedReviewerSpecificComment = obj as SystemAndUserSpCondition;
+                if (SelectedReviewerSpecificComment.COMMENTTYPE == "User")
+                {
+                    IsReviewerAddCommentButtonVisible = false;
+                    IsDeleteButtonVisible = true;
+                    ReviewerSpecificComment = SelectedReviewerSpecificComment.CONDITIONS;
+                }
+            }
+            catch (Exception ex)
+            {
+               // await Application.Current.MainPage.DisplayToastAsync(ex.ToString());
             }
             
         }
@@ -1376,9 +1544,9 @@ namespace NOC.ViewModels
                 }
                 ExistingComment = await ApiService.Instance.GetReviewerSpecificComment(transactionID);//319
                 SpecificMessageText = ExistingComment?.Comment??"";
-                getLatestAttachmentsForStackHolder(SelectedStackholderResponse?.TransactionID.ToString(), SelectedStackholderResponse?.UserSolutionRole.ToString());
+               // getLatestAttachmentsForStackHolder(SelectedStackholderResponse?.TransactionID.ToString(), SelectedStackholderResponse?.UserSolutionRole.ToString());
 
-                getLatestAttachmentsForReviewerComments(ExistingComment?.SthcmntID??0);
+             await getLatestAttachmentsForReviewerComments(ExistingComment?.SthcmntID??0);
 
 
                bool success= await GetAndFillConditionSpecificPart(transactionID);
@@ -1429,13 +1597,37 @@ namespace NOC.ViewModels
 
        
 
-        public async void getLatestAttachmentsForStackHolder(String transactionID,string userSolutionRole)
+        //public async void getLatestAttachmentsForStackHolder(String transactionID,string userSolutionRole)
+        //{
+        //    IsBusy = true;
+        //    try
+        //    {
+        //         // StackholderAttachmentsModelList = new ObservableCollection<CommentsRelatedAttachmentModel>(await ApiService.Instance.GetCommentsRelatedAttachment(SthcmntID.ToString()));//376
+        //        StackholderAttachmentsModelList = new ObservableCollection<CommentsRelatedAttachmentModel>(await ApiService.Instance.GetCommentsRelatedAttachment(transactionID, userSolutionRole, true));//376
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //    }
+        //    IsBusy = false;
+        //}
+
+        public async Task<bool> getLatestAttachmentsForReviewerComments(int SthcmntID)
         {
             IsBusy = true;
             try
             {
-                 // StackholderAttachmentsModelList = new ObservableCollection<CommentsRelatedAttachmentModel>(await ApiService.Instance.GetCommentsRelatedAttachment(SthcmntID.ToString()));//376
-                StackholderAttachmentsModelList = new ObservableCollection<CommentsRelatedAttachmentModel>(await ApiService.Instance.GetCommentsRelatedAttachment(transactionID, userSolutionRole, true));//376
+              if(Session.Instance.IsCompletedApplicationFlow)
+                {
+                    AttachmentList = new ObservableCollection<CommentsRelatedAttachmentModel>(await ApiService.Instance.GetCommentsRelatedAttachment(ExistingComment?.TransactionID.ToString(), ExistingComment?.UserSolutionRole.ToString(), true));
+                }
+
+                else
+                {
+                    AttachmentList = new ObservableCollection<CommentsRelatedAttachmentModel>(await ApiService.Instance.GetCommentsRelatedAttachment(ExistingComment?.TransactionID.ToString(), ExistingComment?.UserSolutionRole.ToString(), false));
+
+                }
 
             }
             catch (Exception ex)
@@ -1443,22 +1635,8 @@ namespace NOC.ViewModels
 
             }
             IsBusy = false;
-        }
 
-        public async void getLatestAttachmentsForReviewerComments(int SthcmntID)
-        {
-            IsBusy = true;
-            try
-            {
-
-                AttachmentList = new ObservableCollection<CommentsRelatedAttachmentModel>(await ApiService.Instance.GetCommentsRelatedAttachment(ExistingComment?.TransactionID.ToString(), ExistingComment?.UserSolutionRole.ToString(), false));
-
-            }
-            catch (Exception ex)
-            {
-
-            }
-            IsBusy = false;
+            return true;
         }
 
 
@@ -1591,20 +1769,27 @@ namespace NOC.ViewModels
         private async void AggregateCondtionCommandExecute(object obj)
         {
             #region Phase 2 Implementation for agregate Conditions 
+            try
+            {
 
-            List<String> conditiionIDs = new List<string>();
-            foreach (var con in StackHolderAndOfficerSpecifcConditionsList)
-            {
-                conditiionIDs.Add(con.IsCheckedForConditionAgreeget ? con.TRA_SPECCOND_ID.ToString() : "a" + con.TRA_SPECCOND_ID.ToString());
+                List<String> conditiionIDs = new List<string>();
+                foreach (var con in StackHolderAndOfficerSpecifcConditionsList)
+                {
+                    conditiionIDs.Add(con.IsCheckedForConditionAgreeget ? con.TRA_SPECCOND_ID.ToString() : "a" + con.TRA_SPECCOND_ID.ToString());
+                }
+                string responseData = await ApiService.Instance.GenericPostApiCall(Urls.AgreGateReviewerConditions, conditiionIDs);
+                if (!string.IsNullOrEmpty(responseData))
+                {
+                    await Application.Current.MainPage.DisplayToastAsync("Conditions Aggregated successfuly");
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayToastAsync("responseData");
+                }
             }
-            string responseData = await ApiService.Instance.GenericPostApiCall(Urls.AgreGateReviewerConditions, conditiionIDs);
-            if(!string.IsNullOrEmpty(responseData))
+            catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayToastAsync("Conditions Aggregated successfuly");
-            }
-            else
-            {
-                await Application.Current.MainPage.DisplayToastAsync("responseData");
+                await Application.Current.MainPage.DisplayToastAsync(ex.ToString());
             }
             #endregion
         }

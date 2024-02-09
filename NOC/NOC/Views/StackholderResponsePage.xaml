@@ -523,7 +523,7 @@
                                                     Padding="2,0,0,0"
                                                     FontSize="10"
                                                     HorizontalOptions="Center"
-                                                    Text="{Binding Order}"
+                                                    Text="{Binding IndexNumber}"
                                                     VerticalOptions="Center" />
                                                 <BoxView
                                                     Grid.Column="1"

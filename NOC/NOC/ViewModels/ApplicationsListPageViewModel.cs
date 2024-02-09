@@ -109,7 +109,7 @@ namespace NOC.ViewModels
                     var argum = selectedTransaction.ER_OUTCOME_CODE;
                     if (argum == "ER_OFFREV_APPROVE" || argum == "ER_OFFREV_REV_REPLIED" || argum == "ER_OWNERSHIPTRANSFER_APPROVE_OFFREV" || argum == "ER_APP_OFFREV_REPLIED")
                     {
-                      
+                     //its officer 2 
                         Session.Instance.IsOfficerequalToReviewer = true;
                         // var officerSthcmntIDData = await ApiService.Instance.checkStackholderdetails1(selectedTransaction.TransactionID.ToString(), Session.Instance.CurrentUserID, selectedTransaction.WorkFlow);
                         var officerSthcmntIDData = await ApiService.Instance.checkStackholderdetails1(selectedTransaction.TransactionID.ToString(), Session.Instance.CurrentUserID, "Officer2");
@@ -132,11 +132,15 @@ namespace NOC.ViewModels
                     if(stackholder1!=null&& stackholder2 != null)
                     {
 
-                        Session.Instance.IsStackholderequalToReviewer = stackholder1.Stakeholder_Comments?.UserSolutionRole == stackholder2.SolutionRoleID ? true : false;
+                        Session.Instance.IsStackholderequalToReviewer = stackholder1.Stakeholder_Comments?.UserSolutionRole != stackholder2.SolutionRoleID ? true : false;
                         if (Session.Instance.IsStackholderequalToReviewer)
                         {
                             Session.Instance.SthcmntID = stackholder1?.Stakeholder_Comments?.SthcmntID??0;
 
+                            Session.Instance.CurrentTransactionWorkFlow = selectedTransaction.WorkFlow;
+                        }
+                        else
+                        {
                             Session.Instance.CurrentTransactionWorkFlow = selectedTransaction.WorkFlow;
                         }
                     }

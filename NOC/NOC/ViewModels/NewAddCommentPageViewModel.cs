@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Newtonsoft.Json;
 using NOC.Enums;
 using NOC.Models;
 using NOC.Service;
@@ -34,6 +35,9 @@ namespace NOC.ViewModels
             IsProcessorUser = getUsertypeStringValue() != "Applicant" && Session.Instance.IsOwnedApplicationFlow;//Add comments will be there only for owned applications. and user type processor
             IsProcessorUserForApplicantAndInternalCommentTabVisibility = getUsertypeStringValue() != "Applicant";
         }
+
+
+
         private bool checkAndValidateApplicantFlowSubmitButtonVisibility()
         {
             if (Session.Instance.IsCompletedApplicationFlow)
@@ -83,6 +87,19 @@ namespace NOC.ViewModels
             }
         }
 
+        private bool _isEligibleForApplicantTab;
+        public bool IsEligibleForApplicantTab
+        {
+            get
+            {
+                return _isEligibleForApplicantTab;
+            }
+            set
+            {
+                SetProperty(ref _isEligibleForApplicantTab, value);
+            }
+        }
+
         private string _currentUserTypeValue;
         public string CurrentUserTypeValue
         {
@@ -122,6 +139,18 @@ namespace NOC.ViewModels
                 SetProperty(ref _currentCommentType, value);
             }
         }
+        private bool _isNewCommentViewVisibleForApplicantComment;
+        public bool IsNewCommentViewVisibleForApplicantComment
+        {
+            get
+            {
+                return _isNewCommentViewVisibleForApplicantComment;
+            }
+            set
+            {
+                SetProperty(ref _isNewCommentViewVisibleForApplicantComment, value);
+            }
+        }
 
         private bool _isNewCommentViewVisible;
         public bool IsNewCommentViewVisible
@@ -149,36 +178,9 @@ namespace NOC.ViewModels
         }
 
 
-        private ICommand addNewComment;
-
-        public ICommand AddNewComment
-        {
-            get
-            {
-                if (addNewComment == null)
-                {
-                    addNewComment = new Command(AddNewCommentCommandExecute);
-                }
-
-                return addNewComment;
-            }
-        }
-
-        private void AddNewCommentCommandExecute(object obj)
-        {
-            CurrentCommentType = Convert.ToInt32(obj);
-            IsNewCommentViewVisible = true;
-            if (CurrentCommentType == 1)
-            {
-                IsToApplicantSelected = true;
-                IsToInternalSelected = false;
-            }
-            else
-            {
-                IsToApplicantSelected = false;
-                IsToInternalSelected = true;
-            }
-        }
+       
+       
+       
 
         private List<Attchtypeandfilepath> attachmentList = new List<Attchtypeandfilepath>();
         public List<Attchtypeandfilepath> AttachmentList
@@ -257,6 +259,7 @@ namespace NOC.ViewModels
                         {
                             NewCommentText = "";
                             IsNewCommentViewVisible = false;
+                            IsNewCommentViewVisibleForApplicantComment = false;
                             await getLatestComments();
                             CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == CurrentCommentType));
                             AttachmentList.Clear();
@@ -314,6 +317,7 @@ namespace NOC.ViewModels
                         {
                             NewCommentText = "";
                             IsNewCommentViewVisible = false;
+                            IsNewCommentViewVisibleForApplicantComment = false;
                             await getLatestComments();
                             CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == CurrentCommentType));
                             AttachmentList.Clear();
@@ -332,6 +336,7 @@ namespace NOC.ViewModels
                     {
                         NewCommentText = "";
                         IsNewCommentViewVisible = false;
+                        IsNewCommentViewVisibleForApplicantComment = false;
                         await getLatestComments();
                         CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == CurrentCommentType));
                         AttachmentList.Clear();
@@ -517,6 +522,7 @@ namespace NOC.ViewModels
 
         private void ToInternalTappedCommandExecute(object obj)
         {
+            IsBusy = true;
             int inputValue = Convert.ToInt32(obj);
             CurrentCommentType = inputValue;
             CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == inputValue));
@@ -532,7 +538,7 @@ namespace NOC.ViewModels
                 IsToInternalSelected = false;
                 IsToApplicantSelected = true;
             }
-
+            IsBusy = false;
         }
 
         private ICommand pickerIndexChangedCommand;
@@ -947,8 +953,9 @@ namespace NOC.ViewModels
         {
 
             base.OnNavigatedTo(parameters);
+            IsEligibleForApplicantTab = await CheckElegibilityForApplicantCommentOption();
             await getLatestComments();
-
+           
         }
 
 
@@ -959,8 +966,15 @@ namespace NOC.ViewModels
             var transactionDetails = Session.Instance.CurrentTransaction;
             Session.Instance.CurerentTransactionCommentsList = await ApiService.Instance.GetTransactionComents(transactionDetails.Transaction.TransactionNumber);
             //CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList);
-            
-            CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == 1));
+            if (IsEligibleForApplicantTab)
+            {
+                CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == 1));
+            }
+
+            else
+            {
+                CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == 2));
+            }
             IsApplicantFlowAndValidations = checkAndValidateApplicantFlowSubmitButtonVisibility();
             IsBusy = false;
             return CommentsList.Count > 0;
@@ -987,10 +1001,11 @@ namespace NOC.ViewModels
             }
         }
 
-        private void NewAddNewCommentCommandExecute(object obj)
+        private async void NewAddNewCommentCommandExecute(object obj)
         {
             CurrentCommentType = Convert.ToInt32(obj);
             IsNewCommentViewVisible = true;
+            IsNewCommentViewVisibleForApplicantComment = await CheckElegibilityForApplicantCommentOption();
             if (CurrentCommentType == 1)
             {
                 IsToApplicantSelected = true;
@@ -1000,6 +1015,53 @@ namespace NOC.ViewModels
             {
                 IsToApplicantSelected = false;
                 IsToInternalSelected = true;
+            }
+        }
+
+        private async Task<bool> CheckElegibilityForApplicantCommentOption()
+        {
+            bool IsEleigibleUser = false;
+            try
+            {
+                int CurrentUsersolutionroleid = Preferences.Get("CurrentUsersolutionroleid", 0);
+                var result = await ApiService.Instance.GenericGetApiCall(Urls.GetERStachholders);
+                List<ERStakeHoldersModel> StakeholderList = JsonConvert.DeserializeObject<List<ERStakeHoldersModel>>(result);
+                if (Session.Instance.CurrentUserType == UserTypes.Officer)   // || Session.Instance.CurrentUserType == UserTypes.Reviewer) //reviewer should not have applicant comment access
+                {
+                    IsEleigibleUser = true;
+                }
+                else
+                {
+                    // IsEleigibleUser = StakeholderList.Any(e => e.SolutionRoleID == CurrentUsersolutionroleid
+                    for (var i = 0; i < StakeholderList.Count; i++)
+                    {
+                        if (StakeholderList[i].SolutionRoleID == CurrentUsersolutionroleid)
+                        {
+                            var list = new List<String> { "Consultant", "Contractor" };
+
+                            if (list.Contains(StakeholderList[i].ERGroup))
+                            {
+                                IsEleigibleUser = true;
+                                break;
+                            }
+                            else
+                            {
+                                IsEleigibleUser = false;
+                                ToInternalTappedCommandExecute(2);
+                                break;
+                            }
+
+                        }
+
+                    }
+                }
+
+                return IsEleigibleUser;
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayToastAsync(ex.ToString());
+                return IsEleigibleUser;
             }
         }
 
@@ -1092,6 +1154,7 @@ namespace NOC.ViewModels
                         {
                             NewCommentTextForInternal = "";
                             IsNewCommentViewVisible = false;
+                            IsNewCommentViewVisibleForApplicantComment = false;
                             await getLatestComments();
                             CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == CurrentCommentType));
                             AttachmentListForInternal.Clear();
@@ -1102,6 +1165,7 @@ namespace NOC.ViewModels
                            
 
                             IsNewCommentViewVisible = false;
+                            IsNewCommentViewVisibleForApplicantComment = false;
                             await getLatestComments();
                             ToInternalTappedCommandExecute(2);
                              
@@ -1117,8 +1181,9 @@ namespace NOC.ViewModels
                     {
                         NewCommentTextForInternal = "";
                         IsNewCommentViewVisible = false;
+                        IsNewCommentViewVisibleForApplicantComment = false;
                         await getLatestComments();
-                        CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == CurrentCommentType));
+                  //      CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == CurrentCommentType));
                         AttachmentListForInternal.Clear();
                         await Application.Current.MainPage.DisplayToastAsync("Saved successfully");
                         // await NavigationService.NavigateAsync("CommentsPage");//as per new requirement no need to navigate to another Page, 
@@ -1127,6 +1192,7 @@ namespace NOC.ViewModels
 
                         
                         IsNewCommentViewVisible = false;
+                        IsNewCommentViewVisibleForApplicantComment = false;
                         await getLatestComments();
                         ToInternalTappedCommandExecute(2);
                     }
@@ -1294,6 +1360,7 @@ namespace NOC.ViewModels
                         {
                             NewCommentTextForApplicant = "";
                             IsNewCommentViewVisible = false;
+                            IsNewCommentViewVisibleForApplicantComment = false;
                             await getLatestComments();
                             CommentsList = new ObservableCollection<CommentsModel>(Session.Instance.CurerentTransactionCommentsList.Where(e => e.Comments.CommentType == CurrentCommentType));
                             AttachmentListForApplicant.Clear();

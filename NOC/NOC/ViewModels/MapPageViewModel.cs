@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Windows.Input;
 using NOC.Interfaces;
 using NOC.Models;
 using NOC.Utility;
@@ -50,6 +51,26 @@ namespace NOC.ViewModels
             {
                 SetProperty(ref _transactonDetail, value);
             }
+        }
+
+        private ICommand navigateToComments;
+
+        public ICommand NavigateToComments
+        {
+            get
+            {
+                if (navigateToComments == null)
+                {
+                    navigateToComments = new Command(NavigateToCommentsPage);
+                }
+
+                return navigateToComments;
+            }
+        }
+        private async void NavigateToCommentsPage(object obj)
+        {
+            //await NavigationService.NavigateAsync("CommentsPage");
+            await NavigationService.NavigateAsync("NewAddCommentPage");
         }
         public override async void OnNavigatedTo(INavigationParameters parameters)
         {
