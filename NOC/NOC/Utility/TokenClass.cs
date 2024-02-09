@@ -18,8 +18,8 @@ namespace NOC.Utility
             try
             {
                 var client = new HttpClient();
-                client.BaseAddress = new Uri("https://portal.gpceast.com/er/noc/");
-                                                                                       
+                client.BaseAddress = new Uri(Urls.TokenBaseUrl);
+
                 var nvc = new List<KeyValuePair<string, string>>();
                 //nvc.Add(new KeyValuePair<string, string>("grant_type", "password"));
                 //nvc.Add(new KeyValuePair<string, string>("password", "user123"));
@@ -103,12 +103,7 @@ namespace NOC.Utility
             {
              string cookiesValue= "MobileToken=" + Token+ ";Ismobile=true";
                 var client = ServiceUtility.CreateNewHttpClient();
-               // var authHeader = new AuthenticationHeaderValue("bearer", Token);
-               // var authHeaderCookies = new AuthenticationHeaderValue("Cookie", cookiesValue);
-                
-               // client.DefaultRequestHeaders.Authorization = authHeader;
                 client.DefaultRequestHeaders.Add("Cookie", cookiesValue);
-                //  String RequestUrl = "https://portal.gpceast.com/NOC/api/Users/checkAuthorieduser";
                 String RequestUrl = Urls.checkAuthorieduser; ;
                 var payload = ServiceUtility.BuildRequest(new AzureClassTest { StringOne="" });
                 var req = new HttpRequestMessage(HttpMethod.Post, RequestUrl) { Content = payload };
