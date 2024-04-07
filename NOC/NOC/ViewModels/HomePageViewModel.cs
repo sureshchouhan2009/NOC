@@ -288,20 +288,54 @@ namespace NOC.ViewModels
 
             //}
 
+            //try
+            //{
+            //    //https://stackoverflow.com/questions/63594273/xamarin-forms-how-to-open-an-app-from-another-app
+            //    DependencyService.Register<IAppHandler>();
+            //    //await DependencyService.Get<IAppHandler>().LaunchApp("com.microsoft.powerbim");
+            //    //await DependencyService.Get<IAppHandler>().LaunchApp("com.deloitte.dnmobile.parking");
+            //    await DependencyService.Get<IAppHandler>().LaunchApp("com.linkedin.android");
+            //}
+            //catch (Exception ex)
+            //{
+
+            //}
+
+           OpenPowerBIDashboard();
+
+        }
+
+        private async void OpenPowerBIDashboard()
+        {
             try
             {
-                //https://stackoverflow.com/questions/63594273/xamarin-forms-how-to-open-an-app-from-another-app
-                DependencyService.Register<IAppHandler>();
-                await DependencyService.Get<IAppHandler>().LaunchApp("com.microsoft.powerbim");
+
+                //string linkedInProfileUrl = "https://www.linkedin.com/in/sureshchouhan2009";
+               // string linkedInProfileUrl = "https://play.google.com/store/apps/details?id=com.microsoft.powerbim&pcampaignid=web_share";
+               // string linkedInProfileUrl = "https://app.powerbi.com/Redirect?action=OpenDashboard";
+                string powerBIUrl = "https://app.powerbi.com/Redirect?action=OpenApp";
+
+                // Attempt to open Power BI app
+                //await Launcher.OpenAsync("mspowerbi://");
+                await Launcher.OpenAsync(new Uri(powerBIUrl));
             }
             catch (Exception ex)
             {
+                // Power BI app is not installed or couldn't be opened
+                // Open Play Store (Android) or App Store (iOS) to install the app
+                if (Device.RuntimePlatform == Device.Android)
+                {
 
+                    Device.OpenUri(new Uri("market://details?id=com.microsoft.powerbim"));
+                }
+                else
+                {
+                    // For iOS, use:
+                    Device.OpenUri(new Uri("itms://itunes.apple.com/us/app/microsoft-power-bi/id929738808"));
+                }
+              
             }
-
-        } 
-
-       
+        }
 
         private ICommand navigateToMyNocApplications;
 

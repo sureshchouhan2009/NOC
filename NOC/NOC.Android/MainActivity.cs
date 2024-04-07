@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using Acr.UserDialogs;
 using Android.App;
 using Android.Content;
@@ -6,6 +7,7 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Microsoft.Identity.Client;
+using NOC.Constants;
 using NOC.Service;
 using Plugin.CurrentActivity;
 using Prism;
@@ -52,9 +54,12 @@ namespace NOC.Droid
             //     .WithParentActivityOrWindow(() => this)
             //.Build();
 
+              string authurl = "https://login.microsoftonline.com/" + Constant.TenantID;
+
             var identityClient=   PublicClientApplicationBuilder
         .Create(applicationId)
         .WithRedirectUri($"msal{applicationId}://auth")// Replace with actual redirect URI
+        .WithAuthority(authurl)
         .WithParentActivityOrWindow(() => this)
         .Build();
 

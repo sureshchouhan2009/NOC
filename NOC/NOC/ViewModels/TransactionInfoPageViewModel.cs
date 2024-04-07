@@ -212,10 +212,8 @@ namespace NOC.ViewModels
         {
             try
             {
-
                 var currentAttachment = obj as AttachmentModel;
                 await Launcher.OpenAsync(currentAttachment.UrlPath);
-
             }
             catch (Exception ex)
             {

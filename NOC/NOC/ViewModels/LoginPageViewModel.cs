@@ -93,6 +93,7 @@ namespace NOC.ViewModels
                     else
                     {
                         await Application.Current.MainPage.DisplayToastAsync("Unable to find user role", 10000);
+                       await logOutFromMSAL();
                     }
                 }
                 else
@@ -111,6 +112,34 @@ namespace NOC.ViewModels
 
 
 
+        }
+
+        private async Task<bool> logOutFromMSAL()
+        {
+            try
+            {
+
+                if (IdentityClient == null)
+                {
+                    IdentityClient = App.PlatformService.GetIdentityClient(Constant.ApplicationId);
+                }
+                var accounts = await IdentityClient.GetAccountsAsync();
+
+                // Go through all accounts and remove them.
+                while (accounts.Any())
+                {
+                    await IdentityClient.RemoveAsync(accounts.FirstOrDefault());
+                    accounts = await IdentityClient.GetAccountsAsync();
+                }
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+
+
+                return false;
+            }
         }
 
         private int getCurrentUsersolutionroleid(UserAuthorizationModel userDetails)

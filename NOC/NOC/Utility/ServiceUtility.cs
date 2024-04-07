@@ -27,7 +27,12 @@ namespace NOC.Utility
         #region getclient
         public static HttpClient CreateNewHttpClient()
         {
-            var httpClient = new HttpClient();
+            //HttpClientHandler clientHandler = new HttpClientHandler();
+            //clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+            //var httpClient = new HttpClient(clientHandler);
+
+            HttpClient httpClient = new HttpClient();
+
             httpClient.DefaultRequestHeaders
                 .Accept
                 .Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -36,6 +41,12 @@ namespace NOC.Utility
             //httpClient.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
 
             return httpClient;
+
+
+
+
+
+           
         }
         #endregion
 

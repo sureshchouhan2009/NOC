@@ -1,4 +1,6 @@
 ﻿using System;
+using NOC.Service;
+
 namespace NOC.Constants
 {
     public static class Constant
@@ -11,8 +13,12 @@ namespace NOC.Constants
         /// <summary>
         /// The application (client) ID for the native app within Azure Active Directory
         /// </summary>
-        public static string ApplicationId = "d0c5284a-d006-4950-bdd4-1598d14219d6";
+       // public static string ApplicationId = "d0c5284a-d006-4950-bdd4-1598d14219d6";//Dev
 
+      //public static string ApplicationId = Urls.CurrentEnvironment=="Dev"? "d0c5284a-d006-4950-bdd4-1598d14219d6" : "9dee503f-f818-4f44-8eae-2a59ea1a3c1b";
+        public const string ApplicationId = Urls.CurrentEnvironment=="Dev"? "42359128-3045-423f-a496-c994fc580130" : "9dee503f-f818-4f44-8eae-2a59ea1a3c1b";
+
+        public static string TenantID = Urls.CurrentEnvironment == "Dev" ? "d8fe2380-bb19-4228-a83f-c9e0b75ccd43" : "d6046f1b-45b7-4bea-b72c-e12fd5ff8374";
         /// <summary>
         /// The list of scopes to request
         /// </summary>

@@ -6,29 +6,47 @@ namespace NOC.Service
 {
     public class Urls
     {
+        public const  string CurrentEnvironment = "Stage";
+        //public const string CurrentEnvironment = "Dev";
+
+        //public const string TokenBaseUrl = (CurrentEnvironment =="Dev")? "https://portal.gpceast.com/er/noc/": "https://gisstg.etihadrail.ae/portal/sharing/rest/generateToken?"; 
+        //public const string TokenBaseUrl = (CurrentEnvironment =="Dev")? "https://portal.gpceast.com/er/ermobile/" : "https://gisstg.etihadrail.ae/portal/sharing/rest/generateToken?"; 
+
+        //public const string BaseUrl = (CurrentEnvironment == "Dev") ? "https://portal.gpceast.com/noc/": "https://nocstg.etihadrail.ae/NOC/";
+
+
+
+        public const string BaseUrl = (CurrentEnvironment == "Dev") ? "https://portal.gpceast.com/er/ermobile/" : "https://nocstg.etihadrail.ae/Nocmobile/";
+
+
+
+
+
+
+        #region oldCode without refactroy
+
+
+        /// <summary>
+        /// Dev Environment   {Processor}
+        /// </summary>
+
+        //public const string TokenBaseUrl = "https://portal.gpceast.com/er/noc/";  //Dev
+        //public const string BaseUrl = "https://portal.gpceast.com/noc/"; //Dev
+
+
 
 
 
         /// <summary>
-        /// Token URl for Generating the Token
+        /// Stage Environment {Processor}
         /// </summary>
-
-        public const string TokenBaseUrl = "https://portal.gpceast.com/er/noc/";  //Dev
-        //public const string TokenBaseUrl = "https://gisstg.etihadrail.ae/portal/sharing/rest/generateToken?"; //Stage
-
+        //public const string TokenBaseUrl = "https://gisstg.etihadrail.ae/portal/sharing/rest/generateToken?";
+        //public const string BaseUrl = "https://nocstg.etihadrail.ae/NOC/";
 
 
+        #endregion
 
 
-        /// <summary>
-        /// Development API Url Using in Dev environment
-        /// </summary>
-        public const string BaseUrl = "https://portal.gpceast.com/noc/"; //Dev
-        //public const string BaseUrl = "https://nocstg.etihadrail.ae/NOC/";//Stage
-
-
-
-       
 
 
         public const string TokenURL = BaseUrl + "Token";
